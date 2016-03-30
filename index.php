@@ -1,0 +1,52 @@
+<?php
+/*
+Plugin Name: MF Theme Core
+Plugin URI: https://github.com/frostkom/mf_theme_core
+Description: 
+Version: 3.5.7
+Author: Martin Fors
+Author URI: http://frostkom.se
+Text Domain: lang_theme_core
+Domain Path: /lang
+
+GitHub Plugin URI: frostkom/mf_theme_core
+*/
+
+define('DISALLOW_FILE_EDIT', true);
+
+include_once("include/functions.php");
+
+if(is_admin())
+{
+	register_uninstall_hook(__FILE__, 'uninstall_theme_core');
+
+	add_action('admin_init', 'settings_theme_core');
+
+	add_action('customize_save_after', 'customize_save_theme_core');
+}
+
+else
+{
+	add_action('customize_preview_init', 'customize_preview_theme_core');
+
+	add_action('wp_head', 'head_theme', 0);
+
+	remove_action('wp_head', 'rest_output_link_wp_head');
+	remove_action('wp_head', 'wlwmanifest_link');
+	remove_action('wp_head', 'rsd_link');
+	remove_action('wp_head', 'wp_oembed_add_discovery_links');
+	remove_action('wp_head', 'wp_generator');
+	remove_action('wp_head', 'rel_canonical');
+	remove_action('wp_head', 'print_emoji_detection_script', 7);
+	remove_action('wp_print_styles', 'print_emoji_styles');
+	//remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+}
+
+load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__)).'/lang/');
+
+function uninstall_theme_core()
+{
+	mf_uninstall_plugin(array(
+		'options' => array('setting_theme_core_login', 'setting_save_style', 'setting_scroll_to_top'),
+	));
+}

@@ -1,0 +1,22 @@
+@media all
+{
+	#scroll_to_top
+	{
+		background: #000;
+		border-radius: .5em;
+		bottom: .5em;
+		color: #fff;
+		display: block;
+		font-size: 1.3em;
+		opacity: .2;
+		padding: 1em;
+		position: fixed;
+		right: .5em;
+		z-index: 10000;
+	}
+
+		#scroll_to_top:hover
+		{
+			opacity: .7;
+		}
+}
