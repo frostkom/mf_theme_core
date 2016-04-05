@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MF Base\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-23 10:38+0100\n"
+"POT-Creation-Date: 2016-04-04 16:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: Martin Fors\n"
@@ -15,25 +15,29 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/functions.php:111
+#: ../include/functions.php:105
 #, php-format
 msgid "Couldn't save content to %s"
 msgstr "Det gick att spara innehåll till %s"
 
-#: ../include/functions.php:117
+#: ../include/functions.php:111
 #, php-format
 msgid "Couldn't get any data from %s"
 msgstr "Det gick att hämta data från %s"
 
-#: ../include/functions.php:139
+#: ../include/functions.php:133
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:140
+#: ../include/functions.php:138
+msgid "Always redirect visitors to the login page"
+msgstr "Skicka alltid vidare besökare till loginsidan"
+
+#: ../include/functions.php:141
 msgid "Save dynamic styles to static CSS file"
 msgstr "Spara dynamisk design i statisk CSS-fil"
 
-#: ../include/functions.php:141
+#: ../include/functions.php:142
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
@@ -41,40 +45,40 @@ msgstr "Visa länk för att skrolla längst upp på sidan"
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:173
+#: ../include/functions.php:181
 msgid "May be good to disable when working on a development site and then enable when going live"
 msgstr "Det kan vara bra att inaktivera detta under utvecklingstiden och sen aktivera när sidan är klar"
 
-#: ../include/functions.php:485
+#: ../include/functions.php:488
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/functions.php:486
+#: ../include/functions.php:489
 msgid "No"
 msgstr "Nej"
 
-#: ../include/functions.php:502
-#: ../include/functions.php:517
+#: ../include/functions.php:505
+#: ../include/functions.php:520
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../include/functions.php:503
+#: ../include/functions.php:506
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:504
+#: ../include/functions.php:507
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:505
+#: ../include/functions.php:508
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:506
+#: ../include/functions.php:509
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:507
+#: ../include/functions.php:510
 msgid "Inherit"
 msgstr "Ärv"
 

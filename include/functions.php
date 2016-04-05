@@ -122,26 +122,28 @@ function settings_theme_core()
 {
 	$options_area = __FUNCTION__;
 
-	if(IS_ADMIN)
+	add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
+
+	$arr_settings = array();
+
+	if(get_option('blog_public') == 0)
 	{
-		add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
+		$arr_settings["setting_no_public_pages"] = __("Always redirect visitors to the login page", 'lang_theme_core');
 
-		$arr_settings = array();
-
-		if(get_option('blog_public') == 0 || get_option('setting_theme_core_login') == 'yes')
+		if(get_option('setting_no_public_pages') != 'yes')
 		{
 			$arr_settings["setting_theme_core_login"] = __("Require login for public site", 'lang_theme_core');
 		}
+	}
 
-		$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
-		$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core');
+	$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
+	$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core');
 
-		foreach($arr_settings as $handle => $text)
-		{
-			add_settings_field($handle, $text, $handle."_callback", BASE_OPTIONS_PAGE, $options_area);
+	foreach($arr_settings as $handle => $text)
+	{
+		add_settings_field($handle, $text, $handle."_callback", BASE_OPTIONS_PAGE, $options_area);
 
-			register_setting(BASE_OPTIONS_PAGE, $handle);
-		}
+		register_setting(BASE_OPTIONS_PAGE, $handle);
 	}
 }
 
@@ -153,6 +155,14 @@ function settings_theme_core_callback()
 }
 
 function setting_theme_core_login_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'no');
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option));
+}
+
+function setting_no_public_pages_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
@@ -178,22 +188,17 @@ function setting_scroll_to_top_callback()
 
 function require_user_login()
 {
-	$setting_theme_core_login = get_option('setting_theme_core_login');
+	$blog_public = get_option('blog_public');
 
-	if($setting_theme_core_login != '')
+	if($blog_public == 0)
 	{
-		if($setting_theme_core_login == "yes" && !is_user_logged_in())
+		if(get_option('setting_no_public_pages') == 'yes')
 		{
-			wp_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['PHP_SELF']);
+			wp_redirect(get_site_url()."/wp-admin/");
 			exit;
 		}
-	}
 
-	else
-	{
-		$blog_public = get_option('blog_public');
-
-		if($blog_public == 0 && !is_user_logged_in())
+		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
 		{
 			wp_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['PHP_SELF']);
 			exit;
