@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MF Base\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-04 16:42+0100\n"
+"POT-Creation-Date: 2016-04-06 12:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: Martin Fors\n"
@@ -15,72 +15,100 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/functions.php:105
+#: ../include/functions.php:100
 #, php-format
 msgid "Couldn't save content to %s"
 msgstr "Det gick att spara innehåll till %s"
 
-#: ../include/functions.php:111
+#: ../include/functions.php:106
 #, php-format
 msgid "Couldn't get any data from %s"
 msgstr "Det gick att hämta data från %s"
 
-#: ../include/functions.php:133
-msgid "Require login for public site"
-msgstr "Kräv inlogg innan besök på webbsidan"
-
-#: ../include/functions.php:138
+#: ../include/functions.php:126
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:141
+#: ../include/functions.php:130
+msgid "Require login for public site"
+msgstr "Kräv inlogg innan besök på webbsidan"
+
+#: ../include/functions.php:134
 msgid "Save dynamic styles to static CSS file"
 msgstr "Spara dynamisk design i statisk CSS-fil"
 
-#: ../include/functions.php:142
+#: ../include/functions.php:135
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:157
+#: ../include/functions.php:137
+msgid "Compress output"
+msgstr "Komprimera kod"
+
+#: ../include/functions.php:138
+msgid "Image responsiveness"
+msgstr "Anpassande bilder"
+
+#: ../include/functions.php:139
+msgid "Force relative URLs"
+msgstr "Tvinga relativa URLer"
+
+#: ../include/functions.php:153
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:181
+#: ../include/functions.php:177
 msgid "May be good to disable when working on a development site and then enable when going live"
 msgstr "Det kan vara bra att inaktivera detta under utvecklingstiden och sen aktivera när sidan är klar"
 
-#: ../include/functions.php:488
+#: ../include/functions.php:201
+msgid "To strip all content tags from height and width to improve responsiveness"
+msgstr "För att rensa allt innehåll från height och width för att förbättra visning av bilder på olika storlek på skärmar"
+
+#: ../include/functions.php:508
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/functions.php:489
+#: ../include/functions.php:509
 msgid "No"
 msgstr "Nej"
 
-#: ../include/functions.php:505
-#: ../include/functions.php:520
+#: ../include/functions.php:525
+#: ../include/functions.php:540
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../include/functions.php:506
+#: ../include/functions.php:526
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:507
+#: ../include/functions.php:527
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:508
+#: ../include/functions.php:528
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:509
+#: ../include/functions.php:529
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:510
+#: ../include/functions.php:530
 msgid "Inherit"
 msgstr "Ärv"
+
+#~ msgid "Strip domain from content"
+#~ msgstr "Rensa domän från innehåll"
+
+#~ msgid "For output html to be compressed"
+#~ msgstr "För att utgående kod ska komprimeras"
+
+#~ msgid "To strip domain from all content"
+#~ msgstr "För att rensa domän från allt innehåll"
+
+#~ msgid "Check if you would like to strip domain from all content"
+#~ msgstr "Kryssa i om du vill göra länkar relativa"
 
 #~ msgid "Settings"
 #~ msgstr "Inställningar"

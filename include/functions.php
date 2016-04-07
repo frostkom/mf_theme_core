@@ -82,14 +82,9 @@ function customize_save_theme_core()
 	$style_base_dir = get_stylesheet_directory()."/include/";
 	$style_output_file = $style_base_dir."style".($wpdb->blogid > 0 ? "_".$wpdb->blogid : "").".css";
 
-	$setting_save_style = get_option_or_default('setting_save_style');
-
-	if($setting_save_style == 'yes')
+	if(get_option('setting_save_style') == 'yes')
 	{
 		$style_url = replace_stylesheet_url("php");
-
-		/*$style_url = str_replace("https:", "http:", $style_url);
-		$content = get_url_content($style_url);*/
 
 		$response = wp_remote_get($style_url);
 		$content = $response['body'];
@@ -139,6 +134,10 @@ function settings_theme_core()
 	$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 	$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core');
 
+	$arr_settings["setting_compress"] = __("Compress output", 'lang_theme_core');
+	$arr_settings["setting_responsiveness"] = __("Image responsiveness", 'lang_theme_core');
+	$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core');
+
 	foreach($arr_settings as $handle => $text)
 	{
 		add_settings_field($handle, $text, $handle."_callback", BASE_OPTIONS_PAGE, $options_area);
@@ -175,7 +174,7 @@ function setting_save_style_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option, 'description' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
 }
 
 function setting_scroll_to_top_callback()
@@ -184,6 +183,30 @@ function setting_scroll_to_top_callback()
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option));
+}
+
+function setting_compress_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, get_option('eg_setting_compress'));
+
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option));
+}
+
+function setting_responsiveness_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, get_option('eg_setting_responsiveness'));
+
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
+}
+
+function setting_strip_domain_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, get_option('eg_setting_strip_domain'));
+
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option));
 }
 
 function require_user_login()
@@ -593,7 +616,7 @@ function render_css($data)
 	return $out;
 }
 
-function head_theme()
+function head_theme_core()
 {
 	if(!(get_current_user_id() > 0))
 	{
@@ -608,3 +631,123 @@ function head_theme()
 		mf_enqueue_script('script_theme_scroll', plugin_dir_url(__FILE__)."script_scroll.js");
 	}
 }
+
+//Previously in SEO Checklist
+function init_theme_core()
+{
+	if(get_option('setting_responsiveness') == 1)
+	{
+		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
+		add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
+		//add_filter('wp_insert_post_data', 'post_filter_handler', '99', 2);
+
+		add_filter('the_content', 'remove_width_height_attribute');
+	}
+
+	/*if(get_option('setting_strip_domain') == 1)
+	{
+		//add_filter('the_content', 'strip_domain_from_content');
+
+		add_action('template_redirect', 'rw_relative_urls');
+	}*/
+}
+
+function header_theme_core()
+{
+	if(get_option('setting_compress') == 1)
+	{
+		ob_start("compress_html");
+	}
+	
+	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
+	{
+		ob_start("strip_domain_from_content");
+	}
+}
+
+function init_style_theme_core()
+{
+	if(get_option('setting_strip_domain') == 1)
+	{
+		ob_start("strip_domain_from_content");
+	}
+}
+
+function compress_html($html)
+{
+	$out = "";
+
+	if(strlen($html) > 0)
+	{
+		$exkludera = array('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '/>(\n|\r|\t|\r\n|  |	)+/', '/(\n|\r|\t|\r\n|  |	)+</', '<!--.*?-->');
+		$inkludera = array('', '>', '<', '');
+
+		$out = preg_replace($exkludera, $inkludera, $html);
+
+		//If regexp fails, restore here
+		if(strlen($out) == 0)
+		{
+			$out = $html;
+		}
+	}
+
+	return $out;
+}
+
+/*function post_filter_handler($data, $postarr)
+{
+	$data['post_content'] = remove_width_height_attribute($data['post_content']);
+
+	return $data;
+}*/
+
+function remove_width_height_attribute($html)
+{
+	return preg_replace('/(width|height)="\d*"\s/', "", $html);
+}
+
+function strip_domain_from_content($html)
+{
+	$site_url = get_option('siteurl');
+	$site_url_alt = (substr($site_url, 0, 5) == "https" ? str_replace("https:", "http:", $site_url) : str_replace("http:", "https:", $site_url));
+
+	return str_replace(array($site_url, $site_url_alt), "", $html);
+}
+
+/*function rw_relative_urls()
+{
+	// Don't do anything if:
+	// - In feed
+	// - In sitemap by WordPress SEO plugin
+	if(is_feed() || get_query_var('sitemap'))
+	{
+		return;
+	}
+
+	else
+	{
+		$filters = array(
+			'post_link',
+			'post_type_link',
+			'page_link',
+			'attachment_link',
+			'get_shortlink',
+			'post_type_archive_link',
+			'get_pagenum_link',
+			'get_comments_pagenum_link',
+			'term_link',
+			'search_link',
+			'day_link',
+			'month_link',
+			'year_link',
+			//'author_link',
+			//'edit_post_link',
+			//'wp_get_attachment_image_src',
+		);
+
+		foreach($filters as $filter)
+		{
+			add_filter($filter, 'wp_make_link_relative');
+		}
+	}
+}*/
