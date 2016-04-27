@@ -1,5 +1,12 @@
 <?php
 
+function nav_args_theme_core($args)
+{
+	$args['container'] = "nav";
+
+	return $args;
+}
+
 function mf_compress($data)
 {
 	$out = $data['content'];
@@ -632,8 +639,48 @@ function head_theme_core()
 	}
 }
 
-//Previously in SEO Checklist
-function init_theme_core()
+function admin_bar_theme_core()
+{
+	global $wp_admin_bar;
+
+	if(IS_ADMIN)
+	{
+		$color = "color_red";
+
+		if(get_option('setting_no_public_pages') == 'yes')
+		{
+			$wp_admin_bar->remove_menu('site-name');
+			
+			$title = __("No public pages", 'lang_theme_core');
+		}
+			
+		else if(get_option('setting_theme_core_login') == 'yes')
+		{
+			$title = __("Requires login", 'lang_theme_core');
+		}
+
+		else if(get_option('blog_public') == 0)
+		{
+			$color = "color_yellow";
+			$title = __("No index", 'lang_theme_core');
+		}
+
+		else
+		{
+			$color = "color_green";
+			$title = __("Public", 'lang_theme_core');
+		}
+
+		$wp_admin_bar->add_node(array(
+			'id' => 'live',
+			'title' => "<span class='".$color."'>".$title."</span>",
+			//'href' => '#',
+			//'meta' => array('class' => 'red'),
+		));
+	}
+}
+
+function init_public_theme_core()
 {
 	if(get_option('setting_responsiveness') == 1)
 	{
@@ -654,6 +701,8 @@ function init_theme_core()
 
 function header_theme_core()
 {
+	require_user_login();
+
 	if(get_option('setting_compress') == 1)
 	{
 		ob_start("compress_html");
