@@ -2,7 +2,10 @@
 
 function nav_args_theme_core($args)
 {
-	$args['container'] = "nav";
+	if(!isset($args['container']) || $args['container'] == '')
+	{
+		$args['container'] = "nav";
+	}
 
 	return $args;
 }
@@ -143,7 +146,24 @@ function settings_theme_core()
 
 	$arr_settings["setting_compress"] = __("Compress output", 'lang_theme_core');
 	$arr_settings["setting_responsiveness"] = __("Image responsiveness", 'lang_theme_core');
-	$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core');
+
+	list($options_params, $options) = get_params();
+
+	if(isset($options['body_history']) && $options['body_history'] == 2)
+	{
+		//Relative URLs does not work in Chrome & IE when using pushState
+		delete_option('setting_strip_domain');
+	}
+
+	else
+	{
+		$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core');
+	}
+
+	if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
+	{
+		$arr_settings["setting_cookie_info"] = __("Cookie information", 'lang_theme_core');
+	}
 
 	foreach($arr_settings as $handle => $text)
 	{
@@ -214,6 +234,19 @@ function setting_strip_domain_callback()
 	$option = get_option_or_default($setting_key, get_option('eg_setting_strip_domain'));
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option));
+}
+
+function setting_cookie_info_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key);
+
+	$arr_data = array();
+	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
+
+	get_post_children(array('output_array' => true), $arr_data);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
 }
 
 function require_user_login()
@@ -639,6 +672,63 @@ function head_theme_core()
 	}
 }
 
+function footer_theme_core()
+{
+	global $wpdb;
+
+	if(!isset($_COOKIE['cookie_accepted'])) //is_plugin_active("mf_analytics/index.php") && 
+	{
+		$setting_cookie_info = get_option('setting_cookie_info');
+
+		if($setting_cookie_info > 0)
+		{
+			wp_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css");
+			mf_enqueue_script('script_theme_core_cookies', plugin_dir_url(__FILE__)."script_cookies.js", array('plugin_url' => plugin_dir_url(__FILE__)));
+
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
+
+			foreach($result as $r)
+			{
+				$post_id = $r->ID;
+				$post_title = $r->post_title;
+				$post_excerpt = $r->post_excerpt;
+				$post_content = apply_filters('the_content', $r->post_content);
+
+				echo "<div id='accept_cookies'>
+					<div>
+						<i class='fa fa-legal red'></i>";
+
+						$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+
+						if($post_excerpt != '')
+						{
+							echo "<p>"
+								.$post_excerpt
+							."</p>";
+
+							if($post_content != '' && $post_content != $post_excerpt)
+							{
+								$post_url = get_permalink($post_id);
+
+								echo "<a href='".$post_url."'>".__("Read more", 'lang_theme_core')."</a>";
+							}
+							
+							echo $accept_link;
+						}
+
+						else
+						{
+							echo $post_content
+							.$accept_link;
+						}
+
+					echo "</div>
+				</div>";
+			}
+		}
+	}
+}
+
 function admin_bar_theme_core()
 {
 	global $wp_admin_bar;
@@ -680,23 +770,24 @@ function admin_bar_theme_core()
 	}
 }
 
-function init_public_theme_core()
+function init_theme_core()
 {
-	if(get_option('setting_responsiveness') == 1)
+	if(is_admin())
 	{
-		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
-		add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
-		//add_filter('wp_insert_post_data', 'post_filter_handler', '99', 2);
-
-		add_filter('the_content', 'remove_width_height_attribute');
+		new recommend_plugin(array('path' => "mf_custom_login/index.php", 'name' => "MF Custom Login", 'text' => __("because you should add information about the use of cookies on the site", 'lang_theme_core'), 'url' => "//github.com/frostkom/mf_custom_login"));
 	}
 
-	/*if(get_option('setting_strip_domain') == 1)
+	else
 	{
-		//add_filter('the_content', 'strip_domain_from_content');
+		if(get_option('setting_responsiveness') == 1)
+		{
+			add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
+			add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
+			//add_filter('wp_insert_post_data', 'post_filter_handler', '99', 2);
 
-		add_action('template_redirect', 'rw_relative_urls');
-	}*/
+			add_filter('the_content', 'remove_width_height_attribute');
+		}
+	}
 }
 
 function header_theme_core()

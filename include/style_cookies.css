@@ -1,0 +1,43 @@
+@media all
+{
+	#accept_cookies
+	{
+		background: #fff;
+		background: rgba(255, 255, 255, .8);
+		font-size: 1.4em;
+		left: 0;
+		line-height: 1.5em;
+		padding: 1em;
+		position: absolute;
+		right: 0;
+		text-align: center;
+		top: 0;
+	}
+
+		#accept_cookies div
+		{
+			display: inline-block;
+			text-align: left;
+		}
+
+			#accept_cookies i
+			{
+				margin-right: .3em;
+			}
+
+			#accept_cookies p
+			{
+				display: inline;
+			}
+
+			#accept_cookies a
+			{
+				margin-left: .3em;
+			}
+
+				#accept_cookies .button
+				{
+					font-weight: bold;
+					text-decoration: underline;
+				}
+}

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 15:44+0100\n"
+"POT-Creation-Date: 2016-05-02 11:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,104 +15,125 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/functions.php:107
+#: ../include/functions.php:110
 #, php-format
 msgid "Couldn't save content to %s"
 msgstr "Det gick att spara innehåll till %s"
 
-#: ../include/functions.php:113
+#: ../include/functions.php:116
 #, php-format
 msgid "Couldn't get any data from %s"
 msgstr "Det gick att hämta data från %s"
 
-#: ../include/functions.php:133
+#: ../include/functions.php:136
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:137
+#: ../include/functions.php:140
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:141
+#: ../include/functions.php:144
 msgid "Save dynamic styles to static CSS file"
 msgstr "Spara dynamisk design i statisk CSS-fil"
 
-#: ../include/functions.php:142
+#: ../include/functions.php:145
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:144
+#: ../include/functions.php:147
 msgid "Compress output"
 msgstr "Komprimera kod"
 
-#: ../include/functions.php:145
+#: ../include/functions.php:148
 msgid "Image responsiveness"
 msgstr "Anpassande bilder"
 
-#: ../include/functions.php:146
+#: ../include/functions.php:149
 msgid "Force relative URLs"
 msgstr "Tvinga relativa URLer"
 
-#: ../include/functions.php:160
+#: ../include/functions.php:153
+msgid "Cookie information"
+msgstr "Cookie-information"
+
+#: ../include/functions.php:168
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:184
+#: ../include/functions.php:192
 msgid "May be good to disable when working on a development site and then enable when going live"
 msgstr "Det kan vara bra att inaktivera detta under utvecklingstiden och sen aktivera när sidan är klar"
 
-#: ../include/functions.php:208
+#: ../include/functions.php:216
 msgid "To strip all content tags from height and width to improve responsiveness"
 msgstr "För att rensa allt innehåll från height och width för att förbättra visning av bilder på olika storlek på skärmar"
 
-#: ../include/functions.php:515
-msgid "Yes"
-msgstr "Ja"
-
-#: ../include/functions.php:516
-msgid "No"
-msgstr "Nej"
-
-#: ../include/functions.php:532
-#: ../include/functions.php:547
+#: ../include/functions.php:233
+#: ../include/functions.php:553
+#: ../include/functions.php:568
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../include/functions.php:533
+#: ../include/functions.php:237
+msgid "The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies"
+msgstr "Innehållet från denna sida kommer att visas längst upp på sidan tills dess att besökaren klickar för att acceptera användandet av cookies"
+
+#: ../include/functions.php:536
+msgid "Yes"
+msgstr "Ja"
+
+#: ../include/functions.php:537
+msgid "No"
+msgstr "Nej"
+
+#: ../include/functions.php:554
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:534
+#: ../include/functions.php:555
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:535
+#: ../include/functions.php:556
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:536
+#: ../include/functions.php:557
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:537
+#: ../include/functions.php:558
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/functions.php:654
+#: ../include/functions.php:691
+msgid "Accept"
+msgstr "Acceptera"
+
+#: ../include/functions.php:703
+msgid "Read more"
+msgstr "Läs mer"
+
+#: ../include/functions.php:735
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:659
+#: ../include/functions.php:740
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:665
+#: ../include/functions.php:746
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:671
+#: ../include/functions.php:752
 msgid "Public"
 msgstr "Publik"
+
+#: ../include/functions.php:768
+msgid "because you should add information about the use of cookies on the site"
+msgstr "för att du borde lägga till information om användandet av kakor på webbsidan"
 
 #~ msgid "Strip domain from content"
 #~ msgstr "Rensa domän från innehåll"
@@ -299,9 +320,6 @@ msgstr "Publik"
 
 #~ msgid "Choose page here"
 #~ msgstr "Välj sida här"
-
-#~ msgid "Confirmation page"
-#~ msgstr "Bekräftelsesida"
 
 #~ msgid "Send e-mail confirmation to questionnaire"
 #~ msgstr "Skicka e-postbekräftelse till besökaren"

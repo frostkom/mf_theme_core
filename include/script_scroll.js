@@ -1,6 +1,6 @@
 jQuery(function($)
 {
-	$('body').append("<a id='scroll_to_top' style='display: none'><i class='fa fa-lg fa-arrow-up'></i></a>");
+	$('body').append("<a id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
 
 	$(window).scroll(function()
 	{
