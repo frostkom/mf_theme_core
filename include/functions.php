@@ -1,8 +1,206 @@
 <?php
 
+if(!function_exists('get_previous_backups'))
+{
+	function get_previous_backups($data)
+	{
+		global $globals;
+
+		$globals['mf_theme_files'][] = array(
+			'dir' => $data['file'],
+			'name' => basename($data['file']), 
+			'time' => filemtime($data['file'])
+		);
+	}
+}
+
+function get_options_page_theme_core($data = array())
+{
+	global $done_text, $error_text, $globals;
+
+	$out = "";
+
+	$strFileName = check_var('strFileName');
+	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
+	//$strFileContent = check_var('strFileContent');
+	
+	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
+
+	$dir_exists = true;
+
+	if(!is_dir($upload_path))
+	{
+		if(!mkdir($upload_path, 0755, true))
+		{
+			$dir_exists = false;
+		}
+	}
+
+	if($dir_exists == false)
+	{
+		$error_text = __("Could not create a folder in uploads. Please add the correct rights for the script to create a new subfolder", 'lang_theme_core');
+	}
+
+	else if(isset($_POST['btnThemeBackup']))
+	{
+		list($options_params, $options) = get_params();
+
+		if(count($options) > 0)
+		{
+			$file = $data['dir']."_".date("YmdHi").".json";
+
+			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($options)));
+
+			if($success == true)
+			{
+				$done_text = __("The theme settings were backed up", 'lang_theme_core');
+			}
+
+			else
+			{
+				$error_text = __("It was not possible to backup the theme settings", 'lang_theme_core');
+			}
+		}
+
+		else
+		{
+			$error_text = __("There were no theme settings to save", 'lang_theme_core');
+		}
+	}
+
+	else if(isset($_REQUEST['btnThemeRestore']))
+	{
+		if($strFileName != '')
+		{
+			$strFileContent = get_file_content(array('file' => $upload_path.$strFileName));
+		}
+
+		else
+		{
+			//$strFileContent = str_replace("\\n", "", $strFileContent);
+			//$strFileContent = str_replace("\\t", "", $strFileContent);
+			//$strFileContent = str_replace("\\", "", $strFileContent);
+			//$strFileContent = str_replace('"', "'", $strFileContent);
+			$strFileContent = stripslashes($strFileContent);
+		}
+
+		if($strFileContent != '')
+		{
+			$json = json_decode($strFileContent, true);
+
+			if(is_array($json))
+			{
+				foreach($json as $key => $value)
+				{
+					if($value != '')
+					{
+						set_theme_mod($key, $value);
+					}
+				}
+
+				$done_text = __("The restore was successful", 'lang_theme_core');
+
+				$strFileContent = "";
+			}
+
+			else
+			{
+				$error_text = __("There is something wrong with the source to restore", 'lang_theme_core')." (".htmlspecialchars($strFileContent)." -> ".var_export($json, true).")";
+			}
+		}
+	}
+
+	else if(isset($_GET['btnThemeDelete']))
+	{
+		//$strFileName = check_var('strFileName');
+
+		unlink($upload_path.$strFileName);
+
+		$done_text = __("The file was deleted successfully", 'lang_parallax');
+	}
+
+	$out .= "<div class='wrap'>
+		<h2>".__('Theme Options', 'lang_theme_core_core')."</h2>"
+		.get_notification();
+
+		if($dir_exists == true)
+		{
+			$out .= "<div id='poststuff'>
+				<div id='post-body' class='columns-2'>
+					<div id='post-body-content'>";
+
+						$globals['mf_theme_files'] = array();
+
+						get_file_info(array('path' => $upload_path, 'callback' => "get_previous_backups"));
+
+						$count_temp = count($globals['mf_theme_files']);
+
+						if($count_temp > 0)
+						{
+							$out .= "<table class='widefat striped'>";
+
+								$arr_header[] = __("Existing", 'lang_theme_core');
+								$arr_header[] = __("Date", 'lang_theme_core');
+
+								$out .= show_table_header($arr_header)
+								."<tbody>";
+
+									for($i = 0; $i < $count_temp; $i++)
+									{
+										$out .= "<tr>
+											<td>"
+												.$globals['mf_theme_files'][$i]['name']
+												."<div class='row-actions'>
+													<a href='".$upload_url.$globals['mf_theme_files'][$i]['name']."'>".__("Download", 'lang_theme_core')."</a>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$globals['mf_theme_files'][$i]['name'])."'>".__("Restore", 'lang_theme_core')."</a>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$globals['mf_theme_files'][$i]['name'])."'>".__("Delete", 'lang_theme_core')."</a>
+												</div>
+											</td>
+											<td>".format_date(date("Y-m-d H:i:s", $globals['mf_theme_files'][$i]['time']))."</td>
+										</tr>";
+									}
+
+								$out .= "</tbody>
+							</table>
+							<br>";
+						}
+
+						$out .= "<div class='postbox'>
+							<h3 class='hndle'><span>".__("External Backup", 'lang_theme_core')."</span></h3>
+							<div class='inside'>
+								<form method='post' action='' class='mf_form'>
+									<div>"
+										.show_textarea(array('name' => 'strFileContent', 'value' => stripslashes($strFileContent)))
+										.show_submit(array('name' => "btnThemeRestore", 'text' => __("Restore", 'lang_theme_core')))
+									."</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div id='postbox-container-1'>
+						<div class='postbox'>
+							<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
+							<div class='inside'>
+								<form method='post' action='' class='mf_form'>"
+									.show_submit(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
+								."</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>";
+		}
+
+	$out .= "</div>";
+
+	return $out;
+}
+
 function nav_args_theme_core($args)
 {
-	if(!isset($args['container']) || $args['container'] == '')
+	if(isset($args['container_override']) && $args['container_override'] == false){}
+
+	else if(!isset($args['container']) || $args['container'] == '' || $args['container'] == 'div')
 	{
 		$args['container'] = "nav";
 	}
@@ -107,13 +305,13 @@ function customize_save_theme_core()
 
 			if($success == false)
 			{
-				do_log(sprintf(__("Couldn't save content to %s", 'lang_theme_core'), $style_output_file));
+				do_log(sprintf(__("Couldn't save content to %s", 'lang_theme_core_core'), $style_output_file));
 			}
 		}
 
 		else
 		{
-			do_log(sprintf(__("Couldn't get any data from %s", 'lang_theme_core'), $style_url));
+			do_log(sprintf(__("Couldn't get any data from %s", 'lang_theme_core_core'), $style_url));
 		}
 	}
 
@@ -133,21 +331,29 @@ function settings_theme_core()
 
 	if(get_option('blog_public') == 0)
 	{
-		$arr_settings["setting_no_public_pages"] = __("Always redirect visitors to the login page", 'lang_theme_core');
+		$arr_settings["setting_no_public_pages"] = __("Always redirect visitors to the login page", 'lang_theme_core_core');
 
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
-			$arr_settings["setting_theme_core_login"] = __("Require login for public site", 'lang_theme_core');
+			$arr_settings["setting_theme_core_login"] = __("Require login for public site", 'lang_theme_core_core');
 		}
 	}
 
-	$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
-	$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core');
+	$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core_core');
+	$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core_core');
 
-	$arr_settings["setting_compress"] = __("Compress output", 'lang_theme_core');
-	$arr_settings["setting_responsiveness"] = __("Image responsiveness", 'lang_theme_core');
+	$arr_settings["setting_compress"] = __("Compress output", 'lang_theme_core_core');
+	$arr_settings["setting_responsiveness"] = __("Image responsiveness", 'lang_theme_core_core');
 
-	list($options_params, $options) = get_params();
+	if(function_exists('get_params'))
+	{
+		list($options_params, $options) = get_params();
+	}
+
+	else
+	{
+		$options = array();
+	}
 
 	if(isset($options['body_history']) && $options['body_history'] == 2)
 	{
@@ -157,12 +363,17 @@ function settings_theme_core()
 
 	else
 	{
-		$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core');
+		$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core_core');
 	}
 
 	if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 	{
-		$arr_settings["setting_cookie_info"] = __("Cookie information", 'lang_theme_core');
+		$arr_settings["setting_cookie_info"] = __("Cookie information", 'lang_theme_core_core');
+	}
+
+	else
+	{
+		delete_option('setting_cookie_info');
 	}
 
 	foreach($arr_settings as $handle => $text)
@@ -177,7 +388,7 @@ function settings_theme_core_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 
-	echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
+	echo settings_header($setting_key, __("Theme", 'lang_theme_core_core'));
 }
 
 function setting_theme_core_login_callback()
@@ -201,7 +412,7 @@ function setting_save_style_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core_core')));
 }
 
 function setting_scroll_to_top_callback()
@@ -225,7 +436,7 @@ function setting_responsiveness_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, get_option('eg_setting_responsiveness'));
 
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core_core')));
 }
 
 function setting_strip_domain_callback()
@@ -242,11 +453,11 @@ function setting_cookie_info_callback()
 	$option = get_option_or_default($setting_key);
 
 	$arr_data = array();
-	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
+	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core_core')." --";
 
 	get_post_children(array('output_array' => true), $arr_data);
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core_core')));
 }
 
 function require_user_login()
@@ -545,8 +756,8 @@ function customize_theme($wp_customize)
 							'settings' => $param['id'],
 							'type'     => 'select',
 							'choices'  => array(
-								2 => __("Yes", 'lang_theme_core'),
-								1 => __("No", 'lang_theme_core'),
+								2 => __("Yes", 'lang_theme_core_core'),
+								1 => __("No", 'lang_theme_core_core'),
 							),
 						)
 					);
@@ -562,12 +773,12 @@ function customize_theme($wp_customize)
 							'settings' => $param['id'],
 							'type'     => 'select',
 							'choices'  => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'none' => __("None", 'lang_theme_core'),
-								'left' => __("Left", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
+								'' => "-- ".__("Choose here", 'lang_theme_core_core')." --",
+								'none' => __("None", 'lang_theme_core_core'),
+								'left' => __("Left", 'lang_theme_core_core'),
+								'right' => __("Right", 'lang_theme_core_core'),
+								'initial' => __("Initial", 'lang_theme_core_core'),
+								'inherit' => __("Inherit", 'lang_theme_core_core'),
 							),
 						)
 					);
@@ -577,7 +788,7 @@ function customize_theme($wp_customize)
 				{
 					$choices = array();
 
-					$choices[0] = "-- ".__("Choose here", 'lang_theme_core')." --";
+					$choices[0] = "-- ".__("Choose here", 'lang_theme_core_core')." --";
 
 					foreach($options_fonts as $key => $value)
 					{
@@ -698,7 +909,7 @@ function footer_theme_core()
 					<div>
 						<i class='fa fa-legal red'></i>";
 
-						$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+						$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core_core')."</a>";
 
 						if($post_excerpt != '')
 						{
@@ -710,7 +921,7 @@ function footer_theme_core()
 							{
 								$post_url = get_permalink($post_id);
 
-								echo "<a href='".$post_url."'>".__("Read more", 'lang_theme_core')."</a>";
+								echo "<a href='".$post_url."'>".__("Read more", 'lang_theme_core_core')."</a>";
 							}
 							
 							echo $accept_link;
@@ -741,24 +952,24 @@ function admin_bar_theme_core()
 		{
 			$wp_admin_bar->remove_menu('site-name');
 			
-			$title = __("No public pages", 'lang_theme_core');
+			$title = __("No public pages", 'lang_theme_core_core');
 		}
 			
 		else if(get_option('setting_theme_core_login') == 'yes')
 		{
-			$title = __("Requires login", 'lang_theme_core');
+			$title = __("Requires login", 'lang_theme_core_core');
 		}
 
 		else if(get_option('blog_public') == 0)
 		{
 			$color = "color_yellow";
-			$title = __("No index", 'lang_theme_core');
+			$title = __("No index", 'lang_theme_core_core');
 		}
 
 		else
 		{
 			$color = "color_green";
-			$title = __("Public", 'lang_theme_core');
+			$title = __("Public", 'lang_theme_core_core');
 		}
 
 		$wp_admin_bar->add_node(array(
@@ -774,7 +985,7 @@ function init_theme_core()
 {
 	if(is_admin())
 	{
-		new recommend_plugin(array('path' => "mf_custom_login/index.php", 'name' => "MF Custom Login", 'text' => __("because you should add information about the use of cookies on the site", 'lang_theme_core'), 'url' => "//github.com/frostkom/mf_custom_login"));
+		//new recommend_plugin(array('path' => "mf_custom_login/index.php", 'name' => "MF Custom Login", 'text' => __("because you should add information about the use of cookies on the site", 'lang_theme_core_core'), 'url' => "//github.com/frostkom/mf_custom_login"));
 	}
 
 	else
