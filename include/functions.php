@@ -229,6 +229,27 @@ function mf_compress($data)
 	return $out;
 }
 
+function get_wp_title()
+{
+	$out = wp_title('|', false, 'right');
+
+	$out .= get_bloginfo('name');
+
+	$site_description = get_bloginfo('description', 'display');
+
+	if($site_description != '' && (is_home() || is_front_page()))
+	{
+		$out .= " | ".$site_description;
+	}
+
+	if($paged >= 2 || $page >= 2)
+	{
+		$out .= " | ".sprintf( __('Page %s', 'lang_theme_core'), max($paged, $page));
+	}
+
+	return $out;
+}
+
 function enqueue_theme_fonts()
 {
 	$options_fonts = get_theme_fonts();
