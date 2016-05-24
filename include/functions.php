@@ -231,6 +231,8 @@ function mf_compress($data)
 
 function get_wp_title()
 {
+	global $page, $paged;
+
 	$out = wp_title('|', false, 'right');
 
 	$out .= get_bloginfo('name');
@@ -745,10 +747,10 @@ function customize_theme($wp_customize)
 							$wp_customize,
 							$param['id'],
 							array(
-								'label'      => $param['title'],
-								'section'    => $id_temp,
-								'settings'   => $param['id'],
-								//'context'    => 'your_setting_context'
+								'label' => $param['title'],
+								'section' => $id_temp,
+								'settings' => $param['id'],
+								//'context' => 'your_setting_context'
 							)
 						)
 					);
@@ -772,11 +774,11 @@ function customize_theme($wp_customize)
 					$wp_customize->add_control(
 						$param['id'], 
 						array(
-							'label'    => $param['title'],
-							'section'  => $id_temp,
+							'label' => $param['title'],
+							'section' => $id_temp,
 							'settings' => $param['id'],
-							'type'     => 'select',
-							'choices'  => array(
+							'type' => 'select',
+							'choices' => array(
 								2 => __("Yes", 'lang_theme_core'),
 								1 => __("No", 'lang_theme_core'),
 							),
@@ -789,11 +791,11 @@ function customize_theme($wp_customize)
 					$wp_customize->add_control(
 						$param['id'], 
 						array(
-							'label'    => $param['title'],
-							'section'  => $id_temp,
+							'label' => $param['title'],
+							'section' => $id_temp,
 							'settings' => $param['id'],
-							'type'     => 'select',
-							'choices'  => array(
+							'type' => 'select',
+							'choices' => array(
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
 								'none' => __("None", 'lang_theme_core'),
 								'left' => __("Left", 'lang_theme_core'),
@@ -808,7 +810,6 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "font")
 				{
 					$choices = array();
-
 					$choices[0] = "-- ".__("Choose here", 'lang_theme_core')." --";
 
 					foreach($options_fonts as $key => $value)
@@ -819,11 +820,11 @@ function customize_theme($wp_customize)
 					$wp_customize->add_control(
 						$param['id'], 
 						array(
-							'label'    => $param['title'],
-							'section'  => $id_temp,
+							'label' => $param['title'],
+							'section' => $id_temp,
 							'settings' => $param['id'],
-							'type'     => 'select',
-							'choices'  => $choices,
+							'type' => 'select',
+							'choices' => $choices,
 						)
 					);
 				}
