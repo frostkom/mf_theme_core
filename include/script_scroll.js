@@ -1,8 +1,6 @@
 jQuery(function($)
 {
-	$('body').append("<a id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
-
-	$(window).scroll(function()
+	function show_or_hide_scroll()
 	{
 		if($(this).scrollTop() > 300)
 		{
@@ -13,6 +11,15 @@ jQuery(function($)
 		{
 			$('#scroll_to_top').fadeOut();
 		}
+	}
+
+	$('body').append("<a id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
+
+	show_or_hide_scroll();
+
+	$(window).scroll(function()
+	{
+		show_or_hide_scroll();
 	});
 	
 	$('body').on('click', '#scroll_to_top', function()

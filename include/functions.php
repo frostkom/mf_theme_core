@@ -22,7 +22,6 @@ function get_options_page_theme_core($data = array())
 
 	$strFileName = check_var('strFileName');
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
-	//$strFileContent = check_var('strFileContent');
 	
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
 
@@ -77,10 +76,6 @@ function get_options_page_theme_core($data = array())
 
 		else
 		{
-			//$strFileContent = str_replace("\\n", "", $strFileContent);
-			//$strFileContent = str_replace("\\t", "", $strFileContent);
-			//$strFileContent = str_replace("\\", "", $strFileContent);
-			//$strFileContent = str_replace('"', "'", $strFileContent);
 			$strFileContent = stripslashes($strFileContent);
 		}
 
@@ -112,8 +107,6 @@ function get_options_page_theme_core($data = array())
 
 	else if(isset($_GET['btnThemeDelete']))
 	{
-		//$strFileName = check_var('strFileName');
-
 		unlink($upload_path.$strFileName);
 
 		$done_text = __("The file was deleted successfully", 'lang_parallax');
@@ -853,7 +846,7 @@ function render_css($data)
 		$options[$val] = "";
 	}
 
-	if(isset($options[$val]) && $options[$val] != '') // && ($prop != "font-family" || $options[$val] != 0)
+	if(isset($options[$val]) && $options[$val] != '')
 	{
 		if($prop != '')
 		{
@@ -909,7 +902,7 @@ function footer_theme_core()
 {
 	global $wpdb;
 
-	if(!isset($_COOKIE['cookie_accepted'])) //is_plugin_active("mf_analytics/index.php") && 
+	if(!isset($_COOKIE['cookie_accepted']))
 	{
 		$setting_cookie_info = get_option('setting_cookie_info');
 
