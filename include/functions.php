@@ -113,7 +113,7 @@ function get_options_page_theme_core($data = array())
 	}
 
 	$out .= "<div class='wrap'>
-		<h2>".__('Theme Options', 'lang_theme_core')."</h2>"
+		<h2>".__("Theme Options", 'lang_theme_core')."</h2>"
 		.get_notification();
 
 		if($dir_exists == true)
@@ -239,7 +239,7 @@ function get_wp_title()
 
 	if($paged >= 2 || $page >= 2)
 	{
-		$out .= " | ".sprintf( __('Page %s', 'lang_theme_core'), max($paged, $page));
+		$out .= " | ".sprintf( __("Page %s", 'lang_theme_core'), max($paged, $page));
 	}
 
 	return $out;
