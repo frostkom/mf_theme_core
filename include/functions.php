@@ -1,5 +1,34 @@
 <?php
 
+function get_404_page()
+{
+	global $wpdb;
+
+	$setting_404_page = get_option('setting_404_page');
+
+	$post_title = __("Not Found", 'lang_theme_core');
+	$post_content = "<p>"
+		.__("Apologies, but the page you requested could not be found. Perhaps searching will help", 'lang_theme_core')
+		.get_search_form(false)
+	."</p>";
+
+	if($setting_404_page > 0)
+	{
+		$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_404_page));
+
+		foreach($result as $r)
+		{
+			$post_title = $r->post_title;
+			$post_content = apply_filters('the_content', $r->post_content);
+		}
+	}
+
+	echo "<article>
+		<h1>".$post_title."</h1>
+		<section>".$post_content."</section>
+	</article>";
+}
+
 if(!function_exists('get_previous_backups'))
 {
 	function get_previous_backups($data)
@@ -22,7 +51,7 @@ function get_options_page_theme_core($data = array())
 
 	$strFileName = check_var('strFileName');
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
-	
+
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
 
 	$dir_exists = true;
@@ -392,6 +421,8 @@ function settings_theme_core()
 		delete_option('setting_cookie_info');
 	}
 
+	$arr_settings["setting_404_page"] = __("404 Page", 'lang_theme_core');
+
 	foreach($arr_settings as $handle => $text)
 	{
 		add_settings_field($handle, $text, $handle."_callback", BASE_OPTIONS_PAGE, $options_area);
@@ -474,6 +505,19 @@ function setting_cookie_info_callback()
 	get_post_children(array('output_array' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+}
+
+function setting_404_page_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key);
+
+	$arr_data = array();
+	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
+
+	get_post_children(array('output_array' => true), $arr_data);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 }
 
 function require_user_login()
@@ -938,7 +982,7 @@ function footer_theme_core()
 
 								echo "<a href='".$post_url."'>".__("Read more", 'lang_theme_core')."</a>";
 							}
-							
+
 							echo $accept_link;
 						}
 
@@ -966,10 +1010,10 @@ function admin_bar_theme_core()
 		if(get_option('setting_no_public_pages') == 'yes')
 		{
 			$wp_admin_bar->remove_menu('site-name');
-			
+
 			$title = __("No public pages", 'lang_theme_core');
 		}
-			
+
 		else if(get_option('setting_theme_core_login') == 'yes')
 		{
 			$title = __("Requires login", 'lang_theme_core');
@@ -1024,7 +1068,7 @@ function header_theme_core()
 	{
 		ob_start("compress_html");
 	}
-	
+
 	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
 	{
 		ob_start("strip_domain_from_content");

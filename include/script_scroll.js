@@ -6,7 +6,7 @@ jQuery(function($)
 		{
 			$('#scroll_to_top').fadeIn();
 		}
-		
+
 		else
 		{
 			$('#scroll_to_top').fadeOut();
@@ -21,7 +21,7 @@ jQuery(function($)
 	{
 		show_or_hide_scroll();
 	});
-	
+
 	$('body').on('click', '#scroll_to_top', function()
 	{
 		$('html, body').animate({scrollTop: 0}, 800);

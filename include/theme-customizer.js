@@ -20,6 +20,6 @@ jQuery(function($)
 
 	$(parent.document).on('click', '#save', function()
 	{
-		set_style_url($(this));		
+		set_style_url($(this));
 	});
 });
