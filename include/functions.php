@@ -443,7 +443,7 @@ function setting_theme_core_login_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_no_public_pages_callback()
@@ -451,7 +451,7 @@ function setting_no_public_pages_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_save_style_callback()
@@ -459,7 +459,7 @@ function setting_save_style_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
 }
 
 function setting_scroll_to_top_callback()
@@ -467,7 +467,7 @@ function setting_scroll_to_top_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'compare' => $option));
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_compress_callback()
@@ -475,7 +475,7 @@ function setting_compress_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, get_option('eg_setting_compress'));
 
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option));
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_responsiveness_callback()
@@ -483,7 +483,7 @@ function setting_responsiveness_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, get_option('eg_setting_responsiveness'));
 
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
 }
 
 function setting_strip_domain_callback()
@@ -491,7 +491,7 @@ function setting_strip_domain_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, get_option('eg_setting_strip_domain'));
 
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'compare' => $option));
+	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_cookie_info_callback()
@@ -504,7 +504,7 @@ function setting_cookie_info_callback()
 
 	get_post_children(array('output_array' => true), $arr_data);
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
 }
 
 function setting_404_page_callback()
@@ -517,7 +517,7 @@ function setting_404_page_callback()
 
 	get_post_children(array('output_array' => true), $arr_data);
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'compare' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 }
 
 function require_user_login()
