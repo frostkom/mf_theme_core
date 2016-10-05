@@ -528,14 +528,12 @@ function require_user_login()
 	{
 		if(get_option('setting_no_public_pages') == 'yes')
 		{
-			wp_redirect(get_site_url()."/wp-admin/");
-			exit;
+			mf_redirect(get_site_url()."/wp-admin/");
 		}
 
 		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
 		{
-			wp_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['PHP_SELF']);
-			exit;
+			mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['PHP_SELF']);
 		}
 	}
 }
