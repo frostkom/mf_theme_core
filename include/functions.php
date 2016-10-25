@@ -1,5 +1,44 @@
 <?php
 
+function gather_params($options_params)
+{
+	$options = array();
+
+	$mods = get_theme_mods();
+
+	foreach($options_params as $param)
+	{
+		if(!isset($param['category']) && !isset($param['category_end']))
+		{
+			if(isset($mods[$param['id']]))
+			{
+				$options[$param['id']] = apply_filters("theme_mod_".$param['id'], $mods[$param['id']]);
+			}
+
+			else
+			{
+				//$param['default'] = isset($param['default']) ? sprintf($param['default'], get_template_directory_uri(), get_stylesheet_directory_uri()) : false;
+				$param['default'] = isset($param['default']) ? $param['default'] : false;
+
+				$options[$param['id']] = apply_filters("theme_mod_".$param['id'], $param['default']);
+			}
+		}
+	}
+
+	//Old way (5-10x slower)
+	/*foreach($options_params as $param)
+	{
+		if(!isset($param['category']) && !isset($param['category_end']))
+		{
+			$default = isset($param['default']) ? $param['default'] : "";
+
+			$options[$param['id']] = get_theme_mod($param['id'], $default);
+		}
+	}*/
+
+	return array($options_params, $options);
+}
+
 function get_404_page()
 {
 	global $wpdb;
