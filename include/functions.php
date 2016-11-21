@@ -232,7 +232,7 @@ function get_options_page_theme_core($data = array())
 								<form method='post' action='' class='mf_form'>
 									<div>"
 										.show_textarea(array('name' => 'strFileContent', 'value' => stripslashes($strFileContent)))
-										.show_submit(array('name' => "btnThemeRestore", 'text' => __("Restore", 'lang_theme_core')))
+										.show_button(array('name' => "btnThemeRestore", 'text' => __("Restore", 'lang_theme_core')))
 									."</div>
 								</form>
 							</div>
@@ -243,7 +243,7 @@ function get_options_page_theme_core($data = array())
 							<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
 							<div class='inside'>
 								<form method='post' action='' class='mf_form'>"
-									.show_submit(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
+									.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
 								."</form>
 							</div>
 						</div>
