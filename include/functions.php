@@ -539,9 +539,7 @@ function setting_cookie_info_callback()
 	$option = get_option_or_default($setting_key);
 
 	$arr_data = array();
-	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
-
-	get_post_children(array('output_array' => true), $arr_data);
+	get_post_children(array('add_choose_here' => true, 'output_array' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
 }
@@ -552,9 +550,7 @@ function setting_404_page_callback()
 	$option = get_option_or_default($setting_key);
 
 	$arr_data = array();
-	$arr_data[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
-
-	get_post_children(array('output_array' => true), $arr_data);
+	get_post_children(array('add_choose_here' => true, 'output_array' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 }
