@@ -415,19 +415,19 @@ function settings_theme_core()
 
 	if(get_option('blog_public') == 0)
 	{
-		$arr_settings["setting_no_public_pages"] = __("Always redirect visitors to the login page", 'lang_theme_core');
+		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
 
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
-			$arr_settings["setting_theme_core_login"] = __("Require login for public site", 'lang_theme_core');
+			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 		}
 	}
 
-	$arr_settings["setting_save_style"] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
-	$arr_settings["setting_scroll_to_top"] = __("Show scroll-to-top-link", 'lang_theme_core');
+	$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
+	$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
-	$arr_settings["setting_compress"] = __("Compress output", 'lang_theme_core');
-	$arr_settings["setting_responsiveness"] = __("Image responsiveness", 'lang_theme_core');
+	$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
+	$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
 	if(function_exists('get_params'))
 	{
@@ -447,12 +447,12 @@ function settings_theme_core()
 
 	else
 	{
-		$arr_settings["setting_strip_domain"] = __("Force relative URLs", 'lang_theme_core');
+		$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
 	}
 
 	if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 	{
-		$arr_settings["setting_cookie_info"] = __("Cookie information", 'lang_theme_core');
+		$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
 	}
 
 	else
@@ -460,7 +460,7 @@ function settings_theme_core()
 		delete_option('setting_cookie_info');
 	}
 
-	$arr_settings["setting_404_page"] = __("404 Page", 'lang_theme_core');
+	$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
 
 	foreach($arr_settings as $handle => $text)
 	{
