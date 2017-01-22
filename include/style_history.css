@@ -1,0 +1,21 @@
+@media all
+{
+	#body_history
+	{
+		background: #fff;
+		bottom: 0;
+		display: none;
+		left: 0;
+		opacity: .7;
+		position: fixed;
+		right: 0;
+		text-align: center;
+		top: 0;
+		z-index: 1000;
+	}
+
+		#body_history i
+		{
+			margin-top: 20%;
+		}
+}

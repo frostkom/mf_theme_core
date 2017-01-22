@@ -423,25 +423,17 @@ function settings_theme_core()
 		}
 	}
 
+	$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
+
 	$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 	$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
 	$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
 	$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
-	if(function_exists('get_params'))
+	if(get_option('setting_html5_history') == 'yes')
 	{
-		list($options_params, $options) = get_params();
-	}
-
-	else
-	{
-		$options = array();
-	}
-
-	if(isset($options['body_history']) && $options['body_history'] == 2)
-	{
-		//Relative URLs does not work in Chrome & IE when using pushState
+		//Relative URLs does not work in Chrome or IE when using pushState
 		delete_option('setting_strip_domain');
 	}
 
@@ -486,6 +478,14 @@ function setting_theme_core_login_callback()
 }
 
 function setting_no_public_pages_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'no');
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+}
+
+function setting_html5_history_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
@@ -966,12 +966,20 @@ function head_theme_core()
 		wp_deregister_style('dashicons');
 	}
 
-	mf_enqueue_script('script_theme_core', plugin_dir_url(__FILE__)."script.js");
+	$plugin_include_url = plugin_dir_url(__FILE__);
+
+	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
 
 	if(get_option('setting_scroll_to_top') == 'yes')
 	{
-		wp_enqueue_style('style_theme_scroll', plugin_dir_url(__FILE__)."style_scroll.css");
-		mf_enqueue_script('script_theme_scroll', plugin_dir_url(__FILE__)."script_scroll.js");
+		wp_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css");
+		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js");
+	}
+
+	if(get_option('setting_html5_history') == 'yes')
+	{
+		wp_enqueue_style('style_theme_history', $plugin_include_url."style_history.css");
+		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()));
 	}
 }
 
