@@ -335,7 +335,7 @@ function enqueue_theme_fonts()
 	}
 }
 
-function replace_stylesheet_url($suffix = "css")
+/*function replace_stylesheet_url($suffix = "css")
 {
 	global $wpdb;
 
@@ -360,14 +360,14 @@ function replace_stylesheet_url($suffix = "css")
 	}
 
 	return $style_base_url."/include/".$style_file;
-}
+}*/
 
 function customize_preview_theme_core()
 {
 	wp_enqueue_script('script_theme_core_customizer', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'));
 }
 
-function customize_save_theme_core()
+/*function customize_save_theme_core()
 {
 	global $wpdb;
 
@@ -403,7 +403,7 @@ function customize_save_theme_core()
 	{
 		unlink($style_output_file);
 	}
-}
+}*/
 
 function settings_theme_core()
 {
@@ -425,7 +425,7 @@ function settings_theme_core()
 
 	$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 
-	$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
+	//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 	$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
 	$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
@@ -493,13 +493,13 @@ function setting_html5_history_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-function setting_save_style_callback()
+/*function setting_save_style_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
-}
+}*/
 
 function setting_scroll_to_top_callback()
 {
@@ -512,7 +512,7 @@ function setting_scroll_to_top_callback()
 function setting_compress_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, get_option('eg_setting_compress'));
+	$option = get_option($setting_key);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
 }
@@ -520,7 +520,7 @@ function setting_compress_callback()
 function setting_responsiveness_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, get_option('eg_setting_responsiveness'));
+	$option = get_option_or_default($setting_key, 0);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
 }
@@ -528,7 +528,7 @@ function setting_responsiveness_callback()
 function setting_strip_domain_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, get_option('eg_setting_strip_domain'));
+	$option = get_option_or_default($setting_key, 0);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
 }
