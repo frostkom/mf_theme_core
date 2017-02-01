@@ -413,46 +413,53 @@ function settings_theme_core()
 
 	$arr_settings = array();
 
-	if(get_option('blog_public') == 0)
-	{
+	/*$blog_public = get_option('blog_public');
+
+	if($blog_public == 0)
+	{*/
+		$setting_no_public_pages = get_option('setting_no_public_pages');
+
 		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
 
-		if(get_option('setting_no_public_pages') != 'yes')
+		if($setting_no_public_pages != 'yes')
 		{
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 		}
-	}
+	//}
 
-	$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
-
-	//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
-	$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
-
-	$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
-	$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
-
-	if(get_option('setting_html5_history') == 'yes')
+	if($setting_no_public_pages != 'yes')
 	{
-		//Relative URLs does not work in Chrome or IE when using pushState
-		delete_option('setting_strip_domain');
-	}
+		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 
-	else
-	{
-		$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
-	}
+		//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
+		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
-	if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
-	{
-		$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
-	}
+		$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
+		$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
-	else
-	{
-		delete_option('setting_cookie_info');
-	}
+		if(get_option('setting_html5_history') == 'yes')
+		{
+			//Relative URLs does not work in Chrome or IE when using pushState
+			delete_option('setting_strip_domain');
+		}
 
-	$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+		else
+		{
+			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
+		}
+
+		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
+		{
+			$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_cookie_info');
+		}
+
+		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+	}
 
 	foreach($arr_settings as $handle => $text)
 	{
