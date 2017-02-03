@@ -1,6 +1,6 @@
 jQuery(function($)
 {
-	$('#accept_cookies .button').on('click', function()
+	$(document).on('click', '#accept_cookies .button', function()
 	{
 		var d = new Date();
 		d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));

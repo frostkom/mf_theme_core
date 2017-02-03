@@ -1,3 +1,10 @@
+var arr_functions = [];
+
+function collect_on_load(str_function)
+{
+	arr_functions.push(str_function);
+}
+
 jQuery(function($)
 {
 	"use strict";
@@ -25,12 +32,19 @@ jQuery(function($)
 			dom_overlay.fadeOut();
 		}
 
+		function run_on_load()
+		{
+			$.each(arr_functions, function(index, value)
+			{
+				eval(value + "()");
+			});
+		}
+
 		function loadCallback(html, status, xhr)
 		{
 			if(status == "error")
 			{
 				console.log(xhr.status + " " + xhr.statusText);
-				//location.href = history_href;
 			}
 
 			else
@@ -45,6 +59,8 @@ jQuery(function($)
 				$('body').attr({'class': new_class});
 
 				hideOverlay();
+
+				run_on_load();
 			}
 		}
 
@@ -69,10 +85,7 @@ jQuery(function($)
 		{
 			var url = $(this).attr("href");
 
-			if(url.indexOf('#') > -1 || url.indexOf('wp-admin') > -1)
-			{
-				//Do nothing
-			}
+			if(url.indexOf('#') > -1 || url.indexOf('wp-admin') > -1){}
 
 			else if(url.indexOf(document.domain) > -1)
 			{
@@ -84,8 +97,6 @@ jQuery(function($)
 
 				return false;
 			}
-
-			//e.stopPropagation();
 		});
 
 		$(document).on('submit', '.searchform', function()

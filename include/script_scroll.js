@@ -13,7 +13,7 @@ jQuery(function($)
 		}
 	}
 
-	$('body').append("<a id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
+	$('body').append("<a href='#' id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
 
 	show_or_hide_scroll();
 
@@ -22,7 +22,7 @@ jQuery(function($)
 		show_or_hide_scroll();
 	});
 
-	$('body').on('click', '#scroll_to_top', function()
+	$(document).on('click', '#scroll_to_top', function()
 	{
 		$('html, body').animate({scrollTop: 0}, 800);
 
