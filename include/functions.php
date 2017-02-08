@@ -405,6 +405,40 @@ function customize_preview_theme_core()
 	}
 }*/
 
+function check_htaccess($data)
+{
+	if(basename($data['file']) == ".htaccess")
+	{
+		$content = get_file_content(array('file' => $data['file']));
+
+		if(!preg_match("/ExpiresByType image/", $content))
+		{
+			$recommend_expires = "ExpiresActive On
+ExpiresByType text/javascript 'A604800'
+ExpiresByType text/css 'A604800'
+ExpiresByType image/x-icon 'A31536000'
+ExpiresByType image/gif 'A604800'
+ExpiresByType image/jpg 'A604800'
+ExpiresByType image/jpeg 'A604800'
+ExpiresByType image/png 'A604800'
+
+FileETag None
+
+Header set Cache-Control 'must-revalidate'";
+
+			echo "<div class='mf_form'>"
+				."<h3>".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
+				.show_textarea(array('value' => $recommend_expires, 'xtra' => "class='widefat' rows='12' readonly"))
+			."</div>";
+		}
+
+		else
+		{
+			echo __("I have no recommendations for you at this moment", 'lang_theme_core');
+		}
+	}
+}
+
 function settings_theme_core()
 {
 	$options_area = __FUNCTION__;
@@ -459,6 +493,7 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+		$arr_settings['setting_theme_recommendation'] = __("Recommendations", 'lang_theme_core');
 	}
 
 	foreach($arr_settings as $handle => $text)
@@ -560,6 +595,11 @@ function setting_404_page_callback()
 	get_post_children(array('add_choose_here' => true, 'output_array' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+}
+
+function setting_theme_recommendation_callback()
+{
+	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess", 'allow_depth' => false));
 }
 
 function require_user_login()
