@@ -17,24 +17,12 @@ function gather_params($options_params)
 
 			else
 			{
-				//$param['default'] = isset($param['default']) ? sprintf($param['default'], get_template_directory_uri(), get_stylesheet_directory_uri()) : false;
 				$param['default'] = isset($param['default']) ? $param['default'] : false;
 
 				$options[$param['id']] = apply_filters("theme_mod_".$param['id'], $param['default']);
 			}
 		}
 	}
-
-	//Old way (5-10x slower)
-	/*foreach($options_params as $param)
-	{
-		if(!isset($param['category']) && !isset($param['category_end']))
-		{
-			$default = isset($param['default']) ? $param['default'] : "";
-
-			$options[$param['id']] = get_theme_mod($param['id'], $default);
-		}
-	}*/
 
 	return array($options_params, $options);
 }
@@ -468,7 +456,7 @@ function settings_theme_core()
 		//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
-		$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
+		//$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
 		$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
 		if(get_option('setting_html5_history') == 'yes')
@@ -551,13 +539,13 @@ function setting_scroll_to_top_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-function setting_compress_callback()
+/*function setting_compress_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
-}
+}*/
 
 function setting_responsiveness_callback()
 {
@@ -705,6 +693,12 @@ function get_theme_fonts()
 		'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
 	);
 
+	$options_fonts[2] = array(
+		'title' => "Helvetica",
+		'style' => "Helvetica, sans-serif",
+		'url' => ""
+	);
+
 	$options_fonts[4] = array(
 		'title' => "Open Sans",
 		'style' => "'Open Sans', sans-serif",
@@ -807,6 +801,9 @@ function customize_theme($wp_customize)
 	$wp_customize->remove_section('themes');
 	$wp_customize->remove_section('title_tagline');
 	$wp_customize->remove_section('static_front_page');
+	//$wp_customize->remove_section('nav_menus');
+	//$wp_customize->remove_section('widgets');
+	$wp_customize->remove_section('custom_css');
 
 	foreach($options_params as $param)
 	{
@@ -1152,10 +1149,10 @@ function header_theme_core()
 {
 	require_user_login();
 
-	if(get_option('setting_compress') == 1)
+	/*if(get_option('setting_compress') == 1)
 	{
 		ob_start("compress_html");
-	}
+	}*/
 
 	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
 	{
