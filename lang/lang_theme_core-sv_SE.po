@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-08 08:48+0100\n"
+"POT-Creation-Date: 2017-02-13 13:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,134 +15,134 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/functions.php:48
+#: ../include/functions.php:36
 msgid "Not Found"
 msgstr "Hittades inte"
 
-#: ../include/functions.php:50
+#: ../include/functions.php:38
 msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
 msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
-#: ../include/functions.php:108
+#: ../include/functions.php:93
 msgid "Could not create a folder in uploads. Please add the correct rights for the script to create a new subfolder"
 msgstr "Det gick inte att skapa en mapp i uploads. Lägg till rätt behörigheter för mappen uploads så att det går att skapa en undermapp"
 
-#: ../include/functions.php:123
+#: ../include/functions.php:108
 msgid "The theme settings were backed up"
 msgstr "Temainställningarna sparades"
 
-#: ../include/functions.php:128
+#: ../include/functions.php:113
 msgid "It was not possible to backup the theme settings"
 msgstr "Det gick inte att ta backup på temainställningarna"
 
-#: ../include/functions.php:134
+#: ../include/functions.php:119
 msgid "There were no theme settings to save"
 msgstr "Det fanns inga temainställningar att spara"
 
-#: ../include/functions.php:164
+#: ../include/functions.php:149
 msgid "The restore was successful"
 msgstr "Återställningen lyckades"
 
-#: ../include/functions.php:171
+#: ../include/functions.php:156
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/functions.php:180
+#: ../include/functions.php:165
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/functions.php:184
+#: ../include/functions.php:169
 msgid "Theme Options"
 msgstr "Temainställningar"
 
-#: ../include/functions.php:203
+#: ../include/functions.php:188
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/functions.php:204
+#: ../include/functions.php:189
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:215
+#: ../include/functions.php:200
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/functions.php:216
-#: ../include/functions.php:235
+#: ../include/functions.php:201
+#: ../include/functions.php:220
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/functions.php:217
+#: ../include/functions.php:202
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/functions.php:230
+#: ../include/functions.php:215
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/functions.php:243
+#: ../include/functions.php:228
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/functions.php:246
+#: ../include/functions.php:231
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:310
+#: ../include/functions.php:295
 #, php-format
 msgid "Page %s"
 msgstr "Sida %s"
 
-#: ../include/functions.php:430
+#: ../include/functions.php:415
 #, php-format
 msgid "Copy this to %s"
 msgstr "Kopiera detta till %s"
 
-#: ../include/functions.php:437
+#: ../include/functions.php:422
 msgid "I have no recommendations for you at this moment"
 msgstr "För tillfället har jag inga rekommendationer åt dig"
 
-#: ../include/functions.php:456
+#: ../include/functions.php:437
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:460
+#: ../include/functions.php:441
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:466
+#: ../include/functions.php:446
 msgid "Use HTML5 History"
 msgstr "Använd HTML5-historik"
 
-#: ../include/functions.php:469
+#: ../include/functions.php:452
+msgid "Show Splash Screen"
+msgstr "Visa \"Splash Screen\""
+
+#: ../include/functions.php:461
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:471
-msgid "Compress output"
-msgstr "Komprimera kod"
-
-#: ../include/functions.php:472
+#: ../include/functions.php:464
 msgid "Image responsiveness"
 msgstr "Anpassande bilder"
 
-#: ../include/functions.php:482
+#: ../include/functions.php:474
 msgid "Force relative URLs"
 msgstr "Tvinga relativa URLer"
 
-#: ../include/functions.php:487
+#: ../include/functions.php:479
 msgid "Cookie information"
 msgstr "Cookie-information"
 
-#: ../include/functions.php:495
+#: ../include/functions.php:487
 msgid "404 Page"
 msgstr "404-sida"
 
-#: ../include/functions.php:496
+#: ../include/functions.php:488
 msgid "Recommendations"
 msgstr "Rekommendationer"
 
-#: ../include/functions.php:511
+#: ../include/functions.php:503
 msgid "Theme"
 msgstr "Tema"
 
@@ -158,60 +158,62 @@ msgstr "Innehållet från denna sida kommer att visas längst upp på sidan till
 msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
-#: ../include/functions.php:899
+#: ../include/functions.php:908
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/functions.php:900
+#: ../include/functions.php:909
 msgid "No"
 msgstr "Nej"
 
-#: ../include/functions.php:916
-#: ../include/functions.php:930
+#: ../include/functions.php:925
+#: ../include/functions.php:939
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../include/functions.php:917
+#: ../include/functions.php:926
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:918
+#: ../include/functions.php:927
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:919
+#: ../include/functions.php:928
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:920
+#: ../include/functions.php:929
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:921
+#: ../include/functions.php:930
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/functions.php:1059
+#: ../include/functions.php:1081
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1071
+#: ../include/functions.php:1093
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1102
+#: ../include/functions.php:1134
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1107
+#: ../include/functions.php:1139
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1113
+#: ../include/functions.php:1145
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1119
+#: ../include/functions.php:1151
 msgid "Public"
 msgstr "Publik"
 
+#~ msgid "Compress output"
+#~ msgstr "Komprimera kod"

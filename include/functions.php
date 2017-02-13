@@ -432,31 +432,31 @@ function settings_theme_core()
 
 	$arr_settings = array();
 
-	/*$blog_public = get_option('blog_public');
+	$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
 
-	if($blog_public == 0)
-	{*/
-		$setting_no_public_pages = get_option('setting_no_public_pages');
-
-		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
-
-		if($setting_no_public_pages != 'yes')
-		{
-			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-		}
-	//}
-
-	if($setting_no_public_pages != 'yes')
+	if(get_option('setting_no_public_pages') != 'yes')
 	{
+		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
+		
+		$setting_html5_history = get_option('setting_html5_history');
+
+		if($setting_html5_history == 'yes')
+		{
+			$arr_settings['setting_splash_screen'] = __("Show Splash Screen", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_splash_screen');
+		}
 
 		//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
-
 		//$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
 		$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
-		if(get_option('setting_html5_history') == 'yes')
+		if($setting_html5_history == 'yes')
 		{
 			//Relative URLs does not work in Chrome or IE when using pushState
 			delete_option('setting_strip_domain');
@@ -513,6 +513,14 @@ function setting_no_public_pages_callback()
 }
 
 function setting_html5_history_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'no');
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+}
+
+function setting_splash_screen_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
@@ -1024,6 +1032,19 @@ function head_theme_core()
 	}
 }
 
+function get_logo()
+{
+	if(function_exists('get_logo_theme'))
+	{
+		return get_logo_theme();
+	}
+
+	else if(function_exists('get_logo_parallax'))
+	{
+		return get_logo_parallax();
+	}
+}
+
 function footer_theme_core()
 {
 	global $wpdb;
@@ -1078,6 +1099,16 @@ function footer_theme_core()
 				</div>";
 			}
 		}
+	}
+
+	if(get_option('setting_splash_screen') == 'yes')
+	{
+		echo "<div id='overlay_splash'>
+			<div>"
+				.get_logo()
+				."<div><i class='fa fa-spinner fa-spin fa-2x'></i></div>"
+			."</div>
+		</div>";
 	}
 }
 

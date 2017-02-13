@@ -11,16 +11,24 @@ jQuery(function($)
 
 	if(typeof history.pushState != 'undefined')
 	{
-		$('body').append("<div id='body_history'><i class='fa fa-spinner fa-spin fa-2x'></i></div>");
+		$('body').append("<div id='overlay_history'><i class='fa fa-spinner fa-spin fa-2x'></i></div>");
 
 		var dom_element = "#wrapper",
 			dom_obj = $(dom_element),
-			dom_overlay = $('#body_history');
+			dom_overlay = $('#overlay_history');
 
 		String.prototype.decodeHTML = function()
 		{
-			return $("<div>", {html: "" + this}).html();
+			return $("<div>", {html: "" + this}).html().replace("&amp;", "&");
 		};
+
+		function run_on_load()
+		{
+			$.each(arr_functions, function(index, value)
+			{
+				eval(value + "();");
+			});
+		}
 
 		function showOverlay()
 		{
@@ -30,14 +38,6 @@ jQuery(function($)
 		function hideOverlay()
 		{
 			dom_overlay.fadeOut();
-		}
-
-		function run_on_load()
-		{
-			$.each(arr_functions, function(index, value)
-			{
-				eval(value + "();");
-			});
 		}
 
 		function loadCallback(html, status, xhr)
@@ -117,5 +117,7 @@ jQuery(function($)
 		{
 			hideOverlay();
 		});
+
+		$('#overlay_splash').delay(500).fadeOut();
 	}
 });

@@ -1,6 +1,6 @@
 @media all
 {
-	#body_history
+	#overlay_history
 	{
 		background: rgba(0, 0, 0, .5);
 		bottom: 0;
@@ -15,7 +15,21 @@
 		z-index: 1002;
 	}
 
-		#body_history i
+	#overlay_splash
+	{
+		background: #fff;
+		bottom: 0;
+		color: #ccc;
+		font-size: 4em;
+		left: 0;
+		position: fixed;
+		right: 0;
+		text-align: center;
+		top: 0;
+		z-index: 1003;
+	}
+
+		#overlay_history i, #overlay_splash > div
 		{
 			display: inline-block;
 			margin-top: 50vh;
