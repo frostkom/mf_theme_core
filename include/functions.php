@@ -56,18 +56,15 @@ function get_404_page()
 	</article>";
 }
 
-if(!function_exists('get_previous_backups'))
+function get_previous_backups($data)
 {
-	function get_previous_backups($data)
-	{
-		global $globals;
+	global $globals;
 
-		$globals['mf_theme_files'][] = array(
-			'dir' => $data['file'],
-			'name' => basename($data['file']), 
-			'time' => filemtime($data['file'])
-		);
-	}
+	$globals['mf_theme_files'][] = array(
+		'dir' => $data['file'],
+		'name' => basename($data['file']), 
+		'time' => filemtime($data['file'])
+	);
 }
 
 function get_options_page_theme_core($data = array())

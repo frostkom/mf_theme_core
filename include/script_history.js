@@ -11,7 +11,7 @@ jQuery(function($)
 
 	if(typeof history.pushState != 'undefined')
 	{
-		$('body').append("<div id='body_history'><i class='fa fa-spinner fa-spin fa-3x'></i></div>");
+		$('body').append("<div id='body_history'><i class='fa fa-spinner fa-spin fa-2x'></i></div>");
 
 		var dom_element = "#wrapper",
 			dom_obj = $(dom_element),
@@ -36,7 +36,7 @@ jQuery(function($)
 		{
 			$.each(arr_functions, function(index, value)
 			{
-				eval(value + "()");
+				eval(value + "();");
 			});
 		}
 
@@ -78,6 +78,11 @@ jQuery(function($)
 				var url = location.href;
 
 				requestContent(url);
+			}
+
+			else
+			{
+				location.reload();
 			}
 		});
 
