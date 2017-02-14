@@ -82,6 +82,8 @@ jQuery(function($)
 
 			else
 			{
+				showOverlay();
+
 				location.reload();
 			}
 		});
