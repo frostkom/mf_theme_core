@@ -18,6 +18,7 @@
 	#overlay_splash
 	{
 		background: #fff;
+		border-bottom: .05em solid #ccc;
 		bottom: 0;
 		color: #ccc;
 		font-size: 4em;
@@ -26,7 +27,7 @@
 		right: 0;
 		text-align: center;
 		top: 0;
-		z-index: 1003;
+		z-index: 1000;
 	}
 
 		#overlay_history i, #overlay_splash > div
@@ -34,5 +35,13 @@
 			display: inline-block;
 			margin-top: 50vh;
 			transform: translateY(-50%);
+		}
+
+		#overlay_splash > i
+		{
+			bottom: 1em;
+			left: 0;
+			position: absolute;
+			right: 0;
 		}
 }

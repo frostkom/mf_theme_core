@@ -5,6 +5,15 @@ function collect_on_load(str_function)
 	arr_functions.push(str_function);
 }
 
+var scroll_start = 0;
+
+jQuery.fn.hideSplash = function(o)
+{
+	jQuery('html, body').scrollTop(scroll_start);
+
+	this.slideUp('800');
+};
+
 jQuery(function($)
 {
 	"use strict";
@@ -120,6 +129,28 @@ jQuery(function($)
 			hideOverlay();
 		});
 
-		$('#overlay_splash').delay(500).fadeOut();
+		var dom_splash = $('#overlay_splash');
+
+		if(dom_splash.length > 0 && dom_splash.is(':visible'))
+		{
+			scroll_start = $(document).scrollTop();
+
+			dom_splash.find('.fa-spinner').removeClass('fa-spinner fa-spin').addClass('fa-check green');
+			dom_splash.delay(800).hideSplash();
+
+			dom_splash.children('i').on('click', function()
+			{
+				dom_splash.hideSplash();
+			});
+
+			function scrollSplash()
+			{
+				$(window).off('scroll', scrollSplash);
+
+				dom_splash.hideSplash();
+			}
+
+			$(window).on('scroll', scrollSplash);
+		}
 	}
 });

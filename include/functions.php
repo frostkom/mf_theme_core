@@ -1108,6 +1108,7 @@ function footer_theme_core()
 				.get_logo()
 				."<div><i class='fa fa-spinner fa-spin fa-2x'></i></div>"
 			."</div>
+			<i class='fa fa-arrow-circle-down'></i>
 		</div>";
 	}
 }
