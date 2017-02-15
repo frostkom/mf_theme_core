@@ -82,7 +82,7 @@ jQuery(function($)
 
 			else
 			{
-				showOverlay();
+				//showOverlay();
 
 				location.reload();
 			}
