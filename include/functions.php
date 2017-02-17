@@ -10,17 +10,32 @@ function gather_params($options_params)
 	{
 		if(!isset($param['category']) && !isset($param['category_end']))
 		{
-			if(isset($mods[$param['id']]))
+			$id = $param['id'];
+			$default = isset($param['default']) ? $param['default'] : false;
+			$force_default = isset($param['force_default']) ? $param['force_default'] : false;
+			$value_old = isset($mods[$id]) ? $mods[$id] : false;
+
+			if(isset($mods[$id]))
 			{
-				$options[$param['id']] = apply_filters("theme_mod_".$param['id'], $mods[$param['id']]);
+				if($value_old == '' && $force_default == true)
+				{
+					$value_new = $default;
+
+					set_theme_mod($id, $value_new);
+				}
+
+				else
+				{
+					$value_new = $value_old;
+				}
 			}
 
 			else
 			{
-				$param['default'] = isset($param['default']) ? $param['default'] : false;
-
-				$options[$param['id']] = apply_filters("theme_mod_".$param['id'], $param['default']);
+				$value_new = $default;
 			}
+			
+			$options[$id] = apply_filters("theme_mod_".$id, $value_new);
 		}
 	}
 
@@ -883,7 +898,6 @@ function customize_theme($wp_customize)
 							'label' => $param['title'],
 							'section' => $id_temp,
 							'type' => $param['type'],
-							//'placeholder' => (isset($param['placeholder']) ? $param['placeholder'] : "")
 						)
 					);
 				}
