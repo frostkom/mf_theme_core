@@ -65,7 +65,7 @@ function get_404_page()
 		}
 	}
 
-	echo "<article>
+	return "<article>
 		<h1>".$post_title."</h1>
 		<section>".$post_content."</section>
 	</article>";
