@@ -269,34 +269,12 @@ function nav_args_theme_core($args)
 	return $args;
 }
 
-function mf_compress($data)
-{
-	$out = $data['content'];
-
-	switch($data['type'])
-	{
-		case 'css':
-			$exkludera = array('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '/(\n|\r|\t|\r\n|  |	)+/', '/(:|,) /', '/;}/');
-			$inkludera = array('', '', '$1', '}');
-			$out = preg_replace($exkludera, $inkludera, $out);
-		break;
-	}
-
-	if($out == '')
-	{
-		$out = $data['content'];
-	}
-
-	return $out;
-}
-
 function get_wp_title()
 {
 	global $page, $paged;
 
-	$out = wp_title('|', false, 'right');
-
-	$out .= get_bloginfo('name');
+	$out = wp_title('|', false, 'right')
+	.get_bloginfo('name');
 
 	$site_description = get_bloginfo('description', 'display');
 
@@ -335,75 +313,10 @@ function enqueue_theme_fonts()
 	}
 }
 
-/*function replace_stylesheet_url($suffix = "css")
-{
-	global $wpdb;
-
-	$style_base_url = get_bloginfo('stylesheet_directory');
-	$style_base_dir = get_stylesheet_directory()."/include/";
-
-	$arr_files = array(
-		"style_".$wpdb->blogid.".".$suffix,
-		"style.".$suffix
-	);
-
-	$style_file = "style.php";
-
-	foreach($arr_files as $file)
-	{
-		if(file_exists($style_base_dir.$file))
-		{
-			$style_file = $file;
-
-			break;
-		}
-	}
-
-	return $style_base_url."/include/".$style_file;
-}*/
-
 function customize_preview_theme_core()
 {
 	wp_enqueue_script('script_theme_core_customizer', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'));
 }
-
-/*function customize_save_theme_core()
-{
-	global $wpdb;
-
-	$style_base_dir = get_stylesheet_directory()."/include/";
-	$style_output_file = $style_base_dir."style".($wpdb->blogid > 0 ? "_".$wpdb->blogid : "").".css";
-
-	if(get_option('setting_save_style') == 'yes')
-	{
-		$style_url = replace_stylesheet_url("php");
-
-		$response = wp_remote_get($style_url);
-		$content = $response['body'];
-
-		if($content != '')
-		{
-			$content = mf_compress(array('content' => $content, 'type' => 'css'));
-
-			$success = set_file_content(array('file' => $style_output_file, 'mode' => 'w', 'content' => $content));
-
-			if($success == false)
-			{
-				do_log(sprintf(__("Couldn't save content to %s", 'lang_theme_core'), $style_output_file));
-			}
-		}
-
-		else
-		{
-			do_log(sprintf(__("Couldn't get any data from %s", 'lang_theme_core'), $style_url));
-		}
-	}
-
-	else if(file_exists($style_output_file))
-	{
-		unlink($style_output_file);
-	}
-}*/
 
 function check_htaccess($data)
 {
@@ -466,9 +379,7 @@ function settings_theme_core()
 			delete_option('setting_splash_screen');
 		}
 
-		//$arr_settings['setting_save_style'] = __("Save dynamic styles to static CSS file", 'lang_theme_core');
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
-		//$arr_settings['setting_compress'] = __("Compress output", 'lang_theme_core');
 		$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
 		if($setting_html5_history == 'yes')
@@ -543,14 +454,6 @@ function setting_splash_screen_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-/*function setting_save_style_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'no');
-
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => __("May be good to disable when working on a development site and then enable when going live", 'lang_theme_core')));
-}*/
-
 function setting_scroll_to_top_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
@@ -558,14 +461,6 @@ function setting_scroll_to_top_callback()
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
-
-/*function setting_compress_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option($setting_key);
-
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
-}*/
 
 function setting_responsiveness_callback()
 {
@@ -1170,32 +1065,18 @@ function admin_bar_theme_core()
 
 function init_theme_core()
 {
-	if(is_admin())
+	if(get_option('setting_responsiveness') == 1)
 	{
-		//new recommend_plugin(array('path' => "mf_custom_login/index.php", 'name' => "MF Custom Login", 'text' => __("because you should add information about the use of cookies on the site", 'lang_theme_core'), 'url' => "//github.com/frostkom/mf_custom_login"));
-	}
+		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
+		add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
 
-	else
-	{
-		if(get_option('setting_responsiveness') == 1)
-		{
-			add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
-			add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
-			//add_filter('wp_insert_post_data', 'post_filter_handler', '99', 2);
-
-			add_filter('the_content', 'remove_width_height_attribute');
-		}
+		add_filter('the_content', 'remove_width_height_attribute');
 	}
 }
 
 function header_theme_core()
 {
 	require_user_login();
-
-	/*if(get_option('setting_compress') == 1)
-	{
-		ob_start("compress_html");
-	}*/
 
 	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
 	{
@@ -1211,34 +1092,6 @@ function init_style_theme_core()
 	}
 }
 
-function compress_html($html)
-{
-	$out = "";
-
-	if(strlen($html) > 0)
-	{
-		$exkludera = array('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '/>(\n|\r|\t|\r\n|  |	)+/', '/(\n|\r|\t|\r\n|  |	)+</', '<!--.*?-->');
-		$inkludera = array('', '>', '<', '');
-
-		$out = preg_replace($exkludera, $inkludera, $html);
-
-		//If regexp fails, restore here
-		if(strlen($out) == 0)
-		{
-			$out = $html;
-		}
-	}
-
-	return $out;
-}
-
-/*function post_filter_handler($data, $postarr)
-{
-	$data['post_content'] = remove_width_height_attribute($data['post_content']);
-
-	return $data;
-}*/
-
 function remove_width_height_attribute($html)
 {
 	return preg_replace('/(width|height)="\d*"\s/', "", $html);
@@ -1251,41 +1104,3 @@ function strip_domain_from_content($html)
 
 	return str_replace(array($site_url, $site_url_alt), "", $html);
 }
-
-/*function rw_relative_urls()
-{
-	// Don't do anything if:
-	// - In feed
-	// - In sitemap by WordPress SEO plugin
-	if(is_feed() || get_query_var('sitemap'))
-	{
-		return;
-	}
-
-	else
-	{
-		$filters = array(
-			'post_link',
-			'post_type_link',
-			'page_link',
-			'attachment_link',
-			'get_shortlink',
-			'post_type_archive_link',
-			'get_pagenum_link',
-			'get_comments_pagenum_link',
-			'term_link',
-			'search_link',
-			'day_link',
-			'month_link',
-			'year_link',
-			//'author_link',
-			//'edit_post_link',
-			//'wp_get_attachment_image_src',
-		);
-
-		foreach($filters as $filter)
-		{
-			add_filter($filter, 'wp_make_link_relative');
-		}
-	}
-}*/

@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 5.2.9
+Version: 5.3.0
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -16,8 +16,6 @@ define('DISALLOW_FILE_EDIT', true);
 
 include_once("include/functions.php");
 
-add_action('init', 'init_theme_core');
-
 if(is_admin())
 {
 	register_activation_hook(__FILE__, 'activate_theme_core');
@@ -25,12 +23,12 @@ if(is_admin())
 
 	add_action('wp_before_admin_bar_render', 'admin_bar_theme_core');
 	add_action('admin_init', 'settings_theme_core');
-
-	//add_action('customize_save_after', 'customize_save_theme_core');
 }
 
 else
 {
+	add_action('init', 'init_theme_core');
+
 	add_action('customize_preview_init', 'customize_preview_theme_core');
 
 	add_action('get_header', 'header_theme_core', 0);
@@ -58,13 +56,13 @@ load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE_
 function activate_theme_core()
 {
 	mf_uninstall_plugin(array(
-		'options' => array('eg_setting_responsiveness', 'eg_setting_strip_domain', 'eg_setting_compress'),
+		'options' => array('eg_setting_responsiveness', 'eg_setting_strip_domain', 'eg_setting_compress', 'setting_save_style', 'setting_compress'),
 	));
 }
 
 function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
-		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_save_style', 'setting_scroll_to_top', 'setting_compress', 'setting_responsiveness', 'setting_strip_domain', 'setting_cookie_info', 'setting_404_page'),
+		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_scroll_to_top', 'setting_responsiveness', 'setting_strip_domain', 'setting_cookie_info', 'setting_404_page'),
 	));
 }
