@@ -1,16 +1,26 @@
+function set_breakpoint()
+{
+	var value = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\"/g, '');
+
+	jQuery('body').removeClass('is_unknown is_mobile is_tablet is_desktop').addClass('is_' + value);
+};
+
+function on_load_theme_core()
+{
+	set_breakpoint();
+}
+
 jQuery(function($)
 {
-	var breakpoint = {};
+	on_load_theme_core();
 
-	breakpoint.refreshValue = function()
+	if(typeof collect_on_load == 'function')
 	{
-		this.value = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\"/g, '');
-
-		$('body').removeClass('is_unknown is_mobile is_tablet is_desktop').addClass('is_' + breakpoint.value);
-	};
+		collect_on_load('on_load_theme_core'); 
+	}
 
 	$(window).resize(function()
 	{
-		breakpoint.refreshValue();
-	}).resize();
+		set_breakpoint();
+	});
 });
