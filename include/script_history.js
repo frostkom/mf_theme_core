@@ -117,7 +117,7 @@ jQuery(function($)
 
 		$(document).on('submit', '.searchform', function()
 		{
-			var url = script_theme_history.site_url + "?s=" + $(this).children('input[name=s]').val();
+			var url = script_theme_history.site_url + "?s=" + $(this).find('input[name=s]').val();
 
 			requestContent(url);
 
