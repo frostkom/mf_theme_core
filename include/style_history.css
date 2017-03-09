@@ -33,6 +33,7 @@
 		{
 			display: inline-block;
 			margin-top: 45vh;
+			-webkit-transform: translateY(-50%);
 			transform: translateY(-50%);
 		}
 
