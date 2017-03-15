@@ -1153,13 +1153,13 @@ function admin_bar_theme_core()
 
 		else
 		{
-			$color = "color_green";
-			$title = __("Public", 'lang_theme_core');
+			//$color = "color_green";
+			$title = "<a href='/' class='color_green'>".__("Public", 'lang_theme_core')."</a>";
 		}
 
 		$wp_admin_bar->add_node(array(
 			'id' => 'live',
-			'title' => "<span class='".$color."'>".$title."</span>",
+			'title' => "<span".($color != '' ? " class='".$color."'" : "").">".$title."</span>",
 			//'href' => '#',
 			//'meta' => array('class' => 'red'),
 		));
