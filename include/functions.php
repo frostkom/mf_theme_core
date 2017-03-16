@@ -1,5 +1,17 @@
 <?php
 
+function search_form_theme_core($html)
+{
+	$html = "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
+		.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core')))
+		."<div class='form_button'>"
+			.show_button(array('text' => __("Search", 'lang_theme_core')))
+		."</div>
+	</form>";
+
+	return $html;
+}
+
 function gather_params($options_params)
 {
 	$options = array();
