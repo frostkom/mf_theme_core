@@ -917,6 +917,24 @@ function customize_theme($wp_customize)
 					);
 				}
 
+				else if($param['type'] == "position")
+				{
+					$wp_customize->add_control(
+						$param['id'], 
+						array(
+							'label' => $param['title'],
+							'section' => $id_temp,
+							'settings' => $param['id'],
+							'type' => 'select',
+							'choices' => array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'absolute' => __("Absolute", 'lang_theme_core'),
+								'fixed' => __("Fixed", 'lang_theme_core'),
+							),
+						)
+					);
+				}
+
 				else if($param['type'] == "text_transform")
 				{
 					$wp_customize->add_control(
