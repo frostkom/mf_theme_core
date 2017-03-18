@@ -73,27 +73,30 @@ jQuery(function($)
 			}
 		}
 
-		function requestContent(url)
+		function requestContent(data)
 		{
+			if(data.push == true)
+			{
+				history.pushState({}, null, data.url);
+			}
+
 			showOverlay();
 
-			dom_obj.load(url + ' ' + dom_element + ">*", loadCallback);
+			dom_obj.load(data.url + ' ' + dom_element + ">*", loadCallback);
 		}
 
 		$(window).on('popstate', function(e)
 		{
+			var url = location.href;
+
 			if(e.originalEvent.state !== null)
 			{
-				var url = location.href;
-
-				requestContent(url);
+				requestContent({'url': url, 'push': false});
 			}
 
 			else
 			{
-				//showOverlay();
-
-				location.reload();
+				history.pushState({}, null, url);
 			}
 		});
 
@@ -101,27 +104,34 @@ jQuery(function($)
 		{
 			var url = $(this).attr("href");
 
-			if(url.indexOf('#') > -1 || url.indexOf('wp-admin') > -1){}
+			if(url.indexOf('wp-admin') > -1){}
+
+			else if(url.indexOf('#') > -1)
+			{
+				history.pushState({}, null, url);
+			}
 
 			else if(url.indexOf(document.domain) > -1)
 			{
 				e.preventDefault();
 
-				history.pushState({}, null, url);
-
-				requestContent(url);
+				requestContent({'url': url, 'push': true});
 
 				return false;
 			}
 		});
 
-		$(document).on('submit', '.searchform', function()
+		$(document).on('submit', 'form', function()
 		{
-			var url = script_theme_history.site_url + "?s=" + $(this).find('input[name=s]').val();
+			if($(this).attr('method') == 'get')
+			{
+				var dom_action = $(this).attr('action'),
+					url = dom_action + "?" + $(this).serialize();
 
-			requestContent(url);
+				requestContent({'url': url, 'push': true});
 
-			return false;
+				return false;
+			}
 		});
 
 		dom_overlay.on('click', function()

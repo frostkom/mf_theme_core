@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 5.3.8
+Version: 5.3.10
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
