@@ -372,11 +372,20 @@ function settings_theme_core()
 
 	$arr_settings = array();
 
-	$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
+	$blog_public = get_option('blog_public');
+
+	if($blog_public == 0)
+	{
+		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
+	}
 
 	if(get_option('setting_no_public_pages') != 'yes')
 	{
-		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
+		if($blog_public == 0)
+		{
+			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
+		}
+
 		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 		
 		$setting_html5_history = get_option('setting_html5_history');
