@@ -1,25 +1,22 @@
-jQuery(function($)
+(function($)
 {
-	function set_style_url(self)
+	wp.customize('aside_size', function(value)
 	{
-		if(self.is(':disabled'))
+		value.bind(function(newval)
 		{
-			var arr_style_url = $('#style-css').attr('href').split("#");
+			console.log(newval);
 
-			$('#style-css').attr({'href': arr_style_url[0] + "#r=" + Math.random()});
-		}
-
-		else
-		{
-			setTimeout(function()
-			{
-				set_style_url(self)
-			}, 1000);
-		}
-	}
-
-	$(parent.document).on('click', '#save', function()
-	{
-		set_style_url($(this));
+			update_style_url()
+		});
 	});
-});
+
+	function update_style_url()
+	{
+		var arr_style_url = $('#style-css').attr('href').split("?"),
+			new_style_url = arr_style_url[0] + "?r=" + Math.random();
+
+		$('#style-css').attr({'href': new_style_url});
+
+		console.log(new_style_url);
+	}
+})(jQuery);

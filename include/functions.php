@@ -325,10 +325,10 @@ function enqueue_theme_fonts()
 	}
 }
 
-function customize_preview_theme_core()
+/*function customize_preview_theme_core()
 {
-	wp_enqueue_script('script_theme_core_customizer', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'));
-}
+	wp_enqueue_script('script_theme_core_customizer_preview', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'), '', true);
+}*/
 
 function check_htaccess($data)
 {
