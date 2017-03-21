@@ -967,11 +967,8 @@ function customize_theme($wp_customize)
 							'type' => 'select',
 							'choices' => array(
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'capitalize' => __("Capitalize", 'lang_theme_core'),
 								'uppercase' => __("Uppercase", 'lang_theme_core'),
 								'lowercase' => __("Lowercase", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
 							),
 						)
 					);
