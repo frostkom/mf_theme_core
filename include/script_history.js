@@ -104,7 +104,7 @@ jQuery(function($)
 		{
 			var url = $(this).attr("href");
 
-			if(url.indexOf('wp-admin') > -1){}
+			if(url.indexOf('wp-admin') > -1 || url.indexOf('uploads') > -1){}
 
 			else if(url.indexOf('#') > -1)
 			{

@@ -16,7 +16,7 @@ jQuery(function($)
 
 	if(typeof collect_on_load == 'function')
 	{
-		collect_on_load('on_load_theme_core'); 
+		collect_on_load('on_load_theme_core');
 	}
 
 	$(window).resize(function()

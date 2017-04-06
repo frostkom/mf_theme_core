@@ -46,7 +46,7 @@ function gather_params($options_params)
 			{
 				$value_new = $default;
 			}
-			
+
 			$options[$id] = apply_filters("theme_mod_".$id, $value_new);
 		}
 	}
@@ -89,7 +89,7 @@ function get_previous_backups($data)
 
 	$globals['mf_theme_files'][] = array(
 		'dir' => $data['file'],
-		'name' => basename($data['file']), 
+		'name' => basename($data['file']),
 		'time' => filemtime($data['file'])
 	);
 }
@@ -387,7 +387,7 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
-		
+
 		$setting_html5_history = get_option('setting_html5_history');
 
 		if($setting_html5_history == 'yes')
@@ -773,7 +773,7 @@ function customize_theme($wp_customize)
 				if($param['type'] == "align")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -807,7 +807,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "checkbox")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -824,7 +824,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "clear")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -855,7 +855,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "float")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -884,7 +884,7 @@ function customize_theme($wp_customize)
 					}
 
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -914,7 +914,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "overflow")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -936,7 +936,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "position")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -954,7 +954,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "text_transform")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
@@ -972,7 +972,7 @@ function customize_theme($wp_customize)
 				else if($param['type'] == "weight")
 				{
 					$wp_customize->add_control(
-						$param['id'], 
+						$param['id'],
 						array(
 							'label' => $param['title'],
 							'section' => $id_temp,
