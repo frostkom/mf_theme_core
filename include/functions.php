@@ -319,7 +319,7 @@ function enqueue_theme_fonts()
 
 			if(isset($options_fonts[$font]['url']) && $options_fonts[$font]['url'] != '')
 			{
-				wp_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
+				mf_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
 			}
 		}
 	}
@@ -1060,17 +1060,17 @@ function head_theme_core()
 
 	$plugin_include_url = plugin_dir_url(__FILE__);
 
-	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", array(), get_plugin_version(__FILE__));
+	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", get_plugin_version(__FILE__));
 
 	if(get_option('setting_scroll_to_top') == 'yes')
 	{
-		wp_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css");
-		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", array(), get_plugin_version(__FILE__));
+		mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", get_plugin_version(__FILE__));
+		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", get_plugin_version(__FILE__));
 	}
 
 	if(get_option('setting_html5_history') == 'yes')
 	{
-		wp_enqueue_style('style_theme_history', $plugin_include_url."style_history.css");
+		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", get_plugin_version(__FILE__));
 		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), get_plugin_version(__FILE__));
 	}
 }
@@ -1098,7 +1098,7 @@ function footer_theme_core()
 
 		if($setting_cookie_info > 0)
 		{
-			wp_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css");
+			mf_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css", get_plugin_version(__FILE__));
 			mf_enqueue_script('script_theme_core_cookies', plugin_dir_url(__FILE__)."script_cookies.js", array('plugin_url' => plugin_dir_url(__FILE__)), get_plugin_version(__FILE__));
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
