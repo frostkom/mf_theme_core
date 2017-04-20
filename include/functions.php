@@ -226,7 +226,7 @@ function get_options_page_theme_core($data = array())
 												."<div class='row-actions'>
 													<a href='".$upload_url.$globals['mf_theme_files'][$i]['name']."'>".__("Download", 'lang_theme_core')."</a>
 													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$globals['mf_theme_files'][$i]['name'])."'>".__("Restore", 'lang_theme_core')."</a>
-													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$globals['mf_theme_files'][$i]['name'])."'>".__("Delete", 'lang_theme_core')."</a>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$globals['mf_theme_files'][$i]['name'])."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>
 												</div>
 											</td>
 											<td>".format_date(date("Y-m-d H:i:s", $globals['mf_theme_files'][$i]['time']))."</td>
