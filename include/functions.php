@@ -353,7 +353,7 @@ Header set Cache-Control 'must-revalidate'";
 
 			echo "<div class='mf_form'>"
 				."<h3>".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
-				.show_textarea(array('value' => $recommend_expires, 'xtra' => "class='widefat' rows='12' readonly"))
+				.show_textarea(array('value' => $recommend_expires, 'xtra' => "rows='12' readonly")) //class='widefat'
 			."</div>";
 		}
 
