@@ -1162,37 +1162,33 @@ function admin_bar_theme_core()
 
 	if(IS_ADMIN)
 	{
-		$color = "color_red";
-
 		if(get_option('setting_no_public_pages') == 'yes')
 		{
 			$wp_admin_bar->remove_menu('site-name');
+
+			$color = "color_red";
 
 			$title = __("No public pages", 'lang_theme_core');
 		}
 
 		else if(get_option('setting_theme_core_login') == 'yes')
 		{
-			$title = __("Requires login", 'lang_theme_core');
+			$title = "<a href='/' class='color_red'>".__("Requires login", 'lang_theme_core')."</a>";
 		}
 
 		else if(get_option('blog_public') == 0)
 		{
-			$color = "color_yellow";
-			$title = __("No index", 'lang_theme_core');
+			$title = "<a href='/' class='color_yellow'>".__("No index", 'lang_theme_core')."</a>";
 		}
 
 		else
 		{
-			//$color = "color_green";
 			$title = "<a href='/' class='color_green'>".__("Public", 'lang_theme_core')."</a>";
 		}
 
 		$wp_admin_bar->add_node(array(
 			'id' => 'live',
-			'title' => "<span".($color != '' ? " class='".$color."'" : "").">".$title."</span>",
-			//'href' => '#',
-			//'meta' => array('class' => 'red'),
+			'title' => "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">".$title."</span>",
 		));
 	}
 }
