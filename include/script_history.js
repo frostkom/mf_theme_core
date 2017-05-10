@@ -85,6 +85,10 @@ jQuery(function($)
 			dom_obj.load(data.url + ' ' + dom_element + ">*", loadCallback);
 		}
 
+		var url = location.href;
+
+		requestContent({'url': url, 'push': true});
+
 		$(window).on('popstate', function(e)
 		{
 			var url = location.href;
@@ -94,10 +98,11 @@ jQuery(function($)
 				requestContent({'url': url, 'push': false});
 			}
 
-			else
+			/*else
 			{
+				//requestContent({'url': url, 'push': false});
 				history.pushState({}, null, url);
-			}
+			}*/
 		});
 
 		$(document).on('click', 'a', function(e)
