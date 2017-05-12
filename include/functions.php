@@ -336,9 +336,9 @@ function check_htaccess($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/ExpiresByType image/", $content))
+		if(!preg_match("/(BEGIN MF Theme Core|FileETag None)/", $content))
 		{
-			$recommend_expires = "ExpiresActive On
+			/*$recommend_htaccess = "ExpiresActive On
 ExpiresByType text/javascript 'A604800'
 ExpiresByType text/css 'A604800'
 ExpiresByType image/x-icon 'A31536000'
@@ -349,11 +349,39 @@ ExpiresByType image/png 'A604800'
 
 FileETag None
 
-Header set Cache-Control 'must-revalidate'";
+Header set Cache-Control 'must-revalidate'";*/
+
+			$recommend_htaccess = "# BEGIN Theme Core
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_dechunk Yes
+	mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+	mod_gzip_item_include handler ^cgi-script$
+	mod_gzip_item_include mime ^text/.*
+	mod_gzip_item_include mime ^application/x-javascript.*
+	mod_gzip_item_exclude mime ^image/.*
+	mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
+
+<IfModule mod_headers.c>
+	ExpiresActive On
+	ExpiresDefault 'access plus 1 month'
+
+	Header unset ETag
+</IfModule>
+
+FileETag None
+
+<filesMatch '\.(css|jpe?g|png|gif|js|ico)$'>
+	Header set Cache-Control 'max-age=2592000, public'
+
+	SetOutputFilter DEFLATE
+</filesMatch>
+# END Theme Core";
 
 			echo "<div class='mf_form'>"
 				."<h3>".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
-				.show_textarea(array('value' => $recommend_expires, 'xtra' => "rows='12' readonly")) //class='widefat'
+				.show_textarea(array('value' => $recommend_htaccess, 'xtra' => "rows='12' readonly"))
 			."</div>";
 		}
 
