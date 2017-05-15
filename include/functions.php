@@ -363,7 +363,7 @@ Header set Cache-Control 'must-revalidate'";*/
 	mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
 </IfModule>
 
-<IfModule mod_headers.c>
+<IfModule mod_expires.c>
 	ExpiresActive On
 	ExpiresDefault 'access plus 1 month'
 
@@ -547,6 +547,55 @@ function setting_404_page_callback()
 function setting_theme_recommendation_callback()
 {
 	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess", 'allow_depth' => false));
+}
+
+function column_header_theme_core($cols)
+{
+	unset($cols['comments']);
+
+	$cols['seo'] = __("SEO", 'lang_theme_core');
+
+	return $cols;
+}
+
+function column_cell_theme_core($col, $id)
+{
+	global $wpdb;
+
+	switch($col)
+	{
+		case 'seo':
+			$post_excerpt = mf_get_post_content($id, 'post_excerpt');
+
+			if($post_excerpt != '')
+			{
+				$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND ID != '%d' LIMIT 0, 1", $post_excerpt, $id));
+
+				if($post_id_duplicate > 0)
+				{
+					echo "<i class='fa fa-lg fa-close red'></i>
+					<div class='row-actions'>
+						<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+							.sprintf(__("The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+						."</a>
+					</div>";
+				}
+
+				else
+				{
+					echo "<i class='fa fa-lg fa-check green'></i>";
+				}
+			}
+
+			else
+			{
+				echo "<i class='fa fa-lg fa-close red'></i>
+				<div class='row-actions'>"
+					.__("You have not set an excerpt for this page", 'lang_theme_core')
+				."</div>";
+			}
+		break;
+	}
 }
 
 function require_user_login()
@@ -1100,6 +1149,13 @@ function head_theme_core()
 	{
 		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", get_plugin_version(__FILE__));
 		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), get_plugin_version(__FILE__));
+	}
+
+	$meta_description = get_the_excerpt();
+
+	if($meta_description != '')
+	{
+		echo "<meta name='description' content='".esc_attr($meta_description)."'>";
 	}
 }
 

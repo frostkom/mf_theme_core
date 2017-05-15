@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 5.3.25
+Version: 5.4.4
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -23,6 +23,13 @@ if(is_admin())
 
 	add_action('wp_before_admin_bar_render', 'admin_bar_theme_core');
 	add_action('admin_init', 'settings_theme_core');
+
+	add_filter('manage_pages_columns', 'column_header_theme_core', 5);
+	add_action('manage_pages_custom_column', 'column_cell_theme_core', 5, 2);
+	add_filter('manage_posts_columns', 'column_header_theme_core', 5);
+	add_action('manage_posts_custom_column', 'column_cell_theme_core', 5, 2);
+
+	add_action('save_post', 'save_post_theme_core', 10, 3);
 }
 
 else
@@ -57,6 +64,43 @@ load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE_
 
 function activate_theme_core()
 {
+	global $wpdb;
+
+	if(is_plugin_active('meta-description/meta-description.php'))
+	{
+		$i = 0;
+
+		$arr_data = array();
+		get_post_children(array('post_type' => 'page'), $arr_data);
+
+		foreach($arr_data as $post_id => $post_title)
+		{
+			$meta_description = get_post_meta($post_id, 'meta_description', true);
+
+			if($meta_description != '')
+			{
+				$post_excerpt = $wpdb->get_results($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE ID = '%d'", $post_id));
+
+				if($post_excerpt == '')
+				{
+					$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_excerpt = %s WHERE ID = '%d'", $meta_description, $post_id));
+
+					$i++;
+				}
+			}
+		}
+
+		if($i == 0)
+		{
+			do_log(__("All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description", 'lang_theme_core'));
+		}
+
+		else
+		{
+			do_log(sprintf(__("I moved %d Meta Descriptions to excerpt", 'lang_theme_core'), $i));
+		}
+	}
+
 	mf_uninstall_plugin(array(
 		'options' => array('eg_setting_responsiveness', 'eg_setting_strip_domain', 'eg_setting_compress', 'setting_save_style', 'setting_compress'),
 	));

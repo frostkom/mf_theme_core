@@ -86,8 +86,8 @@ jQuery(function($)
 		}
 
 		var url = location.href;
-
-		requestContent({'url': url, 'push': true});
+		console.log("Init");
+		history.pushState({}, null, url);
 
 		$(window).on('popstate', function(e)
 		{
@@ -95,15 +95,18 @@ jQuery(function($)
 
 			if(e.originalEvent.state !== null)
 			{
+				console.log("State");
 				requestContent({'url': url, 'push': false});
 			}
-
-			/*else
-			{
-				//requestContent({'url': url, 'push': false});
-				history.pushState({}, null, url);
-			}*/
 		});
+
+		function is_same_page(url)
+		{
+			var current_url = location.href.split('#'),
+				link_url = url.split('#');
+
+			return current_url[0] == link_url[0];
+		}
 
 		$(document).on('click', 'a', function(e)
 		{
@@ -113,13 +116,17 @@ jQuery(function($)
 
 			else if(url.indexOf('#') > -1)
 			{
-				history.pushState({}, null, url);
+				if(is_same_page(url))
+				{
+					history.pushState({}, null, url);
+				}
 			}
 
 			else if(url.indexOf(document.domain) > -1)
 			{
 				e.preventDefault();
 
+				console.log("Domain");
 				requestContent({'url': url, 'push': true});
 
 				return false;
@@ -133,6 +140,7 @@ jQuery(function($)
 				var dom_action = $(this).attr('action'),
 					url = dom_action + "?" + $(this).serialize();
 
+				console.log("Submit");
 				requestContent({'url': url, 'push': true});
 
 				return false;
