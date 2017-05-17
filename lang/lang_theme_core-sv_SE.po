@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-15 10:33+0100\n"
+"POT-Creation-Date: 2017-05-17 08:30+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -24,13 +24,38 @@ msgstr "Alla meta-förklaringar har flyttats till utdrag så nu kan du radera pl
 msgid "I moved %d Meta Descriptions to excerpt"
 msgstr "Jag flyttade %d meta-förklaringar till utdrag"
 
-#: ../include/functions.php:6
-msgid "Search here"
-msgstr "Sök här"
+#: ../include/classes.php:9
+msgid "Display News/Posts"
+msgstr "Visa nyheter/inlägg"
 
+#: ../include/classes.php:14
+msgid "News"
+msgstr "Nyheter"
+
+#: ../include/classes.php:111
+msgid "Title"
+msgstr "Rubrik"
+
+#: ../include/classes.php:112
+msgid "Amount"
+msgstr "Antal"
+
+#: ../include/classes.php:123
+msgid "Display Search Form"
+msgstr "Visa sökformulär"
+
+#: ../include/classes.php:128
 #: ../include/functions.php:8
 msgid "Search"
 msgstr "Sök"
+
+#: ../include/classes.php:157
+msgid "Placeholder"
+msgstr "Valfri text"
+
+#: ../include/functions.php:6
+msgid "Search here"
+msgstr "Sök här"
 
 #: ../include/functions.php:63
 msgid "Not Found"
@@ -179,141 +204,145 @@ msgstr "Denna sida kommer att visas istället för standard 404-sida"
 msgid "SEO"
 msgstr "SEO"
 
-#: ../include/functions.php:576
+#: ../include/functions.php:579
 #, php-format
 msgid "The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO."
 msgstr "Sidan %s har exakt samma utdrag. Försök att inte ha sidor med samma utdrag för det skadar din SEO"
 
-#: ../include/functions.php:590
+#: ../include/functions.php:594
 msgid "You have not set an excerpt for this page"
 msgstr "Du har inte angett ett utdrag för denna sida"
 
-#: ../include/functions.php:856
-#: ../include/functions.php:907
-#: ../include/functions.php:938
-#: ../include/functions.php:952
-#: ../include/functions.php:997
-#: ../include/functions.php:1019
-#: ../include/functions.php:1037
-#: ../include/functions.php:1055
+#: ../include/functions.php:860
+#: ../include/functions.php:911
+#: ../include/functions.php:942
+#: ../include/functions.php:956
+#: ../include/functions.php:1001
+#: ../include/functions.php:1023
+#: ../include/functions.php:1041
+#: ../include/functions.php:1059
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../include/functions.php:857
-#: ../include/functions.php:908
-#: ../include/functions.php:940
+#: ../include/functions.php:861
+#: ../include/functions.php:912
+#: ../include/functions.php:944
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:858
+#: ../include/functions.php:862
 msgid "Center"
 msgstr "Centrera"
 
-#: ../include/functions.php:859
-#: ../include/functions.php:909
-#: ../include/functions.php:941
+#: ../include/functions.php:863
+#: ../include/functions.php:913
+#: ../include/functions.php:945
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:890
+#: ../include/functions.php:894
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/functions.php:891
+#: ../include/functions.php:895
 msgid "No"
 msgstr "Nej"
 
-#: ../include/functions.php:910
+#: ../include/functions.php:914
 msgid "Both"
 msgstr "Båda"
 
-#: ../include/functions.php:939
+#: ../include/functions.php:943
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:942
-#: ../include/functions.php:1002
-#: ../include/functions.php:1060
+#: ../include/functions.php:946
+#: ../include/functions.php:1006
+#: ../include/functions.php:1064
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:943
-#: ../include/functions.php:1003
-#: ../include/functions.php:1061
+#: ../include/functions.php:947
+#: ../include/functions.php:1007
+#: ../include/functions.php:1065
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/functions.php:998
+#: ../include/functions.php:1002
 msgid "Visible"
 msgstr "Visa"
 
-#: ../include/functions.php:999
+#: ../include/functions.php:1003
 msgid "Hidden"
 msgstr "Dölj"
 
-#: ../include/functions.php:1000
+#: ../include/functions.php:1004
 msgid "Scroll"
 msgstr "Skrolla"
 
-#: ../include/functions.php:1001
+#: ../include/functions.php:1005
 msgid "Auto"
 msgstr "Auto"
 
-#: ../include/functions.php:1020
+#: ../include/functions.php:1024
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../include/functions.php:1021
+#: ../include/functions.php:1025
 msgid "Fixed"
 msgstr "Fixerad"
 
-#: ../include/functions.php:1038
+#: ../include/functions.php:1042
 msgid "Uppercase"
 msgstr "Versaler"
 
-#: ../include/functions.php:1039
+#: ../include/functions.php:1043
 msgid "Lowercase"
 msgstr "Gemener"
 
-#: ../include/functions.php:1056
+#: ../include/functions.php:1060
 msgid "Lighter"
 msgstr "Tunnare"
 
-#: ../include/functions.php:1057
+#: ../include/functions.php:1061
 msgid "Normal"
 msgstr "Normal"
 
-#: ../include/functions.php:1058
+#: ../include/functions.php:1062
 msgid "Bold"
 msgstr "Fet"
 
-#: ../include/functions.php:1059
+#: ../include/functions.php:1063
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/functions.php:1197
+#: ../include/functions.php:1201
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1209
+#: ../include/functions.php:1213
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1251
+#: ../include/functions.php:1255
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1256
+#: ../include/functions.php:1260
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1261
+#: ../include/functions.php:1265
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1266
+#: ../include/functions.php:1270
 msgid "Public"
 msgstr "Publik"
+
+#: ../include/functions.php:1335
+msgid "Search for"
+msgstr "Sök efter"
 
 #~ msgid "Capitalize"
 #~ msgstr "Stor första bokstav"

@@ -912,6 +912,7 @@ function customize_theme($wp_customize)
 								'left' => __("Left", 'lang_theme_core'),
 								'right' => __("Right", 'lang_theme_core'),
 								'both' => __("Both", 'lang_theme_core'),
+								'none' => __("None", 'lang_theme_core'),
 							),
 						)
 					);
@@ -1304,6 +1305,68 @@ function init_style_theme_core()
 	{
 		ob_start("strip_domain_from_content");
 	}
+}
+
+function mf_unregister_widget($id)
+{
+	/*$arr_exclude = array("WP_Widget_", "_");
+	$arr_include = array("", "-");
+	$id_check = strtolower(str_replace($arr_exclude, $arr_include, $id));
+
+	$arr_sidebars = wp_get_sidebars_widgets();
+
+	$is_used = false;
+
+	foreach($arr_sidebars as $sidebar)
+	{
+		foreach($sidebar as $widget)
+		{
+			if(substr($widget, 0, (strlen($id_check) + 1)) == $id_check."-")
+			{
+				$is_used = true;
+			}
+		}
+	}
+
+	//if(is_active_widget(false, false, 'WP_Widget_Text', true) == false)
+	if($is_used == false) //!in_array($id_check, $arr_sidebars)
+	{*/
+		unregister_widget($id);
+	//}
+}
+
+function widgets_theme_core()
+{
+	register_widget('widget_theme_core_search');
+	register_widget('widget_theme_core_news');
+	mf_unregister_widget('WP_Widget_Recent_Posts');
+
+	mf_unregister_widget('WP_Widget_Archives');
+	mf_unregister_widget('WP_Widget_Calendar');
+	mf_unregister_widget('WP_Widget_Categories');
+	mf_unregister_widget('WP_Nav_Menu_Widget');
+	mf_unregister_widget('WP_Widget_Links');
+	mf_unregister_widget('WP_Widget_Meta');
+	mf_unregister_widget('WP_Widget_Pages');
+	mf_unregister_widget('WP_Widget_Recent_Comments');
+	mf_unregister_widget('WP_Widget_RSS');
+	mf_unregister_widget('WP_Widget_Search');
+	mf_unregister_widget('WP_Widget_Tag_Cloud');
+
+	if(function_exists('is_plugin_active') && is_plugin_active('black-studio-tinymce-widget/black-studio-tinymce-widget.php'))
+	{
+		mf_unregister_widget('WP_Widget_Text');
+	}
+}
+
+function get_search_theme_core($data = array())
+{
+	if(!isset($data['placeholder']) || $data['placeholder'] == ''){		$data['placeholder'] = __("Search for", 'lang_theme_core');}
+
+	return "<form action='".get_site_url()."' method='get' class='searchform mf_form'>"
+		.show_textfield(array('name' => 's', 'value' => check_var('s'), 'placeholder' => $data['placeholder']))
+		."<i class='fa fa-search'></i>"
+	."</form>";
 }
 
 function remove_width_height_attribute($html)
