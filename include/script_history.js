@@ -86,7 +86,6 @@ jQuery(function($)
 		}
 
 		var url = location.href;
-		console.log("Init");
 		history.pushState({}, null, url);
 
 		$(window).on('popstate', function(e)
@@ -95,7 +94,6 @@ jQuery(function($)
 
 			if(e.originalEvent.state !== null)
 			{
-				console.log("State");
 				requestContent({'url': url, 'push': false});
 			}
 		});
@@ -126,7 +124,6 @@ jQuery(function($)
 			{
 				e.preventDefault();
 
-				console.log("Domain");
 				requestContent({'url': url, 'push': true});
 
 				return false;
@@ -140,7 +137,6 @@ jQuery(function($)
 				var dom_action = $(this).attr('action'),
 					url = dom_action + "?" + $(this).serialize();
 
-				console.log("Submit");
 				requestContent({'url': url, 'push': true});
 
 				return false;
