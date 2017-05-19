@@ -105,7 +105,7 @@ function get_options_page_theme_core($data = array())
 
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
 
-	$dir_exists = true;
+	/*$dir_exists = true;
 
 	if(!is_dir($upload_path))
 	{
@@ -120,7 +120,7 @@ function get_options_page_theme_core($data = array())
 		$error_text = __("Could not create a folder in uploads. Please add the correct rights for the script to create a new subfolder", 'lang_theme_core');
 	}
 
-	else if(isset($_POST['btnThemeBackup']))
+	else */if(isset($_POST['btnThemeBackup']))
 	{
 		list($options_params, $options) = get_params();
 
@@ -319,7 +319,7 @@ function enqueue_theme_fonts()
 
 			if(isset($options_fonts[$font]['url']) && $options_fonts[$font]['url'] != '')
 			{
-				mf_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
+				wp_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
 			}
 		}
 	}
@@ -336,7 +336,7 @@ function check_htaccess($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/(BEGIN MF Theme Core|FileETag None)/", $content))
+		if(!preg_match("/(BEGIN Theme Core)/", $content)) //|FileETag None
 		{
 			/*$recommend_htaccess = "ExpiresActive On
 ExpiresByType text/javascript 'A604800'
@@ -1173,6 +1173,69 @@ function get_logo()
 	}
 }
 
+function print_styles_theme_core()
+{
+	if(isset($GLOBALS['mf_styles']) && count($GLOBALS['mf_styles']) > 0 && (is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php')))
+	{
+		$file_url_base = site_url()."/wp-content";
+		$file_dir_base = WP_CONTENT_DIR;
+
+		$dep = array();
+		$version = 0;
+		$style_output = "";
+
+		foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
+		{
+			if(count($arr_style['dep']) > 0)
+			{
+				foreach($arr_style['dep'] as $style_dep)
+				{
+					$dep[] = $style_dep;
+				}
+			}
+
+			$version += point2int($arr_style['version']);
+
+			//$style_output .= "\n\n/* ".$handle." */\n";
+
+			if(get_file_suffix($arr_style['file']) == 'php')
+			{
+				$style_output .= wp_remote_retrieve_body(wp_remote_get($arr_style['file'])); //get_url_content()
+			}
+
+			else
+			{
+				$style_output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_style['file'])));
+			}
+
+			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($style_output));
+		}
+
+		if($style_output != '')
+		{
+			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/styles");
+			$file = "style.css";
+
+			$style_output = compress_css($style_output);
+
+			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $style_output));
+
+			if($success == true)
+			{
+				foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
+				{
+					wp_deregister_style($handle);
+				}
+
+				$dep = array_unique($dep);
+				$version = int2point($version);
+
+				wp_enqueue_style('mf_styles', $upload_url.$file, $dep, $version);
+			}
+		}
+	}
+}
+
 function footer_theme_core()
 {
 	global $wpdb;
@@ -1333,6 +1396,18 @@ function mf_unregister_widget($id)
 	{*/
 		unregister_widget($id);
 	//}
+}
+
+function setup_theme_core()
+{
+	add_post_type_support('page', 'excerpt');
+
+	remove_action('wp_head', 'wp_print_scripts');
+	remove_action('wp_head', 'wp_print_head_scripts', 9);
+	remove_action('wp_head', 'wp_enqueue_scripts', 1);
+	add_action('wp_footer', 'wp_print_scripts', 5);
+	add_action('wp_footer', 'wp_enqueue_scripts', 5);
+	add_action('wp_footer', 'wp_print_head_scripts', 5);
 }
 
 function widgets_theme_core()
