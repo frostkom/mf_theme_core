@@ -442,6 +442,18 @@ function settings_theme_core()
 			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
 		}
 
+		if(is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php'))
+		{
+			$arr_settings['setting_merge_css'] = __("Merge & Compress CSS", 'lang_theme_core');
+			$arr_settings['setting_merge_js'] = __("Merge & Compress Javascript", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_merge_css');
+			delete_option('setting_merge_js');
+		}
+
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
 			$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
@@ -520,6 +532,22 @@ function setting_strip_domain_callback()
 	$option = get_option_or_default($setting_key, 0);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
+}
+
+function setting_merge_css_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'yes');
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+}
+
+function setting_merge_js_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'yes');
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_cookie_info_callback()
@@ -1175,50 +1203,41 @@ function get_logo()
 
 function print_styles_theme_core()
 {
-	if(isset($GLOBALS['mf_styles']) && count($GLOBALS['mf_styles']) > 0 && (is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php')))
+	if(isset($GLOBALS['mf_styles']) && count($GLOBALS['mf_styles']) > 0 && get_option_or_default('setting_merge_css', 'yes') == 'yes')
 	{
 		$file_url_base = site_url()."/wp-content";
 		$file_dir_base = WP_CONTENT_DIR;
 
-		$dep = array();
 		$version = 0;
-		$style_output = "";
+		$output = "";
 
 		foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
 		{
-			if(count($arr_style['dep']) > 0)
-			{
-				foreach($arr_style['dep'] as $style_dep)
-				{
-					$dep[] = $style_dep;
-				}
-			}
-
 			$version += point2int($arr_style['version']);
 
-			//$style_output .= "\n\n/* ".$handle." */\n";
+			//$output .= "\n\n/* ".$handle." */\n";
 
 			if(get_file_suffix($arr_style['file']) == 'php')
 			{
-				$style_output .= wp_remote_retrieve_body(wp_remote_get($arr_style['file'])); //get_url_content()
+				$output .= wp_remote_retrieve_body(wp_remote_get($arr_style['file']));
 			}
 
 			else
 			{
-				$style_output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_style['file'])));
+				$output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_style['file'])));
 			}
 
-			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($style_output));
+			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($output));
 		}
 
-		if($style_output != '')
+		if($output != '')
 		{
 			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/styles");
 			$file = "style.css";
 
-			$style_output = compress_css($style_output);
+			$output = compress_css($output);
 
-			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $style_output));
+			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
 
 			if($success == true)
 			{
@@ -1227,10 +1246,90 @@ function print_styles_theme_core()
 					wp_deregister_style($handle);
 				}
 
-				$dep = array_unique($dep);
 				$version = int2point($version);
 
-				wp_enqueue_style('mf_styles', $upload_url.$file, $dep, $version);
+				wp_enqueue_style('mf_styles', $upload_url.$file, array(), $version);
+			}
+		}
+	}
+}
+
+function print_scripts_theme_core()
+{
+	if(isset($GLOBALS['mf_scripts']) && count($GLOBALS['mf_scripts']) > 0 && get_option_or_default('setting_merge_js', 'yes') == 'yes')
+	{
+		$file_url_base = site_url()."/wp-content";
+		$file_dir_base = WP_CONTENT_DIR;
+
+		$version = 0;
+		$output = $translation = "";
+
+		foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
+		{
+			$version += point2int($arr_script['version']);
+
+			//$output .= "\n\n/* ".$handle." */\n";
+
+			$count_temp = count($arr_script['translation']);
+
+			if(is_array($arr_script['translation']) && $count_temp > 0)
+			{
+				$translation .= "var ".$handle." = {";
+
+					$i = 1;
+
+					foreach($arr_script['translation'] as $key => $value)
+					{
+						$translation .= "'".$key."': '".$value."'";
+
+						if($i < $count_temp)
+						{
+							$translation .= ",";
+						}
+
+						$i++;
+					}
+				
+				$translation .= "};";
+			}
+
+			if(get_file_suffix($arr_script['file']) == 'php')
+			{
+				$output .= wp_remote_retrieve_body(wp_remote_get($arr_script['file']));
+			}
+
+			else
+			{
+				$output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_script['file'])));
+			}
+
+			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($output));
+		}
+
+		if($output != '')
+		{
+			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/scripts");
+			$file = "script.js";
+
+			$output = compress_js($output);
+
+			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
+
+			if($success == true)
+			{
+				foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
+				{
+					wp_deregister_script($handle);
+				}
+
+				$version = int2point($version);
+
+				wp_enqueue_script('mf_scripts', $upload_url.$file, array('jquery'), $version, true);
+
+				if($translation != '')
+				{
+					echo "<script>".$translation."</script>";
+				}
 			}
 		}
 	}
