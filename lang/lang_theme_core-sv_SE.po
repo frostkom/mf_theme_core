@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-20 09:57+0100\n"
+"POT-Creation-Date: 2017-05-22 10:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,11 +15,11 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../index.php:98
+#: ../index.php:100
 msgid "All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description"
 msgstr "Alla meta-förklaringar har flyttats till utdrag så nu kan du radera pluginet Meta Description"
 
-#: ../index.php:103
+#: ../index.php:105
 #, php-format
 msgid "I moved %d Meta Descriptions to excerpt"
 msgstr "Jag flyttade %d meta-förklaringar till utdrag"
@@ -321,31 +321,31 @@ msgstr "Fet"
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/functions.php:1364
+#: ../include/functions.php:1366
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1376
+#: ../include/functions.php:1378
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1418
+#: ../include/functions.php:1420
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1423
+#: ../include/functions.php:1425
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1428
+#: ../include/functions.php:1430
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1433
+#: ../include/functions.php:1435
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1538
+#: ../include/functions.php:1540
 msgid "Search for"
 msgstr "Sök efter"
 

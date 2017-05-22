@@ -1186,6 +1186,8 @@ function head_theme_core()
 	{
 		echo "<meta name='description' content='".esc_attr($meta_description)."'>";
 	}
+
+	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
 }
 
 function get_logo()
