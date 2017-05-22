@@ -1212,6 +1212,7 @@ function print_styles_theme_core()
 
 		$version = 0;
 		$output = "";
+		$error = false;
 
 		foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
 		{
@@ -1221,18 +1222,29 @@ function print_styles_theme_core()
 
 			if(get_file_suffix($arr_style['file']) == 'php')
 			{
-				$output .= wp_remote_retrieve_body(wp_remote_get($arr_style['file']));
+				//$output .= wp_remote_retrieve_body(wp_remote_get($arr_style['file']));
+				list($content, $headers) = get_url_content($arr_style['file'], true);
+
+				if(isset($headers['http_code']) && $headers['http_code'] == 200)
+				{
+					$output .= $content;
+				}
+
+				else
+				{
+					$error = true;
+
+					do_log(sprintf(__("Could not load %s", 'lang_theme_core'), $arr_style['file']));
+				}
 			}
 
 			else
 			{
 				$output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_style['file'])));
 			}
-
-			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($output));
 		}
 
-		if($output != '')
+		if($output != '' && $error == false)
 		{
 			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/styles");
 			$file = "style.css";
@@ -1265,6 +1277,7 @@ function print_scripts_theme_core()
 
 		$version = 0;
 		$output = $translation = "";
+		$error = false;
 
 		foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
 		{
@@ -1295,9 +1308,22 @@ function print_scripts_theme_core()
 				$translation .= "};";
 			}
 
-			if(get_file_suffix($arr_script['file']) == 'php')
+			if(get_file_suffix($arr_style['file']) == 'php')
 			{
-				$output .= wp_remote_retrieve_body(wp_remote_get($arr_script['file']));
+				//$output .= wp_remote_retrieve_body(wp_remote_get($arr_script['file']));
+				list($content, $headers) = get_url_content($arr_script['file'], true);
+
+				if(isset($headers['http_code']) && $headers['http_code'] == 200)
+				{
+					$output .= $content;
+				}
+
+				else
+				{
+					$error = true;
+
+					do_log(sprintf(__("Could not load %s", 'lang_theme_core'), $arr_script['file']));
+				}
 			}
 
 			else
@@ -1308,7 +1334,7 @@ function print_scripts_theme_core()
 			//do_log("Add ".$handle.", ".int2point($version).", ".strlen($output));
 		}
 
-		if($output != '')
+		if($output != '' && $error == false)
 		{
 			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/scripts");
 			$file = "script.js";
