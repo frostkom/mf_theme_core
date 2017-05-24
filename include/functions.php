@@ -319,7 +319,7 @@ function enqueue_theme_fonts()
 
 			if(isset($options_fonts[$font]['url']) && $options_fonts[$font]['url'] != '')
 			{
-				wp_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
+				mf_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
 			}
 		}
 	}
@@ -336,21 +336,8 @@ function check_htaccess($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/(BEGIN Theme Core)/", $content)) //|FileETag None
+		if(!preg_match("/(BEGIN Theme Core)/", $content))
 		{
-			/*$recommend_htaccess = "ExpiresActive On
-ExpiresByType text/javascript 'A604800'
-ExpiresByType text/css 'A604800'
-ExpiresByType image/x-icon 'A31536000'
-ExpiresByType image/gif 'A604800'
-ExpiresByType image/jpg 'A604800'
-ExpiresByType image/jpeg 'A604800'
-ExpiresByType image/png 'A604800'
-
-FileETag None
-
-Header set Cache-Control 'must-revalidate'";*/
-
 			$recommend_htaccess = "# BEGIN Theme Core
 <IfModule mod_gzip.c>
 	mod_gzip_on Yes
@@ -696,37 +683,37 @@ function get_theme_fonts()
 	$options_fonts[3] = array(
 		'title' => "Droid Sans",
 		'style' => "'Droid Sans', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Droid+Sans"
+		'url' => "http://fonts.googleapis.com/css?family=Droid+Sans"
 	);
 
 	$options_fonts[5] = array(
 		'title' => "Droid Serif",
 		'style' => "'Droid Serif', serif",
-		'url' => "//fonts.googleapis.com/css?family=Droid+Serif"
+		'url' => "http://fonts.googleapis.com/css?family=Droid+Serif"
 	);
 
 	$options_fonts[1] = array(
 		'title' => "Courgette",
 		'style' => "'Courgette', cursive",
-		'url' => "//fonts.googleapis.com/css?family=Courgette"
+		'url' => "http://fonts.googleapis.com/css?family=Courgette"
 	);
 
 	$options_fonts[6] = array(
 		'title' => "Garamond",
 		'style' => "'EB Garamond', serif",
-		'url' => "//fonts.googleapis.com/css?family=EB+Garamond"
+		'url' => "http://fonts.googleapis.com/css?family=EB+Garamond"
 	);
 
 	$options_fonts['lato'] = array(
 		'title' => "Lato",
 		'style' => "'Lato', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Lato"
+		'url' => "http://fonts.googleapis.com/css?family=Lato"
 	);
 
 	$options_fonts['montserrat'] = array(
 		'title' => "Montserrat",
 		'style' => "'Montserrat', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
+		'url' => "http://fonts.googleapis.com/css?family=Montserrat:400,700"
 	);
 
 	$options_fonts[2] = array(
@@ -738,43 +725,43 @@ function get_theme_fonts()
 	$options_fonts[4] = array(
 		'title' => "Open Sans",
 		'style' => "'Open Sans', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Open+Sans"
+		'url' => "http://fonts.googleapis.com/css?family=Open+Sans"
 	);
 
 	$options_fonts['oswald'] = array(
 		'title' => "Oswald",
 		'style' => "'Oswald', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Oswald"
+		'url' => "http://fonts.googleapis.com/css?family=Oswald"
 	);
 
 	$options_fonts['roboto'] = array(
 		'title' => "Roboto",
 		'style' => "'Roboto', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto"
+		'url' => "http://fonts.googleapis.com/css?family=Roboto"
 	);
 
 	$options_fonts['roboto_condensed'] = array(
 		'title' => "Roboto Condensed",
 		'style' => "'Roboto Condensed', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto+Condensed"
+		'url' => "http://fonts.googleapis.com/css?family=Roboto+Condensed"
 	);
 
 	$options_fonts['roboto_mono'] = array(
 		'title' => "Roboto Mono",
 		'style' => "'Roboto Mono', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
+		'url' => "http://fonts.googleapis.com/css?family=Roboto+Mono"
 	);
 
 	$options_fonts['sorts_mill_goudy'] = array(
 		'title' => "Sorts Mill Goudy",
 		'style' => "'sorts-mill-goudy',serif",
-		'url' => "//fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
+		'url' => "http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
 	);
 
 	$options_fonts['source_sans_pro'] = array(
 		'title' => "Source Sans Pro",
 		'style' => "'Source Sans Pro', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Source+Sans+Pro"
+		'url' => "http://fonts.googleapis.com/css?family=Source+Sans+Pro"
 	);
 
 	return $options_fonts;
@@ -1207,6 +1194,7 @@ function print_styles_theme_core()
 {
 	if(isset($GLOBALS['mf_styles']) && count($GLOBALS['mf_styles']) > 0 && get_option_or_default('setting_merge_css', 'yes') == 'yes')
 	{
+		$site_url_clean = get_site_url_clean(array('trim' => "/"));
 		$file_url_base = site_url()."/wp-content";
 		$file_dir_base = WP_CONTENT_DIR;
 
@@ -1219,7 +1207,9 @@ function print_styles_theme_core()
 
 			//$output .= "\n\n/* ".$handle." */\n";
 
-			if(get_file_suffix($arr_style['file']) == 'php')
+			//do_log("/".$site_url_clean."/i == ".$arr_style['file']." (".preg_match("/(".$site_url_clean.")/i", $arr_style['file']).")");
+
+			if(get_file_suffix($arr_style['file']) == 'php' || preg_match("/(".$site_url_clean.")/i", $arr_style['file']) == false)
 			{
 				list($content, $headers) = get_url_content($arr_style['file'], true);
 
