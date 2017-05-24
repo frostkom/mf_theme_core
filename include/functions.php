@@ -1232,7 +1232,7 @@ function print_styles_theme_core()
 				{
 					unset($GLOBALS['mf_styles'][$handle]);
 
-					do_log(sprintf(__("Could not load %s", 'lang_theme_core'), $arr_style['file']));
+					//do_log(sprintf(__("Could not load %s", 'lang_theme_core'), $arr_style['file']));
 				}
 			}
 
