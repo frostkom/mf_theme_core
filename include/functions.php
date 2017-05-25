@@ -1256,8 +1256,16 @@ function print_styles_theme_core()
 	}
 }
 
+function default_scripts_theme_core(&$scripts)
+{
+	$scripts->remove('jquery');
+	$scripts->add('jquery', false, array('jquery-core'), '1.12.4');
+}
+
 function print_scripts_theme_core()
 {
+	wp_deregister_script('wp-embed');
+
 	if(isset($GLOBALS['mf_scripts']) && count($GLOBALS['mf_scripts']) > 0 && get_option_or_default('setting_merge_js', 'yes') == 'yes')
 	{
 		$file_url_base = site_url()."/wp-content";
