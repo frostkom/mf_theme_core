@@ -105,22 +105,7 @@ function get_options_page_theme_core($data = array())
 
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
 
-	/*$dir_exists = true;
-
-	if(!is_dir($upload_path))
-	{
-		if(!mkdir($upload_path, 0755, true))
-		{
-			$dir_exists = false;
-		}
-	}
-
-	if($dir_exists == false)
-	{
-		$error_text = __("Could not create a folder in uploads. Please add the correct rights for the script to create a new subfolder", 'lang_theme_core');
-	}
-
-	else */if(isset($_POST['btnThemeBackup']))
+	if(isset($_POST['btnThemeBackup']))
 	{
 		list($options_params, $options) = get_params();
 
@@ -196,7 +181,7 @@ function get_options_page_theme_core($data = array())
 		<h2>".__("Theme Options", 'lang_theme_core')."</h2>"
 		.get_notification();
 
-		if($dir_exists == true)
+		if($upload_path != '')
 		{
 			$out .= "<div id='poststuff'>
 				<div id='post-body' class='columns-2'>
@@ -262,6 +247,11 @@ function get_options_page_theme_core($data = array())
 					</div>
 				</div>
 			</div>";
+		}
+
+		else if($error_text != '')
+		{
+			$out .= $error_text;
 		}
 
 	$out .= "</div>";
@@ -1235,22 +1225,31 @@ function print_styles_theme_core()
 		if($output != '')
 		{
 			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/styles");
-			$file = "style.css";
 
-			$output = compress_css($output);
-
-			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
-
-			if($success == true)
+			if($upload_path != '')
 			{
-				foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
+				$file = "style.css";
+
+				$output = compress_css($output);
+
+				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
+
+				if($success == true)
 				{
-					wp_deregister_style($handle);
+					foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
+					{
+						wp_deregister_style($handle);
+					}
+
+					$version = int2point($version);
+
+					wp_enqueue_style('mf_styles', $upload_url.$file, array(), $version);
 				}
+			}
 
-				$version = int2point($version);
-
-				wp_enqueue_style('mf_styles', $upload_url.$file, array(), $version);
+			else if($error_text != '')
+			{
+				do_log($error_text);
 			}
 		}
 	}
@@ -1264,6 +1263,8 @@ function default_scripts_theme_core(&$scripts)
 
 function print_scripts_theme_core()
 {
+	global $error_text;
+
 	wp_deregister_script('wp-embed');
 
 	if(isset($GLOBALS['mf_scripts']) && count($GLOBALS['mf_scripts']) > 0 && get_option_or_default('setting_merge_js', 'yes') == 'yes')
@@ -1310,27 +1311,36 @@ function print_scripts_theme_core()
 		if($output != '' && $error == false)
 		{
 			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/scripts");
-			$file = "script.js";
 
-			$output = compress_js($output);
-
-			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
-
-			if($success == true)
+			if($upload_path != '')
 			{
-				foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
+				$file = "script.js";
+
+				$output = compress_js($output);
+
+				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
+
+				if($success == true)
 				{
-					wp_deregister_script($handle);
+					foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
+					{
+						wp_deregister_script($handle);
+					}
+
+					$version = int2point($version);
+
+					wp_enqueue_script('mf_scripts', $upload_url.$file, array('jquery'), $version, true);
+
+					if($translation != '')
+					{
+						echo "<script>".$translation."</script>";
+					}
 				}
+			}
 
-				$version = int2point($version);
-
-				wp_enqueue_script('mf_scripts', $upload_url.$file, array('jquery'), $version, true);
-
-				if($translation != '')
-				{
-					echo "<script>".$translation."</script>";
-				}
+			else if($error_text != '')
+			{
+				do_log($error_text);
 			}
 		}
 	}
