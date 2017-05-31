@@ -82,7 +82,7 @@ jQuery(function($)
 
 			showOverlay();
 
-			dom_obj.load(data.url + ' ' + dom_element + ">*", loadCallback);
+			dom_obj.load(data.url + (data.url.match(/(\?)/) ? "&" : "?") + "content_only" + " " + dom_element + ">*", loadCallback);
 		}
 
 		var url = location.href;
