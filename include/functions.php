@@ -156,6 +156,11 @@ function get_options_page_theme_core($data = array())
 					{
 						set_theme_mod($key, $value);
 					}
+
+					else
+					{
+						remove_theme_mod($key);
+					}
 				}
 
 				$done_text = __("The restore was successful", 'lang_theme_core');
@@ -174,7 +179,7 @@ function get_options_page_theme_core($data = array())
 	{
 		unlink($upload_path.$strFileName);
 
-		$done_text = __("The file was deleted successfully", 'lang_parallax');
+		$done_text = __("The file was deleted successfully", 'lang_theme_core');
 	}
 
 	$out .= "<div class='wrap'>
