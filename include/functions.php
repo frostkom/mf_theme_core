@@ -1552,8 +1552,9 @@ function widgets_theme_core()
 function get_search_theme_core($data = array())
 {
 	if(!isset($data['placeholder']) || $data['placeholder'] == ''){		$data['placeholder'] = __("Search for", 'lang_theme_core');}
+	if(!isset($data['animate']) || $data['animate'] == ''){				$data['animate'] = 'yes';}
 
-	return "<form action='".get_site_url()."' method='get' class='searchform mf_form'>"
+	return "<form action='".get_site_url()."' method='get' class='searchform mf_form".($data['animate'] == 'yes' ? " search_animate" : "")."'>"
 		.show_textfield(array('name' => 's', 'value' => check_var('s'), 'placeholder' => $data['placeholder']))
 		."<i class='fa fa-search'></i>"
 	."</form>";

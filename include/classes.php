@@ -134,7 +134,7 @@ class widget_theme_core_search extends WP_Widget
 
 		extract($args);
 
-		echo get_search_theme_core(array('placeholder' => $instance['search_placeholder']));
+		echo get_search_theme_core(array('placeholder' => $instance['search_placeholder'], 'animate' => $instance['search_animate']));
 	}
 
 	function update($new_instance, $old_instance)
@@ -142,6 +142,7 @@ class widget_theme_core_search extends WP_Widget
 		$instance = $old_instance;
 
 		$instance['search_placeholder'] = strip_tags($new_instance['search_placeholder']);
+		$instance['search_animate'] = strip_tags($new_instance['search_animate']);
 
 		return $instance;
 	}
@@ -150,11 +151,13 @@ class widget_theme_core_search extends WP_Widget
 	{
 		$defaults = array(
 			'search_placeholder' => "",
+			'search_animate' => 'yes',
 		);
 		$instance = wp_parse_args((array)$instance, $defaults);
 
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
 		."</div>";
 	}
 }
