@@ -575,34 +575,90 @@ function column_cell_theme_core($col, $id)
 	switch($col)
 	{
 		case 'seo':
-			$post_excerpt = mf_get_post_content($id, 'post_excerpt');
+			$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
 
-			if($post_excerpt != '')
+			foreach($result as $r)
 			{
-				$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND ID != '%d' LIMIT 0, 1", $post_excerpt, $id));
+				$post_title = $r->post_title;
+				$post_excerpt = $r->post_excerpt;
+				$post_type = $r->post_type;
 
-				if($post_id_duplicate > 0)
+				$seo_type = '';
+
+				if($seo_type == '')
 				{
-					echo "<i class='fa fa-lg fa-close red'></i>
-					<div class='row-actions'>
-						<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-							.sprintf(__("The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
-						."</a>
-					</div>";
+					if($post_excerpt != '')
+					{
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_excerpt, $post_type, $id));
+
+						if($post_id_duplicate > 0)
+						{
+							$seo_type = 'duplicate_excerpt';
+						}
+					}
+
+					else
+					{
+						$seo_type = 'no_excerpt';
+					}
 				}
 
-				else
+				if($seo_type == '')
 				{
-					echo "<i class='fa fa-lg fa-check green'></i>";
-				}
-			}
+					if($post_title != '')
+					{
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_title, $post_type, $id));
 
-			else
-			{
-				echo "<i class='fa fa-lg fa-close red'></i>
-				<div class='row-actions'>"
-					.__("You have not set an excerpt for this page", 'lang_theme_core')
-				."</div>";
+						if($post_id_duplicate > 0)
+						{
+							$seo_type = 'duplicate_title';
+						}
+					}
+
+					else
+					{
+						$seo_type = 'no_title';
+					}
+				}
+
+				switch($seo_type)
+				{
+					case 'duplicate_title':
+						echo "<i class='fa fa-lg fa-close red'></i>
+						<div class='row-actions'>
+							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+							."</a>
+						</div>";
+					break;
+
+					case 'no_title':
+						echo "<i class='fa fa-lg fa-close red'></i>
+						<div class='row-actions'>"
+							.__("You have not set a title for this page", 'lang_theme_core')
+						."</div>";
+					break;
+
+					case 'duplicate_excerpt':
+						echo "<i class='fa fa-lg fa-close red'></i>
+						<div class='row-actions'>
+							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+								.sprintf(__("The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+							."</a>
+						</div>";
+					break;
+
+					case 'no_excerpt':
+						echo "<i class='fa fa-lg fa-close red'></i>
+						<div class='row-actions'>"
+							.__("You have not set an excerpt for this page", 'lang_theme_core')
+						."</div>";
+					break;
+
+					default:
+						echo "<i class='fa fa-lg fa-check green'></i>";
+					break;
+				}
 			}
 		break;
 	}
@@ -1202,8 +1258,6 @@ function print_styles_theme_core()
 
 			//$output .= "\n\n/* ".$handle." */\n";
 
-			//do_log("/".$site_url_clean."/i == ".$arr_style['file']." (".preg_match("/(".$site_url_clean.")/i", $arr_style['file']).")");
-
 			if(get_file_suffix($arr_style['file']) == 'php' || preg_match("/(".$site_url_clean.")/i", $arr_style['file']) == false)
 			{
 				list($content, $headers) = get_url_content($arr_style['file'], true);
@@ -1529,6 +1583,7 @@ function widgets_theme_core()
 {
 	register_widget('widget_theme_core_search');
 	register_widget('widget_theme_core_news');
+	register_widget('widget_theme_core_promo');
 	mf_unregister_widget('WP_Widget_Recent_Posts');
 
 	mf_unregister_widget('WP_Widget_Archives');

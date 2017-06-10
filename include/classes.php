@@ -1,11 +1,59 @@
 <?php
 
+class widget_theme_core_search extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_search',
+			'description' => __("Display Search Form", 'lang_theme_core')
+		);
+
+		$control_ops = array('id_base' => 'theme-search-widget');
+
+		parent::__construct('theme-search-widget', __("Search", 'lang_theme_core'), $widget_ops, $control_ops);
+	}
+
+	function widget($args, $instance)
+	{
+		global $wpdb;
+
+		extract($args);
+
+		echo get_search_theme_core(array('placeholder' => $instance['search_placeholder'], 'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : 'yes')));
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+
+		$instance['search_placeholder'] = strip_tags($new_instance['search_placeholder']);
+		$instance['search_animate'] = isset($new_instance['search_animate']) ? strip_tags($new_instance['search_animate']) : 'yes';
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$defaults = array(
+			'search_placeholder' => "",
+			'search_animate' => 'yes',
+		);
+		$instance = wp_parse_args((array)$instance, $defaults);
+
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
+		."</div>";
+	}
+}
+
 class widget_theme_core_news extends WP_Widget
 {
 	function __construct()
 	{
 		$widget_ops = array(
-			'classname' => 'theme_news',
+			'classname' => 'theme_promo',
 			'description' => __("Display News/Posts", 'lang_theme_core')
 		);
 
@@ -75,11 +123,11 @@ class widget_theme_core_news extends WP_Widget
 				echo "<div class='section'>
 					<ul".($arr_news > 2 ? "" : " class='allow_expand'").">";
 
-						foreach($arr_news as $news)
+						foreach($arr_news as $page)
 						{
 							echo "<li>
-								<div class='image'><a href='".$news['url']."'>".$news['image']."</a></div>
-								<h4>".$news['title']."</h4>
+								<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
+								<h4>".$page['title']."</h4>
 							</li>";
 						}
 
@@ -114,18 +162,18 @@ class widget_theme_core_news extends WP_Widget
 	}
 }
 
-class widget_theme_core_search extends WP_Widget
+class widget_theme_core_promo extends WP_Widget
 {
 	function __construct()
 	{
 		$widget_ops = array(
-			'classname' => 'theme_search',
-			'description' => __("Display Search Form", 'lang_theme_core')
+			'classname' => 'theme_promo',
+			'description' => __("Promote Pages", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-search-widget');
+		$control_ops = array('id_base' => 'theme-promo-widget');
 
-		parent::__construct('theme-search-widget', __("Search", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $widget_ops, $control_ops);
 	}
 
 	function widget($args, $instance)
@@ -134,15 +182,76 @@ class widget_theme_core_search extends WP_Widget
 
 		extract($args);
 
-		echo get_search_theme_core(array('placeholder' => $instance['search_placeholder'], 'animate' => $instance['search_animate']));
+		$arr_pages = array();
+
+		$result = $wpdb->get_results("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY post_date DESC");
+
+		if($wpdb->num_rows > 0)
+		{
+			$post_thumbnail_size = 'large';
+
+			foreach($result as $post)
+			{
+				$post_id = $post->ID;
+				$post_title = $post->post_title;
+
+				$post_url = get_permalink($post_id);
+
+				$post_url_start = "<a href='".$post_url."'>";
+				$post_url_end = "</a>";
+
+				$post_thumbnail = "";
+
+				if(has_post_thumbnail($post_id))
+				{
+					$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
+				}
+
+				if($post_thumbnail != '')
+				{
+					$arr_pages[$post_id] = array(
+						'title' => $post_title,
+						'url' => $post_url,
+						'image' => $post_thumbnail,
+					);
+				}
+			}
+		}
+
+		if(count($arr_pages) > 0)
+		{
+			echo $before_widget;
+
+				if($instance['promo_title'] != '')
+				{
+					echo $before_title
+						.$instance['promo_title']
+					.$after_title;
+				}
+
+				echo "<div class='section'>
+					<ul".($arr_pages > 2 ? "" : " class='allow_expand'").">";
+
+						foreach($arr_pages as $page)
+						{
+							echo "<li>
+								<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
+								<h4>".$page['title']."</h4>
+							</li>";
+						}
+
+					echo "</ul>
+				</div>"
+			.$after_widget;
+		}
 	}
 
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
 
-		$instance['search_placeholder'] = strip_tags($new_instance['search_placeholder']);
-		$instance['search_animate'] = strip_tags($new_instance['search_animate']);
+		$instance['promo_title'] = strip_tags($new_instance['promo_title']);
+		$instance['promo_include'] = $new_instance['promo_include'];
 
 		return $instance;
 	}
@@ -150,14 +259,17 @@ class widget_theme_core_search extends WP_Widget
 	function form($instance)
 	{
 		$defaults = array(
-			'search_placeholder' => "",
-			'search_animate' => 'yes',
+			'promo_title' => "",
+			'promo_include' => array(),
 		);
 		$instance = wp_parse_args((array)$instance, $defaults);
 
+		$arr_data = array();
+		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
+
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
-			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
+			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title']))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
 		."</div>";
 	}
 }
