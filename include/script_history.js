@@ -5,7 +5,10 @@ function collect_on_load(str_function)
 	arr_functions.push(str_function);
 }
 
-var scroll_start = 0;
+var scroll_start = 0,
+	dom_element,
+	dom_obj,
+	dom_overlay;
 
 jQuery.fn.hideSplash = function(o)
 {
@@ -14,76 +17,107 @@ jQuery.fn.hideSplash = function(o)
 	this.slideUp('800');
 };
 
-jQuery(function($)
+function showOverlay()
 {
-	"use strict";
+	dom_overlay.fadeIn();
+}
 
-	if(typeof history.pushState != 'undefined')
+function hideOverlay()
+{
+	dom_overlay.fadeOut();
+}
+
+function is_same_page(url)
+{
+	var current_url = location.href.split('#'),
+		link_url = url.split('#');
+
+	return current_url[0] == link_url[0];
+}
+
+function process_url(url, e)
+{
+	if(url.indexOf('wp-admin') > -1 || url.indexOf('uploads') > -1){}
+
+	else if(url.indexOf('#') > -1)
 	{
-		$('body').append("<div id='overlay_history'><i class='fa fa-spinner fa-spin fa-2x'></i></div>");
-
-		var dom_element = "#wrapper",
-			dom_obj = $(dom_element),
-			dom_overlay = $('#overlay_history');
-
-		String.prototype.decodeHTML = function()
+		if(is_same_page(url))
 		{
-			return $("<div>", {html: "" + this}).html().replace("&amp;", "&");
-		};
+			history.pushState({}, null, url);
+		}
+	}
+
+	else if(url.indexOf(document.domain) > -1)
+	{
+		if(e)
+		{
+			e.preventDefault();
+		}
+
+		requestContent({'url': url, 'push': true});
+
+		return false;
+	}
+}
+
+String.prototype.decodeHTML = function()
+{
+	return jQuery("<div>", {html: "" + this}).html().replace("&amp;", "&");
+};
+
+function loadCallback(html, status, xhr)
+{
+	if(status == "error")
+	{
+		console.log(xhr.status + " " + xhr.statusText);
+	}
+
+	else
+	{
+		jQuery('html, body').animate({scrollTop: 0}, 800);
+
+		var new_title = html.match(/<title>(.*?)<\/title>/)[1].trim().decodeHTML(),
+			new_class = html.match(/<body.*?class\=[\'\"](.*?)[\'\"].*>/)[1].trim();
+
+		document.title = new_title;
+
+		jQuery('body').attr({'class': new_class});
+
+		hideOverlay();
 
 		function run_on_load()
 		{
-			$.each(arr_functions, function(index, value)
+			jQuery.each(arr_functions, function(index, value)
 			{
 				eval(value + "();");
 			});
 		}
 
-		function showOverlay()
-		{
-			dom_overlay.fadeIn();
-		}
+		run_on_load();
+	}
+}
 
-		function hideOverlay()
-		{
-			dom_overlay.fadeOut();
-		}
+function requestContent(data)
+{
+	if(data.push == true)
+	{
+		history.pushState({}, null, data.url);
+	}
 
-		function loadCallback(html, status, xhr)
-		{
-			if(status == "error")
-			{
-				console.log(xhr.status + " " + xhr.statusText);
-			}
+	showOverlay();
 
-			else
-			{
-				$('html, body').animate({scrollTop: 0}, 800);
+	dom_obj.load(data.url + (data.url.match(/(\?)/) ? "&" : "?") + "content_only" + " " + dom_element + ">*", loadCallback);
+}
 
-				var new_title = html.match(/<title>(.*?)<\/title>/)[1].trim().decodeHTML(),
-					new_class = html.match(/<body.*?class\=[\'\"](.*?)[\'\"].*>/)[1].trim();
+jQuery(function($)
+{
+	if(typeof history.pushState != 'undefined')
+	{
+		$('body').append("<div id='overlay_history'><i class='fa fa-spinner fa-spin fa-2x'></i></div>");
 
-				document.title = new_title;
-
-				$('body').attr({'class': new_class});
-
-				hideOverlay();
-
-				run_on_load();
-			}
-		}
-
-		function requestContent(data)
-		{
-			if(data.push == true)
-			{
-				history.pushState({}, null, data.url);
-			}
-
-			showOverlay();
-
-			dom_obj.load(data.url + (data.url.match(/(\?)/) ? "&" : "?") + "content_only" + " " + dom_element + ">*", loadCallback);
-		}
+		dom_element = "#wrapper";
+		dom_obj = $(dom_element);
+		dom_overlay = $('#overlay_history');
 
 		var url = location.href;
 		history.pushState({}, null, url);
@@ -98,36 +132,11 @@ jQuery(function($)
 			}
 		});
 
-		function is_same_page(url)
-		{
-			var current_url = location.href.split('#'),
-				link_url = url.split('#');
-
-			return current_url[0] == link_url[0];
-		}
-
 		$(document).on('click', 'a', function(e)
 		{
 			var url = $(this).attr("href");
 
-			if(url.indexOf('wp-admin') > -1 || url.indexOf('uploads') > -1){}
-
-			else if(url.indexOf('#') > -1)
-			{
-				if(is_same_page(url))
-				{
-					history.pushState({}, null, url);
-				}
-			}
-
-			else if(url.indexOf(document.domain) > -1)
-			{
-				e.preventDefault();
-
-				requestContent({'url': url, 'push': true});
-
-				return false;
-			}
+			process_url(url, e);
 		});
 
 		$(document).on('submit', 'form', function()
