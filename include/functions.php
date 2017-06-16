@@ -1512,6 +1512,8 @@ function admin_bar_theme_core()
 
 function init_theme_core()
 {
+	mf_enqueue_style('style_theme_core', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
+
 	if(get_option('setting_responsiveness') == 1)
 	{
 		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);

@@ -86,11 +86,6 @@ class widget_theme_core_news extends WP_Widget
 				$post_id = $post->ID;
 				$post_title = $post->post_title;
 
-				$post_url = get_permalink($post_id);
-
-				$post_url_start = "<a href='".$post_url."'>";
-				$post_url_end = "</a>";
-
 				$post_thumbnail = "";
 
 				if(has_post_thumbnail($post_id))
@@ -100,6 +95,8 @@ class widget_theme_core_news extends WP_Widget
 
 				if($post_thumbnail != '')
 				{
+					$post_url = get_permalink($post_id);
+
 					$arr_news[$post_id] = array(
 						'title' => $post_title,
 						'url' => $post_url,
@@ -182,67 +179,85 @@ class widget_theme_core_promo extends WP_Widget
 
 		extract($args);
 
-		$arr_pages = array();
-
-		$result = $wpdb->get_results("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY post_date DESC");
-
-		if($wpdb->num_rows > 0)
+		if(isset($instance['promo_include']) && count($instance['promo_include']) > 0)
 		{
-			$post_thumbnail_size = 'large';
+			$arr_pages = array();
 
-			foreach($result as $post)
+			$result = $wpdb->get_results("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY post_date DESC");
+
+			if($wpdb->num_rows > 0)
 			{
-				$post_id = $post->ID;
-				$post_title = $post->post_title;
+				$post_thumbnail_size = 'large';
 
-				$post_url = get_permalink($post_id);
-
-				$post_url_start = "<a href='".$post_url."'>";
-				$post_url_end = "</a>";
-
-				$post_thumbnail = "";
-
-				if(has_post_thumbnail($post_id))
+				foreach($result as $post)
 				{
-					$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
-				}
+					$post_id = $post->ID;
+					$post_title = $post->post_title;
+					$post_content = $post->post_content;
 
-				if($post_thumbnail != '')
-				{
-					$arr_pages[$post_id] = array(
-						'title' => $post_title,
-						'url' => $post_url,
-						'image' => $post_thumbnail,
-					);
+					$post_thumbnail = "";
+
+					if(has_post_thumbnail($post_id))
+					{
+						$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
+					}
+
+					if($post_thumbnail != '')
+					{
+						$post_url = get_permalink($post_id);
+
+						$arr_pages[$post_id] = array(
+							'title' => $post_title,
+							'url' => $post_url,
+							'image' => $post_thumbnail,
+						);
+					}
+
+					else if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
+					{
+						$arr_pages[$post_id] = array(
+							'content' => $post_content,
+						);
+					}
 				}
 			}
-		}
 
-		if(count($arr_pages) > 0)
-		{
-			echo $before_widget;
+			if(count($arr_pages) > 0)
+			{
+				echo $before_widget;
 
-				if($instance['promo_title'] != '')
-				{
-					echo $before_title
-						.$instance['promo_title']
-					.$after_title;
-				}
+					if($instance['promo_title'] != '')
+					{
+						echo $before_title
+							.$instance['promo_title']
+						.$after_title;
+					}
 
-				echo "<div class='section'>
-					<ul".($arr_pages > 2 ? "" : " class='allow_expand'").">";
+					echo "<div class='section'>
+						<ul".($arr_pages > 2 ? "" : " class='allow_expand'").">";
 
-						foreach($arr_pages as $page)
-						{
-							echo "<li>
-								<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
-								<h4>".$page['title']."</h4>
-							</li>";
-						}
+							foreach($arr_pages as $page)
+							{
+								if(isset($page['image']))
+								{
+									echo "<li>
+										<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
+										<h4>".$page['title']."</h4>
+									</li>";
+								}
 
-					echo "</ul>
-				</div>"
-			.$after_widget;
+								else
+								{
+									echo "<li>
+										<div class='video'>".apply_filters('the_content', $page['content'])."</div>
+									</li>";
+								}
+							}
+
+						echo "</ul>
+					</div>"
+				.$after_widget;
+			}
 		}
 	}
 
@@ -251,7 +266,7 @@ class widget_theme_core_promo extends WP_Widget
 		$instance = $old_instance;
 
 		$instance['promo_title'] = strip_tags($new_instance['promo_title']);
-		$instance['promo_include'] = $new_instance['promo_include'];
+		$instance['promo_include'] = isset($new_instance['promo_include']) ? $new_instance['promo_include'] : array();
 
 		return $instance;
 	}
