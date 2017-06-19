@@ -913,7 +913,7 @@ function customize_theme($wp_customize)
 					)
 				);
 
-				if($param['type'] == "align")
+				if($param['type'] == 'align')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -932,7 +932,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "color")
+				else if($param['type'] == 'color')
 				{
 					$wp_customize->add_control(
 						new WP_Customize_Color_Control(
@@ -947,7 +947,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "checkbox")
+				else if($param['type'] == 'checkbox')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -964,7 +964,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "clear")
+				else if($param['type'] == 'clear')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -984,7 +984,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if(in_array($param['type'], array("date", "email", "hidden", "number", "text", "textarea", "url")))
+				else if(in_array($param['type'], array('date', 'email', 'hidden', 'number', 'text', 'textarea', 'url')))
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -996,7 +996,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "float")
+				else if($param['type'] == 'float')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -1009,6 +1009,7 @@ function customize_theme($wp_customize)
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
 								'none' => __("None", 'lang_theme_core'),
 								'left' => __("Left", 'lang_theme_core'),
+								'center' => __("Center", 'lang_theme_core'),
 								'right' => __("Right", 'lang_theme_core'),
 								'initial' => __("Initial", 'lang_theme_core'),
 								'inherit' => __("Inherit", 'lang_theme_core'),
@@ -1017,7 +1018,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "font")
+				else if($param['type'] == 'font')
 				{
 					$choices = array();
 					$choices[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
@@ -1039,7 +1040,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "image")
+				else if($param['type'] == 'image')
 				{
 					$wp_customize->add_control(
 						new WP_Customize_Image_Control(
@@ -1055,7 +1056,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "overflow")
+				else if($param['type'] == 'overflow')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -1077,7 +1078,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "position")
+				else if($param['type'] == 'position')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -1095,7 +1096,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "text_transform")
+				else if($param['type'] == 'text_transform')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -1113,7 +1114,7 @@ function customize_theme($wp_customize)
 					);
 				}
 
-				else if($param['type'] == "weight")
+				else if($param['type'] == 'weight')
 				{
 					$wp_customize->add_control(
 						$param['id'],
@@ -1154,9 +1155,15 @@ function render_css($data)
 
 	$out = "";
 
-	if($prop == "font-family" && (!isset($options[$val]) || !isset($options_fonts[$options[$val]]['style'])))
+	if($prop == 'font-family' && (!isset($options[$val]) || !isset($options_fonts[$options[$val]]['style'])))
 	{
 		$options[$val] = "";
+	}
+
+	if($prop == 'float' && $options[$val] == 'center')
+	{
+		$prop = 'margin';
+		$options[$val] = '0 auto';
 	}
 
 	if(isset($options[$val]) && $options[$val] != '')
@@ -1171,7 +1178,7 @@ function render_css($data)
 			$out .= $pre;
 		}
 
-			if($prop == "font-family")
+			if($prop == 'font-family')
 			{
 				$out .= $options_fonts[$options[$val]]['style'];
 			}

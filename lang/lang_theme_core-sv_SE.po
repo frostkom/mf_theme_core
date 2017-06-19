@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-10 15:17+0100\n"
+"POT-Creation-Date: 2017-06-19 09:35+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -49,24 +49,24 @@ msgstr "Visa nyheter/inlägg"
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:159
-#: ../include/classes.php:271
+#: ../include/classes.php:156
+#: ../include/classes.php:286
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:160
+#: ../include/classes.php:157
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:171
+#: ../include/classes.php:168
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:176
+#: ../include/classes.php:173
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:272
+#: ../include/classes.php:287
 msgid "Pages"
 msgstr "Sidor"
 
@@ -246,11 +246,11 @@ msgstr "Du har inte angett ett utdrag för denna sida"
 #: ../include/functions.php:926
 #: ../include/functions.php:977
 #: ../include/functions.php:1009
-#: ../include/functions.php:1023
-#: ../include/functions.php:1068
-#: ../include/functions.php:1090
-#: ../include/functions.php:1108
-#: ../include/functions.php:1126
+#: ../include/functions.php:1024
+#: ../include/functions.php:1069
+#: ../include/functions.php:1091
+#: ../include/functions.php:1109
+#: ../include/functions.php:1127
 msgid "Choose here"
 msgstr "Välj här"
 
@@ -261,12 +261,13 @@ msgid "Left"
 msgstr "Vänster"
 
 #: ../include/functions.php:928
+#: ../include/functions.php:1012
 msgid "Center"
 msgstr "Centrera"
 
 #: ../include/functions.php:929
 #: ../include/functions.php:979
-#: ../include/functions.php:1012
+#: ../include/functions.php:1013
 msgid "Right"
 msgstr "Höger"
 
@@ -287,91 +288,91 @@ msgstr "Båda"
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:1013
-#: ../include/functions.php:1073
-#: ../include/functions.php:1131
-msgid "Initial"
-msgstr "Original"
-
 #: ../include/functions.php:1014
 #: ../include/functions.php:1074
 #: ../include/functions.php:1132
+msgid "Initial"
+msgstr "Original"
+
+#: ../include/functions.php:1015
+#: ../include/functions.php:1075
+#: ../include/functions.php:1133
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/functions.php:1069
+#: ../include/functions.php:1070
 msgid "Visible"
 msgstr "Visa"
 
-#: ../include/functions.php:1070
+#: ../include/functions.php:1071
 msgid "Hidden"
 msgstr "Dölj"
 
-#: ../include/functions.php:1071
+#: ../include/functions.php:1072
 msgid "Scroll"
 msgstr "Skrolla"
 
-#: ../include/functions.php:1072
+#: ../include/functions.php:1073
 msgid "Auto"
 msgstr "Auto"
 
-#: ../include/functions.php:1091
+#: ../include/functions.php:1092
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../include/functions.php:1092
+#: ../include/functions.php:1093
 msgid "Fixed"
 msgstr "Fixerad"
 
-#: ../include/functions.php:1109
+#: ../include/functions.php:1110
 msgid "Uppercase"
 msgstr "Versaler"
 
-#: ../include/functions.php:1110
+#: ../include/functions.php:1111
 msgid "Lowercase"
 msgstr "Gemener"
 
-#: ../include/functions.php:1127
+#: ../include/functions.php:1128
 msgid "Lighter"
 msgstr "Tunnare"
 
-#: ../include/functions.php:1128
+#: ../include/functions.php:1129
 msgid "Normal"
 msgstr "Normal"
 
-#: ../include/functions.php:1129
+#: ../include/functions.php:1130
 msgid "Bold"
 msgstr "Fet"
 
-#: ../include/functions.php:1130
+#: ../include/functions.php:1131
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/functions.php:1434
+#: ../include/functions.php:1441
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1446
+#: ../include/functions.php:1453
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1488
+#: ../include/functions.php:1495
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1493
+#: ../include/functions.php:1500
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1498
+#: ../include/functions.php:1505
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1503
+#: ../include/functions.php:1510
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1609
+#: ../include/functions.php:1618
 msgid "Search for"
 msgstr "Sök efter"
 
