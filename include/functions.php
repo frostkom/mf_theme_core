@@ -785,6 +785,12 @@ function get_theme_fonts()
 		'url' => "http://fonts.googleapis.com/css?family=Oswald"
 	);
 
+	$options_fonts['oxygen'] = array(
+		'title' => "Oxygen",
+		'style' => "'Oxygen', sans-serif",
+		'url' => "http://fonts.googleapis.com/css?family=Oxygen"
+	);
+
 	$options_fonts['roboto'] = array(
 		'title' => "Roboto",
 		'style' => "'Roboto', sans-serif",
