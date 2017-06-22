@@ -1,5 +1,16 @@
 <?php
 
+function get_menu_type_for_select()
+{
+	return array(
+		'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+		'main' => __("Main menu", 'lang_theme_core'),
+		'secondary' => __("Secondary", 'lang_theme_core'),
+		'both' => __("Main and Secondary menues", 'lang_theme_core'),
+		'slide' => __("Slide in from right", 'lang_theme_core'),
+	);
+}
+
 function search_form_theme_core($html)
 {
 	$html = "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
