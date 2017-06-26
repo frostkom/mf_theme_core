@@ -1,5 +1,61 @@
 @media all
 {
+	body:before
+	{
+		display: none;
+	}
+
+	html, body, div, h1, h2, h3, h4, h5, h6, p, ul, li, ol, button, form, blockquote, header, nav, #mf-pre-content, mf-content, article, section, footer
+	{
+		margin: 0;
+		padding: 0;
+	}
+
+	body, div, a, p, ol, ul, li, form, input, select, textarea, button, blockquote, iframe, h1, h2, h3, h4, h5, h6, header, nav, #mf-pre-content, mf-content, article, section, footer
+	{
+		box-sizing: border-box;
+	}
+
+	a
+	{
+		color: inherit;
+		text-decoration: none;
+	}
+
+		p a
+		{
+			text-decoration: underline;
+		}
+
+	img
+	{
+		border: 0;
+		max-width: 100%;
+	}
+
+	.clear
+	{
+		clear: both;
+	}
+
+	.aligncenter
+	{
+		margin: .5em 0;
+		text-align: center;
+	}
+
+	.alignleft
+	{
+		float: left;
+		margin: .5em 1em .5em 0;
+	}
+
+	.alignright
+	{
+		float: right;
+		margin: .5em 0 .5em 1em;
+	}
+
 	.widget.theme_promo ul
 	{
 		display: -webkit-box;
