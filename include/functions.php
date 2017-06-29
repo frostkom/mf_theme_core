@@ -586,13 +586,14 @@ function column_cell_theme_core($col, $id)
 	switch($col)
 	{
 		case 'seo':
-			$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
 
 			foreach($result as $r)
 			{
 				$post_title = $r->post_title;
 				$post_excerpt = $r->post_excerpt;
 				$post_type = $r->post_type;
+				$post_name = $r->post_name;
 
 				$seo_type = '';
 
@@ -632,6 +633,17 @@ function column_cell_theme_core($col, $id)
 					}
 				}
 
+				if($seo_type == '')
+				{
+					if($post_name != '')
+					{
+						if(sanitize_title_with_dashes(sanitize_title($post_title)) != $post_name)
+						{
+							$seo_type = 'inconsistent_url';
+						}
+					}
+				}
+
 				switch($seo_type)
 				{
 					case 'duplicate_title':
@@ -663,6 +675,13 @@ function column_cell_theme_core($col, $id)
 						echo "<i class='fa fa-lg fa-close red'></i>
 						<div class='row-actions'>"
 							.__("You have not set an excerpt for this page", 'lang_theme_core')
+						."</div>";
+					break;
+
+					case 'inconsistent_url':
+						echo "<i class='fa fa-lg fa-warning yellow'></i>
+						<div class='row-actions'>"
+							.__("The URL is not directly correlated to the title. This might be due to a title change but the old URL has not been changed to relate to this change.", 'lang_theme_core')
 						."</div>";
 					break;
 
