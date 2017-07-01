@@ -1394,7 +1394,7 @@ function print_scripts_theme_core()
 
 					foreach($arr_script['translation'] as $key => $value)
 					{
-						$translation .= "'".$key."': '".$value."'";
+						$translation .= "'".$key."': \"".$value."\"";
 
 						if($i < $count_temp)
 						{
