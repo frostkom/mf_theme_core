@@ -39,24 +39,24 @@ function process_url(url, e)
 {
 	if(url.indexOf('wp-admin') > -1 || url.indexOf('uploads') > -1){}
 
-	else if(url.indexOf('#') > -1)
+	else if(url.indexOf(document.domain) > -1)
 	{
-		if(is_same_page(url))
+		if(url.indexOf('#') > -1 && is_same_page(url))
 		{
 			history.pushState({}, null, url);
 		}
-	}
 
-	else if(url.indexOf(document.domain) > -1)
-	{
-		if(e)
+		else
 		{
-			e.preventDefault();
+			if(e)
+			{
+				e.preventDefault();
+			}
+
+			requestContent({'url': url, 'push': true});
+
+			return false;
 		}
-
-		requestContent({'url': url, 'push': true});
-
-		return false;
 	}
 }
 
