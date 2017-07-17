@@ -108,7 +108,7 @@
 			.widget.theme_promo li .image
 			{
 				background: #000;
-				/*height: 100%;*/ /* Does not work properly in Safari */
+				height: 100%; /* Does not work properly in older Safari */
 				overflow: hidden;
 				position: relative;
 			}

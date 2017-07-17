@@ -118,7 +118,7 @@ class widget_theme_core_news extends WP_Widget
 				}
 
 				echo "<div class='section'>
-					<ul".($arr_news > 2 ? "" : " class='allow_expand'").">";
+					<ul".(count($arr_news) > 2 ? "" : " class='allow_expand'").">";
 
 						foreach($arr_news as $page)
 						{
@@ -234,7 +234,7 @@ class widget_theme_core_promo extends WP_Widget
 					}
 
 					echo "<div class='section'>
-						<ul".($arr_pages > 2 ? "" : " class='allow_expand'").">";
+						<ul".(count($arr_pages) > 2 ? "" : " class='allow_expand'").">";
 
 							foreach($arr_pages as $page)
 							{
