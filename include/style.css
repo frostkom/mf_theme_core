@@ -141,7 +141,6 @@
 
 			.widget.theme_promo li h4
 			{
-				background: rgba(0, 0, 0, .4);
 				bottom: 0;
 				color: #fff;
 				font-size: 2em;
@@ -149,6 +148,11 @@
 				padding: .4em;
 				position: absolute;
 			}
+
+				.widget.theme_promo li:hover h4
+				{
+					background: rgba(0, 0, 0, .4);
+				}
 
 			.widget.theme_promo li .video iframe
 			{
