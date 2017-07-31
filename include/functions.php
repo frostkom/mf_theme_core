@@ -1634,7 +1634,7 @@ function widgets_theme_core()
 	mf_unregister_widget('WP_Widget_Archives');
 	mf_unregister_widget('WP_Widget_Calendar');
 	mf_unregister_widget('WP_Widget_Categories');
-	mf_unregister_widget('WP_Nav_Menu_Widget');
+	//mf_unregister_widget('WP_Nav_Menu_Widget');
 	mf_unregister_widget('WP_Widget_Links');
 	mf_unregister_widget('WP_Widget_Meta');
 	mf_unregister_widget('WP_Widget_Pages');
