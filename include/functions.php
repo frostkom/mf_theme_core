@@ -336,7 +336,7 @@ function enqueue_theme_fonts()
 	mf_enqueue_script('script_theme_core_customizer_preview', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'), get_plugin_version(__FILE__));
 }*/
 
-function check_htaccess($data)
+function check_htaccess_theme_core($data)
 {
 	if(basename($data['file']) == ".htaccess")
 	{
@@ -567,7 +567,7 @@ function setting_404_page_callback()
 
 function setting_theme_recommendation_callback()
 {
-	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess", 'allow_depth' => false));
+	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess_theme_core", 'allow_depth' => false));
 }
 
 function column_header_theme_core($cols)
