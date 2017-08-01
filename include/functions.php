@@ -111,6 +111,7 @@ function get_options_page_theme_core($data = array())
 
 	$out = "";
 
+	$strFileUrl = check_var('strFileUrl');
 	$strFileName = check_var('strFileName');
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
 
@@ -145,7 +146,12 @@ function get_options_page_theme_core($data = array())
 
 	else if(isset($_REQUEST['btnThemeRestore']))
 	{
-		if($strFileName != '')
+		if($strFileUrl != '')
+		{
+			list($strFileContent, $headers) = get_url_content($strFileUrl, true);
+		}
+
+		else if($strFileName != '')
 		{
 			$strFileContent = get_file_content(array('file' => $upload_path.$strFileName));
 		}
@@ -176,6 +182,9 @@ function get_options_page_theme_core($data = array())
 
 				$done_text = __("The restore was successful", 'lang_theme_core');
 
+				update_option('mf_theme_saved', date("Y-m-d H:i:s"));
+				update_option('theme_source_style_url', "");
+
 				$strFileContent = "";
 			}
 
@@ -191,6 +200,24 @@ function get_options_page_theme_core($data = array())
 		unlink($upload_path.$strFileName);
 
 		$done_text = __("The file was deleted successfully", 'lang_theme_core');
+	}
+
+	else
+	{
+		$theme_source_version = get_option('theme_source_version');
+		$theme_source_style_url = get_option('theme_source_style_url');
+
+		if($theme_source_style_url != '')
+		{
+			list($options_params, $options) = get_params();
+
+			$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $options['style_source'], "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$theme_source_style_url)."'>", "</a>");
+		}
+
+		else if($theme_source_version != '')
+		{
+			$error_text = sprintf(__("The theme at %s has got a newer version (%s). Please upgrade or contact the admin to help you with this", 'lang_theme_core'), $options['style_source'], $theme_source_version);
+		}
 	}
 
 	$out .= "<div class='wrap'>
@@ -221,16 +248,19 @@ function get_options_page_theme_core($data = array())
 
 									for($i = 0; $i < $count_temp; $i++)
 									{
-										$out .= "<tr>
+										$file_name = $globals['mf_theme_files'][$i]['name'];
+										$file_time = date("Y-m-d H:i:s", $globals['mf_theme_files'][$i]['time']);
+
+										$out .= "<tr".($file_time > get_option('mf_theme_saved') ? " class='green'" : "").">
 											<td>"
 												.$globals['mf_theme_files'][$i]['name']
 												."<div class='row-actions'>
-													<a href='".$upload_url.$globals['mf_theme_files'][$i]['name']."'>".__("Download", 'lang_theme_core')."</a>
-													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$globals['mf_theme_files'][$i]['name'])."'>".__("Restore", 'lang_theme_core')."</a>
-													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$globals['mf_theme_files'][$i]['name'])."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>
+													<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'>".__("Restore", 'lang_theme_core')."</a>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>
 												</div>
 											</td>
-											<td>".format_date(date("Y-m-d H:i:s", $globals['mf_theme_files'][$i]['time']))."</td>
+											<td>".format_date($file_time)."</td>
 										</tr>";
 									}
 
