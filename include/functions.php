@@ -1331,7 +1331,7 @@ function print_styles_theme_core()
 
 			//$output .= "\n\n/* ".$handle." */\n";
 
-			if(get_file_suffix($arr_style['file']) == 'php' || preg_match("/(".$site_url_clean.")/i", $arr_style['file']) == false)
+			if(get_file_suffix($arr_style['file']) == 'php' || preg_match("/(".str_replace("/", "\/", $site_url_clean).")/i", $arr_style['file']) == false)
 			{
 				list($content, $headers) = get_url_content($arr_style['file'], true);
 
@@ -1360,7 +1360,7 @@ function print_styles_theme_core()
 
 			if($upload_path != '')
 			{
-				$file = "style.css";
+				$file = "style-".md5($_SERVER['REQUEST_URI']).".css";
 
 				$output = compress_css($output);
 
@@ -1446,7 +1446,7 @@ function print_scripts_theme_core()
 
 			if($upload_path != '')
 			{
-				$file = "script.js";
+				$file = "script-".md5($_SERVER['REQUEST_URI']).".js";
 
 				$output = compress_js($output);
 
