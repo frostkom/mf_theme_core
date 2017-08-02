@@ -1552,6 +1552,8 @@ function admin_bar_theme_core()
 
 	if(IS_ADMIN)
 	{
+		$site_url = get_site_url();
+
 		if(get_option('setting_no_public_pages') == 'yes')
 		{
 			$wp_admin_bar->remove_menu('site-name');
@@ -1563,17 +1565,17 @@ function admin_bar_theme_core()
 
 		else if(get_option('setting_theme_core_login') == 'yes')
 		{
-			$title = "<a href='/' class='color_red'>".__("Requires login", 'lang_theme_core')."</a>";
+			$title = "<a href='".$site_url."' class='color_red'>".__("Requires login", 'lang_theme_core')."</a>";
 		}
 
 		else if(get_option('blog_public') == 0)
 		{
-			$title = "<a href='/' class='color_yellow'>".__("No index", 'lang_theme_core')."</a>";
+			$title = "<a href='".$site_url."' class='color_yellow'>".__("No index", 'lang_theme_core')."</a>";
 		}
 
 		else
 		{
-			$title = "<a href='/' class='color_green'>".__("Public", 'lang_theme_core')."</a>";
+			$title = "<a href='".$site_url."' class='color_green'>".__("Public", 'lang_theme_core')."</a>";
 		}
 
 		$wp_admin_bar->add_node(array(
