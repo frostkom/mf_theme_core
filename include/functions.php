@@ -105,9 +105,22 @@ function get_previous_backups($data)
 	);
 }
 
+function get_previous_backups_list($upload_path)
+{
+	global $globals;
+
+	$globals['mf_theme_files'] = array();
+
+	get_file_info(array('path' => $upload_path, 'callback' => "get_previous_backups"));
+
+	$globals['mf_theme_files'] = array_sort(array('array' => $globals['mf_theme_files'], 'on' => 'time', 'order' => 'desc'));
+
+	return $globals['mf_theme_files'];
+}
+
 function get_options_page_theme_core($data = array())
 {
-	global $done_text, $error_text, $globals;
+	global $done_text, $error_text;
 
 	$out = "";
 
@@ -230,14 +243,16 @@ function get_options_page_theme_core($data = array())
 				<div id='post-body' class='columns-2'>
 					<div id='post-body-content'>";
 
-						$globals['mf_theme_files'] = array();
-
-						get_file_info(array('path' => $upload_path, 'callback' => "get_previous_backups"));
-
-						$count_temp = count($globals['mf_theme_files']);
+						$arr_backups = get_previous_backups_list($upload_path);
+						$count_temp = count($arr_backups);
 
 						if($count_temp > 0)
 						{
+							list($options_params, $options) = get_params();
+							$style_source = trim($options['style_source'], "/");
+
+							$mf_theme_saved = get_option('mf_theme_saved');
+
 							$out .= "<table class='widefat striped'>";
 
 								$arr_header[] = __("Existing", 'lang_theme_core');
@@ -248,12 +263,12 @@ function get_options_page_theme_core($data = array())
 
 									for($i = 0; $i < $count_temp; $i++)
 									{
-										$file_name = $globals['mf_theme_files'][$i]['name'];
-										$file_time = date("Y-m-d H:i:s", $globals['mf_theme_files'][$i]['time']);
+										$file_name = $arr_backups[$i]['name'];
+										$file_time = date("Y-m-d H:i:s", $arr_backups[$i]['time']);
 
-										$out .= "<tr".($file_time > get_option('mf_theme_saved') ? " class='green'" : "").">
+										$out .= "<tr".($style_source != get_site_url() && $file_time > $mf_theme_saved ? " class='green'" : "").">
 											<td>"
-												.$globals['mf_theme_files'][$i]['name']
+												.$arr_backups[$i]['name']
 												."<div class='row-actions'>
 													<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
 													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'>".__("Restore", 'lang_theme_core')."</a>
@@ -489,6 +504,7 @@ function settings_theme_core()
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
 		$arr_settings['setting_theme_recommendation'] = __("Recommendations", 'lang_theme_core');
+		$arr_settings['setting_theme_optimize'] = __("Optimize Database", 'lang_theme_core');
 	}
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
@@ -598,6 +614,14 @@ function setting_404_page_callback()
 function setting_theme_recommendation_callback()
 {
 	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess_theme_core", 'allow_depth' => false));
+}
+
+function setting_theme_optimize_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 12);
+
+	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'suffix' => __("months", 'lang_theme_core')));
 }
 
 function column_header_theme_core($cols)
@@ -1360,7 +1384,7 @@ function print_styles_theme_core()
 
 			if($upload_path != '')
 			{
-				$file = "style-".md5($_SERVER['REQUEST_URI']).".css";
+				$file = "style-".md5((isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "").$_SERVER['REQUEST_URI']).".css";
 
 				$output = compress_css($output);
 
@@ -1446,7 +1470,7 @@ function print_scripts_theme_core()
 
 			if($upload_path != '')
 			{
-				$file = "script-".md5($_SERVER['REQUEST_URI']).".js";
+				$file = "script-".md5((isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "").$_SERVER['REQUEST_URI']).".js";
 
 				$output = compress_js($output);
 
@@ -1543,6 +1567,41 @@ function footer_theme_core()
 			."</div>
 			<i class='fa fa-arrow-circle-down'></i>
 		</div>";
+	}
+}
+
+function cron_theme_core()
+{
+	global $wpdb;
+
+	if(get_option('mf_database_optimized') > date("+24 hour"))
+	{
+		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
+
+		do_log("Remove rev/auto-drafts: SELECT * FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
+		//$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
+
+		do_log("Remove orphan postmeta: SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		//$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+
+		do_log("Remove expired transients: SELECT * FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
+		//$wpdb->query("DELETE FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
+		
+		$result = $wpdb->get_results("SHOW TABLE STATUS");
+
+		foreach($result as $r)
+		{
+			$strTableName = $r->Name;
+
+			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
+
+			do_log("Optimize ".$strTableName);
+		}
+
+		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
+		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
+
+		update_option('mf_database_optimized', date("Y-m-d H:i:s"));
 	}
 }
 
