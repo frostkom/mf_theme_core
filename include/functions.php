@@ -1574,7 +1574,7 @@ function cron_theme_core()
 {
 	global $wpdb;
 
-	if(get_option('mf_database_optimized') > date("+24 hour"))
+	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
 	{
 		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
 
@@ -1584,9 +1584,36 @@ function cron_theme_core()
 		do_log("Remove orphan postmeta: SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 		//$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 
+		//Orphan relations
+		//"DELETE FROM " . $wpdb->term_relationships . " WHERE term_taxonomy_id=%d AND object_id NOT IN (SELECT id FROM " . $wpdb->posts . ")"
+		//"SELECT COUNT(*) FROM " . $wpdb->term_relationships . " WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM " . $wpdb->posts . ")"
+		//"SELECT COUNT(object_id) FROM " . $wpdb->term_relationships . " AS tr INNER JOIN " . $wpdb->term_taxonomy . " AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id	WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM " . $wpdb->posts . ")"
+
 		//Duplicate postmeta
+		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->postmeta . " GROUP BY post_id, meta_key, meta_value HAVING count > %d", 1
+
 		//Orphan usermeta
+		//"DELETE FROM " . $wpdb->usermeta . " WHERE user_id NOT IN (SELECT ID FROM " . $wpdb->users . ")"
+		//"SELECT COUNT(umeta_id) FROM " . $wpdb->usermeta . " WHERE user_id NOT IN (SELECT ID FROM " . $wpdb->users . ")"
+
 		//Duplicate usermeta
+		//"SELECT GROUP_CONCAT(umeta_id ORDER BY umeta_id DESC) AS ids, user_id, COUNT(*) AS count FROM $wpdb->usermeta GROUP BY user_id, meta_key, meta_value HAVING count > %d"
+		//"SELECT COUNT(umeta_id) AS count FROM " . $wpdb->usermeta . " GROUP BY user_id, meta_key, meta_value HAVING count > %d", 1
+
+		//Pingbacks
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'pingback'"
+
+		//Trackbacks
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'trackback'"
+
+		//Spam comments
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_approved = %s", "spam"
+
+		//Duplicate comments
+		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->commentmeta . " GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
+
+		//oEmbed caches
+		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
 
 		do_log("Remove expired transients: SELECT * FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
 		//$wpdb->query("DELETE FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
@@ -1601,8 +1628,6 @@ function cron_theme_core()
 			$strTableName = $r->Name;
 
 			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
-
-			do_log("Optimize ".$strTableName);
 		}
 
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
