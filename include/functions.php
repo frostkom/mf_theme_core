@@ -1578,10 +1578,15 @@ function cron_theme_core()
 	{
 		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
 
-		do_log("Remove rev/auto-drafts: SELECT * FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
-		//$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
+		//SELECT * FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)
+		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
 
-		do_log("Remove orphan postmeta: SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		$wpdb->get_results("SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan postmeta: ".$wpdb->last_query);
+		}
 		//$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 
 		//Orphan relations
@@ -1615,7 +1620,12 @@ function cron_theme_core()
 		//oEmbed caches
 		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
 
-		do_log("Remove expired transients: SELECT * FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
+		$wpdb->get_results("SELECT * FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove expired transients: ".$wpdb->last_query);
+		}
 		//$wpdb->query("DELETE FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
 		//$table = $wpdb->get_blog_prefix($blog_id) . 'options';
 		//select count(*) as `total`, count(case when option_value < '$threshold' then 1 end) as `expired` from $table where (option_name like '\_transient\_timeout\_%' or option_name like '\_site\_transient\_timeout\_%')
