@@ -1578,7 +1578,6 @@ function cron_theme_core()
 	{
 		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
 
-		//SELECT * FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)
 		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
 
 		$wpdb->get_results("SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
@@ -1620,14 +1619,12 @@ function cron_theme_core()
 		//oEmbed caches
 		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
 
-		$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
+		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
 
 		if($wpdb->num_rows > 0)
 		{
 			do_log("Remove expired transients: ".$wpdb->last_query);
-		}
-		//$wpdb->query("DELETE FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
-		//"delete from t1, t2 using ".$wpdb->get_blog_prefix($blog_id) . "options t1 join ".$wpdb->get_blog_prefix($blog_id) . "options t2 on t2.option_name = replace(t1.option_name, '_timeout', '') where (t1.option_name like '\_transient\_timeout\_%' or t1.option_name like '\_site\_transient\_timeout\_%') and t1.option_value < '$threshold'"
+		}*/
 		
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
 
