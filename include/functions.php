@@ -1620,16 +1620,14 @@ function cron_theme_core()
 		//oEmbed caches
 		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
 
-		$wpdb->get_results("SELECT * FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
+		$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
 
 		if($wpdb->num_rows > 0)
 		{
 			do_log("Remove expired transients: ".$wpdb->last_query);
 		}
 		//$wpdb->query("DELETE FROM ".$wpdb->options." WHERE option_name LIKE '%\_transient\_%' AND option_value < NOW()");
-		//$table = $wpdb->get_blog_prefix($blog_id) . 'options';
-		//select count(*) as `total`, count(case when option_value < '$threshold' then 1 end) as `expired` from $table where (option_name like '\_transient\_timeout\_%' or option_name like '\_site\_transient\_timeout\_%')
-		//delete from t1, t2 using $table t1 join $table t2 on t2.option_name = replace(t1.option_name, '_timeout', '') where (t1.option_name like '\_transient\_timeout\_%' or t1.option_name like '\_site\_transient\_timeout\_%') and t1.option_value < '$threshold'
+		//"delete from t1, t2 using ".$wpdb->get_blog_prefix($blog_id) . "options t1 join ".$wpdb->get_blog_prefix($blog_id) . "options t2 on t2.option_name = replace(t1.option_name, '_timeout', '') where (t1.option_name like '\_transient\_timeout\_%' or t1.option_name like '\_site\_transient\_timeout\_%') and t1.option_value < '$threshold'"
 		
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
 
