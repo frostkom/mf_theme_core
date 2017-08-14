@@ -1578,23 +1578,35 @@ function cron_theme_core()
 	{
 		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
 
+		//Remove old revisions and auto-drafts
 		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
 
-		$wpdb->get_results("SELECT * FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		//Remove orphan postmeta
+		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove orphan postmeta: ".$wpdb->last_query);
+			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 		}
-		//$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
 
-		//Orphan relations
-		//"DELETE FROM " . $wpdb->term_relationships . " WHERE term_taxonomy_id=%d AND object_id NOT IN (SELECT id FROM " . $wpdb->posts . ")"
-		//"SELECT COUNT(*) FROM " . $wpdb->term_relationships . " WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM " . $wpdb->posts . ")"
-		//"SELECT COUNT(object_id) FROM " . $wpdb->term_relationships . " AS tr INNER JOIN " . $wpdb->term_taxonomy . " AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id	WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM " . $wpdb->posts . ")"
+		//Remove duplicate postmeta
+		$wpdb->get_results("SELECT COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
 
-		//Duplicate postmeta
-		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->postmeta . " GROUP BY post_id, meta_key, meta_value HAVING count > %d", 1
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove duplicate postmeta: ".$wpdb->last_query);
+		}
+
+		//Remove orphan relations
+		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan relations: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
+			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
+		}
 
 		//Orphan usermeta
 		//"DELETE FROM " . $wpdb->usermeta . " WHERE user_id NOT IN (SELECT ID FROM " . $wpdb->users . ")"
