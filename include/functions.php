@@ -217,19 +217,24 @@ function get_options_page_theme_core($data = array())
 
 	else
 	{
-		$theme_source_version = get_option('theme_source_version');
-		$theme_source_style_url = get_option('theme_source_style_url');
+		list($options_params, $options) = get_params();
 
-		if($theme_source_style_url != '')
+		if($options['style_source'] != '')
 		{
-			list($options_params, $options) = get_params();
+			$style_source = str_replace(array("http://", "https://"), "", trim($options['style_source'], "/"));
 
-			$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $options['style_source'], "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$theme_source_style_url)."'>", "</a>");
-		}
+			$theme_source_version = get_option('theme_source_version');
+			$theme_source_style_url = get_option('theme_source_style_url');
 
-		else if($theme_source_version != '')
-		{
-			$error_text = sprintf(__("The theme at %s has got a newer version (%s). Please upgrade or contact the admin to help you with this", 'lang_theme_core'), $options['style_source'], $theme_source_version);
+			if($theme_source_style_url != '')
+			{
+				$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $style_source, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$theme_source_style_url)."'>", "</a>");
+			}
+
+			else if($theme_source_version != '')
+			{
+				$error_text = sprintf(__("The theme at %s has got a newer version (%s). Please upgrade or contact the admin to help you with this", 'lang_theme_core'), $style_source, $theme_source_version);
+			}
 		}
 	}
 
