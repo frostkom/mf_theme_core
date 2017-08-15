@@ -1595,11 +1595,18 @@ function cron_theme_core()
 		}
 
 		//Remove duplicate postmeta
-		$wpdb->get_results("SELECT COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
+		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove duplicate postmeta: ".$wpdb->last_query);
+			//do_log("Remove duplicate postmeta: ".$wpdb->last_query);
+
+			foreach($result as $r)
+			{
+				$intMetaID = $r->meta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
+			}
 		}
 
 		//Remove orphan relations
@@ -1613,13 +1620,30 @@ function cron_theme_core()
 			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
 		}
 
-		//Orphan usermeta
-		//"DELETE FROM " . $wpdb->usermeta . " WHERE user_id NOT IN (SELECT ID FROM " . $wpdb->users . ")"
-		//"SELECT COUNT(umeta_id) FROM " . $wpdb->usermeta . " WHERE user_id NOT IN (SELECT ID FROM " . $wpdb->users . ")"
+		//Remove orphan usermeta
+		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
 
-		//Duplicate usermeta
-		//"SELECT GROUP_CONCAT(umeta_id ORDER BY umeta_id DESC) AS ids, user_id, COUNT(*) AS count FROM $wpdb->usermeta GROUP BY user_id, meta_key, meta_value HAVING count > %d"
-		//"SELECT COUNT(umeta_id) AS count FROM " . $wpdb->usermeta . " GROUP BY user_id, meta_key, meta_value HAVING count > %d", 1
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan usermeta: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+		}
+
+		//Remove duplicate usermeta
+		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove duplicate usermeta: ".$wpdb->last_query);
+
+			/*foreach($result as $r)
+			{
+				$intMetaID = $r->umeta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
+			}*/
+		}
 
 		//Pingbacks
 		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'pingback'"
