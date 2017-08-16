@@ -485,7 +485,7 @@ function settings_theme_core()
 			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
 		}
 
-		if(is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php'))
+		if(is_plugin_active('mf_cache/index.php') || is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php'))
 		{
 			$arr_settings['setting_merge_css'] = __("Merge & Compress CSS", 'lang_theme_core');
 			$arr_settings['setting_merge_js'] = __("Merge & Compress Javascript", 'lang_theme_core');
@@ -1635,14 +1635,14 @@ function cron_theme_core()
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove duplicate usermeta: ".$wpdb->last_query);
+			//do_log("Remove duplicate usermeta: ".$wpdb->last_query);
 
-			/*foreach($result as $r)
+			foreach($result as $r)
 			{
 				$intMetaID = $r->umeta_id;
 
 				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
-			}*/
+			}
 		}
 
 		//Pingbacks
