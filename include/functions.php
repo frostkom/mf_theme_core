@@ -1575,7 +1575,7 @@ function cron_theme_core()
 
 	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
 	{
-		$setting_theme_optimize = get_option('setting_theme_optimize', 12);
+		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
 
 		//Remove old revisions and auto-drafts
 		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
