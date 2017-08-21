@@ -79,7 +79,7 @@ class widget_theme_core_news extends WP_Widget
 
 		if($wpdb->num_rows > 0)
 		{
-			$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' : 
+			$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
 
 			foreach($result as $post)
 			{

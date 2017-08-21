@@ -479,18 +479,6 @@ function settings_theme_core()
 			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
 		}
 
-		if(is_plugin_active('mf_cache/index.php') || is_plugin_active('wp-super-cache/wp-cache.php') || is_plugin_active('wp-fastest-cache/wpFastestCache.php'))
-		{
-			$arr_settings['setting_merge_css'] = __("Merge & Compress CSS", 'lang_theme_core');
-			$arr_settings['setting_merge_js'] = __("Merge & Compress Javascript", 'lang_theme_core');
-		}
-
-		else
-		{
-			delete_option('setting_merge_css');
-			delete_option('setting_merge_js');
-		}
-
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
 			$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
@@ -570,22 +558,6 @@ function setting_strip_domain_callback()
 	$option = get_option_or_default($setting_key, 0);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
-}
-
-function setting_merge_css_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'yes');
-
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}
-
-function setting_merge_js_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'yes');
-
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_cookie_info_callback()
@@ -1337,79 +1309,6 @@ function get_logo()
 	}
 }
 
-function print_styles_theme_core()
-{
-	if(isset($GLOBALS['mf_styles']) && count($GLOBALS['mf_styles']) > 0 && get_option_or_default('setting_merge_css', 'yes') == 'yes')
-	{
-		$site_url_clean = get_site_url_clean(array('trim' => "/"));
-		$file_url_base = site_url()."/wp-content";
-		$file_dir_base = WP_CONTENT_DIR;
-
-		$version = 0;
-		$output = "";
-
-		foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
-		{
-			$version += point2int($arr_style['version']);
-
-			//$output .= "\n\n/* ".$handle." */\n";
-
-			if(get_file_suffix($arr_style['file']) == 'php' || preg_match("/(".str_replace("/", "\/", $site_url_clean).")/i", $arr_style['file']) == false)
-			{
-				list($content, $headers) = get_url_content($arr_style['file'], true);
-
-				if(isset($headers['http_code']) && $headers['http_code'] == 200)
-				{
-					$output .= $content;
-				}
-
-				else
-				{
-					unset($GLOBALS['mf_styles'][$handle]);
-
-					//do_log(sprintf(__("Could not load %s", 'lang_theme_core'), $arr_style['file']));
-				}
-			}
-
-			else
-			{
-				$output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_style['file'])));
-			}
-		}
-
-		if($output != '')
-		{
-			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/styles");
-
-			if($upload_path != '')
-			{
-				$file = "style-".md5((isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "").$_SERVER['REQUEST_URI']).".css";
-
-				$output = compress_css($output);
-
-				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
-
-				if($success == true)
-				{
-					foreach($GLOBALS['mf_styles'] as $handle => $arr_style)
-					{
-						wp_deregister_style($handle);
-					}
-
-					$version = int2point($version);
-
-					wp_enqueue_style('mf_styles', $upload_url.$file, array(), $version);
-				}
-			}
-
-			else if($error_text != '')
-			{
-				do_log($error_text);
-			}
-		}
-	}
-}
-
 function default_scripts_theme_core(&$scripts)
 {
 	$scripts->remove('jquery');
@@ -1418,87 +1317,7 @@ function default_scripts_theme_core(&$scripts)
 
 function print_scripts_theme_core()
 {
-	global $error_text;
-
 	wp_deregister_script('wp-embed');
-
-	if(isset($GLOBALS['mf_scripts']) && count($GLOBALS['mf_scripts']) > 0 && get_option_or_default('setting_merge_js', 'yes') == 'yes')
-	{
-		$file_url_base = site_url()."/wp-content";
-		$file_dir_base = WP_CONTENT_DIR;
-
-		$version = 0;
-		$output = $translation = "";
-		$error = false;
-
-		foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
-		{
-			$version += point2int($arr_script['version']);
-
-			//$output .= "\n\n/* ".$handle." */\n";
-
-			$count_temp = count($arr_script['translation']);
-
-			if(is_array($arr_script['translation']) && $count_temp > 0)
-			{
-				$translation .= "var ".$handle." = {";
-
-					$i = 1;
-
-					foreach($arr_script['translation'] as $key => $value)
-					{
-						$translation .= "'".$key."': \"".$value."\"";
-
-						if($i < $count_temp)
-						{
-							$translation .= ",";
-						}
-
-						$i++;
-					}
-				
-				$translation .= "};";
-			}
-
-			$output .= get_file_content(array('file' => str_replace($file_url_base, $file_dir_base, $arr_script['file'])));
-		}
-
-		if($output != '' && $error == false)
-		{
-			list($upload_path, $upload_url) = get_uploads_folder("mf_theme_core/scripts");
-
-			if($upload_path != '')
-			{
-				$file = "script-".md5((isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "").$_SERVER['REQUEST_URI']).".js";
-
-				$output = compress_js($output);
-
-				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'w', 'content' => $output));
-
-				if($success == true)
-				{
-					foreach($GLOBALS['mf_scripts'] as $handle => $arr_script)
-					{
-						wp_deregister_script($handle);
-					}
-
-					$version = int2point($version);
-
-					wp_enqueue_script('mf_scripts', $upload_url.$file, array('jquery'), $version, true);
-
-					if($translation != '')
-					{
-						echo "<script>".$translation."</script>";
-					}
-				}
-			}
-
-			else if($error_text != '')
-			{
-				do_log($error_text);
-			}
-		}
-	}
 }
 
 function footer_theme_core()
@@ -1660,7 +1479,7 @@ function cron_theme_core()
 		{
 			do_log("Remove expired transients: ".$wpdb->last_query);
 		}*/
-		
+
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
 
 		foreach($result as $r)
@@ -1670,6 +1489,7 @@ function cron_theme_core()
 			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
 		}
 
+		//Can be removed later because the folder is not in use anymore
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
 		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
 
