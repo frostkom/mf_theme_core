@@ -1,5 +1,167 @@
 <?php
 
+function cron_theme_core()
+{
+	global $wpdb;
+
+	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
+	{
+		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
+
+		//Remove old revisions and auto-drafts
+		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
+
+		//Remove orphan postmeta
+		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+
+		if($wpdb->num_rows > 0)
+		{
+			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		}
+
+		//Remove duplicate postmeta
+		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
+
+		if($wpdb->num_rows > 0)
+		{
+			//do_log("Remove duplicate postmeta: ".$wpdb->last_query);
+
+			foreach($result as $r)
+			{
+				$intMetaID = $r->meta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
+			}
+		}
+
+		//Remove orphan relations
+		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan relations: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
+			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
+		}
+
+		//Remove orphan usermeta
+		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan usermeta: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+		}
+
+		//Remove duplicate usermeta
+		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
+
+		if($wpdb->num_rows > 0)
+		{
+			//do_log("Remove duplicate usermeta: ".$wpdb->last_query);
+
+			foreach($result as $r)
+			{
+				$intMetaID = $r->umeta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
+			}
+		}
+
+		//Pingbacks
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'pingback'"
+
+		//Trackbacks
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'trackback'"
+
+		//Spam comments
+		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_approved = %s", "spam"
+
+		//Duplicate comments
+		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->commentmeta . " GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
+
+		//oEmbed caches
+		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
+
+		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove expired transients: ".$wpdb->last_query);
+		}*/
+
+		$result = $wpdb->get_results("SHOW TABLE STATUS");
+
+		foreach($result as $r)
+		{
+			$strTableName = $r->Name;
+
+			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
+		}
+
+		//Can be removed later because the folder is not in use anymore
+		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
+		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
+
+		update_option('mf_database_optimized', date("Y-m-d H:i:s"));
+	}
+}
+
+function header_theme_core()
+{
+	require_user_login();
+
+	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
+	{
+		ob_start("strip_domain_from_content");
+	}
+}
+
+function head_theme_core()
+{
+	if(!(get_current_user_id() > 0))
+	{
+		wp_deregister_style('dashicons');
+	}
+
+	$plugin_include_url = plugin_dir_url(__FILE__);
+	$plugin_version = get_plugin_version(__FILE__);
+
+	mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
+	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
+
+	if(get_option('setting_responsiveness') == 1)
+	{
+		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
+		add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
+
+		add_filter('the_content', 'remove_width_height_attribute');
+	}
+
+	if(get_option('setting_scroll_to_top') == 'yes')
+	{
+		mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
+		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
+	}
+
+	if(get_option('setting_html5_history') == 'yes')
+	{
+		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", $plugin_version);
+		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), $plugin_version);
+	}
+
+	$meta_description = get_the_excerpt();
+
+	if($meta_description != '')
+	{
+		echo "<meta name='description' content='".esc_attr($meta_description)."'>";
+	}
+
+	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
+}
+
 function get_menu_type_for_select()
 {
 	return array(
@@ -374,11 +536,6 @@ function enqueue_theme_fonts()
 		}
 	}
 }
-
-/*function customize_preview_theme_core()
-{
-	mf_enqueue_script('script_theme_core_customizer_preview', plugin_dir_url(__FILE__)."theme-customizer.js", array('jquery', 'customize-preview'), get_plugin_version(__FILE__));
-}*/
 
 function check_htaccess_theme_core($data)
 {
@@ -1263,39 +1420,6 @@ function render_css($data)
 	return $out;
 }
 
-function head_theme_core()
-{
-	if(!(get_current_user_id() > 0))
-	{
-		wp_deregister_style('dashicons');
-	}
-
-	$plugin_include_url = plugin_dir_url(__FILE__);
-
-	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", get_plugin_version(__FILE__));
-
-	if(get_option('setting_scroll_to_top') == 'yes')
-	{
-		mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", get_plugin_version(__FILE__));
-		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", get_plugin_version(__FILE__));
-	}
-
-	if(get_option('setting_html5_history') == 'yes')
-	{
-		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", get_plugin_version(__FILE__));
-		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), get_plugin_version(__FILE__));
-	}
-
-	$meta_description = get_the_excerpt();
-
-	if($meta_description != '')
-	{
-		echo "<meta name='description' content='".esc_attr($meta_description)."'>";
-	}
-
-	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
-}
-
 function get_logo()
 {
 	if(function_exists('get_logo_theme'))
@@ -1330,8 +1454,10 @@ function footer_theme_core()
 
 		if($setting_cookie_info > 0)
 		{
-			mf_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css", get_plugin_version(__FILE__));
-			mf_enqueue_script('script_theme_core_cookies', plugin_dir_url(__FILE__)."script_cookies.js", array('plugin_url' => plugin_dir_url(__FILE__)), get_plugin_version(__FILE__));
+			$plugin_version = get_plugin_version(__FILE__);
+
+			mf_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css", $plugin_version);
+			mf_enqueue_script('script_theme_core_cookies', plugin_dir_url(__FILE__)."script_cookies.js", array('plugin_url' => plugin_dir_url(__FILE__)), $plugin_version);
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
 
@@ -1388,115 +1514,6 @@ function footer_theme_core()
 	}
 }
 
-function cron_theme_core()
-{
-	global $wpdb;
-
-	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
-	{
-		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
-
-		//Remove old revisions and auto-drafts
-		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
-
-		//Remove orphan postmeta
-		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
-
-		if($wpdb->num_rows > 0)
-		{
-			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
-		}
-
-		//Remove duplicate postmeta
-		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			//do_log("Remove duplicate postmeta: ".$wpdb->last_query);
-
-			foreach($result as $r)
-			{
-				$intMetaID = $r->meta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
-			}
-		}
-
-		//Remove orphan relations
-		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan relations: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
-			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
-		}
-
-		//Remove orphan usermeta
-		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan usermeta: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
-		}
-
-		//Remove duplicate usermeta
-		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			//do_log("Remove duplicate usermeta: ".$wpdb->last_query);
-
-			foreach($result as $r)
-			{
-				$intMetaID = $r->umeta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
-			}
-		}
-
-		//Pingbacks
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'pingback'"
-
-		//Trackbacks
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'trackback'"
-
-		//Spam comments
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_approved = %s", "spam"
-
-		//Duplicate comments
-		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->commentmeta . " GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
-
-		//oEmbed caches
-		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
-
-		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove expired transients: ".$wpdb->last_query);
-		}*/
-
-		$result = $wpdb->get_results("SHOW TABLE STATUS");
-
-		foreach($result as $r)
-		{
-			$strTableName = $r->Name;
-
-			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
-		}
-
-		//Can be removed later because the folder is not in use anymore
-		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
-		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
-
-		update_option('mf_database_optimized', date("Y-m-d H:i:s"));
-	}
-}
-
 function admin_bar_theme_core()
 {
 	global $wp_admin_bar;
@@ -1533,29 +1550,6 @@ function admin_bar_theme_core()
 			'id' => 'live',
 			'title' => "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">".$title."</span>",
 		));
-	}
-}
-
-function init_theme_core()
-{
-	mf_enqueue_style('style_theme_core', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
-
-	if(get_option('setting_responsiveness') == 1)
-	{
-		add_filter('post_thumbnail_html', 'remove_width_height_attribute', 10);
-		add_filter('image_send_to_editor', 'remove_width_height_attribute', 10);
-
-		add_filter('the_content', 'remove_width_height_attribute');
-	}
-}
-
-function header_theme_core()
-{
-	require_user_login();
-
-	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
-	{
-		ob_start("strip_domain_from_content");
 	}
 }
 
