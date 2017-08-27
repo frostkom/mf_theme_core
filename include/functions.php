@@ -543,20 +543,20 @@ function check_htaccess_theme_core($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/(BEGIN Theme Core)/", $content))
+		if(!preg_match("/BEGIN Theme Core/", $content) || !preg_match("/AddOutputFilterByType/", $content))
 		{
-			$recommend_htaccess = "# BEGIN Theme Core
-<IfModule mod_gzip.c>
-	mod_gzip_on Yes
-	mod_gzip_dechunk Yes
-	mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
-	mod_gzip_item_include handler ^cgi-script$
-	mod_gzip_item_include mime ^text/.*
-	mod_gzip_item_include mime ^application/x-javascript.*
-	mod_gzip_item_exclude mime ^image/.*
-	mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-</IfModule>
+			/*<IfModule mod_gzip.c>
+				mod_gzip_on Yes
+				mod_gzip_dechunk Yes
+				mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+				mod_gzip_item_include handler ^cgi-script$
+				mod_gzip_item_include mime ^text/.*
+				mod_gzip_item_include mime ^application/x-javascript.*
+				mod_gzip_item_exclude mime ^image/.*
+				mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+			</IfModule>*/
 
+			$recommend_htaccess = "# BEGIN Theme Core
 <IfModule mod_expires.c>
 	ExpiresActive On
 	ExpiresDefault 'access plus 1 month'
@@ -566,7 +566,9 @@ function check_htaccess_theme_core($data)
 
 FileETag None
 
-<filesMatch '\.(css|jpe?g|png|gif|js|ico)$'>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/gif image/png
+
+<filesMatch '.(css|js|jpe?g|png|gif|ico)$'>
 	Header set Cache-Control 'max-age=2592000, public'
 
 	SetOutputFilter DEFLATE
@@ -1454,10 +1456,11 @@ function footer_theme_core()
 
 		if($setting_cookie_info > 0)
 		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
 			$plugin_version = get_plugin_version(__FILE__);
 
-			mf_enqueue_style('style_theme_core_cookies', plugin_dir_url(__FILE__)."style_cookies.css", $plugin_version);
-			mf_enqueue_script('script_theme_core_cookies', plugin_dir_url(__FILE__)."script_cookies.js", array('plugin_url' => plugin_dir_url(__FILE__)), $plugin_version);
+			mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
+			mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
 
