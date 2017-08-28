@@ -1364,20 +1364,23 @@ function render_css($data)
 {
 	global $options, $options_fonts;
 
-	if(!isset($data['property'])){	$data['property'] = "";}
-	if(!isset($data['prefix'])){	$data['prefix'] = "";}
-	if(!isset($data['suffix'])){	$data['suffix'] = "";}
+	$prop = isset($data['property']) ? $data['property'] : '';
+	$pre = isset($data['prefix']) ? $data['prefix'] : '';
+	$suf = isset($data['suffix']) ? $data['suffix'] : '';
+	$val = isset($data['value']) ? $data['value'] : '';
+	$append = isset($data['append']) ? $data['append'] : '';
 
-	$prop = $data['property'];
-	$pre = $data['prefix'];
-	$suf = $data['suffix'];
-	$val = $data['value'];
+	if(is_array($val) && count($val) > 1)
+	{
+		$arr_val = $val;
+		$val = $arr_val[0];
+	}
 
-	$out = "";
+	$out = '';
 
 	if($prop == 'font-family' && (!isset($options[$val]) || !isset($options_fonts[$options[$val]]['style'])))
 	{
-		$options[$val] = "";
+		$options[$val] = '';
 	}
 
 	if($prop == 'float' && $options[$val] == 'center')
@@ -1417,6 +1420,20 @@ function render_css($data)
 		{
 			$out .= ";";
 		}
+
+		if($append != '')
+		{
+			$out .= $append;
+		}
+	}
+
+	else if(isset($arr_val) && count($arr_val) > 1)
+	{
+		array_splice($arr_val, 0, 1);
+
+		$data['value'] = count($arr_val) > 1 ? $arr_val : $arr_val[0];
+
+		$out .= render_css($data);
 	}
 
 	return $out;
