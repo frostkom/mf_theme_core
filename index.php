@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.7.5
+Version: 6.7.8
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -116,7 +116,7 @@ function activate_theme_core()
 	}
 
 	mf_uninstall_plugin(array(
-		'options' => array('eg_setting_responsiveness', 'eg_setting_strip_domain', 'eg_setting_compress', 'setting_save_style', 'setting_compress', 'theme_source_version', 'setting_theme_recommendation'),
+		'options' => array('setting_save_style', 'setting_compress', 'theme_source_version', 'setting_theme_recommendation'),
 	));
 }
 
