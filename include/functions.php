@@ -113,10 +113,10 @@ function header_theme_core()
 {
 	require_user_login();
 
-	/*if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
+	if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
 	{
 		ob_start("strip_domain_from_content");
-	}*/
+	}
 }
 
 function head_theme_core()
@@ -131,13 +131,6 @@ function head_theme_core()
 
 	mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
 	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
-
-	/*if(get_option('setting_responsiveness') == 1)
-	{
-		add_filter('the_content', 'the_content_theme_core');
-		add_filter('post_thumbnail_html', 'the_content_theme_core', 10);
-		add_filter('image_send_to_editor', 'the_content_theme_core', 10);
-	}*/
 
 	if(get_option('setting_scroll_to_top') == 'yes')
 	{
@@ -624,7 +617,6 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
-		//$arr_settings['setting_responsiveness'] = __("Image responsiveness", 'lang_theme_core');
 
 		if($setting_html5_history == 'yes')
 		{
@@ -632,10 +624,10 @@ function settings_theme_core()
 			delete_option('setting_strip_domain');
 		}
 
-		/*else
+		else
 		{
 			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
-		}*/
+		}
 
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
@@ -702,21 +694,13 @@ function setting_scroll_to_top_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-/*function setting_responsiveness_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 0);
-
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option, 'suffix' => __("To strip all content tags from height and width to improve responsiveness", 'lang_theme_core')));
-}*/
-
-/*function setting_strip_domain_callback()
+function setting_strip_domain_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 0);
 
 	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
-}*/
+}
 
 function setting_cookie_info_callback()
 {
@@ -1572,13 +1556,13 @@ function admin_bar_theme_core()
 	}
 }
 
-/*function init_style_theme_core()
+function init_style_theme_core()
 {
 	if(get_option('setting_strip_domain') == 1)
 	{
 		ob_start("strip_domain_from_content");
 	}
-}*/
+}
 
 function mf_unregister_widget($id)
 {
@@ -1655,11 +1639,6 @@ function get_search_theme_core($data = array())
 		."<i class='fa fa-search'></i>"
 	."</form>";
 }
-
-/*function the_content_theme_core($html)
-{
-	return preg_replace('/(width|height)="\d*"\s/', "", $html);
-}*/
 
 function strip_domain_from_content($html)
 {
