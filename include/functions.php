@@ -588,19 +588,19 @@ function settings_theme_core()
 
 	$arr_settings = array();
 
-	$blog_public = get_option('blog_public');
+	/*$blog_public = get_option('blog_public');
 
 	if($blog_public == 0)
-	{
+	{*/
 		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
-	}
+	//}
 
 	if(get_option('setting_no_public_pages') != 'yes')
 	{
-		if($blog_public == 0)
-		{
+		/*if($blog_public == 0)
+		{*/
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-		}
+		//}
 
 		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 
@@ -863,10 +863,10 @@ function column_cell_theme_core($col, $id)
 
 function require_user_login()
 {
-	$blog_public = get_option('blog_public');
+	/*$blog_public = get_option('blog_public');
 
 	if($blog_public == 0)
-	{
+	{*/
 		if(get_option('setting_no_public_pages') == 'yes')
 		{
 			mf_redirect(get_site_url()."/wp-admin/");
@@ -876,7 +876,7 @@ function require_user_login()
 		{
 			mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
 		}
-	}
+	//}
 }
 
 function get_media_fonts()
