@@ -37,7 +37,7 @@ function is_same_page(url)
 
 function process_url(url, e)
 {
-	if(url.indexOf('wp-admin') > -1 || url.indexOf('uploads') > -1){}
+	if(url.indexOf('wp-admin') > -1 || url.indexOf('wp-login') > -1 || url.indexOf('uploads') > -1){}
 
 	else if(url.indexOf(document.domain) > -1)
 	{

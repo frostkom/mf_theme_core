@@ -109,6 +109,20 @@ function cron_theme_core()
 	}
 }
 
+/*function init_theme_core()
+{
+	if(!is_admin())
+	{
+		if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
+		{
+			check_admin_referer('posts_logout');
+			setcookie('wp-postpass_'.COOKIEHASH, ' ', time() - 31536000, COOKIEPATH);
+			wp_redirect(wp_get_referer());
+			die();
+		}
+	}
+}*/
+
 function header_theme_core()
 {
 	require_user_login();
@@ -173,6 +187,64 @@ function search_form_theme_core($html)
 			.show_button(array('text' => __("Search", 'lang_theme_core')))
 		."</div>
 	</form>";
+
+	return $html;
+}
+
+function password_form_theme_core()
+{
+	return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
+		<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
+		.show_password_field(array('name' => "post_password", 'placeholder' => __("Password", 'lang_theme_core'), 'maxlength' => 20))
+		."<div class='form_button'>"
+			.show_button(array('text' => __("Submit", 'lang_theme_core')))
+		."</div>
+	</form>";
+}
+
+function the_content_protected_theme_core($html)
+{
+	global $post, $done_text, $error_text;
+
+	/*$cookie_name = 'wp-postpass_'.COOKIEHASH;
+
+	if(isset($_POST['btnProtectedLogout']))
+	{
+		if(isset($_COOKIE[$cookie_name]) && wp_check_password($post->post_password, $_COOKIE[$cookie_name]))
+		{
+			setcookie($cookie_name, '', strtotime("-1 month"), COOKIEPATH, '', false, true);
+
+			$done_text = __("You have been successfully logged out", 'lang_theme_core');
+		}
+
+		else
+		{
+			$error_text = __("You were not logged out, but at least I tried", 'lang_theme_core');
+		}
+
+		$html = get_notification().$html;
+	}*/
+
+    if(post_password_required())
+	{
+		if(!isset($post->post_password))
+		{
+			do_log("post_password did not exist even though it was a protected page");
+		}
+
+		$html = password_form_base();
+	}
+
+	/*if(isset($post->post_password) && $post->post_password != '' && isset($_COOKIE[$cookie_name]) && wp_check_password($post->post_password, $_COOKIE[$cookie_name]))
+	{
+		$html .= "<form action='".wp_nonce_url(add_query_arg(array('action' => 'posts_logout'), site_url('wp-login.php', 'login')), 'posts_logout')."' method='post' class='mf_form'>
+			<div class='form_button'>"
+				.show_button(array('text' => __("Logout", 'lang_theme_core')))
+			."</div>
+		</form>";
+
+		$html .= var_export($_COOKIE, true).", ".$_COOKIE[$cookie_name];
+	}*/
 
 	return $html;
 }
