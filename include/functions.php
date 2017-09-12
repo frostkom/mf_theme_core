@@ -24,8 +24,6 @@ function cron_theme_core()
 
 		if($wpdb->num_rows > 0)
 		{
-			//do_log("Remove duplicate postmeta: ".$wpdb->last_query);
-
 			foreach($result as $r)
 			{
 				$intMetaID = $r->meta_id;
@@ -60,8 +58,6 @@ function cron_theme_core()
 
 		if($wpdb->num_rows > 0)
 		{
-			//do_log("Remove duplicate usermeta: ".$wpdb->last_query);
-
 			foreach($result as $r)
 			{
 				$intMetaID = $r->umeta_id;
@@ -71,19 +67,19 @@ function cron_theme_core()
 		}
 
 		//Pingbacks
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'pingback'"
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'pingback'"
 
 		//Trackbacks
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_type = 'trackback'"
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'trackback'"
 
 		//Spam comments
-		//"SELECT COUNT(*) FROM " . $wpdb->comments . " WHERE comment_approved = %s", "spam"
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_approved = %s", "spam"
 
 		//Duplicate comments
-		//"SELECT COUNT(meta_id) AS count FROM " . $wpdb->commentmeta . " GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
+		//"SELECT COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
 
 		//oEmbed caches
-		//"SELECT COUNT(meta_id) FROM " . $wpdb->postmeta . " WHERE meta_key LIKE(%s)", "%_oembed_%"
+		//"SELECT COUNT(meta_id) FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"
 
 		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
 
@@ -152,11 +148,11 @@ function head_theme_core()
 		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
 	}
 
-	if(get_option('setting_html5_history') == 'yes')
+	/*if(get_option('setting_html5_history') == 'yes')
 	{
 		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", $plugin_version);
 		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), $plugin_version);
-	}
+	}*/
 
 	$meta_description = get_the_excerpt();
 
@@ -355,11 +351,10 @@ function get_options_page_theme_core($data = array())
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
 
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
+	list($options_params, $options) = get_params();
 
 	if(isset($_POST['btnThemeBackup']))
 	{
-		list($options_params, $options) = get_params();
-
 		if(count($options) > 0)
 		{
 			$file = $data['dir']."_".date("YmdHi").".json";
@@ -406,16 +401,13 @@ function get_options_page_theme_core($data = array())
 
 			if(is_array($json))
 			{
+				$arr_ignore_key = explode_and_trim(",", get_option('setting_theme_ignore_style_on_restore'));
+
 				foreach($json as $key => $value)
 				{
-					if($value != '')
+					if(!in_array($key, $arr_ignore_key))
 					{
 						set_theme_mod($key, $value);
-					}
-
-					else
-					{
-						remove_theme_mod($key);
 					}
 				}
 
@@ -443,8 +435,6 @@ function get_options_page_theme_core($data = array())
 
 	else
 	{
-		list($options_params, $options) = get_params();
-
 		if($options['style_source'] != '')
 		{
 			$style_source = str_replace(array("http://", "https://"), "", trim($options['style_source'], "/"));
@@ -464,6 +454,8 @@ function get_options_page_theme_core($data = array())
 
 		if($upload_path != '')
 		{
+			$style_source = trim($options['style_source'], "/");
+
 			$out .= "<div id='poststuff'>
 				<div id='post-body' class='columns-2'>
 					<div id='post-body-content'>";
@@ -473,8 +465,8 @@ function get_options_page_theme_core($data = array())
 
 						if($count_temp > 0)
 						{
-							list($options_params, $options) = get_params();
 							$style_source = trim($options['style_source'], "/");
+							$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
 
 							$mf_theme_saved = get_option('mf_theme_saved');
 
@@ -496,9 +488,14 @@ function get_options_page_theme_core($data = array())
 												.$arr_backups[$i]['name']
 												."<div class='row-actions'>
 													<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
-													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'>".__("Restore", 'lang_theme_core')."</a>
-													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>
-												</div>
+													 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'>".__("Restore", 'lang_theme_core')."</a>";
+
+													if($is_allowed_to_backup)
+													{
+														$out .= " | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
+													}
+
+												$out .= "</div>
 											</td>
 											<td>".format_date($file_time)."</td>
 										</tr>";
@@ -520,18 +517,23 @@ function get_options_page_theme_core($data = array())
 								</form>
 							</div>
 						</div>
-					</div>
-					<div id='postbox-container-1'>
-						<div class='postbox'>
-							<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
-							<div class='inside'>
-								<form method='post' action='' class='mf_form'>"
-									.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
-								."</form>
+					</div>";
+
+					if($is_allowed_to_backup)
+					{
+						$out .= "<div id='postbox-container-1'>
+							<div class='postbox'>
+								<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
+								<div class='inside'>
+									<form method='post' action='' class='mf_form'>"
+										.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
+									."</form>
+								</div>
 							</div>
-						</div>
-					</div>
-				</div>
+						</div>";
+					}
+
+				$out .= "</div>
 			</div>";
 		}
 
@@ -660,23 +662,15 @@ function settings_theme_core()
 
 	$arr_settings = array();
 
-	/*$blog_public = get_option('blog_public');
-
-	if($blog_public == 0)
-	{*/
-		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
-	//}
+	$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
 
 	if(get_option('setting_no_public_pages') != 'yes')
 	{
-		/*if($blog_public == 0)
-		{*/
-			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-		//}
+		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 
-		$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
+		//$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 
-		$setting_html5_history = get_option('setting_html5_history');
+		/*$setting_html5_history = get_option('setting_html5_history');
 
 		if($setting_html5_history == 'yes')
 		{
@@ -686,20 +680,20 @@ function settings_theme_core()
 		else
 		{
 			delete_option('setting_splash_screen');
-		}
+		}*/
 
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
 
-		if($setting_html5_history == 'yes')
+		/*if($setting_html5_history == 'yes')
 		{
 			//Relative URLs does not work in Chrome or IE when using pushState
 			delete_option('setting_strip_domain');
 		}
 
 		else
-		{
+		{*/
 			$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
-		}
+		//}
 
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
@@ -714,6 +708,7 @@ function settings_theme_core()
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
 		$arr_settings['setting_theme_recommendation'] = __("Recommendations", 'lang_theme_core');
 		$arr_settings['setting_theme_optimize'] = __("Optimize Database", 'lang_theme_core');
+		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 	}
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
@@ -742,13 +737,13 @@ function setting_no_public_pages_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-function setting_html5_history_callback()
+/*function setting_html5_history_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}
+}*/
 
 function setting_splash_screen_callback()
 {
@@ -807,6 +802,14 @@ function setting_theme_optimize_callback()
 	$option = get_option_or_default($setting_key, 12);
 
 	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'suffix' => __("months", 'lang_theme_core')));
+}
+
+function setting_theme_ignore_style_on_restore_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+
+	echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => "header_logo, header_mobile_logo, logo_color"));
 }
 
 function column_header_theme_core($cols)
