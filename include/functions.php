@@ -444,6 +444,7 @@ function get_options_page_theme_core($data = array())
 		if($upload_path != '')
 		{
 			$style_source = trim($options['style_source'], "/");
+			$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
 
 			$out .= "<div id='poststuff'>
 				<div id='post-body' class='columns-2'>
@@ -454,9 +455,6 @@ function get_options_page_theme_core($data = array())
 
 						if($count_temp > 0)
 						{
-							$style_source = trim($options['style_source'], "/");
-							$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
-
 							$mf_theme_saved = get_option('mf_theme_saved');
 
 							$out .= "<table class='widefat striped'>";
@@ -598,19 +596,8 @@ function check_htaccess_theme_core($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/BEGIN Theme Core/", $content) || !preg_match("/AddOutputFilterByType/", $content))
+		if(!preg_match("/BEGIN Theme Core/", $content) || preg_match("/SetOutputFilter DEFLATE/", $content))
 		{
-			/*<IfModule mod_gzip.c>
-				mod_gzip_on Yes
-				mod_gzip_dechunk Yes
-				mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
-				mod_gzip_item_include handler ^cgi-script$
-				mod_gzip_item_include mime ^text/.*
-				mod_gzip_item_include mime ^application/x-javascript.*
-				mod_gzip_item_exclude mime ^image/.*
-				mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-			</IfModule>*/
-
 			$recommend_htaccess = "# BEGIN Theme Core
 <IfModule mod_expires.c>
 	ExpiresActive On
@@ -622,16 +609,15 @@ function check_htaccess_theme_core($data)
 FileETag None
 
 AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/gif image/png
-
-<filesMatch '.(css|js|jpe?g|png|gif|ico)$'>
-	Header set Cache-Control 'max-age=2592000, public'
+# END Theme Core";
+/*<filesMatch '.(css|js|jpe?g|png|gif|ico)$'>
+	Header set Cache-Control 'max-age=2678400, public'
 
 	SetOutputFilter DEFLATE
-</filesMatch>
-# END Theme Core";
+</filesMatch>*/
 
 			echo "<div class='mf_form'>"
-				."<h3>".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
+				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
 				.show_textarea(array('value' => $recommend_htaccess, 'xtra' => "rows='12' readonly"))
 			."</div>";
 		}
