@@ -596,7 +596,12 @@ function check_htaccess_theme_core($data)
 	{
 		$content = get_file_content(array('file' => $data['file']));
 
-		if(!preg_match("/BEGIN Theme Core/", $content) || preg_match("/SetOutputFilter DEFLATE/", $content))
+		//$setting_cache_expires = get_option_or_default('setting_cache_expires', 24);
+		$setting_cache_browser_expires = get_option_or_default('setting_cache_browser_expires', 168);
+
+		$file_expires = "access plus ".$setting_cache_browser_expires." ".($setting_cache_browser_expires > 1 ? "hours" : "hour");
+
+		if(!preg_match("/BEGIN Theme Core/", $content) || !preg_match("/Header append/", $content) || !preg_match("/".$file_expires."/", $content))
 		{
 			$recommend_htaccess = "# BEGIN Theme Core
 <IfModule mod_expires.c>
@@ -608,16 +613,16 @@ function check_htaccess_theme_core($data)
 
 FileETag None
 
-AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/gif image/png
-# END Theme Core";
-/*<filesMatch '.(css|js|jpe?g|png|gif|ico)$'>
-	Header set Cache-Control 'max-age=2678400, public'
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/png image/gif image/x-icon
 
-	SetOutputFilter DEFLATE
-</filesMatch>*/
+<filesMatch '.(html|css|js)$'>
+	ExpiresDefault '".$file_expires."'
+	Header append Cache-Control 'public'
+</filesMatch>
+# END Theme Core";
 
 			echo "<div class='mf_form'>"
-				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Copy this to %s", 'lang_theme_core'), ".htaccess")."</h3>"
+				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Add this at the end of %s", 'lang_theme_core'), ".htaccess")."</h3>"
 				.show_textarea(array('value' => $recommend_htaccess, 'xtra' => "rows='12' readonly"))
 			."</div>";
 		}
