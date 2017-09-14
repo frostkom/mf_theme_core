@@ -590,50 +590,6 @@ function enqueue_theme_fonts()
 	}
 }
 
-function check_htaccess_theme_core($data)
-{
-	if(basename($data['file']) == ".htaccess")
-	{
-		$content = get_file_content(array('file' => $data['file']));
-
-		//$setting_cache_expires = get_option_or_default('setting_cache_expires', 24);
-		$setting_cache_browser_expires = get_option_or_default('setting_cache_browser_expires', 168);
-
-		$file_expires = "access plus ".$setting_cache_browser_expires." ".($setting_cache_browser_expires > 1 ? "hours" : "hour");
-
-		if(!preg_match("/BEGIN Theme Core/", $content) || !preg_match("/Header append/", $content) || !preg_match("/".$file_expires."/", $content))
-		{
-			$recommend_htaccess = "# BEGIN Theme Core
-<IfModule mod_expires.c>
-	ExpiresActive On
-	ExpiresDefault 'access plus 1 month'
-
-	Header unset ETag
-</IfModule>
-
-FileETag None
-
-AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/png image/gif image/x-icon
-
-<filesMatch '.(html|css|js)$'>
-	ExpiresDefault '".$file_expires."'
-	Header append Cache-Control 'public'
-</filesMatch>
-# END Theme Core";
-
-			echo "<div class='mf_form'>"
-				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Add this at the end of %s", 'lang_theme_core'), ".htaccess")."</h3>"
-				.show_textarea(array('value' => $recommend_htaccess, 'xtra' => "rows='12' readonly"))
-			."</div>";
-		}
-
-		else
-		{
-			echo __("I have no recommendations for you at this moment", 'lang_theme_core');
-		}
-	}
-}
-
 function settings_theme_core()
 {
 	$options_area = __FUNCTION__;
@@ -686,7 +642,6 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
-		$arr_settings['setting_theme_recommendation'] = __("Recommendations", 'lang_theme_core');
 		$arr_settings['setting_theme_optimize'] = __("Optimize Database", 'lang_theme_core');
 		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 	}
@@ -769,11 +724,6 @@ function setting_404_page_callback()
 	get_post_children(array('add_choose_here' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
-}
-
-function setting_theme_recommendation_callback()
-{
-	get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess_theme_core", 'allow_depth' => false));
 }
 
 function setting_theme_optimize_callback()
