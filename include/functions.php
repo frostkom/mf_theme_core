@@ -203,7 +203,7 @@ function password_form_theme_core()
 
 function the_content_protected_theme_core($html)
 {
-	global $post, $done_text, $error_text;
+	global $post; //, $done_text, $error_text
 
     if(post_password_required())
 	{
@@ -212,7 +212,7 @@ function the_content_protected_theme_core($html)
 			do_log("post_password did not exist even though it was a protected page");
 		}
 
-		$html = password_form_base();
+		$html = password_form_theme_core();
 	}
 
 	/*if(isset($post->post_password) && $post->post_password != '')
