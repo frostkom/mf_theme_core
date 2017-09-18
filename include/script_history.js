@@ -74,7 +74,7 @@ function loadCallback(html, status, xhr)
 
 	else
 	{
-		jQuery('html, body').animate({scrollTop: 0}, 800);
+		scroll_to_top();
 
 		var new_title = html.match(/<title>(.*?)<\/title>/)[1].trim().decodeHTML(),
 			new_class = html.match(/<body.*?class\=[\'\"](.*?)[\'\"].*>/)[1].trim();
