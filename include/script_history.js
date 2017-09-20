@@ -106,7 +106,7 @@ function requestContent(data)
 
 	showOverlay();
 
-	dom_obj.load(data.url + " " + dom_element + ">*", loadCallback); /* + (data.url.match(/(\?)/) ? "&" : "?") + "content_only"*/
+	dom_obj.load(data.url + " " + dom_element + ">*", loadCallback);
 }
 
 jQuery(function($)
