@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-14 11:11+0100\n"
+"POT-Creation-Date: 2017-09-21 10:27+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -71,14 +71,14 @@ msgid "Pages"
 msgstr "Sidor"
 
 #: ../include/functions.php:173
-#: ../include/functions.php:1184
-#: ../include/functions.php:1235
-#: ../include/functions.php:1267
-#: ../include/functions.php:1282
-#: ../include/functions.php:1327
-#: ../include/functions.php:1349
-#: ../include/functions.php:1367
-#: ../include/functions.php:1385
+#: ../include/functions.php:1135
+#: ../include/functions.php:1186
+#: ../include/functions.php:1218
+#: ../include/functions.php:1233
+#: ../include/functions.php:1278
+#: ../include/functions.php:1300
+#: ../include/functions.php:1318
+#: ../include/functions.php:1336
 msgid "Choose here"
 msgstr "Välj här"
 
@@ -188,204 +188,204 @@ msgstr "Ny backup"
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:565
+#: ../include/functions.php:566
 #, php-format
 msgid "Page %s"
 msgstr "Sida %s"
 
-#: ../include/functions.php:645
+#: ../include/functions.php:602
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:649
+#: ../include/functions.php:606
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:665
+#: ../include/functions.php:622
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:675
+#: ../include/functions.php:632
 msgid "Force relative URLs"
 msgstr "Tvinga relativa URLer"
 
-#: ../include/functions.php:680
+#: ../include/functions.php:637
 msgid "Cookie information"
 msgstr "Cookie-information"
 
-#: ../include/functions.php:688
+#: ../include/functions.php:645
 msgid "404 Page"
 msgstr "404-sida"
 
-#: ../include/functions.php:690
+#: ../include/functions.php:646
 msgid "Optimize Database"
 msgstr "Optimera databasen"
 
-#: ../include/functions.php:691
+#: ../include/functions.php:647
 msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
 
-#: ../include/functions.php:701
+#: ../include/functions.php:657
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:760
+#: ../include/functions.php:716
 msgid "The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies"
 msgstr "Innehållet från denna sida kommer att visas längst upp på sidan tills dess att besökaren klickar för att acceptera användandet av cookies"
 
-#: ../include/functions.php:771
+#: ../include/functions.php:727
 msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
-#: ../include/functions.php:784
+#: ../include/functions.php:735
 msgid "months"
 msgstr "månader"
 
-#: ../include/functions.php:799
+#: ../include/functions.php:750
 msgid "SEO"
 msgstr "SEO"
 
-#: ../include/functions.php:875
+#: ../include/functions.php:826
 #, php-format
 msgid "The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO."
 msgstr "Sidan %s har exakt samma titel. Försök att inte ha sidor med samma titel för det skadar din SEO"
 
-#: ../include/functions.php:883
+#: ../include/functions.php:834
 msgid "You have not set a title for this page"
 msgstr "Du har inte angett en titel för denna sida"
 
-#: ../include/functions.php:891
+#: ../include/functions.php:842
 #, php-format
 msgid "The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO."
 msgstr "Sidan %s har exakt samma utdrag. Försök att inte ha sidor med samma utdrag för det skadar din SEO"
 
-#: ../include/functions.php:899
+#: ../include/functions.php:850
 msgid "You have not set an excerpt for this page"
 msgstr "Du har inte angett ett utdrag för denna sida"
 
-#: ../include/functions.php:906
+#: ../include/functions.php:857
 msgid "The URL is not directly correlated to the title. This might be due to a title change but the old URL has not been changed to relate to this change."
 msgstr "URLen är inte direkt kopplad till titeln. Detta kan vara pga. att titeln ändrats medan den gamla URLen har behållits."
 
-#: ../include/functions.php:1185
-#: ../include/functions.php:1236
-#: ../include/functions.php:1269
+#: ../include/functions.php:1136
+#: ../include/functions.php:1187
+#: ../include/functions.php:1220
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/functions.php:1186
-#: ../include/functions.php:1270
+#: ../include/functions.php:1137
+#: ../include/functions.php:1221
 msgid "Center"
 msgstr "Centrera"
 
-#: ../include/functions.php:1187
-#: ../include/functions.php:1237
-#: ../include/functions.php:1271
+#: ../include/functions.php:1138
+#: ../include/functions.php:1188
+#: ../include/functions.php:1222
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/functions.php:1218
+#: ../include/functions.php:1169
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/functions.php:1219
+#: ../include/functions.php:1170
 msgid "No"
 msgstr "Nej"
 
-#: ../include/functions.php:1238
+#: ../include/functions.php:1189
 msgid "Both"
 msgstr "Båda"
 
-#: ../include/functions.php:1239
-#: ../include/functions.php:1268
+#: ../include/functions.php:1190
+#: ../include/functions.php:1219
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/functions.php:1272
-#: ../include/functions.php:1332
-#: ../include/functions.php:1390
+#: ../include/functions.php:1223
+#: ../include/functions.php:1283
+#: ../include/functions.php:1341
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/functions.php:1273
-#: ../include/functions.php:1333
-#: ../include/functions.php:1391
+#: ../include/functions.php:1224
+#: ../include/functions.php:1284
+#: ../include/functions.php:1342
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/functions.php:1328
+#: ../include/functions.php:1279
 msgid "Visible"
 msgstr "Visa"
 
-#: ../include/functions.php:1329
+#: ../include/functions.php:1280
 msgid "Hidden"
 msgstr "Dölj"
 
-#: ../include/functions.php:1330
+#: ../include/functions.php:1281
 msgid "Scroll"
 msgstr "Skrolla"
 
-#: ../include/functions.php:1331
+#: ../include/functions.php:1282
 msgid "Auto"
 msgstr "Auto"
 
-#: ../include/functions.php:1350
+#: ../include/functions.php:1301
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../include/functions.php:1351
+#: ../include/functions.php:1302
 msgid "Fixed"
 msgstr "Fixerad"
 
-#: ../include/functions.php:1368
+#: ../include/functions.php:1319
 msgid "Uppercase"
 msgstr "Versaler"
 
-#: ../include/functions.php:1369
+#: ../include/functions.php:1320
 msgid "Lowercase"
 msgstr "Gemener"
 
-#: ../include/functions.php:1386
+#: ../include/functions.php:1337
 msgid "Lighter"
 msgstr "Tunnare"
 
-#: ../include/functions.php:1387
+#: ../include/functions.php:1338
 msgid "Normal"
 msgstr "Normal"
 
-#: ../include/functions.php:1388
+#: ../include/functions.php:1339
 msgid "Bold"
 msgstr "Fet"
 
-#: ../include/functions.php:1389
+#: ../include/functions.php:1340
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/functions.php:1533
+#: ../include/functions.php:1484
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1545
+#: ../include/functions.php:1496
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1589
+#: ../include/functions.php:1540
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1594
+#: ../include/functions.php:1545
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1599
+#: ../include/functions.php:1550
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1604
+#: ../include/functions.php:1555
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1689
+#: ../include/functions.php:1640
 msgid "Search for"
 msgstr "Sök efter"
 

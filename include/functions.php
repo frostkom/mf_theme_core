@@ -342,11 +342,11 @@ function get_options_page_theme_core($data = array())
 	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
 	list($options_params, $options) = get_params();
 
-	if(isset($_POST['btnThemeBackup']))
+	if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce'], 'theme_backup'))
 	{
 		if(count($options) > 0)
 		{
-			$file = $data['dir']."_".date("YmdHi").".json";
+			$file = $data['dir']."_".get_site_url_clean(array('trim' => "/"))."_".date("YmdHi").".json";
 
 			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($options)));
 
@@ -415,7 +415,7 @@ function get_options_page_theme_core($data = array())
 		}
 	}
 
-	else if(isset($_GET['btnThemeDelete']))
+	else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce'], 'theme_delete_'.$strFileName))
 	{
 		unlink($upload_path.$strFileName);
 
@@ -479,7 +479,7 @@ function get_options_page_theme_core($data = array())
 
 													if($is_allowed_to_backup)
 													{
-														$out .= " | <a href='".admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
+														$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
 													}
 
 												$out .= "</div>
@@ -514,6 +514,7 @@ function get_options_page_theme_core($data = array())
 								<div class='inside'>
 									<form method='post' action='' class='mf_form'>"
 										.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
+										.wp_nonce_field('theme_backup', '_wpnonce', true, false)
 									."</form>
 								</div>
 							</div>
