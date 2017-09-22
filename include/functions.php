@@ -101,7 +101,7 @@ function cron_theme_core()
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
 		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
 
-		update_option('mf_database_optimized', date("Y-m-d H:i:s"));
+		update_option('mf_database_optimized', date("Y-m-d H:i:s"), 'no');
 	}
 }
 
@@ -429,8 +429,8 @@ function get_options_page_theme_core($data = array())
 
 				$done_text = __("The restore was successful", 'lang_theme_core');
 
-				update_option('mf_theme_saved', date("Y-m-d H:i:s"));
-				update_option('theme_source_style_url', "");
+				update_option('mf_theme_saved', date("Y-m-d H:i:s"), 'no');
+				update_option('theme_source_style_url', "", 'no');
 
 				$strFileContent = "";
 			}
