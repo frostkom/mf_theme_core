@@ -1433,9 +1433,54 @@ function render_css($data)
 	return $out;
 }
 
-function get_logo()
+function get_logo($data = array())
 {
-	if(function_exists('get_logo_theme'))
+	if(!isset($data['title'])){				$data['title'] = '';}
+	if(!isset($data['description'])){		$data['description'] = '';}
+
+	list($options_params, $options) = get_params();
+
+	$has_logo = isset($options['header_logo']) && $options['header_logo'] != '' || isset($options['header_mobile_logo']) && $options['header_mobile_logo'] != '';
+
+	$out = "<a href='".get_site_url()."/' id='site_logo'>";
+
+		if($has_logo && $data['title'] == '')
+		{
+			if($options['header_logo'] != '')
+			{
+				$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".__("Logo", 'lang_theme_core')."'>";
+			}
+
+			if($options['header_mobile_logo'] != '')
+			{
+				$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".__("Mobile Logo", 'lang_theme_core')."'>";
+			}
+
+			if($data['description'] != '')
+			{
+				$out .= "<span>".$data['description']."</span>";
+			}
+		}
+
+		else
+		{
+			$logo_title = $data['title'] != '' ? $data['title'] : get_bloginfo('name');
+
+			$out .= "<div>".$logo_title."</div>";
+
+			$logo_description = $data['description'] != '' ? $data['description'] : get_bloginfo('description');
+
+			if($logo_description != '')
+			{
+				$out .= "<span>".$logo_description."</span>";
+			}
+		}
+
+	$out .= "</a>";
+
+	return $out;
+
+	/*if(function_exists('get_logo_theme'))
 	{
 		return get_logo_theme();
 	}
@@ -1443,7 +1488,7 @@ function get_logo()
 	else if(function_exists('get_logo_parallax'))
 	{
 		return get_logo_parallax();
-	}
+	}*/
 }
 
 function default_scripts_theme_core(&$scripts)
@@ -1617,6 +1662,7 @@ function setup_theme_core()
 
 function widgets_theme_core()
 {
+	register_widget('widget_theme_core_logo');
 	register_widget('widget_theme_core_search');
 	register_widget('widget_theme_core_news');
 	register_widget('widget_theme_core_promo');

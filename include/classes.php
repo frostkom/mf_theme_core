@@ -1,5 +1,59 @@
 <?php
 
+class widget_theme_core_logo extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_logo',
+			'description' => __("Display logo", 'lang_theme_core')
+		);
+
+		$control_ops = array('id_base' => 'theme-logo-widget');
+
+		$this->arr_default = array(
+			'logo_title' => '',
+			'logo_description' => '',
+		);
+
+		parent::__construct('theme-logo-widget', __("Logo", 'lang_theme_core'), $widget_ops, $control_ops);
+	}
+
+	function widget($args, $instance)
+	{
+		extract($args);
+
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo $before_widget
+			.get_logo(array('title' => $instance['logo_title'], 'description' => $instance['logo_description']))
+		.$after_widget;
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+
+		$instance['logo_title'] = sanitize_text_field($new_instance['logo_title']);
+		$instance['logo_description'] = sanitize_text_field($new_instance['logo_description']);
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo "<div class='mf_form'>
+			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", 'lang_theme_core')."</p>"
+			.show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['logo_title']))
+			.show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", 'lang_theme_core'), 'value' => $instance['logo_description']))
+		."</div>";
+	}
+}
+
 class widget_theme_core_search extends WP_Widget
 {
 	function __construct()
