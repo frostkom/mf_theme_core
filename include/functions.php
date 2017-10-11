@@ -4,6 +4,32 @@ function cron_theme_core()
 {
 	global $wpdb;
 
+	$meta_prefix = "mf_theme_core_";
+
+	$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
+
+	if($wpdb->num_rows > 0)
+	{
+		foreach($result as $r)
+		{
+			$post_id = $r->ID;
+			$post_unpublish = $r->meta_value;
+
+			if($post_unpublish <= date("Y-m-d H:i:s"))
+			{
+				$post_data = array(
+					'ID' => $post_id,
+					'post_status' => 'draft',
+					'meta_input' => array(
+						$meta_prefix.'unpublish_date' => '',
+					),
+				);
+
+				wp_update_post($post_data);
+			}
+		}
+	}
+
 	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
 	{
 		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
@@ -870,6 +896,48 @@ function column_cell_theme_core($col, $id)
 			}
 		break;
 	}
+}
+
+function get_post_types_for_metabox()
+{
+	$arr_data = array();
+
+	foreach(get_post_types(array('public' => true), 'objects') as $post_type)
+	{
+		if(!in_array($post_type->name, array('attachment')))
+		{
+			$arr_data[] = $post_type->name;
+		}
+	}
+
+	return $arr_data;
+}
+
+function meta_boxes_theme_core($meta_boxes)
+{
+	/*global $post;
+
+	if(isset($post->post_status) && $post->post_status == 'publish')
+	{*/
+		$meta_prefix = "mf_theme_core_";
+
+		$meta_boxes[] = array(
+			'id' => 'theme_core',
+			'title' => __("Dates", 'lang_theme_core'),
+			'post_types' => get_post_types_for_metabox(),
+			'context' => 'side',
+			'priority' => 'low',
+			'fields' => array(
+				array(
+					'name' => __("Unpublish", 'lang_theme_core'),
+					'id' => $meta_prefix.'unpublish_date',
+					'type' => 'datetime',
+				),
+			)
+		);
+	//}
+
+	return $meta_boxes;
 }
 
 function require_user_login()
