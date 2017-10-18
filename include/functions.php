@@ -151,11 +151,6 @@ function cron_theme_core()
 function header_theme_core()
 {
 	require_user_login();
-
-	/*if(!is_feed() && !get_query_var('sitemap') && get_option('setting_strip_domain') == 1)
-	{
-		ob_start("strip_domain_from_content");
-	}*/
 }
 
 function get_wp_title()
@@ -636,13 +631,13 @@ function settings_theme_core()
 	{
 		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 
-		//$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
+		/*$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
 
-		/*$setting_html5_history = get_option('setting_html5_history');
-
-		if($setting_html5_history == 'yes')
+		if(get_option('setting_html5_history') == 'yes')
 		{
 			$arr_settings['setting_splash_screen'] = __("Show Splash Screen", 'lang_theme_core');
+
+			delete_option('setting_strip_domain');
 		}
 
 		else
@@ -651,17 +646,6 @@ function settings_theme_core()
 		}*/
 
 		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
-
-		/*if($setting_html5_history == 'yes')
-		{
-			//Relative URLs does not work in Chrome or IE when using pushState
-			delete_option('setting_strip_domain');
-		}
-
-		else
-		{*/
-			//$arr_settings['setting_strip_domain'] = __("Force relative URLs", 'lang_theme_core');
-		//}
 
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
@@ -727,14 +711,6 @@ function setting_scroll_to_top_callback()
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
-
-/*function setting_strip_domain_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 0);
-
-	echo show_select(array('data' => get_yes_no_for_select(array('return_integer' => true)), 'name' => $setting_key, 'value' => $option));
-}*/
 
 function setting_cookie_info_callback()
 {
@@ -1679,14 +1655,6 @@ function admin_bar_theme_core()
 	}
 }
 
-/*function init_style_theme_core()
-{
-	if(get_option('setting_strip_domain') == 1)
-	{
-		ob_start("strip_domain_from_content");
-	}
-}*/
-
 function mf_unregister_widget($id)
 {
 	/*$arr_exclude = array("WP_Widget_", "_");
@@ -1763,11 +1731,3 @@ function get_search_theme_core($data = array())
 		."<i class='fa fa-search'></i>"
 	."</form>";
 }
-
-/*function strip_domain_from_content($html)
-{
-	$site_url = get_option('siteurl');
-	$site_url_alt = (substr($site_url, 0, 5) == "https" ? str_replace("https:", "http:", $site_url) : str_replace("http:", "https:", $site_url));
-
-	return str_replace(array($site_url, $site_url_alt), "", $html);
-}*/
