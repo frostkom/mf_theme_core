@@ -988,7 +988,6 @@ function get_media_fonts()
 function get_theme_fonts()
 {
 	$options_fonts = array();
-
 	$arr_media_fonts = get_media_fonts();
 
 	foreach($arr_media_fonts as $media_key => $media_font)
@@ -1010,37 +1009,37 @@ function get_theme_fonts()
 	$options_fonts[3] = array(
 		'title' => "Droid Sans",
 		'style' => "'Droid Sans', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Droid+Sans"
+		'url' => "//fonts.googleapis.com/css?family=Droid+Sans"
 	);
 
 	$options_fonts[5] = array(
 		'title' => "Droid Serif",
 		'style' => "'Droid Serif', serif",
-		'url' => "http://fonts.googleapis.com/css?family=Droid+Serif"
+		'url' => "//fonts.googleapis.com/css?family=Droid+Serif"
 	);
 
 	$options_fonts[1] = array(
 		'title' => "Courgette",
 		'style' => "'Courgette', cursive",
-		'url' => "http://fonts.googleapis.com/css?family=Courgette"
+		'url' => "//fonts.googleapis.com/css?family=Courgette"
 	);
 
 	$options_fonts[6] = array(
 		'title' => "Garamond",
 		'style' => "'EB Garamond', serif",
-		'url' => "http://fonts.googleapis.com/css?family=EB+Garamond"
+		'url' => "//fonts.googleapis.com/css?family=EB+Garamond"
 	);
 
 	$options_fonts['lato'] = array(
 		'title' => "Lato",
 		'style' => "'Lato', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Lato"
+		'url' => "//fonts.googleapis.com/css?family=Lato"
 	);
 
 	$options_fonts['montserrat'] = array(
 		'title' => "Montserrat",
 		'style' => "'Montserrat', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Montserrat:400,700"
+		'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
 	);
 
 	$options_fonts[2] = array(
@@ -1052,49 +1051,49 @@ function get_theme_fonts()
 	$options_fonts[4] = array(
 		'title' => "Open Sans",
 		'style' => "'Open Sans', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Open+Sans"
+		'url' => "//fonts.googleapis.com/css?family=Open+Sans"
 	);
 
 	$options_fonts['oswald'] = array(
 		'title' => "Oswald",
 		'style' => "'Oswald', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Oswald"
+		'url' => "//fonts.googleapis.com/css?family=Oswald"
 	);
 
 	$options_fonts['oxygen'] = array(
 		'title' => "Oxygen",
 		'style' => "'Oxygen', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Oxygen"
+		'url' => "//fonts.googleapis.com/css?family=Oxygen"
 	);
 
 	$options_fonts['roboto'] = array(
 		'title' => "Roboto",
 		'style' => "'Roboto', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Roboto"
+		'url' => "//fonts.googleapis.com/css?family=Roboto"
 	);
 
 	$options_fonts['roboto_condensed'] = array(
 		'title' => "Roboto Condensed",
 		'style' => "'Roboto Condensed', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Roboto+Condensed"
+		'url' => "//fonts.googleapis.com/css?family=Roboto+Condensed"
 	);
 
 	$options_fonts['roboto_mono'] = array(
 		'title' => "Roboto Mono",
 		'style' => "'Roboto Mono', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Roboto+Mono"
+		'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
 	);
 
 	$options_fonts['sorts_mill_goudy'] = array(
 		'title' => "Sorts Mill Goudy",
 		'style' => "'sorts-mill-goudy',serif",
-		'url' => "http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
+		'url' => "//fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
 	);
 
 	$options_fonts['source_sans_pro'] = array(
 		'title' => "Source Sans Pro",
 		'style' => "'Source Sans Pro', sans-serif",
-		'url' => "http://fonts.googleapis.com/css?family=Source+Sans+Pro"
+		'url' => "//fonts.googleapis.com/css?family=Source+Sans+Pro"
 	);
 
 	return $options_fonts;
