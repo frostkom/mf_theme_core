@@ -394,7 +394,7 @@ function get_options_page_theme_core($data = array())
 	{
 		if(count($options) > 0)
 		{
-			$file = $data['dir']."_".get_site_url_clean(array('trim' => "/"))."_".date("YmdHi").".json";
+			$file = $data['dir']."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")))."_".date("YmdHi").".json";
 
 			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($options)));
 
