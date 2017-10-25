@@ -282,6 +282,23 @@ function the_content_protected_theme_core($html)
 	return $html;
 }
 
+function is_active_sidebar_theme_core($is_active, $widget)
+{
+	if($is_active == false)
+	{
+		$sidebars_widgets = get_option('sidebars_widgets', array());
+
+		if(isset($sidebars_widgets[$widget]) && (!is_array($sidebars_widgets[$widget]) || count($sidebars_widgets[$widget]) > 0))
+		{
+			$is_active = true;
+
+			//do_log($widget." was not active BUT the DB said other (".var_export($sidebars_widgets, true).")");
+		}
+	}
+
+	return $is_active;
+}
+
 function gather_params($options_params)
 {
 	$options = array();
