@@ -282,8 +282,10 @@ function the_content_protected_theme_core($html)
 	return $html;
 }
 
-function is_active_sidebar_theme_core($is_active, $widget)
+function is_active_widget_area($widget)
 {
+	$is_active = is_active_sidebar($widget);
+
 	if($is_active == false)
 	{
 		$sidebars_widgets = get_option('sidebars_widgets', array());
