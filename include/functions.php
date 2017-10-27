@@ -30,7 +30,7 @@ function cron_theme_core()
 		}
 	}
 
-	if(get_option('mf_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
+	if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
 	{
 		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
 
@@ -127,7 +127,7 @@ function cron_theme_core()
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
 		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
 
-		update_option('mf_database_optimized', date("Y-m-d H:i:s"), 'no');
+		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 	}
 }
 
@@ -469,8 +469,8 @@ function get_options_page_theme_core($data = array())
 
 				$done_text = __("The restore was successful", 'lang_theme_core');
 
-				update_option('mf_theme_saved', date("Y-m-d H:i:s"), 'no');
-				update_option('theme_source_style_url', "", 'no');
+				update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
+				update_option('option_theme_source_style_url', "", 'no');
 
 				$strFileContent = "";
 			}
@@ -495,11 +495,11 @@ function get_options_page_theme_core($data = array())
 		{
 			$style_source = str_replace(array("http://", "https://"), "", trim($options['style_source'], "/"));
 
-			$theme_source_style_url = get_option('theme_source_style_url');
+			$option_theme_source_style_url = get_option('option_theme_source_style_url');
 
-			if($theme_source_style_url != '')
+			if($option_theme_source_style_url != '')
 			{
-				$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $style_source, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$theme_source_style_url)."'>", "</a>");
+				$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $style_source, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$option_theme_source_style_url)."'>", "</a>");
 			}
 		}
 	}
@@ -522,7 +522,7 @@ function get_options_page_theme_core($data = array())
 
 						if($count_temp > 0)
 						{
-							$mf_theme_saved = get_option('mf_theme_saved');
+							$option_theme_saved = get_option('option_theme_saved');
 
 							$out .= "<table class='widefat striped'>";
 
@@ -537,7 +537,7 @@ function get_options_page_theme_core($data = array())
 										$file_name = $arr_backups[$i]['name'];
 										$file_time = date("Y-m-d H:i:s", $arr_backups[$i]['time']);
 
-										$out .= "<tr".($style_source != get_site_url() && $file_time > $mf_theme_saved ? " class='green'" : "").">
+										$out .= "<tr".($style_source != get_site_url() && $file_time > $option_theme_saved ? " class='green'" : "").">
 											<td>"
 												.$arr_backups[$i]['name']
 												."<div class='row-actions'>
@@ -1738,6 +1738,12 @@ function widgets_theme_core()
 	{
 		mf_unregister_widget('WP_Widget_Text');
 	}
+}
+
+function customize_save_theme_core()
+{
+	update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
+	update_option('option_theme_version', get_option('option_theme_version', 0) + 1, 'no');
 }
 
 function get_search_theme_core($data = array())

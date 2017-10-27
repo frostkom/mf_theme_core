@@ -81,6 +81,8 @@ else
 add_action('after_setup_theme', 'setup_theme_core');
 add_action('widgets_init', 'widgets_theme_core');
 
+add_action('customize_save', 'customize_save_theme_core');
+
 load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__)).'/lang/');
 
 function activate_theme_core()
@@ -122,8 +124,12 @@ function activate_theme_core()
 		}
 	}
 
+	replace_option(array('old' => 'mf_theme_saved', 'new' => 'option_theme_saved'));
+	replace_option(array('old' => 'theme_source_style_url', 'new' => 'option_theme_source_style_url'));
+	replace_option(array('old' => 'mf_database_optimized', 'new' => 'option_database_optimized'));
+
 	mf_uninstall_plugin(array(
-		'options' => array('setting_save_style', 'setting_compress', 'setting_responsiveness', 'theme_source_version', 'setting_theme_recommendation'),
+		'options' => array('setting_save_style', 'setting_compress', 'setting_responsiveness', 'setting_theme_recommendation'),
 	));
 }
 
@@ -131,6 +137,6 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'mf_theme_saved', 'theme_source_version', 'theme_source_style_url', 'mf_database_optimized'),
+		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized'),
 	));
 }
