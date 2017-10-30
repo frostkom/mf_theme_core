@@ -396,24 +396,67 @@ function get_previous_backups_list($upload_path)
 	return $globals['mf_theme_files'];
 }
 
-function get_options_page_theme_core($data = array())
+function options_theme_core()
+{
+	global $menu;
+
+	$count_message = "";
+	$rows = 0;
+	$option_theme_source_style_url = get_option('option_theme_source_style_url');
+
+	if($option_theme_source_style_url != ''){		$rows++;}
+
+	if($rows > 0)
+	{
+		$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
+			<span>".$rows."</span>
+		</span>";
+
+		if(count($menu) > 0)
+		{
+			foreach($menu as $key => $item)
+			{
+				if($item[2] == 'themes.php')
+				{
+					$menu_name = $item[0];
+
+					$menu[$key][0] = strip_tags($menu_name).$count_message;
+				}
+			}
+		}
+	}
+
+	$menu_title = __("Theme Backup", 'lang_theme_core');
+
+	add_theme_page($menu_title, $menu_title.$count_message, 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
+}
+
+/*function options_page_theme_core()
+{
+	echo get_options_page_theme_core();
+}*/
+
+function get_options_page_theme_core() //$data = array()
 {
 	global $done_text, $error_text;
 
 	$out = "";
 
+	//$theme_dir_name = $data['dir'];
+	$theme_dir_name = str_replace(get_theme_root()."/", "", get_template_directory());
+
 	$strFileUrl = check_var('strFileUrl');
 	$strFileName = check_var('strFileName');
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
 
-	list($upload_path, $upload_url) = get_uploads_folder($data['dir']);
+	list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 	list($options_params, $options) = get_params();
 
 	if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce'], 'theme_backup'))
 	{
 		if(count($options) > 0)
 		{
-			$file = $data['dir']."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")))."_".date("YmdHi").".json";
+			$file = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")))."_".date("YmdHi").".json";
 
 			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($options)));
 
@@ -505,7 +548,7 @@ function get_options_page_theme_core($data = array())
 	}
 
 	$out .= "<div class='wrap'>
-		<h2>".__("Theme Options", 'lang_theme_core')."</h2>"
+		<h2>".__("Theme Backup", 'lang_theme_core')."</h2>"
 		.get_notification();
 
 		if($upload_path != '')
@@ -599,7 +642,7 @@ function get_options_page_theme_core($data = array())
 
 	$out .= "</div>";
 
-	return $out;
+	echo $out;
 }
 
 function nav_args_theme_core($args)

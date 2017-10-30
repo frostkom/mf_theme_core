@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.10.10
+Version: 6.10.11
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -28,6 +28,8 @@ if(is_admin())
 
 	add_action('wp_before_admin_bar_render', 'admin_bar_theme_core');
 	add_action('admin_init', 'settings_theme_core');
+
+	add_action('admin_menu', 'options_theme_core');
 
 	add_filter('manage_page_posts_columns', 'column_header_theme_core', 5);
 	add_action('manage_page_posts_custom_column', 'column_cell_theme_core', 5, 2);
