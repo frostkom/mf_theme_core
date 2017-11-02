@@ -1,5 +1,37 @@
 <?php
 
+function get_params_theme_core($type)
+{
+	$options_params = array();
+
+	$bg_placeholder = "#ffffff, rgba(0, 0, 0, .3), url(background.png)";
+
+	$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
+		$options_params[] = array('type' => "text", 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'), 'placeholder' => "http://domain.com");
+		$options_params[] = array('type' => "text", 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
+			$options_params[] = array('type' => "color", 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'), 'default' => "#fff");
+			$options_params[] = array('type' => "image", 'id' => 'body_bg_image', 'title' => __("Image", 'lang_theme_core'));
+		$options_params[] = array('type' => "text", 'id' => 'main_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "1em 2em");
+		$options_params[] = array('type' => "font", 'id' => 'body_font', 'title' => __("Font", 'lang_theme_core'));
+		$options_params[] = array('type' => "color", 'id' => 'body_color', 'title' => __("Text Color", 'lang_theme_core'));
+		$options_params[] = array('type' => "color", 'id' => 'body_link_color', 'title' => __("Link Color", 'lang_theme_core'));
+		$options_params[] = array('type' => "color", 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'));
+			$options_params[] = array('type' => "color", 'id' => 'button_color_hover', 'title' => " - ".__("Button Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'button_color');
+		$options_params[] = array('type' => "number", 'id' => 'website_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "1100");
+		$options_params[] = array('type' => "text", 'id' => 'body_desktop_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => ".625em");
+		$options_params[] = array('type' => "number", 'id' => 'mobile_breakpoint', 'title' => __("Breakpoint", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "600");
+		$options_params[] = array('type' => "text", 'id' => 'body_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "2.4vw", 'show_if' => 'mobile_breakpoint');
+
+			if($type == 'mf_parallax')
+			{
+				$options_params[] = array('type' => "text", 'id' => "mobile_aside_img_max_width", 'title' => __("Aside Image Max Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => "mobile_breakpoint");
+			}
+
+	$options_params[] = array('category_end' => "");
+
+	return $options_params;
+}
+
 function cron_theme_core()
 {
 	global $wpdb;
