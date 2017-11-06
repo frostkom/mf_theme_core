@@ -2,7 +2,7 @@ function set_breakpoint()
 {
 	var value = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\"/g, '');
 
-	jQuery('body').removeClass('is_unknown is_mobile is_tablet is_desktop').addClass(value); /* 'is_' +  */
+	jQuery('body').removeClass('is_unknown is_mobile is_tablet is_desktop').addClass(value);
 };
 
 function on_load_theme_core()

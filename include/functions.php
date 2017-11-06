@@ -1007,6 +1007,11 @@ function settings_theme_core()
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
 		$arr_settings['setting_theme_optimize'] = __("Optimize Database", 'lang_theme_core');
 		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
+
+		if(is_plugin_active('css-hero-ce/css-hero-main.php'))
+		{
+			$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
+		}
 	}
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
@@ -1095,6 +1100,29 @@ function setting_theme_ignore_style_on_restore_callback()
 	$option = get_option($setting_key);
 
 	echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => "header_logo, header_mobile_logo, logo_color"));
+}
+
+function setting_theme_css_hero_callback()
+{
+	$css_hero_key = 'wpcss_quick_config_settings_mf-theme'; //Use mf-parallax for Parallax theme
+
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, get_option($css_hero_key));
+
+	if($option != '')
+	{
+		echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page' rel='external'>", "</a>")));
+	}
+
+	else
+	{
+		$option = "";
+		do_log("Load CSS and generate a list of selectors, one on each row");
+
+		echo __("I have generated a list of selectors to use. Please reload the page for further instructions", 'lang_theme_core');
+	}
+
+	update_option($css_hero_key, $option);
 }
 
 function column_header_theme_core($cols)
