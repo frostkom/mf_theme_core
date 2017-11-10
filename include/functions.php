@@ -329,6 +329,13 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'aside_line_height', 'title' => __("Line Height", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")", 'default' => ".5em");
 			$options_params[] = array('category_end' => "");
+			
+			if(is_active_widget_area('widget_after_content'))
+			{
+				$options_params[] = array('category' => " - ".__("Below Main Column", 'lang_theme'), 'id' => 'mf_theme_after_content');
+					$options_params[] = array('type' => 'text', 'id' => "after_content_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
+				$options_params[] = array('category_end' => "");
+			}
 		}
 
 		if(is_active_widget_area('widget_pre_footer'))
@@ -336,8 +343,9 @@ function get_params_theme_core()
 			$options_params[] = array('category' => __("Pre Footer", 'lang_theme_core'), 'id' => 'mf_theme_pre_footer');
 				$options_params[] = array('type' => 'checkbox', 'id' => 'pre_footer_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
 				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
+				$options_params[] = array('type' => 'text', 'id' => "pre_footer_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => __("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
+					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
 			$options_params[] = array('category_end' => "");
 		}
 	}
@@ -927,6 +935,8 @@ function get_options_page_theme_core()
 		unlink($upload_path.$strFileName);
 
 		$done_text = __("The file was deleted successfully", 'lang_theme_core');
+
+		do_log($dome_text." (".get_current_user_id().")");
 	}
 
 	else
