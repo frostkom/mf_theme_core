@@ -12,6 +12,7 @@ class widget_theme_core_logo extends WP_Widget
 		$control_ops = array('id_base' => 'theme-logo-widget');
 
 		$this->arr_default = array(
+			'logo_display' => 'all',
 			'logo_title' => '',
 			'logo_description' => '',
 		);
@@ -26,7 +27,7 @@ class widget_theme_core_logo extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo $before_widget
-			.get_logo(array('title' => $instance['logo_title'], 'description' => $instance['logo_description']))
+			.get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'description' => $instance['logo_description']))
 		.$after_widget;
 	}
 
@@ -36,6 +37,7 @@ class widget_theme_core_logo extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
+		$instance['logo_display'] = sanitize_text_field($new_instance['logo_display']);
 		$instance['logo_title'] = sanitize_text_field($new_instance['logo_title']);
 		$instance['logo_description'] = sanitize_text_field($new_instance['logo_description']);
 
@@ -46,11 +48,27 @@ class widget_theme_core_logo extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
+		$arr_data = array(
+			'all' => __("Logo and Tagline", 'lang_theme_core'),
+			'title' => __("Logo", 'lang_theme_core'),
+			'tagline' => __("Tagline", 'lang_theme_core'),
+		);
+
 		echo "<div class='mf_form'>
 			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", 'lang_theme_core')."</p>"
-			.show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['logo_title']))
-			.show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", 'lang_theme_core'), 'value' => $instance['logo_description']))
-		."</div>";
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", 'lang_theme_core'), 'value' => $instance['logo_display']));
+
+			if($instance['logo_display'] != 'tagline')
+			{
+				echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title']));
+			}
+
+			if($instance['logo_display'] != 'title')
+			{
+				echo show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", 'lang_theme_core'), 'value' => $instance['logo_description']));
+			}
+
+		echo "</div>";
 	}
 }
 
