@@ -1988,14 +1988,16 @@ function get_logo($data = array())
 		{
 			if($data['display'] != 'tagline')
 			{
+				$site_name = get_bloginfo('name');
+
 				if($options['header_logo'] != '')
 				{
-					$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".__("Logo", 'lang_theme_core')."'>";
+					$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
 				}
 
 				if($options['header_mobile_logo'] != '')
 				{
-					$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".__("Mobile Logo", 'lang_theme_core')."'>";
+					$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name)."'>";
 				}
 			}
 
