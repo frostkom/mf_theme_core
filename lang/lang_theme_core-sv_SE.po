@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-11 17:00+0100\n"
+"POT-Creation-Date: 2017-11-13 14:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,88 +15,108 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../index.php:120
+#: ../index.php:122
 msgid "All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description"
 msgstr "Alla meta-förklaringar har flyttats till utdrag så nu kan du radera pluginet Meta Description"
 
-#: ../index.php:125
+#: ../index.php:127
 #, php-format
 msgid "I moved %d Meta Descriptions to excerpt"
 msgstr "Jag flyttade %d meta-förklaringar till utdrag"
 
-#: ../include/classes.php:9
+#: ../include/classes.php:33
+msgid "I cloned the post for you"
+msgstr "Jag klonade sidan åt dig"
+
+#: ../include/classes.php:54
+msgid "Clone"
+msgstr "Klona"
+
+#: ../include/classes.php:72
+msgid "You are not allowed to clone this post"
+msgstr "Du har inte behörighet att klona denna sida"
+
+#: ../include/classes.php:77
+msgid "Error cloning post"
+msgstr "Något gick fel vid kloningen"
+
+#: ../include/classes.php:112
+msgid "copy"
+msgstr "kopia"
+
+#: ../include/classes.php:160
 msgid "Display logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:20
-#: ../include/classes.php:53
-#: ../include/classes.php:63
+#: ../include/classes.php:171
+#: ../include/classes.php:204
+#: ../include/classes.php:214
 #: ../include/functions.php:66
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:52
+#: ../include/classes.php:203
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:54
-#: ../include/classes.php:68
+#: ../include/classes.php:205
+#: ../include/classes.php:219
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:58
+#: ../include/classes.php:209
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:59
+#: ../include/classes.php:210
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:81
+#: ../include/classes.php:232
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:91
+#: ../include/classes.php:242
 #: ../include/functions.php:60
 #: ../include/functions.php:61
 #: ../include/functions.php:635
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:120
+#: ../include/classes.php:271
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:121
+#: ../include/classes.php:272
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:132
+#: ../include/classes.php:283
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:142
+#: ../include/classes.php:293
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:236
-#: ../include/classes.php:369
+#: ../include/classes.php:387
+#: ../include/classes.php:520
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:237
+#: ../include/classes.php:388
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:248
+#: ../include/classes.php:399
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:256
+#: ../include/classes.php:407
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:370
+#: ../include/classes.php:521
 msgid "Pages"
 msgstr "Sidor"
 

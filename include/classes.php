@@ -1,5 +1,122 @@
 <?php
 
+class mf_clone_posts
+{
+	public function __construct()
+	{
+		add_filter('post_row_actions', 		array(&$this, 'row_actions'), 10, 2);
+		add_filter('page_row_actions', 		array(&$this, 'row_actions'), 10, 2);
+		add_action('wp_loaded', 			array(&$this, 'wp_loaded'));
+	}
+
+	function clone_single_post()
+	{
+    	$p = get_post($this->post_id_old);
+
+		if($p == null)
+		{
+			return false;
+		}
+
+		$newpost = array(
+			'post_name'				=> $p->post_name,
+			'post_type'				=> $p->post_type,
+			'ping_status'			=> $p->ping_status,
+			'post_parent'			=> $p->post_parent,
+			'menu_order'			=> $p->menu_order,
+			'post_password'			=> $p->post_password,
+			'post_excerpt'			=> $p->post_excerpt,
+			'comment_status'		=> $p->comment_status,
+			'post_title'			=> $p->post_title." (".__("copy", 'lang_theme_core').")",
+			'post_content'			=> $p->post_content,
+			'post_author'			=> $p->post_author,
+			'to_ping'				=> $p->to_ping,
+			'pinged'				=> $p->pinged,
+			'post_content_filtered' => $p->post_content_filtered,
+			'post_category'			=> $p->post_category,
+			'tags_input'			=> $p->tags_input,
+			'tax_input'				=> $p->tax_input,
+			'page_template'			=> $p->page_template
+			// 'post_date'			=> $p->post_date,				// default: current date
+			// 'post_date_gmt'  	=> $p->post_date_gmt, 			// default: current gmt date
+			// 'post_status'    	=> $p->post_status 				// default: draft
+		);
+
+		$this->post_id_new = wp_insert_post($newpost);
+
+		$format = get_post_format($this->post_id_old);
+		set_post_format($this->post_id_new, $format);
+
+		$arr_meta = get_post_meta($this->post_id_old);
+
+		foreach($arr_meta as $key => $value)
+		{
+			if(substr($key, 0, 1) != '_')
+			{
+				if(is_array($value))
+				{
+					if(!(count($value) > 1))
+					{
+						$value = $value[0];
+					}
+				}
+
+				update_post_meta($this->post_id_new, $key, $value);
+			}
+		}
+
+		do_action('clone_page', $this->post_id_old, $this->post_id_new);
+
+		return true;
+	}
+
+	function row_actions($actions, $post)
+	{
+		global $post_type;
+
+		$url = remove_query_arg(array('cloned', 'untrashed', 'deleted', 'ids'), "");
+
+		if(!$url)
+		{
+			$url = admin_url("?post_type=".$post_type);
+		}
+
+		$url = remove_query_arg(array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $url);
+		$url = add_query_arg(array('action' => 'clone-single', 'post' => $post->ID, 'redirect' => $_SERVER['REQUEST_URI']), $url);
+
+		$actions['clone'] = "<a href='".$url."'>".__("Clone", 'lang_theme_core')."</a>";
+
+		return $actions;
+	}
+
+	function wp_loaded()
+	{
+		global $post_type;
+
+		if(!isset($_GET['action']) || $_GET['action'] !== "clone-single")
+		{
+			return;
+		}
+
+		$this->post_id_old = check_var('post');
+
+		if(!current_user_can('edit_post', $this->post_id_old))
+		{
+			wp_die(__("You are not allowed to clone this post", 'lang_theme_core'));
+		}
+
+		else if(!$this->clone_single_post())
+		{
+			wp_die(__("Error cloning post", 'lang_theme_core'));
+		}
+
+		else
+		{
+			mf_redirect(admin_url("post.php?post=".$this->post_id_new."&action=edit"));
+		}
+	}
+}
+
 class widget_theme_core_logo extends WP_Widget
 {
 	function __construct()
@@ -14,6 +131,7 @@ class widget_theme_core_logo extends WP_Widget
 		$this->arr_default = array(
 			'logo_display' => 'all',
 			'logo_title' => '',
+			'logo_image' => '',
 			'logo_description' => '',
 		);
 
@@ -27,7 +145,7 @@ class widget_theme_core_logo extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo $before_widget
-			.get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'description' => $instance['logo_description']))
+			.get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
 		.$after_widget;
 	}
 
@@ -39,6 +157,7 @@ class widget_theme_core_logo extends WP_Widget
 
 		$instance['logo_display'] = sanitize_text_field($new_instance['logo_display']);
 		$instance['logo_title'] = sanitize_text_field($new_instance['logo_title']);
+		$instance['logo_image'] = sanitize_text_field($new_instance['logo_image']);
 		$instance['logo_description'] = sanitize_text_field($new_instance['logo_description']);
 
 		return $instance;
@@ -60,7 +179,15 @@ class widget_theme_core_logo extends WP_Widget
 
 			if($instance['logo_display'] != 'tagline')
 			{
-				echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title']));
+				if($instance['logo_image'] == '')
+				{
+					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title']));
+				}
+
+				if($instance['logo_title'] == '')
+				{
+					echo get_file_button(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image']));
+				}
 			}
 
 			if($instance['logo_display'] != 'title')

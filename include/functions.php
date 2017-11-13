@@ -1976,11 +1976,12 @@ function get_logo($data = array())
 {
 	if(!isset($data['display'])){			$data['display'] = 'all';}
 	if(!isset($data['title'])){				$data['title'] = '';}
+	if(!isset($data['image'])){				$data['image'] = '';}
 	if(!isset($data['description'])){		$data['description'] = '';}
 
 	list($options_params, $options) = get_params();
 
-	$has_logo = isset($options['header_logo']) && $options['header_logo'] != '' || isset($options['header_mobile_logo']) && $options['header_mobile_logo'] != '';
+	$has_logo = $data['image'] != '' || isset($options['header_logo']) && $options['header_logo'] != '' || isset($options['header_mobile_logo']) && $options['header_mobile_logo'] != '';
 
 	$out = "<a href='".get_site_url()."/' id='site_logo'>";
 
@@ -1990,14 +1991,22 @@ function get_logo($data = array())
 			{
 				$site_name = get_bloginfo('name');
 
-				if($options['header_logo'] != '')
+				if($data['image'] != '')
 				{
-					$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
+					$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
 				}
 
-				if($options['header_mobile_logo'] != '')
+				else
 				{
-					$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name)."'>";
+					if($options['header_logo'] != '')
+					{
+						$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
+					}
+
+					if($options['header_mobile_logo'] != '')
+					{
+						$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name)."'>";
+					}
 				}
 			}
 
