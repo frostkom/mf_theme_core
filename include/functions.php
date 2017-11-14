@@ -576,8 +576,37 @@ function get_wp_title()
 	return $out;
 }
 
+function add_page_index()
+{
+	global $post;
+
+	if(isset($post) && $post->ID > 0)
+	{
+		$meta_prefix = "mf_theme_core_";
+
+		$page_index = get_post_meta($post->ID, $meta_prefix.'page_index', true);
+
+		if($page_index != '')
+		{
+			switch($page_index)
+			{
+				case 'nofollow':
+				case 'noindex':
+					echo "<meta name='robots' content='".$page_index."'>";
+				break;
+
+				case 'none':
+					echo "<meta name='robots' content='noindex, nofollow'>";
+				break;
+			}
+		}
+	}
+}
+
 function head_theme_core()
 {
+	
+
 	echo "<meta charset='".get_bloginfo('charset')."'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 	<meta name='author' content='frostkom.se'>
@@ -587,6 +616,8 @@ function head_theme_core()
 	{
 		wp_deregister_style('dashicons');
 	}
+
+	add_page_index();
 
 	$plugin_include_url = plugin_dir_url(__FILE__);
 	$plugin_version = get_plugin_version(__FILE__);
@@ -1246,11 +1277,19 @@ function setting_theme_css_hero_callback()
 	update_option($css_hero_key, $option);
 }
 
+function is_site_public()
+{
+	return (get_option('blog_public') == 1 && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes');
+}
+
 function column_header_theme_core($cols)
 {
 	unset($cols['comments']);
 
-	$cols['seo'] = __("SEO", 'lang_theme_core');
+	if(is_site_public())
+	{
+		$cols['seo'] = __("SEO", 'lang_theme_core');
+	}
 
 	return $cols;
 }
@@ -1272,6 +1311,26 @@ function column_cell_theme_core($col, $id)
 				$post_name = $r->post_name;
 
 				$seo_type = '';
+
+				if($seo_type == '')
+				{
+					$meta_prefix = "mf_theme_core_";
+
+					$page_index = get_post_meta($id, $meta_prefix.'page_index', true);
+
+					if(in_array($page_index, array('noindex', 'none')))
+					{
+						$seo_type = 'not_indexed';
+					}
+				}
+
+				if($seo_type == '')
+				{
+					if(post_password_required($id))
+					{
+						$seo_type = 'password_protected';
+					}
+				}
 
 				if($seo_type == '')
 				{
@@ -1342,7 +1401,7 @@ function column_cell_theme_core($col, $id)
 						echo "<i class='fa fa-lg fa-close red'></i>
 						<div class='row-actions'>
 							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same excerpt. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
 							."</a>
 						</div>";
 					break;
@@ -1357,10 +1416,12 @@ function column_cell_theme_core($col, $id)
 					case 'inconsistent_url':
 						echo "<i class='fa fa-lg fa-warning yellow'></i>
 						<div class='row-actions'>"
-							.__("The URL is not directly correlated to the title. This might be due to a title change but the old URL has not been changed to relate to this change.", 'lang_theme_core')
+							.__("The URL is not correlated to the title", 'lang_theme_core')
 						."</div>";
 					break;
 
+					case 'not_indexed':
+					case 'password_protected':
 					default:
 						echo "<i class='fa fa-lg fa-check green'></i>";
 					break;
@@ -1387,19 +1448,28 @@ function get_post_types_for_metabox()
 
 function meta_boxes_theme_core($meta_boxes)
 {
-	/*global $post;
-
-	if(isset($post->post_status) && $post->post_status == 'publish')
-	{*/
+	if(is_site_public())
+	{
 		$meta_prefix = "mf_theme_core_";
 
 		$meta_boxes[] = array(
 			'id' => 'theme_core',
-			'title' => __("Dates", 'lang_theme_core'),
+			'title' => __("Settings", 'lang_theme_core'),
 			'post_types' => get_post_types_for_metabox(),
 			'context' => 'side',
 			'priority' => 'low',
 			'fields' => array(
+				array(
+					'name' => __("Index", 'lang_theme_core'),
+					'id' => $meta_prefix.'page_index',
+					'type' => 'select',
+					'options' => array(
+						'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+						'noindex' => __("Don't Index", 'lang_theme_core'),
+						'nofollow' => __("Don't Follow Links", 'lang_theme_core'),
+						'none' => __("Don't Index & don't follow links", 'lang_theme_core'),
+					),
+				),
 				array(
 					'name' => __("Unpublish", 'lang_theme_core'),
 					'id' => $meta_prefix.'unpublish_date',
@@ -1407,27 +1477,22 @@ function meta_boxes_theme_core($meta_boxes)
 				),
 			)
 		);
-	//}
+	}
 
 	return $meta_boxes;
 }
 
 function require_user_login()
 {
-	/*$blog_public = get_option('blog_public');
+	if(get_option('setting_no_public_pages') == 'yes')
+	{
+		mf_redirect(get_site_url()."/wp-admin/");
+	}
 
-	if($blog_public == 0)
-	{*/
-		if(get_option('setting_no_public_pages') == 'yes')
-		{
-			mf_redirect(get_site_url()."/wp-admin/");
-		}
-
-		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
-		{
-			mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
-		}
-	//}
+	else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
+	{
+		mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
+	}
 }
 
 function get_media_fonts()
