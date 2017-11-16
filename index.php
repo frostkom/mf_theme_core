@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.10.24
+Version: 6.11.0
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -87,6 +87,10 @@ add_action('widgets_init', 'widgets_theme_core');
 
 add_action('customize_save', 'customize_save_theme_core');
 
+$obj_theme_core = new mf_theme_core();
+
+add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'run_optimize'));
+
 load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__)).'/lang/');
 
 function activate_theme_core()
@@ -141,6 +145,6 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized'),
+		'options' => array('setting_theme_core_login', 'setting_html5_history', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
 	));
 }

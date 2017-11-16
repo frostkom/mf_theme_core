@@ -401,31 +401,13 @@ function get_params_theme_core()
 	return $options_params;
 }
 
-function is_dir_empty($dir) {
-  if (!is_readable($dir)) return NULL; 
-  return (count(scandir($dir)) == 2);
-}
-
-function remove_empty_folder()
-{
-	if(is_dir($data['file']))
-	{
-		if(count(scandir($data['file'])) == 2)
-		{
-			do_log("Remove folder ".$data['file']." since it is empty");
-
-			//rmdir($data['file']);
-		}
-	}
-}
-
 function cron_theme_core()
 {
 	global $wpdb;
 
-	$meta_prefix = "mf_theme_core_";
+	$obj_theme_core = new mf_theme_core();
 
-	$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
+	$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$obj_theme_core->meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
 
 	if($wpdb->num_rows > 0)
 	{
@@ -440,7 +422,7 @@ function cron_theme_core()
 					'ID' => $post_id,
 					'post_status' => 'draft',
 					'meta_input' => array(
-						$meta_prefix.'unpublish_date' => '',
+						$obj_theme_core->meta_prefix.'unpublish_date' => '',
 					),
 				);
 
@@ -449,110 +431,11 @@ function cron_theme_core()
 		}
 	}
 
-	if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-24 hour")))
+	$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
+
+	if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-".$setting_theme_optimize." day")))
 	{
-		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 12);
-
-		//Remove old revisions and auto-drafts
-		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize." MONTH)");
-
-		//Remove orphan postmeta
-		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
-
-		if($wpdb->num_rows > 0)
-		{
-			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
-		}
-
-		//Remove duplicate postmeta
-		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			foreach($result as $r)
-			{
-				$intMetaID = $r->meta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
-			}
-		}
-
-		//Remove orphan relations
-		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan relations: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
-			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
-		}
-
-		//Remove orphan usermeta
-		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan usermeta: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
-		}
-
-		//Remove duplicate usermeta
-		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			foreach($result as $r)
-			{
-				$intMetaID = $r->umeta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
-			}
-		}
-
-		//Unused tags
-		//do_log unused tags ready for deletion
-
-		//Pingbacks
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'pingback'"
-
-		//Trackbacks
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'trackback'"
-
-		//Spam comments
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_approved = %s", "spam"
-
-		//Duplicate comments
-		//"SELECT COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
-
-		//oEmbed caches
-		//"SELECT COUNT(meta_id) FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"
-
-		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove expired transients: ".$wpdb->last_query);
-		}*/
-
-		$result = $wpdb->get_results("SHOW TABLE STATUS");
-
-		foreach($result as $r)
-		{
-			$strTableName = $r->Name;
-
-			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
-		}
-
-		//Can be removed later because the folder is not in use anymore
-		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
-		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
-
-		list($upload_path, $upload_url) = get_uploads_folder();
-		get_file_info(array('path' => $upload_path, 'callback' => "remove_empty_folder"));
-
-		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
+		$obj_theme_core->do_optimize();
 	}
 }
 
@@ -629,8 +512,6 @@ function add_page_index()
 
 function head_theme_core()
 {
-	
-
 	echo "<meta charset='".get_bloginfo('charset')."'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 	<meta name='author' content='frostkom.se'>
@@ -684,14 +565,12 @@ function get_menu_type_for_select()
 
 function search_form_theme_core($html)
 {
-	$html = "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
+	return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
 		.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core')))
 		."<div class='form_button'>"
 			.show_button(array('text' => __("Search", 'lang_theme_core')))
 		."</div>
 	</form>";
-
-	return $html;
 }
 
 function password_form_theme_core()
@@ -707,7 +586,7 @@ function password_form_theme_core()
 
 function the_content_protected_theme_core($html)
 {
-	global $post; //, $done_text, $error_text
+	global $post;
 
     if(post_password_required())
 	{
@@ -719,7 +598,9 @@ function the_content_protected_theme_core($html)
 		$html = password_form_theme_core();
 	}
 
-	/*if(isset($post->post_password) && $post->post_password != '')
+	/*global $done_text, $error_text;
+	
+	if(isset($post->post_password) && $post->post_password != '')
 	{
 		$cookie_name = 'wp-postpass_'.COOKIEHASH;
 
@@ -886,11 +767,6 @@ function options_theme_core()
 
 	add_theme_page($menu_title, $menu_title.$count_message, 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
 }
-
-/*function options_page_theme_core()
-{
-	echo get_options_page_theme_core();
-}*/
 
 function get_theme_dir_name()
 {
@@ -1143,6 +1019,11 @@ function enqueue_theme_fonts()
 
 function settings_theme_core()
 {
+	$plugin_include_url = plugin_dir_url(__FILE__);
+	$plugin_version = get_plugin_version(__FILE__);
+
+	mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('plugin_url' => $plugin_include_url, 'ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
+
 	$options_area = __FUNCTION__;
 
 	add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
@@ -1182,13 +1063,14 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
-		$arr_settings['setting_theme_optimize'] = __("Optimize Database", 'lang_theme_core');
 		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 
 		if(is_plugin_active('css-hero-ce/css-hero-main.php'))
 		{
 			$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
 		}
+
+		$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 	}
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
@@ -1266,9 +1148,13 @@ function setting_404_page_callback()
 function setting_theme_optimize_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 12);
+	$option = get_option_or_default($setting_key, 7);
 
-	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'suffix' => __("months", 'lang_theme_core')));
+	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => " min='1' max='30'", 'suffix' => __("days", 'lang_theme_core')))
+	."<div class='form_buttons'>"
+		.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
+	."</div>
+	<div id='optimize_debug'></div>";
 }
 
 function setting_theme_ignore_style_on_restore_callback()

@@ -1,8 +1,276 @@
 <?php
 
+class mf_theme_core
+{
+	function __construct()
+	{
+		$this->meta_prefix = "mf_theme_core";
+	}
+
+	// This is a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
+	#################################
+	function copy_file()
+	{
+		if(file_exists($this->file_dir_to))
+		{
+			if(get_option('option_uploads_fixed') > date("Y-m-d", strtotime("+1 month")))
+			{
+				if(file_exists($this->file_dir_from))
+				{
+					do_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
+
+					//unlink($this->file_dir_from);
+				}
+
+				else
+				{
+					//do_log("File has already been deleted: ".$this->file_dir_from);
+				}
+			}
+		}
+
+		else
+		{
+			if(file_exists($this->file_dir_from))
+			{
+				@mkdir(dirname($this->file_dir_to), 0755, true);
+
+				if(copy($this->file_dir_from, $this->file_dir_to))
+				{
+					//do_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+				}
+
+				else
+				{
+					do_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+				}
+			}
+
+			/*else
+			{
+				do_log("File does not exist: ".$this->file_dir_from);
+			}*/
+		}
+
+		//do_log("Attachment: ".$post_url.", ".$upload_path_global." -> ".$upload_path.", ".$this->file_dir_from." -> ".$this->file_dir_to.""); //, ".$upload_url_global." -> ".$upload_url."
+	}
+
+	function do_fix()
+	{
+		global $wpdb;
+
+		$arr_sizes = array('thumbnail', 'medium', 'large');
+
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = %s", 'attachment'));
+
+		foreach($result as $r)
+		{
+			$post_id = $r->ID;
+			//$post_url = get_permalink($post_id);
+			$post_url = wp_get_attachment_url($post_id);
+			//$post_guid = $wpdb->get_var($wpdb->prepare("SELECT guid FROM ".$wpdb->posts." WHERE ID = '%d'", $post_id)); //$post_url
+			//get_attached_file($post_id) //wp-content/uploads/sites/11/2017/09/logo_blue_small.png
+
+			$upload_path_global = WP_CONTENT_DIR."/uploads/";
+			$upload_url_global = WP_CONTENT_URL."/uploads/";
+
+			list($upload_path, $upload_url) = get_uploads_folder('', true);
+
+			if(!preg_match("/\/sites\//", $upload_path)){		$upload_path .= "sites/".$wpdb->blogid."/";}
+			if(!preg_match("/\/sites\//", $upload_url)){		$upload_url .= "sites/".$wpdb->blogid."/";}
+
+			$this->file_dir_from = str_replace(array($upload_url, $upload_url_global), $upload_path_global, $post_url);
+			$this->file_dir_to = str_replace(array($upload_url, $upload_url_global), $upload_path, $post_url);
+
+			$this->copy_file();
+
+			$is_image = wp_attachment_is_image($post_id);
+
+			if($is_image)
+			{
+				//do_log("Is image: ".$post_url);
+
+				foreach($arr_sizes as $size)
+				{
+					$arr_image = wp_get_attachment_image_src($post_id, $size);
+
+					$post_url = $arr_image[0];
+
+					//do_log("Is smaller: ".$post_url);
+
+					$this->file_dir_from = str_replace(array($upload_url, $upload_url_global), $upload_path_global, $post_url);
+					$this->file_dir_to = str_replace(array($upload_url, $upload_url_global), $upload_path, $post_url);
+
+					$this->copy_file();
+				}
+			}
+		}
+
+		if(!(get_option('option_uploads_fixed') > DEFAULT_DATE))
+		{
+			update_option('option_uploads_fixed', date("Y-m-d H:i:s"), 'no');
+		}
+	}
+	#################################
+
+	function remove_empty_folder($data)
+	{
+		$folder = $data['path']."/".$data['child'];
+
+		if(count(scandir($folder)) == 2)
+		{
+			//do_log("Remove folder ".$folder." since it is empty");
+
+			rmdir($folder);
+		}
+	}
+
+	function do_optimize()
+	{
+		global $wpdb;
+
+		//$setting_theme_optimize_age = get_option_or_default('setting_theme_optimize_age', 12);
+		$setting_theme_optimize_age = 12;
+
+		//Remove old revisions and auto-drafts
+		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize_age." MONTH)");
+
+		//Remove orphan postmeta
+		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+
+		if($wpdb->num_rows > 0)
+		{
+			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		}
+
+		//Remove duplicate postmeta
+		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
+
+		if($wpdb->num_rows > 0)
+		{
+			foreach($result as $r)
+			{
+				$intMetaID = $r->meta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
+			}
+		}
+
+		//Remove orphan relations
+		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan relations: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
+			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
+		}
+
+		//Remove orphan usermeta
+		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove orphan usermeta: ".$wpdb->last_query);
+
+			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+		}
+
+		//Remove duplicate usermeta
+		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
+
+		if($wpdb->num_rows > 0)
+		{
+			foreach($result as $r)
+			{
+				$intMetaID = $r->umeta_id;
+
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
+			}
+		}
+
+		//Unused tags
+		//do_log unused tags ready for deletion
+
+		//Pingbacks
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'pingback'"
+
+		//Trackbacks
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'trackback'"
+
+		//Spam comments
+		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_approved = %s", "spam"
+
+		//Duplicate comments
+		//"SELECT COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
+
+		//oEmbed caches
+		//"SELECT COUNT(meta_id) FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"
+
+		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove expired transients: ".$wpdb->last_query);
+		}*/
+
+		$result = $wpdb->get_results("SHOW TABLE STATUS");
+
+		foreach($result as $r)
+		{
+			$strTableName = $r->Name;
+
+			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
+		}
+
+		// Can be removed later because the folder is not in use anymore
+		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
+		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
+
+		// Remove empty folders in uploads
+		list($upload_path, $upload_url) = get_uploads_folder();
+		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'remove_empty_folder')));
+
+		if(is_multisite())
+		{
+			$this->do_fix();
+		}
+
+		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
+
+		return __("I have optimized the site for you", 'lang_theme_core');
+	}
+
+	function run_optimize()
+	{
+		global $done_text, $error_text;
+
+		$result = array();
+
+		$done_text = $this->do_optimize();
+
+		$out = get_notification();
+
+		if($out != '')
+		{
+			$result['success'] = true;
+			$result['message'] = $out;
+		}
+
+		else
+		{
+			$result['error'] = $out;
+		}
+
+		echo json_encode($result);
+		die();
+	}
+}
+
 class mf_clone_posts
 {
-	public function __construct()
+	function __construct()
 	{
 		add_filter('post_row_actions', 		array(&$this, 'row_actions'), 10, 2);
 		add_filter('page_row_actions', 		array(&$this, 'row_actions'), 10, 2);
