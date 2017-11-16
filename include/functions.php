@@ -401,6 +401,24 @@ function get_params_theme_core()
 	return $options_params;
 }
 
+function is_dir_empty($dir) {
+  if (!is_readable($dir)) return NULL; 
+  return (count(scandir($dir)) == 2);
+}
+
+function remove_empty_folder()
+{
+	if(is_dir($data['file']))
+	{
+		if(count(scandir($data['file'])) == 2)
+		{
+			do_log("Remove folder ".$data['file']." since it is empty");
+
+			//rmdir($data['file']);
+		}
+	}
+}
+
 function cron_theme_core()
 {
 	global $wpdb;
@@ -493,6 +511,9 @@ function cron_theme_core()
 			}
 		}
 
+		//Unused tags
+		//do_log unused tags ready for deletion
+
 		//Pingbacks
 		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'pingback'"
 
@@ -527,6 +548,9 @@ function cron_theme_core()
 		//Can be removed later because the folder is not in use anymore
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
 		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
+
+		list($upload_path, $upload_url) = get_uploads_folder();
+		get_file_info(array('path' => $upload_path, 'callback' => "remove_empty_folder"));
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 	}
@@ -2055,22 +2079,23 @@ function get_logo($data = array())
 			if($data['display'] != 'tagline')
 			{
 				$site_name = get_bloginfo('name');
+				$site_description = get_bloginfo('description');
 
 				if($data['image'] != '')
 				{
-					$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
+					$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
 				}
 
 				else
 				{
 					if($options['header_logo'] != '')
 					{
-						$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name)."'>";
+						$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
 					}
 
 					if($options['header_mobile_logo'] != '')
 					{
-						$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name)."'>";
+						$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
 					}
 				}
 			}
