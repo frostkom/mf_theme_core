@@ -1150,7 +1150,21 @@ function setting_theme_optimize_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 7);
 
-	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => " min='1' max='30'", 'suffix' => __("days", 'lang_theme_core')))
+	$option_database_optimized = get_option('option_cache_prepopulated');
+
+	if($option_database_optimized > DEFAULT_DATE)
+	{
+		$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +".$option." day")));
+
+		$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
+	}
+
+	else
+	{
+		$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
+	}
+
+	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => " min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description))
 	."<div class='form_buttons'>"
 		.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
 	."</div>
