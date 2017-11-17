@@ -2197,11 +2197,6 @@ function widgets_theme_core()
 	mf_unregister_widget('WP_Widget_RSS');
 	mf_unregister_widget('WP_Widget_Search');
 	mf_unregister_widget('WP_Widget_Tag_Cloud');
-
-	if(function_exists('is_plugin_active') && is_plugin_active('black-studio-tinymce-widget/black-studio-tinymce-widget.php'))
-	{
-		mf_unregister_widget('WP_Widget_Text');
-	}
 }
 
 function customize_save_theme_core()
