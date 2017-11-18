@@ -1527,6 +1527,12 @@ function get_theme_fonts()
 		'url' => "//fonts.googleapis.com/css?family=Oxygen"
 	);
 
+	$options_fonts['playfair_display'] = array(
+		'title' => "Playfair Display",
+		'style' => "'Playfair Display', serif",
+		'url' => "//fonts.googleapis.com/css?family=Playfair+Display"
+	);
+
 	$options_fonts['roboto'] = array(
 		'title' => "Roboto",
 		'style' => "'Roboto', sans-serif",
