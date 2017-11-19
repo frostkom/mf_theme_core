@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.11.4
+Version: 6.11.6
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -52,7 +52,7 @@ else
 	remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 	remove_action('wp_head', 'wp_oembed_add_discovery_links');
 	remove_action('wp_head', 'wp_generator');
-	remove_action('wp_head', 'rel_canonical');
+	//remove_action('wp_head', 'rel_canonical');
 	remove_action('wp_head', 'feed_links', 2);
 	remove_action('wp_head', 'feed_links_extra', 3);
 	remove_action('wp_head', 'print_emoji_detection_script', 7);

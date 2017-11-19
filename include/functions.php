@@ -878,7 +878,7 @@ function get_options_page_theme_core()
 	{
 		if($options['style_source'] != '')
 		{
-			$style_source = str_replace(array("http://", "https://"), "", trim($options['style_source'], "/"));
+			$style_source = mf_clean_url(trim($options['style_source'], "/"));
 
 			$option_theme_source_style_url = get_option('option_theme_source_style_url');
 
@@ -1087,7 +1087,7 @@ function settings_theme_core_callback()
 	echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
 }
 
-function setting_theme_core_login_callback()
+function setting_no_public_pages_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
@@ -1095,12 +1095,40 @@ function setting_theme_core_login_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-function setting_no_public_pages_callback()
+function check_htaccess_theme_core($data)
+{
+	if(basename($data['file']) == ".htaccess")
+	{
+		$content = get_file_content(array('file' => $data['file']));
+
+		if(!preg_match("/BEGIN MF Theme Core/", $content) || !preg_match("/Deny from all/", $content))
+		{
+			$recommend_htaccess = "# BEGIN MF Theme Core
+RewriteEngine On
+
+RewriteRule	^robots\.txt$		wp-content/plugins/mf_theme_core/include/robots.php			[L]
+RewriteRule	^sitemap\.xml$		wp-content/plugins/mf_theme_core/include/sitemap-xml.php	[L]
+# END MF Theme Core";
+
+			echo "<div class='mf_form'>"
+				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Add this at the beginning of %s", 'lang_log'), ".htaccess")."</h3>"
+				."<p class='input'>".nl2br(htmlspecialchars($recommend_htaccess))."</p>"
+			."</div>";
+		}
+	}
+}
+
+function setting_theme_core_login_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+
+	if($option == 'no')
+	{
+		get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess_theme_core", 'allow_depth' => false));
+	}
 }
 
 /*function setting_html5_history_callback()
