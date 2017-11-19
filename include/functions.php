@@ -1257,6 +1257,9 @@ function column_cell_theme_core($col, $id)
 	switch($col)
 	{
 		case 'seo':
+			$title_limit = 64;
+			$excerpt_limit = 156;
+
 			$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
 
 			foreach($result as $r)
@@ -1298,6 +1301,11 @@ function column_cell_theme_core($col, $id)
 						{
 							$seo_type = 'duplicate_excerpt';
 						}
+
+						else if(strlen($post_excerpt) > $excerpt_limit)
+						{
+							$seo_type = 'long_excerpt';
+						}
 					}
 
 					else
@@ -1332,6 +1340,16 @@ function column_cell_theme_core($col, $id)
 						{
 							$seo_type = 'inconsistent_url';
 						}
+					}
+				}
+
+				if($seo_type == '')
+				{
+					$site_title = $post_title." | ".get_wp_title();
+
+					if(strlen($site_title) > $title_limit)
+					{
+						$seo_type = 'long_title';
 					}
 				}
 
@@ -1373,6 +1391,20 @@ function column_cell_theme_core($col, $id)
 						echo "<i class='fa fa-lg fa-warning yellow'></i>
 						<div class='row-actions'>"
 							.__("The URL is not correlated to the title", 'lang_theme_core')
+						."</div>";
+					break;
+
+					case 'long_title':
+						echo "<i class='fa fa-lg fa-warning yellow'></i>
+						<div class='row-actions'>"
+							.__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")"
+						."</div>";
+					break;
+
+					case 'long_excerpt':
+						echo "<i class='fa fa-lg fa-warning yellow'></i>
+						<div class='row-actions'>"
+							.__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")"
 						."</div>";
 					break;
 
