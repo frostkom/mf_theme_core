@@ -517,7 +517,7 @@ function add_page_index()
 function head_theme_core()
 {
 	echo "<meta charset='".get_bloginfo('charset')."'>
-	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
 	<meta name='author' content='frostkom.se'>
 	<title>".get_wp_title()."</title>";
 
