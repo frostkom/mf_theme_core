@@ -933,7 +933,7 @@ msgstr "Sök efter"
 #: ../include/sitemap-xsl.php:102
 #, php-format
 msgid "XML Sitemap for %s | %s"
-msgstr "XML sidkarta för %s | %s"
+msgstr "Sidkarta för %s | %s"
 
 #: ../include/sitemap-xsl.php:108
 msgid "URL"

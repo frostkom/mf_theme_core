@@ -105,6 +105,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 
 		echo "<table>
 			<tr>
+				<th>".__("Title", 'lang_theme_core')."</th>
 				<th>".__("URL", 'lang_theme_core')."</th>";
 
 				/*echo "<th>Priority</th>
@@ -112,10 +113,11 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 
 				echo "<th>".__("Last Modified", 'lang_theme_core')." (GMT)</th>
 			</tr>
-			<xsl:variable name='lower' select=\"'abcdefghijklmnopqrstuvwxyz'\"/>
-			<xsl:variable name='upper' select=\"'ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"/>
 			<xsl:for-each select='./sitemap:url'>
 				<tr>
+					<td>
+						<xsl:value-of select='sitemap:title'/>
+					</td>
 					<td>
 						<xsl:variable name='itemURL'>
 							<xsl:value-of select='sitemap:loc'/>
@@ -126,14 +128,14 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 					</td>";
 
 					/*echo "<td>
-						<xsl:value-of select=\"concat(sitemap:priority*100,'%')\"/>
+						<xsl:value-of select='sitemap:priority'/>
 					</td>
 					<td>
-						<xsl:value-of select='concat(translate(substring(sitemap:changefreq, 1, 1),concat(\$lower, \$upper),concat(\$upper, \$lower)),substring(sitemap:changefreq, 2))'/>
+						<xsl:value-of select='sitemap:changefreq'/>
 					</td>";*/
 
 					echo "<td>
-						<xsl:value-of select=\"concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)))\"/>
+						<xsl:value-of select='sitemap:lastmod'/>
 					</td>
 				</tr>
 			</xsl:for-each>

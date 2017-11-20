@@ -7,6 +7,13 @@ class mf_theme_core
 		$this->meta_prefix = "mf_theme_core_";
 	}
 
+	function has_noindex($post_id)
+	{
+		$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
+
+		return $page_index != '' && in_array($page_index, array('noindex', 'none'));
+	}
+
 	function get_public_post_types()
 	{
 		$this->arr_post_types = array();
@@ -24,8 +31,10 @@ class mf_theme_core
 		}
 	}
 
-	function get_public_posts()
+	function get_public_posts($data = array())
 	{
+		if(!isset($data['allow_noindex'])){		$data['allow_noindex'] = false;}
+
 		$this->arr_public_posts = array();
 
 		if(!isset($this->arr_post_types) || count($this->arr_post_types) == 0)
@@ -35,14 +44,12 @@ class mf_theme_core
 
 		foreach($this->arr_post_types as $post_id => $post_title)
 		{
-			$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
-
-			if($page_index != '' && in_array($page_index, array('noindex', 'none'))){}
-			else if(post_password_required($post_id)){}
+			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || post_password_required($post_id))
+			{}
 
 			else
 			{
-				$this->arr_public_posts[$post_id] = $post_title." (".$page_index.")";
+				$this->arr_public_posts[$post_id] = $post_title;
 			}
 		}
 	}
@@ -61,7 +68,7 @@ class mf_theme_core
 			header("Content-type: text/xml; charset=".get_option('blog_charset'));
 
 			echo "<?xml version='1.0' encoding='UTF-8'?>
-			<?xml-stylesheet type='text/xsl' href='".get_site_url()."/wp-content/plugins/mf_theme_core/include/sitemap-xsl.php'?>
+			<?xml-stylesheet type='text/xsl' href='".plugin_dir_url(__FILE__)."/sitemap-xsl.php'?>
 			<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
 
 				$this->get_public_posts();
