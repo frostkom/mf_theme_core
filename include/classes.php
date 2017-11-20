@@ -4,7 +4,87 @@ class mf_theme_core
 {
 	function __construct()
 	{
-		$this->meta_prefix = "mf_theme_core";
+		$this->meta_prefix = "mf_theme_core_";
+	}
+
+	function get_public_post_types()
+	{
+		$this->arr_post_types = array();
+
+		foreach(get_post_types(array('public' => true, 'exclude_from_search' => false), 'names') as $post_type)
+		{
+			if($post_type != 'attachment')
+			{
+				get_post_children(array(
+					'post_type' => $post_type,
+					'where' => "post_password = ''",
+					//'debug' => true,
+				), $this->arr_post_types);
+			}
+		}
+	}
+
+	function get_public_posts()
+	{
+		$this->arr_public_posts = array();
+
+		if(!isset($this->arr_post_types) || count($this->arr_post_types) == 0)
+		{
+			$this->get_public_post_types();
+		}
+
+		foreach($this->arr_post_types as $post_id => $post_title)
+		{
+			$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
+
+			if($page_index != '' && in_array($page_index, array('noindex', 'none'))){}
+			else if(post_password_required($post_id)){}
+
+			else
+			{
+				$this->arr_public_posts[$post_id] = $post_title." (".$page_index.")";
+			}
+		}
+	}
+
+	function do_robots()
+	{
+		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
+	}
+
+	function do_sitemap()
+	{
+		global $wp_query;
+
+		if(isset($wp_query->query['name']) && $wp_query->query['name'] == 'sitemap.xml')
+		{
+			header("Content-type: text/xml; charset=".get_option('blog_charset'));
+
+			echo "<?xml version='1.0' encoding='UTF-8'?>
+			<?xml-stylesheet type='text/xsl' href='".get_site_url()."/wp-content/plugins/mf_theme_core/include/sitemap-xsl.php'?>
+			<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
+
+				$this->get_public_posts();
+
+				foreach($this->arr_public_posts as $post_id => $post_title)
+				{
+					$post_modified = get_post_modified_time("Y-m-d H:i:s", true, $post_id);
+
+					$post_url = get_permalink($post_id);
+
+					echo "<url>
+						<loc>".$post_url."</loc>
+						<title>".htmlspecialchars($post_title)."</title>
+						<lastmod>".$post_modified."</lastmod>
+					</url>";
+
+					/*<changefreq>monthly</changefreq>
+					<priority>0.8</priority>*/
+				}
+
+			echo "</urlset>";
+			exit;
+		}
 	}
 
 	// This is a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
@@ -113,6 +193,8 @@ class mf_theme_core
 	}
 	#################################
 
+	// Optimize
+	#################################
 	function remove_empty_folder($data)
 	{
 		$folder = $data['path']."/".$data['child'];
@@ -266,6 +348,7 @@ class mf_theme_core
 		echo json_encode($result);
 		die();
 	}
+	#################################
 }
 
 class mf_clone_posts

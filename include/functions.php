@@ -1095,40 +1095,12 @@ function setting_no_public_pages_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-function check_htaccess_theme_core($data)
-{
-	if(basename($data['file']) == ".htaccess")
-	{
-		$content = get_file_content(array('file' => $data['file']));
-
-		if(!preg_match("/BEGIN MF Theme Core/", $content) || !preg_match("/Deny from all/", $content))
-		{
-			$recommend_htaccess = "# BEGIN MF Theme Core
-RewriteEngine On
-
-RewriteRule	^robots\.txt$		wp-content/plugins/mf_theme_core/include/robots.php			[L]
-RewriteRule	^sitemap\.xml$		wp-content/plugins/mf_theme_core/include/sitemap-xml.php	[L]
-# END MF Theme Core";
-
-			echo "<div class='mf_form'>"
-				."<h3 class='add_to_htacess'><i class='fa fa-warning yellow'></i> ".sprintf(__("Add this at the beginning of %s", 'lang_log'), ".htaccess")."</h3>"
-				."<p class='input'>".nl2br(htmlspecialchars($recommend_htaccess))."</p>"
-			."</div>";
-		}
-	}
-}
-
 function setting_theme_core_login_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-
-	if($option == 'no')
-	{
-		get_file_info(array('path' => get_home_path(), 'callback' => "check_htaccess_theme_core", 'allow_depth' => false));
-	}
 }
 
 /*function setting_html5_history_callback()
@@ -1409,7 +1381,13 @@ function column_cell_theme_core($col, $id)
 					break;
 
 					case 'not_indexed':
+						echo "<i class='fa fa-lg fa-check grey'></i>";
+					break;
+
 					case 'password_protected':
+						echo "<i class='fa fa-lg fa-lock'></i>";
+					break;
+
 					default:
 						echo "<i class='fa fa-lg fa-check green'></i>";
 					break;
