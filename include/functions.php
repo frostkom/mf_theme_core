@@ -184,6 +184,19 @@ function get_params_theme_core()
 
 	if($type == 'mf_theme')
 	{
+		/*if(is_active_widget_area('widget_after_header'))
+		{
+			$options_params[] = array('category' => __("After Header", 'lang_theme_core'), 'id' => 'mf_theme_after_header');
+				$options_params[] = array('type' => 'checkbox', 'id' => 'after_header_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
+				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
+					$options_params[] = array('type' => 'color', 'id' => 'pre_footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+					$options_params[] = array('type' => 'image', 'id' => 'pre_footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => "pre_footer_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
+			$options_params[] = array('category_end' => "");
+		}*/
+
 		$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_theme_pre_content');
 			$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
 				$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
@@ -646,7 +659,7 @@ function gather_params($options_params)
 {
 	$options = array();
 
-	$mods = get_theme_mods();
+	$arr_theme_mods = get_theme_mods();
 
 	foreach($options_params as $param)
 	{
@@ -655,9 +668,9 @@ function gather_params($options_params)
 			$id = $param['id'];
 			$default = isset($param['default']) ? $param['default'] : false;
 			$force_default = isset($param['force_default']) ? $param['force_default'] : false;
-			$value_old = isset($mods[$id]) ? $mods[$id] : false;
+			$value_old = isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false;
 
-			if(isset($mods[$id]))
+			if(isset($arr_theme_mods[$id]))
 			{
 				if($value_old == '' && $force_default == true)
 				{

@@ -225,7 +225,7 @@ class mf_theme_core
 		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize_age." MONTH)");
 
 		//Remove orphan postmeta
-		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
+		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL LIMIT 0, 1");
 
 		if($wpdb->num_rows > 0)
 		{
@@ -246,7 +246,7 @@ class mf_theme_core
 		}
 
 		//Remove orphan relations
-		$wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")");
+		$wpdb->get_results("SELECT term_taxonomy_id FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.") LIMIT 0, 1");
 
 		if($wpdb->num_rows > 0)
 		{
@@ -257,7 +257,7 @@ class mf_theme_core
 		}
 
 		//Remove orphan usermeta
-		$wpdb->get_results("SELECT * FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
+		$wpdb->get_results("SELECT user_id FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.") LIMIT 0, 1");
 
 		if($wpdb->num_rows > 0)
 		{
@@ -297,7 +297,7 @@ class mf_theme_core
 		//oEmbed caches
 		//"SELECT COUNT(meta_id) FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"
 
-		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%')");
+		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%') LIMIT 0, 1");
 
 		if($wpdb->num_rows > 0)
 		{
