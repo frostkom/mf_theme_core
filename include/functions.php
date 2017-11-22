@@ -1,5 +1,33 @@
 <?php
 
+function add_css_selectors($array = array())
+{
+	if(is_plugin_active('css-hero-ce/css-hero-main.php'))
+	{
+		$setting_theme_css_hero = get_option('setting_theme_css_hero');
+		$arr_setting_theme_css_hero = explode("\n", $setting_theme_css_hero);
+
+		$added = false;
+
+		foreach($array as $selector)
+		{
+			if(!in_array($selector, $arr_setting_theme_css_hero))
+			{
+				$arr_setting_theme_css_hero[] = $selector;
+
+				$added = true;
+			}
+		}
+
+		if(true == $added)
+		{
+			$setting_theme_css_hero = implode("\n", $arr_setting_theme_css_hero);
+
+			update_option('setting_theme_css_hero', $setting_theme_css_hero);
+		}
+	}
+}
+
 if(!function_exists('get_params'))
 {
 	function get_params()
@@ -790,6 +818,13 @@ function get_theme_dir_name()
 	return str_replace(get_theme_root()."/", "", get_template_directory());
 }
 
+function get_theme_slug()
+{
+	$theme_name = wp_get_theme();
+
+	return sanitize_title($theme_name);
+}
+
 function get_options_page_theme_core()
 {
 	global $done_text, $error_text;
@@ -1198,7 +1233,7 @@ function setting_theme_ignore_style_on_restore_callback()
 
 function setting_theme_css_hero_callback()
 {
-	$css_hero_key = 'wpcss_quick_config_settings_mf-theme'; //Use mf-parallax for Parallax theme
+	$css_hero_key = 'wpcss_quick_config_settings_'.get_theme_slug();
 
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option_or_default($setting_key, get_option($css_hero_key));

@@ -308,7 +308,7 @@ msgstr "Ersätt bakgrund med sidbakgrund"
 
 #: ../include/functions.php:56
 msgid "Overflow"
-msgstr "Fylla ut"
+msgstr "Overflow"
 
 #: ../include/functions.php:69
 #: ../include/functions.php:86
@@ -516,7 +516,7 @@ msgstr "Flexbox för widget"
 
 #: ../include/functions.php:395
 msgid "Widget Overflow"
-msgstr "Fylla ut för widget"
+msgstr "Overflow på widget"
 
 #: ../include/functions.php:402
 msgid "Widget Heading Margin"
