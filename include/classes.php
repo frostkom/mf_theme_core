@@ -54,6 +54,255 @@ class mf_theme_core
 		}
 	}
 
+	//Customizer
+	#################################
+	function add_control($data = array())
+	{
+		global $wp_customize;
+
+		$wp_customize->add_control(
+			$this->param['id'],
+			array(
+				'label' => $this->param['title'],
+				'section' => $this->id_temp,
+				'settings' => $this->param['id'],
+				'type' => 'select',
+				'choices' => $data['choices'],
+			)
+		);
+	}
+
+	function customize_theme($wp_customize)
+	{
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		mf_enqueue_style('style_theme_core_customizer', $plugin_include_url."style_customizer.css", $plugin_version);
+
+		list($options_params, $options) = get_params();
+		$options_fonts = get_theme_fonts();
+
+		$this->id_temp = "";
+		$this->param = array();
+
+		$wp_customize->remove_section('themes');
+		$wp_customize->remove_section('title_tagline');
+		$wp_customize->remove_section('static_front_page');
+		//$wp_customize->remove_section('nav_menus');
+		//$wp_customize->remove_section('widgets');
+		$wp_customize->remove_section('custom_css');
+
+		foreach($options_params as $this->param)
+		{
+			if(isset($this->param['show_if']) && $this->param['show_if'] != '' && $options[$this->param['show_if']] == ''){}
+
+			else if(isset($this->param['hide_if']) && $this->param['hide_if'] != '' && $options[$this->param['hide_if']] != ''){}
+
+			else
+			{
+				if(isset($this->param['category']))
+				{
+					$this->id_temp = $this->param['id'];
+
+					$wp_customize->add_section(
+						$this->id_temp,
+						array(
+							'title' => $this->param['category'],
+							//'description' => '',
+							//'priority' => 1,
+						)
+					);
+				}
+
+				else if(isset($this->param['category_end'])){}
+
+				else
+				{
+					/*if(isset($this->param['ignore_default_if']) && $this->param['ignore_default_if'] != '' && $options[$this->param['ignore_default_if']] != '')
+					{
+						$default_value = '';
+					}
+
+					else */if(isset($this->param['default']))
+					{
+						$default_value = $this->param['default'];
+					}
+
+					else
+					{
+						$default_value = '';
+					}
+
+					$wp_customize->add_setting(
+						$this->param['id'],
+						array(
+							'default' => $default_value,
+							'transport' => "postMessage"
+						)
+					);
+
+					switch($this->param['type'])
+					{
+						case 'align':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'left' => __("Left", 'lang_theme_core'),
+								'center' => __("Center", 'lang_theme_core'),
+								'right' => __("Right", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'color':
+							$wp_customize->add_control(
+								new WP_Customize_Color_Control(
+									$wp_customize,
+									$this->param['id'],
+									array(
+										'label' => $this->param['title'],
+										'section' => $this->id_temp,
+										'settings' => $this->param['id'],
+									)
+								)
+							);
+						break;
+
+						case 'checkbox':
+							$arr_data = array(
+								2 => __("Yes", 'lang_theme_core'),
+								1 => __("No", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'clear':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'left' => __("Left", 'lang_theme_core'),
+								'right' => __("Right", 'lang_theme_core'),
+								'both' => __("Both", 'lang_theme_core'),
+								'none' => __("None", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'date':
+						case 'email':
+						case 'hidden':
+						case 'number':
+						case 'text':
+						case 'textarea':
+						case 'url':
+							$wp_customize->add_control(
+								$this->param['id'],
+								array(
+									'label' => $this->param['title'],
+									'section' => $this->id_temp,
+									'type' => $this->param['type'],
+								)
+							);
+						break;
+
+						case 'float':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'none' => __("None", 'lang_theme_core'),
+								'left' => __("Left", 'lang_theme_core'),
+								'center' => __("Center", 'lang_theme_core'),
+								'right' => __("Right", 'lang_theme_core'),
+								'initial' => __("Initial", 'lang_theme_core'),
+								'inherit' => __("Inherit", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'font':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --"
+							);
+
+							foreach($options_fonts as $key => $value)
+							{
+								$arr_data[$key] = $value['title'];
+							}
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'image':
+							$wp_customize->add_control(
+								new WP_Customize_Image_Control(
+									$wp_customize,
+									$this->param['id'],
+									array(
+										'label' => $this->param['title'],
+										'section' => $this->id_temp,
+										'settings' => $this->param['id'],
+										//'context' => 'your_setting_context'
+									)
+								)
+							);
+						break;
+
+						case 'overflow':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'visible' => __("Visible", 'lang_theme_core'),
+								'hidden' => __("Hidden", 'lang_theme_core'),
+								'scroll' => __("Scroll", 'lang_theme_core'),
+								'auto' => __("Auto", 'lang_theme_core'),
+								'initial' => __("Initial", 'lang_theme_core'),
+								'inherit' => __("Inherit", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'position':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'absolute' => __("Absolute", 'lang_theme_core'),
+								'fixed' => __("Fixed", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'text_transform':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'uppercase' => __("Uppercase", 'lang_theme_core'),
+								'lowercase' => __("Lowercase", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+
+						case 'weight':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'lighter' => __("Lighter", 'lang_theme_core'),
+								'normal' => __("Normal", 'lang_theme_core'),
+								'bold' => __("Bold", 'lang_theme_core'),
+								'bolder' => __("Bolder", 'lang_theme_core'),
+								'initial' => __("Initial", 'lang_theme_core'),
+								'inherit' => __("Inherit", 'lang_theme_core'),
+							);
+
+							$this->add_control(array('choices' => $arr_data));
+						break;
+					}
+				}
+			}
+		}
+	}
+	#################################
+
+	#################################
 	function do_robots()
 	{
 		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
@@ -93,6 +342,7 @@ class mf_theme_core
 			exit;
 		}
 	}
+	#################################
 
 	// This is a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
 	#################################

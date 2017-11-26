@@ -49,7 +49,7 @@ function get_params_theme_core()
 	$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
 		$options_params[] = array('type' => 'text', 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'), 'placeholder' => "http://domain.com");
 		$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
-			$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#ffffff'
 			$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 		$options_params[] = array('type' => 'text', 'id' => 'main_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "1em 2em");
 		$options_params[] = array('type' => 'font', 'id' => 'body_font', 'title' => __("Font", 'lang_theme_core'));
@@ -74,7 +74,7 @@ function get_params_theme_core()
 		//$options_params[] = array('type' => 'checkbox', 'id' => 'header_fixed', 'title' => __("Fixed", 'lang_theme_core'), 'default' => 1); //mf_theme
 		$options_params[] = array('type' => 'position', 'id' => "header_fixed", 'title' => __("Position", 'lang_theme_core'), 'default' => 'fixed');
 		$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
-			$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
 			$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 
 		if($type == 'mf_parallax')
@@ -397,7 +397,7 @@ function get_params_theme_core()
 
 	$options_params[] = array('category' => __("Footer", 'lang_theme_core'), 'id' => 'mf_theme_footer');
 		$options_params[] = array('type' => 'text', 'id' => 'footer_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder); //This is used as the default background on body to make the background go all the way down below the footer if present
-			$options_params[] = array('type' => 'color', 'id' => 'footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'color', 'id' => 'footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
 			$options_params[] = array('type' => 'image', 'id' => 'footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 
 		if(is_active_widget_area('widget_footer'))
@@ -446,6 +446,61 @@ function get_params_theme_core()
 	$options_params[] = array('category_end' => "");
 
 	return $options_params;
+}
+
+function gather_params($options_params)
+{
+	$options = array();
+
+	$arr_theme_mods = get_theme_mods();
+
+	foreach($options_params as $param_key => $param)
+	{
+		if(!isset($param['category']) && !isset($param['category_end']))
+		{
+			$id = $param['id'];
+			$default = isset($param['default']) ? $param['default'] : false;
+			$force_default = isset($param['force_default']) ? $param['force_default'] : false;
+			$value_old = isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false;
+
+			if(isset($arr_theme_mods[$id]))
+			{
+				if($value_old == '' && $force_default == true)
+				{
+					$value_new = $default;
+
+					set_theme_mod($id, $value_new);
+				}
+
+				else
+				{
+					$value_new = $value_old;
+				}
+			}
+
+			else
+			{
+				$value_new = $default;
+			}
+
+			$options[$id] = apply_filters("theme_mod_".$id, $value_new);
+
+			//Unfortunately they inline their Custom CSS
+			//Code to remove MF Custom CSS in favour of WP Custom CSS
+			/*switch($id)
+			{
+				case 'custom_css_all':
+				case 'custom_css_mobile':
+					if('' == $value_new)
+					{
+						unset($options_params[$param_key]);
+					}
+				break;
+			}*/
+		}
+	}
+
+	return array($options_params, $options);
 }
 
 function cron_theme_core()
@@ -683,48 +738,6 @@ function is_active_widget_area($widget)
 	}
 
 	return $is_active;
-}
-
-function gather_params($options_params)
-{
-	$options = array();
-
-	$arr_theme_mods = get_theme_mods();
-
-	foreach($options_params as $param)
-	{
-		if(!isset($param['category']) && !isset($param['category_end']))
-		{
-			$id = $param['id'];
-			$default = isset($param['default']) ? $param['default'] : false;
-			$force_default = isset($param['force_default']) ? $param['force_default'] : false;
-			$value_old = isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false;
-
-			if(isset($arr_theme_mods[$id]))
-			{
-				if($value_old == '' && $force_default == true)
-				{
-					$value_new = $default;
-
-					set_theme_mod($id, $value_new);
-				}
-
-				else
-				{
-					$value_new = $value_old;
-				}
-			}
-
-			else
-			{
-				$value_new = $default;
-			}
-
-			$options[$id] = apply_filters("theme_mod_".$id, $value_new);
-		}
-	}
-
-	return array($options_params, $options);
 }
 
 function get_404_page()
@@ -1703,281 +1716,6 @@ function show_font_face($options_params, $options_fonts, $options)
 	}
 
 	return $out;
-}
-
-function customize_theme($wp_customize)
-{
-	list($options_params, $options) = get_params();
-	$options_fonts = get_theme_fonts();
-
-	$id_temp = "";
-
-	$wp_customize->remove_section('themes');
-	$wp_customize->remove_section('title_tagline');
-	$wp_customize->remove_section('static_front_page');
-	//$wp_customize->remove_section('nav_menus');
-	//$wp_customize->remove_section('widgets');
-	$wp_customize->remove_section('custom_css');
-
-	foreach($options_params as $param)
-	{
-		if(isset($param['show_if']) && $param['show_if'] != '' && $options[$param['show_if']] == ''){}
-
-		else if(isset($param['hide_if']) && $param['hide_if'] != '' && $options[$param['hide_if']] != ''){}
-
-		else
-		{
-			if(isset($param['category']))
-			{
-				$id_temp = $param['id'];
-
-				$wp_customize->add_section(
-					$id_temp,
-					array(
-						'title' => $param['category'],
-						//'description' => '',
-						//'priority' => 1,
-					)
-				);
-			}
-
-			else if(isset($param['category_end'])){}
-
-			else
-			{
-				$wp_customize->add_setting(
-					$param['id'],
-					array(
-						'default' => isset($param['default']) ? $param['default'] : "",
-						'transport' => "postMessage"
-					)
-				);
-
-				if($param['type'] == 'align')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'left' => __("Left", 'lang_theme_core'),
-								'center' => __("Center", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'color')
-				{
-					$wp_customize->add_control(
-						new WP_Customize_Color_Control(
-							$wp_customize,
-							$param['id'],
-							array(
-								'label' => $param['title'],
-								'section' => $id_temp,
-								'settings' => $param['id'],
-							)
-						)
-					);
-				}
-
-				else if($param['type'] == 'checkbox')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								2 => __("Yes", 'lang_theme_core'),
-								1 => __("No", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'clear')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'left' => __("Left", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-								'both' => __("Both", 'lang_theme_core'),
-								'none' => __("None", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if(in_array($param['type'], array('date', 'email', 'hidden', 'number', 'text', 'textarea', 'url')))
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'type' => $param['type'],
-						)
-					);
-				}
-
-				else if($param['type'] == 'float')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'none' => __("None", 'lang_theme_core'),
-								'left' => __("Left", 'lang_theme_core'),
-								'center' => __("Center", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'font')
-				{
-					$choices = array();
-					$choices[''] = "-- ".__("Choose here", 'lang_theme_core')." --";
-
-					foreach($options_fonts as $key => $value)
-					{
-						$choices[$key] = $value['title'];
-					}
-
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => $choices,
-						)
-					);
-				}
-
-				else if($param['type'] == 'image')
-				{
-					$wp_customize->add_control(
-						new WP_Customize_Image_Control(
-							$wp_customize,
-							$param['id'],
-							array(
-								'label' => $param['title'],
-								'section' => $id_temp,
-								'settings' => $param['id'],
-								//'context' => 'your_setting_context'
-							)
-						)
-					);
-				}
-
-				else if($param['type'] == 'overflow')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'visible' => __("Visible", 'lang_theme_core'),
-								'hidden' => __("Hidden", 'lang_theme_core'),
-								'scroll' => __("Scroll", 'lang_theme_core'),
-								'auto' => __("Auto", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'position')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'absolute' => __("Absolute", 'lang_theme_core'),
-								'fixed' => __("Fixed", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'text_transform')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'uppercase' => __("Uppercase", 'lang_theme_core'),
-								'lowercase' => __("Lowercase", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-
-				else if($param['type'] == 'weight')
-				{
-					$wp_customize->add_control(
-						$param['id'],
-						array(
-							'label' => $param['title'],
-							'section' => $id_temp,
-							'settings' => $param['id'],
-							'type' => 'select',
-							'choices' => array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-								'lighter' => __("Lighter", 'lang_theme_core'),
-								'normal' => __("Normal", 'lang_theme_core'),
-								'bold' => __("Bold", 'lang_theme_core'),
-								'bolder' => __("Bolder", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
-							),
-						)
-					);
-				}
-			}
-		}
-	}
 }
 
 function render_css($data)
