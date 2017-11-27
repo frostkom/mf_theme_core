@@ -56,7 +56,7 @@ class mf_theme_core
 
 	//Customizer
 	#################################
-	function add_control($data = array())
+	function add_select($data = array())
 	{
 		global $wp_customize;
 
@@ -151,7 +151,7 @@ class mf_theme_core
 								'right' => __("Right", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'color':
@@ -174,7 +174,7 @@ class mf_theme_core
 								1 => __("No", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'clear':
@@ -186,7 +186,7 @@ class mf_theme_core
 								'none' => __("None", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'date':
@@ -217,7 +217,7 @@ class mf_theme_core
 								'inherit' => __("Inherit", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'font':
@@ -230,7 +230,7 @@ class mf_theme_core
 								$arr_data[$key] = $value['title'];
 							}
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'image':
@@ -259,7 +259,7 @@ class mf_theme_core
 								'inherit' => __("Inherit", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'position':
@@ -269,7 +269,7 @@ class mf_theme_core
 								'fixed' => __("Fixed", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'text_transform':
@@ -279,7 +279,7 @@ class mf_theme_core
 								'lowercase' => __("Lowercase", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 
 						case 'weight':
@@ -293,7 +293,7 @@ class mf_theme_core
 								'inherit' => __("Inherit", 'lang_theme_core'),
 							);
 
-							$this->add_control(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $arr_data));
 						break;
 					}
 				}
