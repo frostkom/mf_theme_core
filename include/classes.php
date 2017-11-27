@@ -5,6 +5,8 @@ class mf_theme_core
 	function __construct()
 	{
 		$this->meta_prefix = "mf_theme_core_";
+
+		$this->options_params = $this->options = $this->options_fonts = array();
 	}
 
 	function has_noindex($post_id)
@@ -54,6 +56,628 @@ class mf_theme_core
 		}
 	}
 
+	// Style
+	#########################
+	function get_params()
+	{
+		if(count($this->options_params) == 0)
+		{
+			$this->options_params = get_params_theme_core();
+
+			list($this->options_params, $this->options) = gather_params($this->options_params);
+		}
+	}
+
+	function get_media_fonts()
+	{
+		global $wpdb;
+
+		$arr_allowed_extensions = array('.eot', 'otf', '.svg', '.ttf', '.woff');
+		$arr_media_fonts = array();
+
+		$result = $wpdb->get_results("SELECT post_title, guid FROM ".$wpdb->posts." WHERE post_type = 'attachment' AND guid REGEXP '".implode("|", $arr_allowed_extensions)."' ORDER BY post_title ASC, post_date ASC");
+
+		foreach($result as $r)
+		{
+			$media_title = $r->post_title;
+			$media_name = sanitize_title($media_title);
+			$media_guid = $r->guid;
+			$media_extension = pathinfo($media_guid, PATHINFO_EXTENSION);
+
+			if(in_array(".".$media_extension, $arr_allowed_extensions))
+			{
+				$arr_media_fonts[$media_name]['title'] = $media_title;
+				$arr_media_fonts[$media_name]['guid'] = str_replace(".".$media_extension, "", $media_guid);
+				$arr_media_fonts[$media_name]['extensions'][] = $media_extension;
+			}
+		}
+
+		return $arr_media_fonts;
+	}
+
+	function get_theme_fonts()
+	{
+		$arr_media_fonts = get_media_fonts();
+
+		foreach($arr_media_fonts as $media_key => $media_font)
+		{
+			$this->options_fonts[$media_key] = array(
+				'title' => $media_font['title'],
+				'style' => "'".$media_font['title']."'",
+				'file' => $media_font['guid'],
+				'extensions' => $media_font['extensions'],
+			);
+		}
+
+		$this->options_fonts[2] = array(
+			'title' => "Arial",
+			'style' => "Arial, sans-serif",
+			'url' => ""
+		);
+
+		$this->options_fonts[3] = array(
+			'title' => "Droid Sans",
+			'style' => "'Droid Sans', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Droid+Sans"
+		);
+
+		$this->options_fonts[5] = array(
+			'title' => "Droid Serif",
+			'style' => "'Droid Serif', serif",
+			'url' => "//fonts.googleapis.com/css?family=Droid+Serif"
+		);
+
+		$this->options_fonts[1] = array(
+			'title' => "Courgette",
+			'style' => "'Courgette', cursive",
+			'url' => "//fonts.googleapis.com/css?family=Courgette"
+		);
+
+		$this->options_fonts[6] = array(
+			'title' => "Garamond",
+			'style' => "'EB Garamond', serif",
+			'url' => "//fonts.googleapis.com/css?family=EB+Garamond"
+		);
+
+		$this->options_fonts['lato'] = array(
+			'title' => "Lato",
+			'style' => "'Lato', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Lato"
+		);
+
+		$this->options_fonts['montserrat'] = array(
+			'title' => "Montserrat",
+			'style' => "'Montserrat', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
+		);
+
+		$this->options_fonts[2] = array(
+			'title' => "Helvetica",
+			'style' => "Helvetica, sans-serif",
+			'url' => ""
+		);
+
+		$this->options_fonts[4] = array(
+			'title' => "Open Sans",
+			'style' => "'Open Sans', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Open+Sans"
+		);
+
+		$this->options_fonts['oswald'] = array(
+			'title' => "Oswald",
+			'style' => "'Oswald', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Oswald"
+		);
+
+		$this->options_fonts['oxygen'] = array(
+			'title' => "Oxygen",
+			'style' => "'Oxygen', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Oxygen"
+		);
+
+		$this->options_fonts['playfair_display'] = array(
+			'title' => "Playfair Display",
+			'style' => "'Playfair Display', serif",
+			'url' => "//fonts.googleapis.com/css?family=Playfair+Display"
+		);
+
+		$this->options_fonts['roboto'] = array(
+			'title' => "Roboto",
+			'style' => "'Roboto', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Roboto"
+		);
+
+		$this->options_fonts['roboto_condensed'] = array(
+			'title' => "Roboto Condensed",
+			'style' => "'Roboto Condensed', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Roboto+Condensed"
+		);
+
+		$this->options_fonts['roboto_mono'] = array(
+			'title' => "Roboto Mono",
+			'style' => "'Roboto Mono', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
+		);
+
+		$this->options_fonts['sorts_mill_goudy'] = array(
+			'title' => "Sorts Mill Goudy",
+			'style' => "'sorts-mill-goudy',serif",
+			'url' => "//fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
+		);
+
+		$this->options_fonts['source_sans_pro'] = array(
+			'title' => "Source Sans Pro",
+			'style' => "'Source Sans Pro', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Source+Sans+Pro"
+		);
+	}
+
+	function show_font_face()
+	{
+		if(count($this->options_fonts) == 0)
+		{
+			$this->get_theme_fonts();
+		}
+
+		$out = "";
+
+		foreach($this->options_params as $param)
+		{
+			if(isset($param['type']) && $param['type'] == 'font')
+			{
+				$font = $this->options[$param['id']];
+
+				if($font != '' && isset($this->options_fonts[$font]['file']) && $this->options_fonts[$font]['file'] != '')
+				{
+					$font_file = $this->options_fonts[$font]['file'];
+
+					$font_src = "";
+
+					foreach($this->options_fonts[$font]['extensions'] as $font_extension)
+					{
+						$font_src .= ($font_src != '' ? "," : "");
+
+						switch($font_extension)
+						{
+							case 'eot':		$font_src .= "url('".$font_file.".eot?#iefix') format('embedded-opentype')";	break;
+							case 'otf':		$font_src .= "url('".$font_file.".otf') format('opentype')";					break;
+							case 'woff':	$font_src .= "url('".$font_file.".woff') format('woff')";						break;
+							case 'ttf':		$font_src .= "url('".$font_file.".ttf') format('truetype')";					break;
+							case 'svg':		$font_src .= "url('".$font_file.".svg#".$font."') format('svg')";				break;
+						}
+					}
+
+					if($font_src != '')
+					{
+						$out .= "@font-face
+						{
+							font-family: '".$this->options_fonts[$font]['title']."';
+							src: ".$font_src.";
+							font-weight: normal;
+							font-style: normal;
+						}";
+					}
+				}
+			}
+		}
+
+		return $out;
+	}
+
+	function render_css($data)
+	{
+		$prop = isset($data['property']) ? $data['property'] : '';
+		$pre = isset($data['prefix']) ? $data['prefix'] : '';
+		$suf = isset($data['suffix']) ? $data['suffix'] : '';
+		$val = isset($data['value']) ? $data['value'] : '';
+		$append = isset($data['append']) ? $data['append'] : '';
+
+		if(is_array($val) && count($val) > 1)
+		{
+			$arr_val = $val;
+			$val = $arr_val[0];
+		}
+
+		$out = '';
+
+		if($prop == 'font-family' && (!isset($this->options[$val]) || !isset($this->options_fonts[$this->options[$val]]['style'])))
+		{
+			$this->options[$val] = '';
+		}
+
+		if($prop == 'float' && $this->options[$val] == 'center')
+		{
+			$prop = 'margin';
+			$this->options[$val] = '0 auto';
+		}
+
+		if(isset($this->options[$val]) && $this->options[$val] != '')
+		{
+			if($prop != '')
+			{
+				$out .= $prop.": ";
+			}
+
+			else if($pre != '')
+			{
+				$out .= $pre;
+			}
+
+				if($prop == 'font-family')
+				{
+					$out .= $this->options_fonts[$this->options[$val]]['style'];
+				}
+
+				else
+				{
+					$out .= $this->options[$val];
+				}
+
+			if($suf != '')
+			{
+				$out .= $suf;
+			}
+
+			if($prop != '' || $pre != '' || $suf != '')
+			{
+				$out .= ";";
+			}
+
+			if($append != '')
+			{
+				$out .= $append;
+			}
+		}
+
+		else if(isset($arr_val) && count($arr_val) > 1)
+		{
+			array_splice($arr_val, 0, 1);
+
+			$data['value'] = count($arr_val) > 1 ? $arr_val : $arr_val[0];
+
+			$out .= render_css($data);
+		}
+
+		return $out;
+	}
+
+	function enqueue_theme_fonts()
+	{
+		$this->get_theme_fonts();
+
+		$arr_fonts2insert = array();
+
+		$this->get_params();
+
+		foreach($this->options_params as $param)
+		{
+			if(isset($param['type']) && $param['type'] == 'font' && isset($this->options[$param['id']]))
+			{
+				$font = $this->options[$param['id']];
+
+				if(isset($this->options_fonts[$font]['url']) && $this->options_fonts[$font]['url'] != '')
+				{
+					mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
+				}
+			}
+		}
+	}
+	#################################
+
+	function add_page_index()
+	{
+		global $post;
+
+		if(isset($post) && $post->ID > 0)
+		{
+			$page_index = get_post_meta($post->ID, $this->meta_prefix.'page_index', true);
+
+			if($page_index != '')
+			{
+				switch($page_index)
+				{
+					case 'nofollow':
+					case 'noindex':
+						echo "<meta name='robots' content='".$page_index."'>";
+					break;
+
+					case 'none':
+						echo "<meta name='robots' content='noindex, nofollow'>";
+					break;
+				}
+			}
+		}
+	}
+
+	function get_logo($data = array())
+	{
+		if(!isset($data['display'])){			$data['display'] = 'all';}
+		if(!isset($data['title'])){				$data['title'] = '';}
+		if(!isset($data['image'])){				$data['image'] = '';}
+		if(!isset($data['description'])){		$data['description'] = '';}
+
+		$this->get_params();
+
+		$has_logo = $data['image'] != '' || isset($this->options['header_logo']) && $this->options['header_logo'] != '' || isset($this->options['header_mobile_logo']) && $this->options['header_mobile_logo'] != '';
+
+		$out = "<a href='".get_site_url()."/' id='site_logo'>";
+
+			if($has_logo && $data['title'] == '')
+			{
+				if($data['display'] != 'tagline')
+				{
+					$site_name = get_bloginfo('name');
+					$site_description = get_bloginfo('description');
+
+					if($data['image'] != '')
+					{
+						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+					}
+
+					else
+					{
+						if($this->options['header_logo'] != '')
+						{
+							$out .= "<img src='".$this->options['header_logo']."'".($this->options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+						}
+
+						if($this->options['header_mobile_logo'] != '')
+						{
+							$out .= "<img src='".$this->options['header_mobile_logo']."'".($this->options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+						}
+					}
+				}
+
+				if($data['display'] != 'title' && $data['description'] != '')
+				{
+					$out .= "<span>".$data['description']."</span>";
+				}
+			}
+
+			else
+			{
+				if($data['display'] != 'tagline')
+				{
+					$logo_title = $data['title'] != '' ? $data['title'] : get_bloginfo('name');
+
+					$out .= "<div>".$logo_title."</div>";
+				}
+
+				if($data['display'] != 'title')
+				{
+					$logo_description = $data['description'] != '' ? $data['description'] : get_bloginfo('description');
+
+					if($logo_description != '')
+					{
+						$out .= "<span>".$logo_description."</span>";
+					}
+				}
+			}
+
+		$out .= "</a>";
+
+		return $out;
+	}
+
+	function column_header($cols)
+	{
+		unset($cols['comments']);
+
+		if(is_site_public())
+		{
+			$cols['seo'] = __("SEO", 'lang_theme_core');
+		}
+
+		return $cols;
+	}
+
+	function column_cell($col, $id)
+	{
+		global $wpdb;
+
+		switch($col)
+		{
+			case 'seo':
+				$title_limit = 64;
+				$excerpt_limit = 156;
+
+				$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
+
+				foreach($result as $r)
+				{
+					$post_title = $r->post_title;
+					$post_excerpt = $r->post_excerpt;
+					$post_type = $r->post_type;
+					$post_name = $r->post_name;
+
+					$seo_type = '';
+
+					if($seo_type == '')
+					{
+						$page_index = get_post_meta($id, $this->meta_prefix.'page_index', true);
+
+						if(in_array($page_index, array('noindex', 'none')))
+						{
+							$seo_type = 'not_indexed';
+						}
+					}
+
+					if($seo_type == '')
+					{
+						if(post_password_required($id))
+						{
+							$seo_type = 'password_protected';
+						}
+					}
+
+					if($seo_type == '')
+					{
+						if($post_excerpt != '')
+						{
+							$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_excerpt, $post_type, $id));
+
+							if($post_id_duplicate > 0)
+							{
+								$seo_type = 'duplicate_excerpt';
+							}
+
+							else if(strlen($post_excerpt) > $excerpt_limit)
+							{
+								$seo_type = 'long_excerpt';
+							}
+						}
+
+						else
+						{
+							$seo_type = 'no_excerpt';
+						}
+					}
+
+					if($seo_type == '')
+					{
+						if($post_title != '')
+						{
+							$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_title, $post_type, $id));
+
+							if($post_id_duplicate > 0)
+							{
+								$seo_type = 'duplicate_title';
+							}
+						}
+
+						else
+						{
+							$seo_type = 'no_title';
+						}
+					}
+
+					if($seo_type == '')
+					{
+						if($post_name != '')
+						{
+							if(sanitize_title_with_dashes(sanitize_title($post_title)) != $post_name)
+							{
+								$seo_type = 'inconsistent_url';
+							}
+						}
+					}
+
+					if($seo_type == '')
+					{
+						$site_title = $post_title." | ".get_wp_title();
+
+						if(strlen($site_title) > $title_limit)
+						{
+							$seo_type = 'long_title';
+						}
+					}
+
+					switch($seo_type)
+					{
+						case 'duplicate_title':
+							echo "<i class='fa fa-lg fa-close red'></i>
+							<div class='row-actions'>
+								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+									.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								."</a>
+							</div>";
+						break;
+
+						case 'no_title':
+							echo "<i class='fa fa-lg fa-close red'></i>
+							<div class='row-actions'>"
+								.__("You have not set a title for this page", 'lang_theme_core')
+							."</div>";
+						break;
+
+						case 'duplicate_excerpt':
+							echo "<i class='fa fa-lg fa-close red'></i>
+							<div class='row-actions'>
+								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+									.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								."</a>
+							</div>";
+						break;
+
+						case 'no_excerpt':
+							echo "<i class='fa fa-lg fa-close red'></i>
+							<div class='row-actions'>"
+								.__("You have not set an excerpt for this page", 'lang_theme_core')
+							."</div>";
+						break;
+
+						case 'inconsistent_url':
+							echo "<i class='fa fa-lg fa-warning yellow'></i>
+							<div class='row-actions'>"
+								.__("The URL is not correlated to the title", 'lang_theme_core')
+							."</div>";
+						break;
+
+						case 'long_title':
+							echo "<i class='fa fa-lg fa-warning yellow'></i>
+							<div class='row-actions'>"
+								.__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")"
+							."</div>";
+						break;
+
+						case 'long_excerpt':
+							echo "<i class='fa fa-lg fa-warning yellow'></i>
+							<div class='row-actions'>"
+								.__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")"
+							."</div>";
+						break;
+
+						case 'not_indexed':
+							echo "<i class='fa fa-lg fa-check grey'></i>";
+						break;
+
+						case 'password_protected':
+							echo "<i class='fa fa-lg fa-lock'></i>";
+						break;
+
+						default:
+							echo "<i class='fa fa-lg fa-check green'></i>";
+						break;
+					}
+				}
+			break;
+		}
+	}
+
+	function meta_boxes($meta_boxes)
+	{
+		if(is_site_public())
+		{
+			$meta_boxes[] = array(
+				'id' => 'theme_core',
+				'title' => __("Settings", 'lang_theme_core'),
+				'post_types' => get_post_types_for_metabox(),
+				'context' => 'side',
+				'priority' => 'low',
+				'fields' => array(
+					array(
+						'name' => __("Index", 'lang_theme_core'),
+						'id' => $this->meta_prefix.'page_index',
+						'type' => 'select',
+						'options' => array(
+							'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+							'noindex' => __("Don't Index", 'lang_theme_core'),
+							'nofollow' => __("Don't Follow Links", 'lang_theme_core'),
+							'none' => __("Don't Index & don't follow links", 'lang_theme_core'),
+						),
+					),
+					array(
+						'name' => __("Unpublish", 'lang_theme_core'),
+						'id' => $this->meta_prefix.'unpublish_date',
+						'type' => 'datetime',
+					),
+				)
+			);
+		}
+
+		return $meta_boxes;
+	}
+
 	//Customizer
 	#################################
 	function add_select($data = array())
@@ -79,8 +703,8 @@ class mf_theme_core
 
 		mf_enqueue_style('style_theme_core_customizer', $plugin_include_url."style_customizer.css", $plugin_version);
 
-		list($options_params, $options) = get_params();
-		$options_fonts = get_theme_fonts();
+		$this->get_params();
+		$this->get_theme_fonts();
 
 		$this->id_temp = "";
 		$this->param = array();
@@ -92,11 +716,11 @@ class mf_theme_core
 		//$wp_customize->remove_section('widgets');
 		$wp_customize->remove_section('custom_css');
 
-		foreach($options_params as $this->param)
+		foreach($this->options_params as $this->param)
 		{
-			if(isset($this->param['show_if']) && $this->param['show_if'] != '' && $options[$this->param['show_if']] == ''){}
+			if(isset($this->param['show_if']) && $this->param['show_if'] != '' && $this->options[$this->param['show_if']] == ''){}
 
-			else if(isset($this->param['hide_if']) && $this->param['hide_if'] != '' && $options[$this->param['hide_if']] != ''){}
+			else if(isset($this->param['hide_if']) && $this->param['hide_if'] != '' && $this->options[$this->param['hide_if']] != ''){}
 
 			else
 			{
@@ -118,7 +742,7 @@ class mf_theme_core
 
 				else
 				{
-					/*if(isset($this->param['ignore_default_if']) && $this->param['ignore_default_if'] != '' && $options[$this->param['ignore_default_if']] != '')
+					/*if(isset($this->param['ignore_default_if']) && $this->param['ignore_default_if'] != '' && $this->options[$this->param['ignore_default_if']] != '')
 					{
 						$default_value = '';
 					}
@@ -225,9 +849,12 @@ class mf_theme_core
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --"
 							);
 
-							foreach($options_fonts as $key => $value)
+							if(count($this->options_fonts) > 0)
 							{
-								$arr_data[$key] = $value['title'];
+								foreach($this->options_fonts as $key => $value)
+								{
+									$arr_data[$key] = $value['title'];
+								}
 							}
 
 							$this->add_select(array('choices' => $arr_data));
@@ -302,6 +929,7 @@ class mf_theme_core
 	}
 	#################################
 
+	// Redirects
 	#################################
 	function do_robots()
 	{
@@ -752,8 +1380,10 @@ class widget_theme_core_logo extends WP_Widget
 
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
+		$obj_theme_core = new mf_theme_core();
+
 		echo $before_widget
-			.get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
+			.$obj_theme_core->get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
 		.$after_widget;
 	}
 

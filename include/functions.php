@@ -1,5 +1,62 @@
 <?php
 
+//Remove later
+#######################
+function enqueue_theme_fonts()
+{
+	$obj_theme_core = new mf_theme_core();
+	$obj_theme_core->enqueue_theme_fonts();
+}
+
+function get_logo($data = array())
+{
+	$obj_theme_core = new mf_theme_core();
+
+	return $obj_theme_core->get_logo($data);
+}
+
+function get_params()
+{
+	$obj_theme_core = new mf_theme_core();
+	$obj_theme_core->get_params();
+
+	return array($obj_theme_core->options_params, $obj_theme_core->options);
+}
+
+function get_media_fonts()
+{
+	$obj_theme_core = new mf_theme_core();
+
+	return $obj_theme_core->get_media_fonts();
+}
+
+function get_theme_fonts()
+{
+	$obj_theme_core = new mf_theme_core();
+	$obj_theme_core->get_theme_fonts();
+
+	return $obj_theme_core->options_fonts;
+}
+
+function render_css($data)
+{
+	global $options, $options_fonts;
+
+	$obj_theme_core = new mf_theme_core();
+	return $obj_theme_core->render_css($data);
+}
+
+function show_font_face($options_params, $options_fonts, $options)
+{
+	$obj_theme_core = new mf_theme_core();
+
+	$obj_theme_core->options_params = $options_params;
+	$obj_theme_core->options = $options;
+
+	return $obj_theme_core->show_font_face();
+}
+#######################
+
 function add_css_selectors($array = array())
 {
 	if(is_plugin_active('css-hero-ce/css-hero-main.php'))
@@ -25,16 +82,6 @@ function add_css_selectors($array = array())
 
 			update_option('setting_theme_css_hero', $setting_theme_css_hero);
 		}
-	}
-}
-
-if(!function_exists('get_params'))
-{
-	function get_params()
-	{
-		$options_params = get_params_theme_core();
-
-		return gather_params($options_params);
 	}
 }
 
@@ -94,7 +141,7 @@ function get_params_theme_core()
 	$options_params[] = array('category_end' => "");
 
 	$options_params[] = array('category' => __("Logo", 'lang_theme_core'), 'id' => 'mf_theme_logo');
-		$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => '.6em 0 0');
+		$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => '.4em 0');
 		$options_params[] = array('type' => 'image', 'id' => 'header_logo', 'title' => __("Image", 'lang_theme_core'));
 		$options_params[] = array('type' => 'float', 'id' => 'logo_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => 'left', 'show_if' => 'header_logo');
 		$options_params[] = array('type' => 'text', 'id' => 'logo_width', 'title' => __("Width", 'lang_theme_core'), 'default' => '14em', 'show_if' => 'header_logo');
@@ -159,8 +206,8 @@ function get_params_theme_core()
 			$options_params[] = array('type' => 'position', 'id' => 'hamburger_fixed', 'title' => __("Position", 'lang_theme_core'));
 		}
 
-		$options_params[] = array('type' => 'text', 'id' => 'hamburger_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "2.5em");
-		$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => "1em .8em");
+		$options_params[] = array('type' => 'text', 'id' => 'hamburger_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
+		$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => ".8em");
 
 	$options_params[] = array('category_end' => "");
 
@@ -214,18 +261,18 @@ function get_params_theme_core()
 
 	if($type == 'mf_theme')
 	{
-		/*if(is_active_widget_area('widget_after_header'))
+		if(is_active_widget_area('widget_after_header'))
 		{
 			$options_params[] = array('category' => __("After Header", 'lang_theme_core'), 'id' => 'mf_theme_after_header');
 				$options_params[] = array('type' => 'checkbox', 'id' => 'after_header_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
-					$options_params[] = array('type' => 'color', 'id' => 'pre_footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'image', 'id' => 'pre_footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => "pre_footer_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
+				$options_params[] = array('type' => 'text', 'id' => 'after_header_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
+					$options_params[] = array('type' => 'color', 'id' => 'after_header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+					$options_params[] = array('type' => 'image', 'id' => 'after_header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				/*$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");*/
 			$options_params[] = array('category_end' => "");
-		}*/
+		}
 
 		$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_theme_pre_content');
 			$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", 'lang_theme_core'), 'placeholder' => $bg_placeholder);
@@ -585,33 +632,6 @@ function get_wp_title()
 	return $out;
 }
 
-function add_page_index()
-{
-	global $post;
-
-	if(isset($post) && $post->ID > 0)
-	{
-		$meta_prefix = "mf_theme_core_";
-
-		$page_index = get_post_meta($post->ID, $meta_prefix.'page_index', true);
-
-		if($page_index != '')
-		{
-			switch($page_index)
-			{
-				case 'nofollow':
-				case 'noindex':
-					echo "<meta name='robots' content='".$page_index."'>";
-				break;
-
-				case 'none':
-					echo "<meta name='robots' content='noindex, nofollow'>";
-				break;
-			}
-		}
-	}
-}
-
 function head_theme_core()
 {
 	echo "<meta charset='".get_bloginfo('charset')."'>
@@ -624,7 +644,8 @@ function head_theme_core()
 		wp_deregister_style('dashicons');
 	}
 
-	add_page_index();
+	$obj_theme_core = new mf_theme_core();
+	$obj_theme_core->add_page_index();
 
 	$plugin_include_url = plugin_dir_url(__FILE__);
 	$plugin_version = get_plugin_version(__FILE__);
@@ -853,15 +874,17 @@ function get_options_page_theme_core()
 	$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
 
 	list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
-	list($options_params, $options) = get_params();
+
+	$obj_theme_core = new mf_theme_core();
+	$obj_theme_core->get_params();
 
 	if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce'], 'theme_backup'))
 	{
-		if(count($options) > 0)
+		if(count($obj_theme_core->options) > 0)
 		{
 			$file = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")))."_".date("YmdHi").".json";
 
-			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($options)));
+			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($obj_theme_core->options)));
 
 			if($success == true)
 			{
@@ -939,9 +962,9 @@ function get_options_page_theme_core()
 
 	else
 	{
-		if($options['style_source'] != '')
+		if($obj_theme_core->options['style_source'] != '')
 		{
-			$style_source = remove_protocol(array('url' => $options['style_source'], 'clean' => true, 'trim' => true));
+			$style_source = remove_protocol(array('url' => $obj_theme_core->options['style_source'], 'clean' => true, 'trim' => true));
 
 			$option_theme_source_style_url = get_option('option_theme_source_style_url');
 
@@ -958,7 +981,7 @@ function get_options_page_theme_core()
 
 		if($upload_path != '')
 		{
-			$style_source = trim($options['style_source'], "/");
+			$style_source = trim($obj_theme_core->options['style_source'], "/");
 			$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
 
 			$out .= "<div id='poststuff'>
@@ -1060,28 +1083,6 @@ function nav_args_theme_core($args)
 	}
 
 	return $args;
-}
-
-function enqueue_theme_fonts()
-{
-	$options_fonts = get_theme_fonts();
-
-	$arr_fonts2insert = array();
-
-	list($options_params, $options) = get_params();
-
-	foreach($options_params as $param)
-	{
-		if(isset($param['type']) && $param['type'] == 'font' && isset($options[$param['id']]))
-		{
-			$font = $options[$param['id']];
-
-			if(isset($options_fonts[$font]['url']) && $options_fonts[$font]['url'] != '')
-			{
-				mf_enqueue_style('style_font_'.$font, $options_fonts[$font]['url']);
-			}
-		}
-	}
 }
 
 function settings_theme_core()
@@ -1273,193 +1274,6 @@ function is_site_public()
 	return (get_option('blog_public') == 1 && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes');
 }
 
-function column_header_theme_core($cols)
-{
-	unset($cols['comments']);
-
-	if(is_site_public())
-	{
-		$cols['seo'] = __("SEO", 'lang_theme_core');
-	}
-
-	return $cols;
-}
-
-function column_cell_theme_core($col, $id)
-{
-	global $wpdb;
-
-	switch($col)
-	{
-		case 'seo':
-			$title_limit = 64;
-			$excerpt_limit = 156;
-
-			$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
-
-			foreach($result as $r)
-			{
-				$post_title = $r->post_title;
-				$post_excerpt = $r->post_excerpt;
-				$post_type = $r->post_type;
-				$post_name = $r->post_name;
-
-				$seo_type = '';
-
-				if($seo_type == '')
-				{
-					$meta_prefix = "mf_theme_core_";
-
-					$page_index = get_post_meta($id, $meta_prefix.'page_index', true);
-
-					if(in_array($page_index, array('noindex', 'none')))
-					{
-						$seo_type = 'not_indexed';
-					}
-				}
-
-				if($seo_type == '')
-				{
-					if(post_password_required($id))
-					{
-						$seo_type = 'password_protected';
-					}
-				}
-
-				if($seo_type == '')
-				{
-					if($post_excerpt != '')
-					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_excerpt, $post_type, $id));
-
-						if($post_id_duplicate > 0)
-						{
-							$seo_type = 'duplicate_excerpt';
-						}
-
-						else if(strlen($post_excerpt) > $excerpt_limit)
-						{
-							$seo_type = 'long_excerpt';
-						}
-					}
-
-					else
-					{
-						$seo_type = 'no_excerpt';
-					}
-				}
-
-				if($seo_type == '')
-				{
-					if($post_title != '')
-					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_title, $post_type, $id));
-
-						if($post_id_duplicate > 0)
-						{
-							$seo_type = 'duplicate_title';
-						}
-					}
-
-					else
-					{
-						$seo_type = 'no_title';
-					}
-				}
-
-				if($seo_type == '')
-				{
-					if($post_name != '')
-					{
-						if(sanitize_title_with_dashes(sanitize_title($post_title)) != $post_name)
-						{
-							$seo_type = 'inconsistent_url';
-						}
-					}
-				}
-
-				if($seo_type == '')
-				{
-					$site_title = $post_title." | ".get_wp_title();
-
-					if(strlen($site_title) > $title_limit)
-					{
-						$seo_type = 'long_title';
-					}
-				}
-
-				switch($seo_type)
-				{
-					case 'duplicate_title':
-						echo "<i class='fa fa-lg fa-close red'></i>
-						<div class='row-actions'>
-							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
-							."</a>
-						</div>";
-					break;
-
-					case 'no_title':
-						echo "<i class='fa fa-lg fa-close red'></i>
-						<div class='row-actions'>"
-							.__("You have not set a title for this page", 'lang_theme_core')
-						."</div>";
-					break;
-
-					case 'duplicate_excerpt':
-						echo "<i class='fa fa-lg fa-close red'></i>
-						<div class='row-actions'>
-							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
-							."</a>
-						</div>";
-					break;
-
-					case 'no_excerpt':
-						echo "<i class='fa fa-lg fa-close red'></i>
-						<div class='row-actions'>"
-							.__("You have not set an excerpt for this page", 'lang_theme_core')
-						."</div>";
-					break;
-
-					case 'inconsistent_url':
-						echo "<i class='fa fa-lg fa-warning yellow'></i>
-						<div class='row-actions'>"
-							.__("The URL is not correlated to the title", 'lang_theme_core')
-						."</div>";
-					break;
-
-					case 'long_title':
-						echo "<i class='fa fa-lg fa-warning yellow'></i>
-						<div class='row-actions'>"
-							.__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")"
-						."</div>";
-					break;
-
-					case 'long_excerpt':
-						echo "<i class='fa fa-lg fa-warning yellow'></i>
-						<div class='row-actions'>"
-							.__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")"
-						."</div>";
-					break;
-
-					case 'not_indexed':
-						echo "<i class='fa fa-lg fa-check grey'></i>";
-					break;
-
-					case 'password_protected':
-						echo "<i class='fa fa-lg fa-lock'></i>";
-					break;
-
-					default:
-						echo "<i class='fa fa-lg fa-check green'></i>";
-					break;
-				}
-			}
-		break;
-	}
-}
-
 function get_post_types_for_metabox()
 {
 	$arr_data = array();
@@ -1475,42 +1289,6 @@ function get_post_types_for_metabox()
 	return $arr_data;
 }
 
-function meta_boxes_theme_core($meta_boxes)
-{
-	if(is_site_public())
-	{
-		$meta_prefix = "mf_theme_core_";
-
-		$meta_boxes[] = array(
-			'id' => 'theme_core',
-			'title' => __("Settings", 'lang_theme_core'),
-			'post_types' => get_post_types_for_metabox(),
-			'context' => 'side',
-			'priority' => 'low',
-			'fields' => array(
-				array(
-					'name' => __("Index", 'lang_theme_core'),
-					'id' => $meta_prefix.'page_index',
-					'type' => 'select',
-					'options' => array(
-						'' => "-- ".__("Choose here", 'lang_theme_core')." --",
-						'noindex' => __("Don't Index", 'lang_theme_core'),
-						'nofollow' => __("Don't Follow Links", 'lang_theme_core'),
-						'none' => __("Don't Index & don't follow links", 'lang_theme_core'),
-					),
-				),
-				array(
-					'name' => __("Unpublish", 'lang_theme_core'),
-					'id' => $meta_prefix.'unpublish_date',
-					'type' => 'datetime',
-				),
-			)
-		);
-	}
-
-	return $meta_boxes;
-}
-
 function require_user_login()
 {
 	if(get_option('setting_no_public_pages') == 'yes')
@@ -1522,349 +1300,6 @@ function require_user_login()
 	{
 		mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
 	}
-}
-
-function get_media_fonts()
-{
-	global $wpdb;
-
-	$arr_allowed_extensions = array('.eot', 'otf', '.svg', '.ttf', '.woff');
-	$arr_media_fonts = array();
-
-	$result = $wpdb->get_results("SELECT post_title, guid FROM ".$wpdb->posts." WHERE post_type = 'attachment' AND guid REGEXP '".implode("|", $arr_allowed_extensions)."' ORDER BY post_title ASC, post_date ASC");
-
-	foreach($result as $r)
-	{
-		$media_title = $r->post_title;
-		$media_name = sanitize_title($media_title);
-		$media_guid = $r->guid;
-		$media_extension = pathinfo($media_guid, PATHINFO_EXTENSION);
-
-		if(in_array(".".$media_extension, $arr_allowed_extensions))
-		{
-			$arr_media_fonts[$media_name]['title'] = $media_title;
-			$arr_media_fonts[$media_name]['guid'] = str_replace(".".$media_extension, "", $media_guid);
-			$arr_media_fonts[$media_name]['extensions'][] = $media_extension;
-		}
-	}
-
-	return $arr_media_fonts;
-}
-
-function get_theme_fonts()
-{
-	$options_fonts = array();
-	$arr_media_fonts = get_media_fonts();
-
-	foreach($arr_media_fonts as $media_key => $media_font)
-	{
-		$options_fonts[$media_key] = array(
-			'title' => $media_font['title'],
-			'style' => "'".$media_font['title']."'",
-			'file' => $media_font['guid'],
-			'extensions' => $media_font['extensions'],
-		);
-	}
-
-	$options_fonts[2] = array(
-		'title' => "Arial",
-		'style' => "Arial, sans-serif",
-		'url' => ""
-	);
-
-	$options_fonts[3] = array(
-		'title' => "Droid Sans",
-		'style' => "'Droid Sans', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Droid+Sans"
-	);
-
-	$options_fonts[5] = array(
-		'title' => "Droid Serif",
-		'style' => "'Droid Serif', serif",
-		'url' => "//fonts.googleapis.com/css?family=Droid+Serif"
-	);
-
-	$options_fonts[1] = array(
-		'title' => "Courgette",
-		'style' => "'Courgette', cursive",
-		'url' => "//fonts.googleapis.com/css?family=Courgette"
-	);
-
-	$options_fonts[6] = array(
-		'title' => "Garamond",
-		'style' => "'EB Garamond', serif",
-		'url' => "//fonts.googleapis.com/css?family=EB+Garamond"
-	);
-
-	$options_fonts['lato'] = array(
-		'title' => "Lato",
-		'style' => "'Lato', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Lato"
-	);
-
-	$options_fonts['montserrat'] = array(
-		'title' => "Montserrat",
-		'style' => "'Montserrat', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
-	);
-
-	$options_fonts[2] = array(
-		'title' => "Helvetica",
-		'style' => "Helvetica, sans-serif",
-		'url' => ""
-	);
-
-	$options_fonts[4] = array(
-		'title' => "Open Sans",
-		'style' => "'Open Sans', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Open+Sans"
-	);
-
-	$options_fonts['oswald'] = array(
-		'title' => "Oswald",
-		'style' => "'Oswald', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Oswald"
-	);
-
-	$options_fonts['oxygen'] = array(
-		'title' => "Oxygen",
-		'style' => "'Oxygen', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Oxygen"
-	);
-
-	$options_fonts['playfair_display'] = array(
-		'title' => "Playfair Display",
-		'style' => "'Playfair Display', serif",
-		'url' => "//fonts.googleapis.com/css?family=Playfair+Display"
-	);
-
-	$options_fonts['roboto'] = array(
-		'title' => "Roboto",
-		'style' => "'Roboto', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto"
-	);
-
-	$options_fonts['roboto_condensed'] = array(
-		'title' => "Roboto Condensed",
-		'style' => "'Roboto Condensed', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto+Condensed"
-	);
-
-	$options_fonts['roboto_mono'] = array(
-		'title' => "Roboto Mono",
-		'style' => "'Roboto Mono', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
-	);
-
-	$options_fonts['sorts_mill_goudy'] = array(
-		'title' => "Sorts Mill Goudy",
-		'style' => "'sorts-mill-goudy',serif",
-		'url' => "//fonts.googleapis.com/css?family=Sorts+Mill+Goudy"
-	);
-
-	$options_fonts['source_sans_pro'] = array(
-		'title' => "Source Sans Pro",
-		'style' => "'Source Sans Pro', sans-serif",
-		'url' => "//fonts.googleapis.com/css?family=Source+Sans+Pro"
-	);
-
-	return $options_fonts;
-}
-
-function show_font_face($options_params, $options_fonts, $options)
-{
-	$out = "";
-
-	foreach($options_params as $param)
-	{
-		if(isset($param['type']) && $param['type'] == 'font')
-		{
-			$font = $options[$param['id']];
-
-			if($font != '' && isset($options_fonts[$font]['file']) && $options_fonts[$font]['file'] != '')
-			{
-				$font_file = $options_fonts[$font]['file'];
-
-				$font_src = "";
-
-				foreach($options_fonts[$font]['extensions'] as $font_extension)
-				{
-					$font_src .= ($font_src != '' ? "," : "");
-
-					switch($font_extension)
-					{
-						case 'eot':		$font_src .= "url('".$font_file.".eot?#iefix') format('embedded-opentype')";	break;
-						case 'otf':		$font_src .= "url('".$font_file.".otf') format('opentype')";					break;
-						case 'woff':	$font_src .= "url('".$font_file.".woff') format('woff')";						break;
-						case 'ttf':		$font_src .= "url('".$font_file.".ttf') format('truetype')";					break;
-						case 'svg':		$font_src .= "url('".$font_file.".svg#".$font."') format('svg')";				break;
-					}
-				}
-
-				if($font_src != '')
-				{
-					$out .= "@font-face
-					{
-						font-family: '".$options_fonts[$font]['title']."';
-						src: ".$font_src.";
-						font-weight: normal;
-						font-style: normal;
-					}";
-				}
-			}
-		}
-	}
-
-	return $out;
-}
-
-function render_css($data)
-{
-	global $options, $options_fonts;
-
-	$prop = isset($data['property']) ? $data['property'] : '';
-	$pre = isset($data['prefix']) ? $data['prefix'] : '';
-	$suf = isset($data['suffix']) ? $data['suffix'] : '';
-	$val = isset($data['value']) ? $data['value'] : '';
-	$append = isset($data['append']) ? $data['append'] : '';
-
-	if(is_array($val) && count($val) > 1)
-	{
-		$arr_val = $val;
-		$val = $arr_val[0];
-	}
-
-	$out = '';
-
-	if($prop == 'font-family' && (!isset($options[$val]) || !isset($options_fonts[$options[$val]]['style'])))
-	{
-		$options[$val] = '';
-	}
-
-	if($prop == 'float' && $options[$val] == 'center')
-	{
-		$prop = 'margin';
-		$options[$val] = '0 auto';
-	}
-
-	if(isset($options[$val]) && $options[$val] != '')
-	{
-		if($prop != '')
-		{
-			$out .= $prop.": ";
-		}
-
-		else if($pre != '')
-		{
-			$out .= $pre;
-		}
-
-			if($prop == 'font-family')
-			{
-				$out .= $options_fonts[$options[$val]]['style'];
-			}
-
-			else
-			{
-				$out .= $options[$val];
-			}
-
-		if($suf != '')
-		{
-			$out .= $suf;
-		}
-
-		if($prop != '' || $pre != '' || $suf != '')
-		{
-			$out .= ";";
-		}
-
-		if($append != '')
-		{
-			$out .= $append;
-		}
-	}
-
-	else if(isset($arr_val) && count($arr_val) > 1)
-	{
-		array_splice($arr_val, 0, 1);
-
-		$data['value'] = count($arr_val) > 1 ? $arr_val : $arr_val[0];
-
-		$out .= render_css($data);
-	}
-
-	return $out;
-}
-
-function get_logo($data = array())
-{
-	if(!isset($data['display'])){			$data['display'] = 'all';}
-	if(!isset($data['title'])){				$data['title'] = '';}
-	if(!isset($data['image'])){				$data['image'] = '';}
-	if(!isset($data['description'])){		$data['description'] = '';}
-
-	list($options_params, $options) = get_params();
-
-	$has_logo = $data['image'] != '' || isset($options['header_logo']) && $options['header_logo'] != '' || isset($options['header_mobile_logo']) && $options['header_mobile_logo'] != '';
-
-	$out = "<a href='".get_site_url()."/' id='site_logo'>";
-
-		if($has_logo && $data['title'] == '')
-		{
-			if($data['display'] != 'tagline')
-			{
-				$site_name = get_bloginfo('name');
-				$site_description = get_bloginfo('description');
-
-				if($data['image'] != '')
-				{
-					$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
-				}
-
-				else
-				{
-					if($options['header_logo'] != '')
-					{
-						$out .= "<img src='".$options['header_logo']."'".($options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
-					}
-
-					if($options['header_mobile_logo'] != '')
-					{
-						$out .= "<img src='".$options['header_mobile_logo']."'".($options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
-					}
-				}
-			}
-
-			if($data['display'] != 'title' && $data['description'] != '')
-			{
-				$out .= "<span>".$data['description']."</span>";
-			}
-		}
-
-		else
-		{
-			if($data['display'] != 'tagline')
-			{
-				$logo_title = $data['title'] != '' ? $data['title'] : get_bloginfo('name');
-
-				$out .= "<div>".$logo_title."</div>";
-			}
-
-			if($data['display'] != 'title')
-			{
-				$logo_description = $data['description'] != '' ? $data['description'] : get_bloginfo('description');
-
-				if($logo_description != '')
-				{
-					$out .= "<span>".$logo_description."</span>";
-				}
-			}
-		}
-
-	$out .= "</a>";
-
-	return $out;
 }
 
 function default_scripts_theme_core(&$scripts)
@@ -1939,9 +1374,11 @@ function footer_theme_core()
 
 	if(get_option('setting_splash_screen') == 'yes')
 	{
+		$obj_theme_core = new mf_theme_core();
+
 		echo "<div id='overlay_splash'>
 			<div>"
-				.get_logo()
+				.$obj_theme_core->get_logo()
 				."<div><i class='fa fa-spinner fa-spin'></i></div>"
 			."</div>
 			<i class='fa fa-arrow-circle-down'></i>
