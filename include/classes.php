@@ -1471,8 +1471,8 @@ class widget_theme_core_search extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
-		$instance['search_placeholder'] = strip_tags($new_instance['search_placeholder']);
-		$instance['search_animate'] = strip_tags($new_instance['search_animate']);
+		$instance['search_placeholder'] = sanitize_text_field($new_instance['search_placeholder']);
+		$instance['search_animate'] = sanitize_text_field($new_instance['search_animate']);
 
 		return $instance;
 	}
@@ -1587,8 +1587,8 @@ class widget_theme_core_news extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
-		$instance['news_title'] = strip_tags($new_instance['news_title']);
-		$instance['news_amount'] = strip_tags($new_instance['news_amount']);
+		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
+		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 
 		return $instance;
 	}
@@ -1717,8 +1717,8 @@ class widget_theme_core_promo extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
-		$instance['promo_title'] = strip_tags($new_instance['promo_title']);
-		$instance['promo_include'] = $new_instance['promo_include'];
+		$instance['promo_title'] = sanitize_text_field($new_instance['promo_title']);
+		$instance['promo_include'] = is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : array();
 
 		return $instance;
 	}
