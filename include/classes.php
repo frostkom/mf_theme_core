@@ -650,7 +650,7 @@ class mf_theme_core
 		{
 			$meta_boxes[] = array(
 				'id' => 'theme_core',
-				'title' => __("Settings", 'lang_theme_core'),
+				'title' => __("Publish Settings", 'lang_theme_core'),
 				'post_types' => get_post_types_for_metabox(),
 				'context' => 'side',
 				'priority' => 'low',
