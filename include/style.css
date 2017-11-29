@@ -35,11 +35,11 @@
 		max-width: 100%;
 	}
 
-	img.size-full, img[class*="align"], img[class*="wp-image-"]
-	{
-		height: auto;
-		width: auto;
-	}
+		.size-full, img[class*="align"], img[class*="wp-image-"]
+		{
+			height: auto;
+			width: auto;
+		}
 
 	.clear
 	{

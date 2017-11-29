@@ -298,7 +298,7 @@ class mf_theme_core
 				$out .= $prop.": ";
 			}
 
-			else if($pre != '')
+			if($pre != '')
 			{
 				$out .= $pre;
 			}
