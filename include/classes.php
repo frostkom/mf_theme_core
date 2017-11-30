@@ -1084,6 +1084,8 @@ class mf_theme_core
 	#################################
 	function unpublish_posts()
 	{
+		global $wpdb;
+
 		$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
 
 		if($wpdb->num_rows > 0)
