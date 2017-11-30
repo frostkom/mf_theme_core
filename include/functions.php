@@ -550,44 +550,6 @@ function gather_params($options_params)
 	return array($options_params, $options);
 }
 
-function cron_theme_core()
-{
-	global $wpdb;
-
-	$obj_theme_core = new mf_theme_core();
-
-	$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$obj_theme_core->meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
-
-	if($wpdb->num_rows > 0)
-	{
-		foreach($result as $r)
-		{
-			$post_id = $r->ID;
-			$post_unpublish = $r->meta_value;
-
-			if($post_unpublish <= date("Y-m-d H:i:s"))
-			{
-				$post_data = array(
-					'ID' => $post_id,
-					'post_status' => 'draft',
-					'meta_input' => array(
-						$obj_theme_core->meta_prefix.'unpublish_date' => '',
-					),
-				);
-
-				wp_update_post($post_data);
-			}
-		}
-	}
-
-	$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
-
-	if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-".$setting_theme_optimize." day")))
-	{
-		$obj_theme_core->do_optimize();
-	}
-}
-
 /*function init_theme_core()
 {
 	if(!is_admin())

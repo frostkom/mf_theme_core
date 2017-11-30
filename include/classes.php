@@ -364,6 +364,8 @@ class mf_theme_core
 	}
 	#################################
 
+	/* Public */
+	#################################
 	function add_page_index()
 	{
 		global $post;
@@ -386,6 +388,45 @@ class mf_theme_core
 					break;
 				}
 			}
+		}
+	}
+	function do_robots()
+	{
+		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
+	}
+
+	function do_sitemap()
+	{
+		global $wp_query;
+
+		if(isset($wp_query->query['name']) && $wp_query->query['name'] == 'sitemap.xml')
+		{
+			header("Content-type: text/xml; charset=".get_option('blog_charset'));
+
+			echo "<?xml version='1.0' encoding='UTF-8'?>
+			<?xml-stylesheet type='text/xsl' href='".plugin_dir_url(__FILE__)."/sitemap-xsl.php'?>
+			<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
+
+				$this->get_public_posts();
+
+				foreach($this->arr_public_posts as $post_id => $post_title)
+				{
+					$post_modified = get_post_modified_time("Y-m-d H:i:s", true, $post_id);
+
+					$post_url = get_permalink($post_id);
+
+					echo "<url>
+						<loc>".$post_url."</loc>
+						<title>".htmlspecialchars($post_title)."</title>
+						<lastmod>".$post_modified."</lastmod>
+					</url>";
+
+					/*<changefreq>monthly</changefreq>
+					<priority>0.8</priority>*/
+				}
+
+			echo "</urlset>";
+			exit;
 		}
 	}
 
@@ -458,7 +499,10 @@ class mf_theme_core
 
 		return $out;
 	}
+	#################################
 
+	/* Admin */
+	#################################
 	function column_header($cols)
 	{
 		unset($cols['comments']);
@@ -677,6 +721,7 @@ class mf_theme_core
 
 		return $meta_boxes;
 	}
+	#################################
 
 	//Customizer
 	#################################
@@ -929,49 +974,6 @@ class mf_theme_core
 	}
 	#################################
 
-	// Redirects
-	#################################
-	function do_robots()
-	{
-		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
-	}
-
-	function do_sitemap()
-	{
-		global $wp_query;
-
-		if(isset($wp_query->query['name']) && $wp_query->query['name'] == 'sitemap.xml')
-		{
-			header("Content-type: text/xml; charset=".get_option('blog_charset'));
-
-			echo "<?xml version='1.0' encoding='UTF-8'?>
-			<?xml-stylesheet type='text/xsl' href='".plugin_dir_url(__FILE__)."/sitemap-xsl.php'?>
-			<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
-
-				$this->get_public_posts();
-
-				foreach($this->arr_public_posts as $post_id => $post_title)
-				{
-					$post_modified = get_post_modified_time("Y-m-d H:i:s", true, $post_id);
-
-					$post_url = get_permalink($post_id);
-
-					echo "<url>
-						<loc>".$post_url."</loc>
-						<title>".htmlspecialchars($post_title)."</title>
-						<lastmod>".$post_modified."</lastmod>
-					</url>";
-
-					/*<changefreq>monthly</changefreq>
-					<priority>0.8</priority>*/
-				}
-
-			echo "</urlset>";
-			exit;
-		}
-	}
-	#################################
-
 	// This is a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
 	#################################
 	function copy_file()
@@ -1078,8 +1080,109 @@ class mf_theme_core
 	}
 	#################################
 
-	// Optimize
+	// Cron
 	#################################
+	function unpublish_posts()
+	{
+		$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
+
+		if($wpdb->num_rows > 0)
+		{
+			foreach($result as $r)
+			{
+				$post_id = $r->ID;
+				$post_unpublish = $r->meta_value;
+
+				if($post_unpublish <= date("Y-m-d H:i:s"))
+				{
+					$post_data = array(
+						'ID' => $post_id,
+						'post_status' => 'draft',
+						'meta_input' => array(
+							$this->meta_prefix.'unpublish_date' => '',
+						),
+					);
+
+					wp_update_post($post_data);
+				}
+			}
+		}
+	}
+
+	function check_style_source()
+	{
+		$this->get_params();
+
+		if(isset($this->options['style_source']) && $this->options['style_source'] != '')
+		{
+			$style_source = trim($this->options['style_source'], "/");
+
+			if($style_source != get_site_url())
+			{
+				if(filter_var($style_source, FILTER_VALIDATE_URL))
+				{
+					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax.php?type=get_style_source", true);
+
+					if(isset($headers['http_code']) && $headers['http_code'] == 200)
+					{
+						$json = json_decode($content, true);
+
+						if(isset($json['success']) && $json['success'] == true)
+						{
+							$style_changed = $json['response']['style_changed'];
+							$style_url = $json['response']['style_url'];
+
+							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
+						}
+
+						else
+						{
+							do_log(sprintf(__("The feed from %s returned an error", 'lang_theme'), $style_source));
+						}
+					}
+
+					else
+					{
+						do_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme'), $style_source, $headers['http_code']));
+					}
+				}
+
+				else
+				{
+					do_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme'), $style_source));
+				}
+			}
+		}
+	}
+
+	function run_cron()
+	{
+		global $wpdb;
+
+		$this->unpublish_posts();
+
+		/* Optimize */
+		#########################
+		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
+
+		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-".$setting_theme_optimize." day")))
+		{
+			$this->do_optimize();
+		}
+		#########################
+
+		$this->check_style_source();
+
+		/* Delete old uploads */
+		#######################
+		$theme_dir_name = get_theme_dir_name();
+
+		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+
+		get_file_info(array('path' => $upload_path, 'callback' => "delete_files", 'time_limit' => (60 * 60 * 24 * 30))); //30 days
+		#######################
+	}
+
 	function remove_empty_folder($data)
 	{
 		$folder = $data['path']."/".$data['child'];

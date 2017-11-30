@@ -19,7 +19,7 @@ include_once("include/functions.php");
 
 $obj_theme_core = new mf_theme_core();
 
-add_action('cron_base', 'cron_theme_core', mt_rand(1, 10));
+add_action('cron_base', array($obj_theme_core, 'run_cron'), mt_rand(1, 10));
 
 //add_action('init', 'init_theme_core');
 
