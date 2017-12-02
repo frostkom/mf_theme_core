@@ -1598,7 +1598,7 @@ class widget_theme_core_news extends WP_Widget
 	function __construct()
 	{
 		$widget_ops = array(
-			'classname' => 'theme_promo',
+			'classname' => 'theme_news',
 			'description' => __("Display News/Posts", 'lang_theme_core')
 		);
 
@@ -1606,28 +1606,22 @@ class widget_theme_core_news extends WP_Widget
 
 		$this->arr_default = array(
 			'news_title' => "",
-			'news_amount' => 3,
+			'news_amount' => 1,
+			//'news_display_excerpt' => 'no',
 		);
 
 		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops, $control_ops);
 	}
 
-	function widget($args, $instance)
+	function get_posts()
 	{
 		global $wpdb;
 
-		extract($args);
+		$this->arr_news = array();
 
-		$instance = wp_parse_args((array)$instance, $this->arr_default);
+		if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
 
-		$arr_news = array();
-
-		if(!($instance['news_amount'] > 0))
-		{
-			$instance['news_amount'] = 3;
-		}
-
-		$result = $wpdb->get_results("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = 'post' AND post_status = 'publish' ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
+		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts." WHERE post_type = 'post' AND post_status = 'publish' ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
 
 		if($wpdb->num_rows > 0)
 		{
@@ -1637,28 +1631,41 @@ class widget_theme_core_news extends WP_Widget
 			{
 				$post_id = $post->ID;
 				$post_title = $post->post_title;
+				$post_excerpt = $post->post_excerpt;
 
-				$post_thumbnail = "";
+				$post_thumbnail = '';
 
 				if(has_post_thumbnail($post_id))
 				{
 					$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
 				}
 
-				if($post_thumbnail != '')
+				if($post_thumbnail == '')
 				{
-					$post_url = get_permalink($post_id);
-
-					$arr_news[$post_id] = array(
-						'title' => $post_title,
-						'url' => $post_url,
-						'image' => $post_thumbnail,
-					);
+					$post_thumbnail = "<img src='".get_site_url()."/wp-content/plugins/mf_theme_core/images/blank.svg' class='image_fallback'>";
 				}
+
+				$this->arr_news[$post_id] = array(
+					'title' => $post_title,
+					'url' => get_permalink($post_id),
+					'image' => $post_thumbnail,
+					'excerpt' => $post_excerpt,
+				);
 			}
 		}
+	}
 
-		if(count($arr_news) > 0)
+	function widget($args, $instance)
+	{
+		extract($args);
+
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		$this->get_posts();
+
+		$count_temp = count($this->arr_news);
+
+		if($count_temp > 0)
 		{
 			echo $before_widget;
 
@@ -1669,19 +1676,35 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section'>
-					<ul".(count($arr_news) > 2 ? "" : " class='allow_expand'").">";
+				echo "<div class='section ".(count($count_temp) > 1 ? "news_multiple" : "news_single")."'>";
 
-						foreach($arr_news as $page)
+					if(count($count_temp) > 1)
+					{
+						echo "<ul".(count($count_temp) > 2 ? "" : " class='allow_expand'").">";
+
+							foreach($this->arr_news as $page)
+							{
+								echo "<li>
+									<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
+									<h4>".$page['title']."</h4>
+								</li>";
+							}
+
+						echo "</ul>";
+					}
+
+					else
+					{
+						foreach($this->arr_news as $page)
 						{
-							echo "<li>
-								<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
-								<h4>".$page['title']."</h4>
-							</li>";
+							echo "<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
+							<h4>".$page['title']."</h4>"
+							.apply_filters('the_content', $page['excerpt'])
+							."<a href='".$page['url']."'>".__("Read More", 'lang_theme_core')."</a>";
 						}
+					}
 
-					echo "</ul>
-				</div>"
+				echo "</div>"
 			.$after_widget;
 		}
 	}
@@ -1694,6 +1717,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		//news_display_excerpt
 
 		return $instance;
 	}
@@ -1702,10 +1726,25 @@ class widget_theme_core_news extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
-			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount']))
-		."</div>";
+		$this->get_posts();
+
+		echo "<div class='mf_form'>";
+
+			$count_temp = count($this->arr_news);
+
+			if($count_temp > 0)
+			{
+				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
+				//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']));
+			}
+
+			else
+			{
+				echo __("There are no posts to display in this widget", 'lang_theme_core');
+			}
+
+		echo "</div>";
 	}
 }
 
@@ -1714,7 +1753,7 @@ class widget_theme_core_promo extends WP_Widget
 	function __construct()
 	{
 		$widget_ops = array(
-			'classname' => 'theme_promo',
+			'classname' => 'theme_promo theme_news',
 			'description' => __("Promote Pages", 'lang_theme_core')
 		);
 

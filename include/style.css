@@ -5,13 +5,13 @@
 		display: none;
 	}
 
-	html, body, div, h1, h2, h3, h4, h5, h6, p, ul, li, ol, button, form, blockquote, header, nav, #mf-pre-content, #mf-content, article, section, footer
+	html, body, div, h1, h2, h3, h4, h5, h6, p, ul, li, ol, button, form, blockquote, header, nav, #mf-after-header, #mf-pre-content, #mf-content, article, section, .aside, #mf-pre-footer, footer
 	{
 		margin: 0;
 		padding: 0;
 	}
 
-	body, div, a, p, ol, ul, li, form, input, select, textarea, button, blockquote, iframe, h1, h2, h3, h4, h5, h6, header, nav, #mf-pre-content, #mf-content, article, section, footer
+	body, div, a, p, ol, ul, li, form, input, select, textarea, button, blockquote, iframe, h1, h2, h3, h4, h5, h6, header, nav, #mf-after-header, #mf-pre-content, #mf-content, article, section, .aside, #mf-pre-footer, footer
 	{
 		box-sizing: border-box;
 	}
@@ -37,8 +37,13 @@
 
 		.size-full, img[class*="align"], img[class*="wp-image-"]
 		{
-			height: auto;
+			/*height: auto;*/
 			width: auto;
+		}
+
+		.image_fallback/*, .size-full[src~='.jpg'], .size-full[src~='.jpeg']*/
+		{
+			background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHhtbG5zOnhsaW5rPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rJyB2aWV3Qm94PScwIDAge3t3fX0ge3tofX0nPjxkZWZzPjxzeW1ib2wgaWQ9J2EnIHZpZXdCb3g9JzAgMCA5MCA2Nicgb3BhY2l0eT0nMC4zJz48cGF0aCBkPSdNODUgNXY1Nkg1VjVoODBtNS01SDB2NjZoOTBWMHonLz48Y2lyY2xlIGN4PScxOCcgY3k9JzIwJyByPSc2Jy8+PHBhdGggZD0nTTU2IDE0TDM3IDM5bC04LTYtMTcgMjNoNjd6Jy8+PC9zeW1ib2w+PC9kZWZzPjx1c2UgeGxpbms6aHJlZj0nI2EnIHdpZHRoPScyMCUnIHg9JzQwJScvPjwvc3ZnPg==");
 		}
 
 	.clear
@@ -64,7 +69,9 @@
 		margin: .5em 0 .5em 1em;
 	}
 
-	.widget.theme_promo ul
+	/* If > 1 */
+	/* ########################## */
+	.widget.theme_news ul
 	{
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -76,11 +83,8 @@
 		flex-wrap: wrap;
 		list-style: none;
 		margin: 0 -.5em -1em;
-	}
-
-	/* Fix for iOS */
-	.widget.theme_promo ul
-	{
+		
+		/* Fix for iOS */
 		-webkit-box-pack: center;
 		-moz-box-pack: center;
 		-ms-flex-pack: center;
@@ -93,7 +97,7 @@
 		align-items: stretch;
 	}
 
-		.widget.theme_promo li
+		.widget.theme_news li
 		{
 			-webkit-box-flex: 0 1 33.333%;
 			-webkit-flex: 0 1 33.333%;
@@ -104,7 +108,7 @@
 			max-width: 33.333%;
 		}
 
-			.widget.theme_promo .allow_expand li
+			.widget.theme_news .allow_expand li
 			{
 				-webkit-box-flex-grow: 1;
 				-webkit-flex-grow: 1;
@@ -113,15 +117,15 @@
 				max-width: 100%;
 			}
 
-			.widget.theme_promo li .image
+			.widget.theme_news li .image
 			{
-				background: #000;
+				/*background: #000;*/ /* Does interfere with image_fallback */
 				height: 100%; /* Does not work properly in older Safari */
 				overflow: hidden;
 				position: relative;
 			}
 
-				.widget.theme_promo li .image img
+				.widget.theme_news li .image img
 				{
 					display: block;
 					height: 100%;
@@ -130,13 +134,13 @@
 					width: 100%;
 				}
 
-					.widget.theme_promo li:hover .image img
+					.widget.theme_news li:hover .image img
 					{
 						-webkit-transform: scale(1.1);
 						transform: scale(1.1);
 					}
 
-				.widget.theme_promo li .image:after
+				.widget.theme_news li .image:after
 				{
 					background: linear-gradient(to top, #000 0, transparent 100%);
 					bottom: 0;
@@ -147,7 +151,7 @@
 					height: 40%;
 				}
 
-			.widget.theme_promo li h4
+			.widget.theme_news li h4
 			{
 				bottom: 0;
 				color: #fff;
@@ -157,23 +161,54 @@
 				position: absolute;
 			}
 
-				.widget.theme_promo li:hover h4
+				.widget.theme_news li:hover h4
 				{
 					background: rgba(0, 0, 0, .4);
 				}
 
-			.widget.theme_promo li .video iframe
+			.widget.theme_news li .video iframe
 			{
 				width: 100%;
 			}
 
-	.is_mobile .widget.theme_promo ul
+	.is_mobile .widget.theme_news ul
 	{
 		display: block;
 	}
 
-		.is_mobile .widget.theme_promo li
+		.is_mobile .widget.theme_news li
 		{
 			max-width: 100%;
 		}
+	/* ########################## */
+
+	/* If == 1 */
+	/* ########################## */
+	.widget.theme_news .section.news_single
+	{
+		overflow: hidden;
+	}
+
+		.widget.theme_news .section.news_single > *
+		{
+			float: left;
+			width: 38%;
+		}
+
+			.widget.theme_news .section.news_single .image
+			{
+				float: right;
+				width: 60%;
+			}
+
+			.widget.theme_news .section.news_single a
+			{
+				text-align: right;
+			}
+
+			.is_mobile .widget.theme_news .section.news_single > *
+			{
+				width: 100%;
+			}
+	/* ########################## */
 }
