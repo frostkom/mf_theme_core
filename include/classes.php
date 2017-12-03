@@ -1676,11 +1676,11 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".(count($count_temp) > 1 ? "news_multiple" : "news_single")."'>";
+				echo "<div class='section ".($count_temp > 1 ? "news_multiple" : "news_single")."'>";
 
-					if(count($count_temp) > 1)
+					if($count_temp > 1)
 					{
-						echo "<ul".(count($count_temp) > 2 ? "" : " class='allow_expand'").">";
+						echo "<ul".($count_temp > 2 ? "" : " class='allow_expand'").">";
 
 							foreach($this->arr_news as $page)
 							{
