@@ -1613,7 +1613,7 @@ class widget_theme_core_news extends WP_Widget
 		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops, $control_ops);
 	}
 
-	function get_posts()
+	function get_posts($instance)
 	{
 		global $wpdb;
 
@@ -1661,7 +1661,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$this->get_posts();
+		$this->get_posts($instance);
 
 		$count_temp = count($this->arr_news);
 
@@ -1726,7 +1726,7 @@ class widget_theme_core_news extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$this->get_posts();
+		$this->get_posts($instance);
 
 		echo "<div class='mf_form'>";
 
