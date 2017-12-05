@@ -97,7 +97,7 @@ class mf_theme_core
 
 	function get_theme_fonts()
 	{
-		$arr_media_fonts = get_media_fonts();
+		$arr_media_fonts = $this->get_media_fonts();
 
 		foreach($arr_media_fonts as $media_key => $media_font)
 		{
