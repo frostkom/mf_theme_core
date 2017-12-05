@@ -16,13 +16,13 @@
 		box-sizing: border-box;
 	}
 
-	#mf-content a
+	#wrapper a
 	{
 		color: inherit;
 		text-decoration: none;
 	}
 
-		#mf-content p a
+		#wrapper p a
 		{
 			text-decoration: underline;
 		}

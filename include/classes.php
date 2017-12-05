@@ -335,7 +335,7 @@ class mf_theme_core
 
 			$data['value'] = count($arr_val) > 1 ? $arr_val : $arr_val[0];
 
-			$out .= render_css($data);
+			$out .= $this->render_css($data);
 		}
 
 		return $out;
