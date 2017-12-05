@@ -1,62 +1,5 @@
 <?php
 
-//Remove later
-#######################
-function enqueue_theme_fonts()
-{
-	$obj_theme_core = new mf_theme_core();
-	$obj_theme_core->enqueue_theme_fonts();
-}
-
-function get_logo($data = array())
-{
-	$obj_theme_core = new mf_theme_core();
-
-	return $obj_theme_core->get_logo($data);
-}
-
-function get_params()
-{
-	$obj_theme_core = new mf_theme_core();
-	$obj_theme_core->get_params();
-
-	return array($obj_theme_core->options_params, $obj_theme_core->options);
-}
-
-function get_media_fonts()
-{
-	$obj_theme_core = new mf_theme_core();
-
-	return $obj_theme_core->get_media_fonts();
-}
-
-function get_theme_fonts()
-{
-	$obj_theme_core = new mf_theme_core();
-	$obj_theme_core->get_theme_fonts();
-
-	return $obj_theme_core->options_fonts;
-}
-
-function render_css($data)
-{
-	global $options, $options_fonts;
-
-	$obj_theme_core = new mf_theme_core();
-	return $obj_theme_core->render_css($data);
-}
-
-function show_font_face($options_params, $options_fonts, $options)
-{
-	$obj_theme_core = new mf_theme_core();
-
-	$obj_theme_core->options_params = $options_params;
-	$obj_theme_core->options = $options;
-
-	return $obj_theme_core->show_font_face();
-}
-#######################
-
 function add_css_selectors($array = array())
 {
 	if(is_plugin_active('css-hero-ce/css-hero-main.php'))
@@ -556,11 +499,30 @@ function gather_params($options_params)
 	return array($options_params, $options);
 }
 
-/*function init_theme_core()
+function init_theme_core()
 {
+	$plugin_include_url = plugin_dir_url(__FILE__);
+	$plugin_version = get_plugin_version(__FILE__);
+
+	mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
+
 	if(!is_admin())
 	{
-		if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
+		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
+
+		if(get_option('setting_scroll_to_top') == 'yes')
+		{
+			mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
+			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
+		}
+
+		/*if(get_option('setting_html5_history') == 'yes')
+		{
+			mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", $plugin_version);
+			mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), $plugin_version);
+		}*/
+
+		/*if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
 		{
 			check_admin_referer('posts_logout');
 			setcookie('wp-postpass_'.COOKIEHASH, '', strtotime("-1 month"), COOKIEPATH);
@@ -569,9 +531,9 @@ function gather_params($options_params)
 
 			wp_redirect(wp_get_referer());
 			die();
-		}
+		}*/
 	}
-}*/
+}
 
 function header_theme_core()
 {
@@ -614,24 +576,6 @@ function head_theme_core()
 
 	$obj_theme_core = new mf_theme_core();
 	$obj_theme_core->add_page_index();
-
-	$plugin_include_url = plugin_dir_url(__FILE__);
-	$plugin_version = get_plugin_version(__FILE__);
-
-	mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
-	mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
-
-	if(get_option('setting_scroll_to_top') == 'yes')
-	{
-		mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
-		mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
-	}
-
-	/*if(get_option('setting_html5_history') == 'yes')
-	{
-		mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", $plugin_version);
-		mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), $plugin_version);
-	}*/
 
 	$meta_description = get_the_excerpt();
 
