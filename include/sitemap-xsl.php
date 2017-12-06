@@ -27,60 +27,60 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 						font-family: 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Verdana;
 						font-size: .625em;
 					}
-					
+
 					a
 					{
 						color: #000;
 					}";
-					
+
 					/*echo "#intro {
 						background-color:#CFEBF7;
 						border:1px #2580B2 solid;
 						padding:5px 13px 5px 13px;
 						margin:10px;
 					}
-					
+
 					#intro p {
 						line-height:	16.8667px;
 					}
 					#intro strong {
 						font-weight:normal;
 					}";*/
-					
+
 					echo "table
 					{
 						border-spacing: 0;
 					}
-						
+
 						th
 						{
 							text-align: left;
 							padding: .5em 2em .5em .5em;
 							font-size: 1.1em;
 						}
-						
+
 						tr:nth-child(2n+1)
 						{
 							background: #eee;
 						}
-							
+
 							td
 							{
 								font-size: 1.1em;
 								padding: .5em;
 							}";
-					
+
 					/*echo "#footer {
 						padding:2px;
 						margin-top:10px;
 						font-size:8pt;
 						color:gray;
 					}
-					
+
 					#footer a {
 						color:gray;
 					}";*/
-					
+
 				echo "</style>
 			</head>
 			<body>
@@ -91,8 +91,8 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 			echo "</body>
 		</html>
 	</xsl:template>
-	
-	
+
+
 	<xsl:template match='sitemap:urlset'>
         <h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>";
 

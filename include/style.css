@@ -83,7 +83,7 @@
 		flex-wrap: wrap;
 		list-style: none;
 		margin: 0 -.5em -1em;
-		
+
 		/* Fix for iOS */
 		-webkit-box-pack: center;
 		-moz-box-pack: center;
@@ -119,7 +119,7 @@
 
 			.widget.theme_news li .image
 			{
-				/*background: #000;*/ /* Does interfere with image_fallback */
+				background: rgba(0, 0, 0, .1);
 				height: 100%; /* Does not work properly in older Safari */
 				overflow: hidden;
 				position: relative;
@@ -155,7 +155,7 @@
 			{
 				bottom: 0;
 				color: #fff;
-				font-size: 2em;
+				/*font-size: 2em;*/
 				margin: 1.1em .6em;
 				padding: .4em;
 				position: absolute;

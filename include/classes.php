@@ -1642,7 +1642,7 @@ class widget_theme_core_news extends WP_Widget
 
 				if($post_thumbnail == '')
 				{
-					$post_thumbnail = "<img src='".get_site_url()."/wp-content/plugins/mf_theme_core/images/blank.svg' class='image_fallback'>";
+					$post_thumbnail = get_image_fallback();
 				}
 
 				$this->arr_news[$post_id] = array(
