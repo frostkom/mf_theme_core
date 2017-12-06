@@ -228,8 +228,9 @@ function get_params_theme_core()
 			$options_params[] = array('category_end' => "");
 		}
 
-		if(is_active_widget_area('widget_pre_content'))
-		{
+		/* This does not work together with Hero. Don't know why yet but will get around to it */
+		/*if(is_active_widget_area('widget_front'))
+		{*/
 			$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_theme_pre_content');
 				$options_params[] = array('type' => 'checkbox', 'id' => 'pre_content_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
 				$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", 'lang_theme_core'));
@@ -238,7 +239,7 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'front_padding', 'title' => __("Padding", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'front_color', 'title' => __("Text Color", 'lang_theme_core'));
 			$options_params[] = array('category_end' => "");
-		}
+		//}
 	}
 
 	$options_params[] = array('category' => __("Content", 'lang_theme_core'), 'id' => 'mf_theme_content');
