@@ -46,8 +46,10 @@ function get_params_theme_core()
 			$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 		$options_params[] = array('type' => 'text', 'id' => 'main_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "1em 2em");
 		$options_params[] = array('type' => 'font', 'id' => 'body_font', 'title' => __("Font", 'lang_theme_core'));
+
 		$options_params[] = array('type' => 'color', 'id' => 'body_color', 'title' => __("Text Color", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'body_link_color', 'title' => " - ".__("Link Color", 'lang_theme_core'));
+
 		$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => get_option('setting_webshop_color_button', "#000000"));
 			$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", 'lang_theme_core'), 'default' => get_option('setting_webshop_text_color_button', "#ffffff"));
 		$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Button Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => get_option('setting_webshop_color_button_2', "#c78e91"));
@@ -55,10 +57,15 @@ function get_params_theme_core()
 		$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => get_option('setting_color_button_negative', "#e47676"));
 			$options_params[] = array('type' => 'color', 'id' => 'button_text_color_negative', 'title' => " - ".__("Button Text Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#ffffff");
 			//$options_params[] = array('type' => 'color', 'id' => 'button_color_hover', 'title' => " - ".__("Button Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'button_color');
+		$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => get_option('setting_color_button_negative', "#e47676"));
+
+		$options_params[] = array('type' => 'text', 'id' => 'form_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Form Fields", 'lang_theme_core').")", 'default' => ".3em");
+
 		$options_params[] = array('type' => 'number', 'id' => 'website_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "1100");
 		$options_params[] = array('type' => 'text', 'id' => 'body_desktop_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => ".625em");
 		$options_params[] = array('type' => 'number', 'id' => 'mobile_breakpoint', 'title' => __("Breakpoint", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "600");
 		$options_params[] = array('type' => 'text', 'id' => 'body_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "2.4vw", 'show_if' => 'mobile_breakpoint');
+
 		$options_params[] = array('type' => 'overflow', 'id' => 'body_scroll', 'title' => __("Scroll Bar", 'lang_theme_core'), 'default' => 'scroll');
 
 			if($theme_dir_name == 'mf_parallax')
