@@ -153,12 +153,13 @@
 
 			.widget.theme_news li h4
 			{
+				background: transparent;
 				bottom: 0;
 				color: #fff;
-				/*font-size: 2em;*/
 				margin: 1.1em .6em;
 				padding: .4em;
 				position: absolute;
+				transition: all .75s ease;
 			}
 
 				.widget.theme_news li:hover h4

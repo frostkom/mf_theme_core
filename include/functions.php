@@ -76,7 +76,6 @@ function get_params_theme_core()
 	$options_params[] = array('category_end' => "");
 
 	$options_params[] = array('category' => __("Header", 'lang_theme_core'), 'id' => 'mf_theme_header');
-		//$options_params[] = array('type' => 'checkbox', 'id' => 'header_fixed', 'title' => __("Fixed", 'lang_theme_core'), 'default' => 1); //mf_theme
 		$options_params[] = array('type' => 'position', 'id' => "header_fixed", 'title' => __("Position", 'lang_theme_core'), 'default' => 'fixed');
 		$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
@@ -155,6 +154,7 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_theme')
 		{
+			$options_params[] = array('type' => 'checkbox', 'id' => "hamburger_collapse_if_no_space", 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
 			$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Menu", 'lang_theme_core').")");
 		}
 
