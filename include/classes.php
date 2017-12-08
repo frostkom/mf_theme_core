@@ -273,7 +273,7 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
 		."}
 			
-		.form_textfield input, .mf_form textarea, .mf_form select, .form_button > button, .form_button > .button, .widget
+		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button
 		{"
 			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 		."}
