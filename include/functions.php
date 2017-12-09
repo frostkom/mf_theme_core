@@ -543,7 +543,7 @@ function init_theme_core()
 			check_admin_referer('posts_logout');
 			setcookie('wp-postpass_'.COOKIEHASH, '', strtotime("-1 month"), COOKIEPATH);
 
-			do_log("Did remove cookie");
+			error_log("Did remove cookie");
 
 			wp_redirect(wp_get_referer());
 			die();
@@ -643,7 +643,7 @@ function the_content_protected_theme_core($html)
 	{
 		if(!isset($post->post_password))
 		{
-			do_log("post_password did not exist even though it was a protected page");
+			error_log("post_password did not exist even though it was a protected page");
 		}
 
 		$html = password_form_theme_core();
@@ -682,7 +682,7 @@ function is_active_widget_area($widget)
 		{
 			$is_active = true;
 
-			//do_log($widget." was not active BUT the DB said other (".var_export($sidebars_widgets, true).")");
+			//error_log($widget." was not active BUT the DB said other (".var_export($sidebars_widgets, true).")");
 		}
 	}
 
@@ -884,8 +884,6 @@ function get_options_page_theme_core()
 		unlink($upload_path.$strFileName);
 
 		$done_text = __("The file was deleted successfully", 'lang_theme_core');
-
-		do_log($dome_text." (".get_current_user_id().")");
 	}
 
 	else

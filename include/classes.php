@@ -1042,14 +1042,14 @@ class mf_theme_core
 			{
 				if(file_exists($this->file_dir_from))
 				{
-					do_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
+					error_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
 
 					//unlink($this->file_dir_from);
 				}
 
 				else
 				{
-					//do_log("File has already been deleted: ".$this->file_dir_from);
+					//error_log("File has already been deleted: ".$this->file_dir_from);
 				}
 			}
 		}
@@ -1062,22 +1062,15 @@ class mf_theme_core
 
 				if(copy($this->file_dir_from, $this->file_dir_to))
 				{
-					//do_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+					//error_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
 				}
 
 				else
 				{
-					do_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+					error_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
 				}
 			}
-
-			/*else
-			{
-				do_log("File does not exist: ".$this->file_dir_from);
-			}*/
 		}
-
-		//do_log("Attachment: ".$post_url.", ".$upload_path_global." -> ".$upload_path.", ".$this->file_dir_from." -> ".$this->file_dir_to.""); //, ".$upload_url_global." -> ".$upload_url."
 	}
 
 	function do_fix()
@@ -1113,15 +1106,11 @@ class mf_theme_core
 
 			if($is_image)
 			{
-				//do_log("Is image: ".$post_url);
-
 				foreach($arr_sizes as $size)
 				{
 					$arr_image = wp_get_attachment_image_src($post_id, $size);
 
 					$post_url = $arr_image[0];
-
-					//do_log("Is smaller: ".$post_url);
 
 					$this->file_dir_from = str_replace(array($upload_url, $upload_url_global), $upload_path_global, $post_url);
 					$this->file_dir_to = str_replace(array($upload_url, $upload_url_global), $upload_path, $post_url);
@@ -1197,19 +1186,19 @@ class mf_theme_core
 
 						else
 						{
-							do_log(sprintf(__("The feed from %s returned an error", 'lang_theme'), $style_source));
+							error_log(sprintf(__("The feed from %s returned an error", 'lang_theme'), $style_source));
 						}
 					}
 
 					else
 					{
-						do_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme'), $style_source, $headers['http_code']));
+						error_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme'), $style_source, $headers['http_code']));
 					}
 				}
 
 				else
 				{
-					do_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme'), $style_source));
+					error_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme'), $style_source));
 				}
 			}
 		}
@@ -1249,8 +1238,6 @@ class mf_theme_core
 
 		if(count(scandir($folder)) == 2)
 		{
-			//do_log("Remove folder ".$folder." since it is empty");
-
 			rmdir($folder);
 		}
 	}
@@ -1291,7 +1278,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove orphan relations: ".$wpdb->last_query);
+			error_log("Remove orphan relations: ".$wpdb->last_query);
 
 			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
 			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
@@ -1302,7 +1289,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove orphan usermeta: ".$wpdb->last_query);
+			error_log("Remove orphan usermeta: ".$wpdb->last_query);
 
 			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
 		}
@@ -1342,7 +1329,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove expired transients: ".$wpdb->last_query);
+			error_log("Remove expired transients: ".$wpdb->last_query);
 		}*/
 
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
@@ -1393,6 +1380,7 @@ class mf_theme_core
 			$result['error'] = $out;
 		}
 
+		header('Content-Type: application/json');
 		echo json_encode($result);
 		die();
 	}

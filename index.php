@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.14.1
+Version: 6.14.2
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -103,7 +103,7 @@ function activate_theme_core()
 {
 	global $wpdb;
 
-	if(is_plugin_active('meta-description/meta-description.php'))
+	/*if(is_plugin_active('meta-description/meta-description.php'))
 	{
 		$i = 0;
 
@@ -129,14 +129,14 @@ function activate_theme_core()
 
 		if($i == 0)
 		{
-			do_log(__("All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description", 'lang_theme_core'));
+			error_log(__("All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description", 'lang_theme_core'));
 		}
 
 		else
 		{
-			do_log(sprintf(__("I moved %d Meta Descriptions to excerpt", 'lang_theme_core'), $i));
+			error_log(sprintf(__("I moved %d Meta Descriptions to excerpt", 'lang_theme_core'), $i));
 		}
-	}
+	}*/
 
 	replace_option(array('old' => 'mf_theme_saved', 'new' => 'option_theme_saved'));
 	replace_option(array('old' => 'theme_source_style_url', 'new' => 'option_theme_source_style_url'));
