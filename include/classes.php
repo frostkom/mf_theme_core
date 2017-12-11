@@ -1172,6 +1172,11 @@ class mf_theme_core
 				{
 					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", true);
 
+					if(!isset($headers['http_code']) || $headers['http_code'] != 200) //Fallback until all sites are updated
+					{
+						list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax.php?type=get_style_source", true);
+					}
+
 					if(isset($headers['http_code']) && $headers['http_code'] == 200)
 					{
 						$json = json_decode($content, true);
