@@ -4,7 +4,7 @@ if(!defined('ABSPATH'))
 {
 	header('Content-Type: application/json');
 
-	$folder = str_replace("/wp-content/plugins/mf_theme_core/include/ajax", "/", dirname(__FILE__));
+	$folder = str_replace("/wp-content/plugins/mf_theme_core/include/api", "/", dirname(__FILE__));
 
 	require_once($folder."wp-load.php");
 }

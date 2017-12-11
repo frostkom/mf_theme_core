@@ -1170,7 +1170,7 @@ class mf_theme_core
 			{
 				if(filter_var($style_source, FILTER_VALIDATE_URL))
 				{
-					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax/?type=get_style_source", true);
+					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", true);
 
 					if(isset($headers['http_code']) && $headers['http_code'] == 200)
 					{
@@ -1228,7 +1228,7 @@ class mf_theme_core
 
 		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-		get_file_info(array('path' => $upload_path, 'callback' => "delete_files", 'time_limit' => (60 * 60 * 24 * 30))); //30 days
+		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 30))); //30 days
 		#######################
 	}
 
@@ -1343,7 +1343,7 @@ class mf_theme_core
 
 		// Can be removed later because the folder is not in use anymore
 		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
-		get_file_info(array('path' => $upload_path, 'callback' => "delete_files"));
+		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files'));
 
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();
