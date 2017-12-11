@@ -1170,7 +1170,7 @@ class mf_theme_core
 			{
 				if(filter_var($style_source, FILTER_VALIDATE_URL))
 				{
-					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax.php?type=get_style_source", true);
+					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax/?type=get_style_source", true);
 
 					if(isset($headers['http_code']) && $headers['http_code'] == 200)
 					{
