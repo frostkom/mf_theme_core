@@ -13,7 +13,7 @@ jQuery(function($)
 		}
 	}
 
-	$('body').append("<a href='#' id='scroll_to_top'><i class='fa fa-lg fa-arrow-up'></i></a>");
+	$('body').append("<a href='#' id='scroll_to_top'><i class='fa fa-arrow-up'></i></a>");
 
 	show_or_hide_scroll();
 

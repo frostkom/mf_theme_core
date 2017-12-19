@@ -98,7 +98,7 @@ function get_params_theme_core()
 	$options_params[] = array('category_end' => "");
 
 	$options_params[] = array('category' => __("Logo", 'lang_theme_core'), 'id' => 'mf_theme_logo');
-		$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => '.4em 0');
+		$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => '.4em 0'
 		$options_params[] = array('type' => 'image', 'id' => 'header_logo', 'title' => __("Image", 'lang_theme_core'));
 		$options_params[] = array('type' => 'float', 'id' => 'logo_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => 'left', 'show_if' => 'header_logo');
 		$options_params[] = array('type' => 'text', 'id' => 'logo_width', 'title' => __("Width", 'lang_theme_core'), 'default' => '14em', 'show_if' => 'header_logo');
@@ -1099,7 +1099,7 @@ function setting_theme_core_login_callback()
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}*/
+}
 
 function setting_splash_screen_callback()
 {
@@ -1107,7 +1107,7 @@ function setting_splash_screen_callback()
 	$option = get_option_or_default($setting_key, 'no');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}
+}*/
 
 function setting_scroll_to_top_callback()
 {
@@ -1242,6 +1242,9 @@ function print_scripts_theme_core()
 function footer_theme_core()
 {
 	global $wpdb;
+	
+	$plugin_include_url = plugin_dir_url(__FILE__);
+	$plugin_version = get_plugin_version(__FILE__);
 
 	if(!isset($_COOKIE['cookie_accepted']))
 	{
@@ -1249,8 +1252,7 @@ function footer_theme_core()
 
 		if($setting_cookie_info > 0)
 		{
-			$plugin_include_url = plugin_dir_url(__FILE__);
-			$plugin_version = get_plugin_version(__FILE__);
+			
 
 			mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
 			mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
@@ -1298,7 +1300,7 @@ function footer_theme_core()
 		}
 	}
 
-	if(get_option('setting_splash_screen') == 'yes')
+	/*if(get_option('setting_splash_screen') == 'yes')
 	{
 		$obj_theme_core = new mf_theme_core();
 
@@ -1309,6 +1311,21 @@ function footer_theme_core()
 			."</div>
 			<i class='fa fa-arrow-circle-down'></i>
 		</div>";
+	}*/
+
+	if(get_option('setting_theme_core_login') == 'yes')
+	{
+		if(get_current_user_id() > 0)
+		{
+			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+
+			echo "<span id='site_locked'><i class='fa fa-lock'></i></span>";
+		}
+
+		else
+		{
+			do_log(__("A visitor accessed the public page without being logged in!", 'lang_theme_core'));
+		}
 	}
 }
 
