@@ -1058,6 +1058,7 @@ function settings_theme_core()
 		}
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+		$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
 		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 
 		if(is_plugin_active('css-hero-ce/css-hero-main.php'))
@@ -1138,6 +1139,78 @@ function setting_404_page_callback()
 	get_post_children(array('add_choose_here' => true), $arr_data);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+}
+
+function setting_maintenance_page_callback()
+{
+	global $done_text, $error_text;
+
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+	$option_temp = get_option($setting_key.'_temp');
+
+	$arr_data = array();
+	get_post_children(array('add_choose_here' => true), $arr_data);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed when the website is updating", 'lang_theme_core')));
+
+	if($option > 0 && $option != $option_temp)
+	{
+		$maintenance_file = ABSPATH."wp-content/maintenance.php";
+
+		if(!file_exists($maintenance_file) || is_writeable($maintenance_file))
+		{
+			$post_url = get_permalink($option);
+			$post_url_clean = remove_protocol(array('url' => $post_url, 'clean' => true));
+			$post_title = get_the_title($option);
+			$post_content = mf_get_post_content($option);
+
+			if($post_url_clean != '' && $post_content != '')
+			{
+				list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
+				$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
+
+				$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
+				$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
+				$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
+				$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
+
+				if(strlen($recommend_maintenance) > 0)
+				{
+					$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
+
+					if($success == true)
+					{
+						$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
+
+						update_option($setting_key.'_temp', $option, 'no');
+					}
+
+					else
+					{
+						$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
+					}
+				}
+
+				else
+				{
+					$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
+				}
+			}
+
+			else
+			{
+				$error_text = __("The page that you choose for Maintenance has to be published and contain a title and content", 'lang_theme_core');
+			}
+		}
+
+		else
+		{
+			$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
+		}
+
+		echo get_notification();
+	}
 }
 
 function setting_theme_optimize_callback()

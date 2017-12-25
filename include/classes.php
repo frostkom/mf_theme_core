@@ -1714,9 +1714,9 @@ class widget_theme_core_news extends WP_Widget
 
 		$this->get_posts($instance);
 
-		$count_temp = count($this->arr_news);
+		$rows = count($this->arr_news);
 
-		if($count_temp > 0)
+		if($rows > 0)
 		{
 			echo $before_widget;
 
@@ -1727,11 +1727,11 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".($count_temp > 1 ? "news_multiple" : "news_single")."'>";
+				echo "<div class='section ".($rows > 1 ? "news_multiple" : "news_single")."'>";
 
-					if($count_temp > 1)
+					if($rows > 1)
 					{
-						echo "<ul".($count_temp > 2 ? "" : " class='allow_expand'").">";
+						echo "<ul class='"."text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>"; //.($rows > 2 ? "" : "allow_expand ")
 
 							foreach($this->arr_news as $page)
 							{
@@ -1832,7 +1832,7 @@ class widget_theme_core_promo extends WP_Widget
 		{
 			$arr_pages = array();
 
-			$result = $wpdb->get_results("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY post_date DESC");
+			$result = $wpdb->get_results("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY menu_order ASC");
 
 			if($wpdb->num_rows > 0)
 			{
@@ -1844,15 +1844,27 @@ class widget_theme_core_promo extends WP_Widget
 					$post_title = $post->post_title;
 					$post_content = $post->post_content;
 
-					$post_thumbnail = "";
-
-					if(has_post_thumbnail($post_id))
+					if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
 					{
-						$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
+						$arr_pages[$post_id] = array(
+							'content' => $post_content,
+						);
 					}
 
-					if($post_thumbnail != '')
+					else
 					{
+						$post_thumbnail = "";
+
+						if(has_post_thumbnail($post_id))
+						{
+							$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
+						}
+
+						if($post_thumbnail == '')
+						{
+							$post_thumbnail = get_image_fallback();
+						}
+
 						$post_url = get_permalink($post_id);
 
 						$arr_pages[$post_id] = array(
@@ -1861,17 +1873,12 @@ class widget_theme_core_promo extends WP_Widget
 							'image' => $post_thumbnail,
 						);
 					}
-
-					else if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
-					{
-						$arr_pages[$post_id] = array(
-							'content' => $post_content,
-						);
-					}
 				}
 			}
 
-			if(count($arr_pages) > 0)
+			$rows = count($arr_pages);
+
+			if($rows > 0)
 			{
 				echo $before_widget;
 
@@ -1883,7 +1890,7 @@ class widget_theme_core_promo extends WP_Widget
 					}
 
 					echo "<div class='section'>
-						<ul".(count($arr_pages) > 2 ? "" : " class='allow_expand'").">";
+						<ul class='"."text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>"; //.($rows > 2 ? "" : "allow_expand ")
 
 							foreach($arr_pages as $page)
 							{
