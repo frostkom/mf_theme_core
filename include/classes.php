@@ -1777,7 +1777,11 @@ class widget_theme_core_news extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$this->get_posts($instance);
+		$instance_temp = $instance;
+
+		$instance_temp['news_amount'] = 10;
+
+		$this->get_posts($instance_temp);
 
 		echo "<div class='mf_form'>";
 
