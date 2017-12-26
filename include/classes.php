@@ -1657,6 +1657,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$this->arr_default = array(
 			'news_title' => "",
+			'news_categories' => array(),
 			'news_amount' => 1,
 			//'news_display_excerpt' => 'no',
 		);
@@ -1672,7 +1673,15 @@ class widget_theme_core_news extends WP_Widget
 
 		if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
 
-		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts." WHERE post_type = 'post' AND post_status = 'publish' ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
+		$query_join = $query_where = "";
+
+		if(count($instance['news_categories']) > 0)
+		{
+			$query_join .= " INNER JOIN ".$wpdb->term_relationships." ON ".$wpdb->posts.".ID = ".$wpdb->term_relationships.".object_id INNER JOIN ".$wpdb->term_taxonomy." USING (term_taxonomy_id)";
+			$query_where .= " AND term_id IN('".implode("','", $instance['news_categories'])."')";
+		}
+
+		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
 
 		if($wpdb->num_rows > 0)
 		{
@@ -1767,10 +1776,30 @@ class widget_theme_core_news extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
+		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
-		//news_display_excerpt
+		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
 
 		return $instance;
+	}
+
+	function get_categories_for_select($data = array())
+	{
+		if(!isset($data['hierarchical'])){		$data['hierarchical'] = true;}
+
+		$arr_data = array();
+
+		$arr_categories = get_categories(array(
+			'hierarchical' => $data['hierarchical'],
+			'hide_empty' => 1,
+		));
+
+		foreach($arr_categories as $category)
+		{
+			$arr_data[$category->cat_ID] = ($data['hierarchical'] && $category->parent > 0 ? "&nbsp;&nbsp;&nbsp;" : "").$category->name;
+		}
+
+		return $arr_data;
 	}
 
 	function form($instance)
@@ -1778,9 +1807,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$instance_temp = $instance;
-
 		$instance_temp['news_amount'] = 10;
-
 		$this->get_posts($instance_temp);
 
 		echo "<div class='mf_form'>";
@@ -1790,6 +1817,7 @@ class widget_theme_core_news extends WP_Widget
 			if($count_temp > 0)
 			{
 				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
 				//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']));
 			}

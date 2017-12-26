@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-25 15:44+0100\n"
+"POT-Creation-Date: 2017-12-26 11:22+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -283,37 +283,41 @@ msgstr "Animera"
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1664
+#: ../include/classes.php:1665
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1754
+#: ../include/classes.php:1763
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:1792
-#: ../include/classes.php:1933
+#: ../include/classes.php:1819
+#: ../include/classes.php:1968
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:1793
+#: ../include/classes.php:1820
+msgid "Categories"
+msgstr "Kategorier"
+
+#: ../include/classes.php:1821
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:1799
+#: ../include/classes.php:1827
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:1812
+#: ../include/classes.php:1840
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:1820
+#: ../include/classes.php:1848
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:1934
+#: ../include/classes.php:1969
 msgid "Pages"
 msgstr "Sidor"
 
@@ -939,81 +943,77 @@ msgstr "Denna sida kommer att visas istället för standard 404-sida"
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/functions.php:1184
+#: ../include/functions.php:1240
 msgid "I saved the maintenance page for you"
 msgstr "Jag sparade underhållsfilen åt dig"
 
-#: ../include/functions.php:1191
+#: ../include/functions.php:1247
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/functions.php:1197
+#: ../include/functions.php:1253
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/functions.php:1203
-msgid "The page that you choose for Maintenance has to be published and contain a title and content"
-msgstr "Sidan som du väljer måste vara publicerad och innehålla en titel och innehåll"
-
-#: ../include/functions.php:1209
+#: ../include/functions.php:1259
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/functions.php:1227
+#: ../include/functions.php:1277
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/functions.php:1232
+#: ../include/functions.php:1282
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/functions.php:1235
+#: ../include/functions.php:1285
 msgid "days"
 msgstr "dagar"
 
-#: ../include/functions.php:1237
+#: ../include/functions.php:1287
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/functions.php:1259
+#: ../include/functions.php:1309
 #, php-format
 msgid "By going to %sthe site%s you can edit any styling to your liking"
 msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egna önskemål"
 
-#: ../include/functions.php:1347
+#: ../include/functions.php:1397
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1359
+#: ../include/functions.php:1409
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1401
+#: ../include/functions.php:1451
 msgid "A visitor accessed the public page without being logged in!"
 msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
 
-#: ../include/functions.php:1420
+#: ../include/functions.php:1470
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1425
+#: ../include/functions.php:1475
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1430
+#: ../include/functions.php:1480
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1435
+#: ../include/functions.php:1485
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1514
+#: ../include/functions.php:1564
 msgid "Search for"
 msgstr "Sök efter"
 
@@ -1030,6 +1030,13 @@ msgstr "URL"
 #: ../include/sitemap-xsl.php:109
 msgid "Last Modified"
 msgstr "Senast ändrad"
+
+#~ msgid ""
+#~ "The page that you choose for Maintenance has to be published and contain "
+#~ "a title and content"
+#~ msgstr ""
+#~ "Sidan som du väljer måste vara publicerad och innehålla en titel och "
+#~ "innehåll"
 
 #~ msgid "Either the URL (%s) or the content (%s) was incorrect to save to %s"
 #~ msgstr "Antingen är URL"

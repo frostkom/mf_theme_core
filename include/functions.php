@@ -1143,7 +1143,7 @@ function setting_404_page_callback()
 
 function setting_maintenance_page_callback()
 {
-	global $done_text, $error_text;
+	global $wpdb, $done_text, $error_text;
 
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
@@ -1160,47 +1160,97 @@ function setting_maintenance_page_callback()
 
 		if(!file_exists($maintenance_file) || is_writeable($maintenance_file))
 		{
-			$post_url = get_permalink($option);
-			$post_url_clean = remove_protocol(array('url' => $post_url, 'clean' => true));
-			$post_title = get_the_title($option);
-			$post_content = mf_get_post_content($option);
+			list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
+			$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
 
-			if($post_url_clean != '' && $post_content != '')
+			$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
+
+			if(is_multisite())
 			{
-				list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
-				$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
+				$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
 
-				$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
-				$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
-				$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
-				$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
+				$result = get_sites();
 
-				if(strlen($recommend_maintenance) > 0)
+				//$recommend_maintenance .= var_export($result, true);
+
+				foreach($result as $r)
 				{
-					$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
+					$blog_id = $r->blog_id;
 
-					if($success == true)
+					//$recommend_maintenance .= var_export($r, true)." -> ".$blog_id;
+
+					switch_to_blog($blog_id);
+
+					$loop_template_temp = $loop_template;
+					
+					$option_ms = get_option('setting_maintenance_page');
+
+					if($option_ms > 0)
 					{
-						$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
+						$site_url = get_site_url();
+						$site_url_clean = remove_protocol(array('url' => $site_url, 'clean' => true, 'trim' => true));
+						$post_url_clean = remove_protocol(array('url' => get_permalink($option_ms), 'clean' => true));
+						$post_title = get_the_title($option_ms);
+						$post_content = mf_get_post_content($option_ms);
 
-						update_option($setting_key.'_temp', $option, 'no');
+						if($post_url_clean != '' && $post_content != '')
+						{
+							$loop_template_temp = str_replace("[site_url]", str_replace(array(".", "/"), array("\.", "\/"), $site_url_clean), $loop_template_temp);
+							$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
+							$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
+							$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
+
+							//$recommend_maintenance .= "\n/* ".$blog_id." => ".$site_url_clean." => ".$option_ms." */"
+							$recommend_maintenance .= "\n".$loop_template_temp;
+						}
 					}
 
-					else
-					{
-						$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
-					}
-				}
-
-				else
-				{
-					$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
+					restore_current_blog();
 				}
 			}
 
 			else
 			{
-				$error_text = __("The page that you choose for Maintenance has to be published and contain a title and content", 'lang_theme_core');
+				$site_url = get_site_url();
+				$site_url_clean = remove_protocol(array('url' => $site_url, 'clean' => true, 'trim' => true));
+				$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
+				$post_title = get_the_title($option);
+				$post_content = mf_get_post_content($option);
+
+				if($post_url_clean != '' && $post_content != '')
+				{
+					$recommend_maintenance = str_replace("[site_url]", str_replace(array(".", "/"), array("\.", "\/"), $site_url_clean), $recommend_maintenance);
+					$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
+					$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
+					$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
+				}
+
+				/*else
+				{
+					$error_text = __("The page that you choose for Maintenance has to be published and contain a title and content", 'lang_theme_core');
+				}*/
+			}
+
+			if(strlen($recommend_maintenance) > 0)
+			{
+				$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
+
+				if($success == true)
+				{
+					$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
+
+					update_option($setting_key.'_temp', $option, 'no');
+				}
+
+				else
+				{
+					$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
+				}
+			}
+
+			else
+			{
+				$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
 			}
 		}
 
