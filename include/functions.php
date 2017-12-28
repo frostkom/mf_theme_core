@@ -1171,36 +1171,31 @@ function setting_maintenance_page_callback()
 
 				$result = get_sites();
 
-				//$recommend_maintenance .= var_export($result, true);
-
 				foreach($result as $r)
 				{
 					$blog_id = $r->blog_id;
 
-					//$recommend_maintenance .= var_export($r, true)." -> ".$blog_id;
-
 					switch_to_blog($blog_id);
 
 					$loop_template_temp = $loop_template;
-					
+
 					$option_ms = get_option('setting_maintenance_page');
 
 					if($option_ms > 0)
 					{
 						$site_url = get_site_url();
-						$site_url_clean = remove_protocol(array('url' => $site_url, 'clean' => true, 'trim' => true));
+						$site_url_clean = remove_protocol(array('url' => $site_url));
 						$post_url_clean = remove_protocol(array('url' => get_permalink($option_ms), 'clean' => true));
 						$post_title = get_the_title($option_ms);
 						$post_content = mf_get_post_content($option_ms);
 
 						if($post_url_clean != '' && $post_content != '')
 						{
-							$loop_template_temp = str_replace("[site_url]", str_replace(array(".", "/"), array("\.", "\/"), $site_url_clean), $loop_template_temp);
+							$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
 							$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
 
-							//$recommend_maintenance .= "\n/* ".$blog_id." => ".$site_url_clean." => ".$option_ms." */"
 							$recommend_maintenance .= "\n".$loop_template_temp;
 						}
 					}
@@ -1212,14 +1207,14 @@ function setting_maintenance_page_callback()
 			else
 			{
 				$site_url = get_site_url();
-				$site_url_clean = remove_protocol(array('url' => $site_url, 'clean' => true, 'trim' => true));
+				$site_url_clean = remove_protocol(array('url' => $site_url));
 				$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
 				$post_title = get_the_title($option);
 				$post_content = mf_get_post_content($option);
 
 				if($post_url_clean != '' && $post_content != '')
 				{
-					$recommend_maintenance = str_replace("[site_url]", str_replace(array(".", "/"), array("\.", "\/"), $site_url_clean), $recommend_maintenance);
+					$recommend_maintenance = str_replace("[site_url]", $site_url_clean, $recommend_maintenance);
 					$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
 					$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
 					$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
@@ -1366,7 +1361,7 @@ function print_scripts_theme_core()
 function footer_theme_core()
 {
 	global $wpdb;
-	
+
 	$plugin_include_url = plugin_dir_url(__FILE__);
 	$plugin_version = get_plugin_version(__FILE__);
 
@@ -1376,8 +1371,6 @@ function footer_theme_core()
 
 		if($setting_cookie_info > 0)
 		{
-			
-
 			mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
 			mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
 

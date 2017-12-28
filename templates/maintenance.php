@@ -4,11 +4,11 @@ header("HTTP/1.1 503 Service Temporarily Unavailable");
 header("Status: 503 Service Temporarily Unavailable");
 header("Retry-After: 60");
 
-DEFINE('CURRENT_URL', $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+DEFINE('CURRENT_URL', strtolower("//".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']));
 
 /* Loop Template */
 /*#########################
-if(preg_match("/[site_url]/i", CURRENT_URL))
+if("[site_url]" == substr(CURRENT_URL, 0, strlen("[site_url]")))
 {
 	$file_path = realpath("[post_dir]");
 

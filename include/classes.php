@@ -272,12 +272,12 @@ class mf_theme_core
 		{"
 			.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
 		."}
-			
+
 		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button
 		{"
 			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 		."}
-			
+
 		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary
 		{"
 			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
@@ -301,14 +301,14 @@ class mf_theme_core
 				box-shadow: inset 0 0 10em rgba(0, 0, 0, .1);"
 				//.$this->render_css(array('property' => 'background', 'value' => 'button_color_hover'))
 			."}
-			
+
 		html
 		{
 			font-size: .625em;"
 			.$this->render_css(array('property' => 'font-size', 'value' => 'body_font_size'))
 			.$this->render_css(array('property' => 'overflow-y', 'value' => 'body_scroll'))
 		."}
-			
+
 			body
 			{"
 				.$this->render_css(array('property' => 'background', 'value' => 'footer_bg', 'suffix' => "; min-height: 100vh"))
@@ -317,7 +317,7 @@ class mf_theme_core
 				.$this->render_css(array('property' => 'font-family', 'value' => 'body_font'))
 				.$this->render_css(array('property' => 'color', 'value' => 'body_color'))
 			."}
-				
+
 				#wrapper
 				{"
 					.$this->render_css(array('property' => 'background', 'value' => 'body_bg'))
