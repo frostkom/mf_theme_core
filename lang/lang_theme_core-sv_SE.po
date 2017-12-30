@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-26 11:22+0100\n"
+"POT-Creation-Date: 2017-12-30 09:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -940,80 +940,88 @@ msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
 #: ../include/functions.php:1155
+msgid "Temporary Maintenance"
+msgstr "Tillfälligt underhåll"
+
+#: ../include/functions.php:1156
+msgid "This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual."
+msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än en minut så du har haft otur som besökte webbsidan precis vid detta tillfälle. Om du testar att ladda om sidan om en liten stund så ska den säkerligen vara klar med detta."
+
+#: ../include/functions.php:1158
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/functions.php:1240
+#: ../include/functions.php:1238
 msgid "I saved the maintenance page for you"
 msgstr "Jag sparade underhållsfilen åt dig"
 
-#: ../include/functions.php:1247
+#: ../include/functions.php:1245
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/functions.php:1253
+#: ../include/functions.php:1251
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/functions.php:1259
+#: ../include/functions.php:1257
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/functions.php:1277
+#: ../include/functions.php:1275
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/functions.php:1282
+#: ../include/functions.php:1280
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/functions.php:1285
+#: ../include/functions.php:1283
 msgid "days"
 msgstr "dagar"
 
-#: ../include/functions.php:1287
+#: ../include/functions.php:1285
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/functions.php:1309
+#: ../include/functions.php:1307
 #, php-format
 msgid "By going to %sthe site%s you can edit any styling to your liking"
 msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egna önskemål"
 
-#: ../include/functions.php:1397
+#: ../include/functions.php:1393
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1409
+#: ../include/functions.php:1405
 msgid "Read more"
 msgstr "Läs mer"
 
-#: ../include/functions.php:1451
+#: ../include/functions.php:1447
 msgid "A visitor accessed the public page without being logged in!"
 msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
 
-#: ../include/functions.php:1470
+#: ../include/functions.php:1466
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1475
+#: ../include/functions.php:1471
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1480
+#: ../include/functions.php:1476
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1485
+#: ../include/functions.php:1481
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1564
+#: ../include/functions.php:1560
 msgid "Search for"
 msgstr "Sök efter"
 

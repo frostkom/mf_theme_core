@@ -1152,7 +1152,10 @@ function setting_maintenance_page_callback()
 	$arr_data = array();
 	get_post_children(array('add_choose_here' => true), $arr_data);
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed when the website is updating", 'lang_theme_core')));
+	$post_title = __("Temporary Maintenance", 'lang_theme_core');
+	$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed when the website is updating", 'lang_theme_core')));
 
 	if($option > 0 && $option != $option_temp)
 	{
@@ -1169,7 +1172,7 @@ function setting_maintenance_page_callback()
 			{
 				$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
 
-				$result = get_sites();
+				$result = get_sites(array('order' => 'DESC'));
 
 				foreach($result as $r)
 				{
@@ -1232,7 +1235,7 @@ function setting_maintenance_page_callback()
 
 				if($success == true)
 				{
-					$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
+					//$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
 
 					update_option($setting_key.'_temp', $option, 'no');
 				}
