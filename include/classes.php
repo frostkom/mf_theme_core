@@ -1077,6 +1077,14 @@ class mf_theme_core
 	{
 		global $wpdb;
 
+		$upload_path_from = WP_CONTENT_DIR."/uploads/";
+		$upload_url_from = WP_CONTENT_URL."/uploads/";
+
+		list($upload_path_to, $upload_url_to) = get_uploads_folder('', true);
+
+		if(!preg_match("/\/sites\//", $upload_path_to)){	$upload_path_to .= "sites/".$wpdb->blogid."/";}
+		if(!preg_match("/\/sites\//", $upload_url_to)){		$upload_url_to .= "sites/".$wpdb->blogid."/";}
+
 		$arr_sizes = array('thumbnail', 'medium', 'large');
 
 		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = %s", 'attachment'));
@@ -1084,36 +1092,22 @@ class mf_theme_core
 		foreach($result as $r)
 		{
 			$post_id = $r->ID;
-			//$post_url = get_permalink($post_id);
 			$post_url = wp_get_attachment_url($post_id);
-			//$post_guid = $wpdb->get_var($wpdb->prepare("SELECT guid FROM ".$wpdb->posts." WHERE ID = '%d'", $post_id)); //$post_url
-			//get_attached_file($post_id) //wp-content/uploads/sites/11/2017/09/logo_blue_small.png
 
-			$upload_path_global = WP_CONTENT_DIR."/uploads/";
-			$upload_url_global = WP_CONTENT_URL."/uploads/";
-
-			list($upload_path, $upload_url) = get_uploads_folder('', true);
-
-			if(!preg_match("/\/sites\//", $upload_path)){		$upload_path .= "sites/".$wpdb->blogid."/";}
-			if(!preg_match("/\/sites\//", $upload_url)){		$upload_url .= "sites/".$wpdb->blogid."/";}
-
-			$this->file_dir_from = str_replace(array($upload_url, $upload_url_global), $upload_path_global, $post_url);
-			$this->file_dir_to = str_replace(array($upload_url, $upload_url_global), $upload_path, $post_url);
+			$this->file_dir_from = str_replace(array($upload_url_to, $upload_url_from), $upload_path_from, $post_url);
+			$this->file_dir_to = str_replace(array($upload_url_to, $upload_url_from), $upload_path_to, $post_url);
 
 			$this->copy_file();
 
-			$is_image = wp_attachment_is_image($post_id);
-
-			if($is_image)
+			if(wp_attachment_is_image($post_id))
 			{
 				foreach($arr_sizes as $size)
 				{
 					$arr_image = wp_get_attachment_image_src($post_id, $size);
-
 					$post_url = $arr_image[0];
 
-					$this->file_dir_from = str_replace(array($upload_url, $upload_url_global), $upload_path_global, $post_url);
-					$this->file_dir_to = str_replace(array($upload_url, $upload_url_global), $upload_path, $post_url);
+					$this->file_dir_from = str_replace(array($upload_url_to, $upload_url_from), $upload_path_from, $post_url);
+					$this->file_dir_to = str_replace(array($upload_url_to, $upload_url_from), $upload_path_to, $post_url);
 
 					$this->copy_file();
 				}
@@ -1251,7 +1245,6 @@ class mf_theme_core
 	{
 		global $wpdb;
 
-		//$setting_theme_optimize_age = get_option_or_default('setting_theme_optimize_age', 12);
 		$setting_theme_optimize_age = 12;
 
 		//Remove old revisions and auto-drafts
@@ -1337,6 +1330,7 @@ class mf_theme_core
 			error_log("Remove expired transients: ".$wpdb->last_query);
 		}*/
 
+		/* Optimize Tables */
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
 
 		foreach($result as $r)
@@ -1347,8 +1341,8 @@ class mf_theme_core
 		}
 
 		// Can be removed later because the folder is not in use anymore
-		list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
-		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files'));
+		/*list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
+		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files'));*/
 
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();

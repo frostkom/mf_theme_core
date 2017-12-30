@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.14.15
+Version: 6.14.16
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_theme_core
@@ -101,43 +101,6 @@ load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE_
 
 function activate_theme_core()
 {
-	global $wpdb;
-
-	/*if(is_plugin_active('meta-description/meta-description.php'))
-	{
-		$i = 0;
-
-		$arr_data = array();
-		get_post_children(array('post_type' => 'page'), $arr_data);
-
-		foreach($arr_data as $post_id => $post_title)
-		{
-			$meta_description = get_post_meta($post_id, 'meta_description', true);
-
-			if($meta_description != '')
-			{
-				$post_excerpt = $wpdb->get_results($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE ID = '%d'", $post_id));
-
-				if($post_excerpt == '')
-				{
-					$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_excerpt = %s WHERE ID = '%d'", $meta_description, $post_id));
-
-					$i++;
-				}
-			}
-		}
-
-		if($i == 0)
-		{
-			error_log(__("All Meta Descriptions have been moved to Excerpt so you can remove the plugin Meta Description", 'lang_theme_core'));
-		}
-
-		else
-		{
-			error_log(sprintf(__("I moved %d Meta Descriptions to excerpt", 'lang_theme_core'), $i));
-		}
-	}*/
-
 	replace_option(array('old' => 'mf_theme_saved', 'new' => 'option_theme_saved'));
 	replace_option(array('old' => 'theme_source_style_url', 'new' => 'option_theme_source_style_url'));
 	replace_option(array('old' => 'mf_database_optimized', 'new' => 'option_database_optimized'));
