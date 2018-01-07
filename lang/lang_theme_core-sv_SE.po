@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-07 08:34+0100\n"
+"POT-Creation-Date: 2018-01-07 09:54+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -283,44 +283,56 @@ msgstr "Animera"
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1660
+#: ../include/classes.php:1661
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1762
-#: ../include/classes.php:1769
-#: ../include/classes.php:1834
+#: ../include/classes.php:1763
+#: ../include/classes.php:1770
+#: ../include/classes.php:1842
 #: ../include/functions.php:1405
 msgid "Read More"
 msgstr "Läs mer"
 
 #: ../include/classes.php:1829
-#: ../include/classes.php:1983
+msgid "Original"
+msgstr ""
+
+#: ../include/classes.php:1830
+msgid "Post It"
+msgstr ""
+
+#: ../include/classes.php:1836
+#: ../include/classes.php:1991
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:1830
+#: ../include/classes.php:1837
+msgid "Design"
+msgstr "Utseende"
+
+#: ../include/classes.php:1838
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:1832
+#: ../include/classes.php:1840
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:1840
+#: ../include/classes.php:1848
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:1853
+#: ../include/classes.php:1861
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:1861
+#: ../include/classes.php:1869
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:1984
+#: ../include/classes.php:1992
 msgid "Pages"
 msgstr "Sidor"
 

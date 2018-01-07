@@ -149,11 +149,15 @@
 
 			.widget.theme_news li .image
 			{
-				background: rgba(0, 0, 0, .1);
 				height: 100%; /* Does not work properly in older Safari */
 				overflow: hidden;
 				position: relative;
 			}
+
+				.widget.theme_news .original li .image
+				{
+					background: rgba(0, 0, 0, .1);
+				}
 
 				.widget.theme_news li .image img
 				{
@@ -163,6 +167,11 @@
 					transition: all .75s ease;
 					width: 100%;
 				}
+
+					.widget.theme_news .postit li .image
+					{
+						display: none;
+					}
 
 					.widget.theme_news li:hover .image img
 					{
@@ -187,7 +196,7 @@
 						height: 100%;
 					}
 
-			.widget.theme_news li h4
+			.widget.theme_news .original li h4
 			{
 				border-bottom: .1em solid #fff;
 				bottom: 0;
@@ -200,10 +209,70 @@
 				transition: all .5s ease;
 			}
 
-				.widget.theme_news li:hover h4
+				.widget.theme_news .original li:hover h4
 				{
 					margin-bottom: 2.5em;
 					padding-bottom: .2em;
+				}
+
+			.widget.theme_news .postit li > a
+			{
+				background-color: #f4f39e;
+				border-color: #dee184;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+				display: block;
+				margin: 1em;
+				overflow: hidden;
+				padding: 1.5em 1em;
+				text-align: center;
+				-webkit-transform: rotate(1deg);
+				transform: rotate(1deg);
+			}
+
+				.widget.theme_news .postit li:nth-child(2n+1) > a
+				{
+					-webkit-transform: rotate(-3deg);
+					transform: rotate(-3deg);
+				}
+
+				.widget.theme_news .postit li:nth-child(3n+2) > a
+				{
+					-webkit-transform: rotate(2deg);
+					transform: rotate(2deg);
+				}
+
+				.widget.theme_news .postit li:nth-child(5n+3) > a
+				{
+					-webkit-transform: rotate(3deg);
+					transform: rotate(3deg);
+				}
+
+				.widget.theme_news .postit li:nth-child(7n+5) > a
+				{
+					-webkit-transform: rotate(-1deg);
+					transform: rotate(-1deg);
+				}
+
+				.widget.theme_news .postit li:nth-child(11n+7) > a
+				{
+					-webkit-transform: rotate(-2deg);
+					transform: rotate(-2deg);
+				}
+
+				.widget.theme_news .postit li > a:after
+				{
+					background: rgba(254, 254, 254, .6);
+					border: 1px solid #fff;
+					box-shadow: 0 0 3px rgba(0, 0, 0, .1);  
+					content: "";
+					display: block;
+					height: 30px;
+					left: 50%;
+					position: absolute;
+					-webkit-transform: translateX(-50%);
+					transform: translateX(-50%);
+					top: -21px;
+					width: 110px;
 				}
 
 			.widget.theme_news li .video iframe

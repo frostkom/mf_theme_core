@@ -1651,6 +1651,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$this->arr_default = array(
 			'news_title' => "",
+			'news_type' => 'original',
 			'news_categories' => array(),
 			'news_amount' => 1,
 			//'news_display_excerpt' => 'no',
@@ -1731,7 +1732,7 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".($rows > 1 ? "news_multiple" : "news_single")."'>";
+				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single")."'>";
 
 					if($rows > 1)
 					{
@@ -1782,6 +1783,7 @@ class widget_theme_core_news extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
+		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
@@ -1823,10 +1825,16 @@ class widget_theme_core_news extends WP_Widget
 
 			if($count_temp > 0)
 			{
+				$arr_news_types = array(
+					'original' => __("Original", 'lang_theme_core'),
+					'postit' => __("Post It", 'lang_theme_core'),
+				);
+
 				$arr_data_pages = array();
 				get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+				.show_select(array('data' => $arr_news_types, 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"))
@@ -1930,7 +1938,7 @@ class widget_theme_core_promo extends WP_Widget
 						.$after_title;
 					}
 
-					echo "<div class='section'>
+					echo "<div class='section original'>
 						<ul class='text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>";
 
 							foreach($arr_pages as $page)
