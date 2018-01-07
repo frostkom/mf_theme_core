@@ -1402,7 +1402,7 @@ function footer_theme_core()
 							{
 								$post_url = get_permalink($post_id);
 
-								echo "<a href='".$post_url."'>".__("Read more", 'lang_theme_core')."</a>";
+								echo "<a href='".$post_url."'>".__("Read More", 'lang_theme_core')."</a>";
 							}
 
 							echo $accept_link;

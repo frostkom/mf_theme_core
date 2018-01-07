@@ -1654,6 +1654,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_categories' => array(),
 			'news_amount' => 1,
 			//'news_display_excerpt' => 'no',
+			'news_page' => 0,
 		);
 
 		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops, $control_ops);
@@ -1734,13 +1735,15 @@ class widget_theme_core_news extends WP_Widget
 
 					if($rows > 1)
 					{
-						echo "<ul class='"."text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>"; //.($rows > 2 ? "" : "allow_expand ")
+						echo "<ul class='text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>";
 
 							foreach($this->arr_news as $page)
 							{
 								echo "<li>
-									<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
-									<h4>".$page['title']."</h4>
+									<a href='".$page['url']."'>
+										<div class='image'>".$page['image']."</div>
+										<h4>".$page['title']."</h4>
+									</a>
 								</li>";
 							}
 
@@ -1751,11 +1754,20 @@ class widget_theme_core_news extends WP_Widget
 					{
 						foreach($this->arr_news as $page)
 						{
-							echo "<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
-							<h4>".$page['title']."</h4>"
+							echo "<a href='".$page['url']."'>
+								<div class='image'>".$page['image']."</div>
+								<h4>".$page['title']."</h4>
+							</a>"
 							.apply_filters('the_content', $page['excerpt'])
 							."<a href='".$page['url']."'>".__("Read More", 'lang_theme_core')."</a>";
 						}
+					}
+
+					if($instance['news_page'] > 0)
+					{
+						echo "<a href='".get_permalink($instance['news_page'])."'>"
+							.__("Read More", 'lang_theme_core')
+						."</a>";
 					}
 
 				echo "</div>"
@@ -1773,6 +1785,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
+		$instance['news_page'] = sanitize_text_field($new_instance['news_page']);
 
 		return $instance;
 	}
@@ -1810,10 +1823,16 @@ class widget_theme_core_news extends WP_Widget
 
 			if($count_temp > 0)
 			{
+				$arr_data_pages = array();
+				get_post_children(array('add_choose_here' => true), $arr_data_pages);
+
 				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
-				//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']));
+				."<div class='flex_flow'>"
+					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"))
+					//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
+					.show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']))
+				."</div>";
 			}
 
 			else
@@ -1912,15 +1931,17 @@ class widget_theme_core_promo extends WP_Widget
 					}
 
 					echo "<div class='section'>
-						<ul class='"."text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>"; //.($rows > 2 ? "" : "allow_expand ")
+						<ul class='text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>";
 
 							foreach($arr_pages as $page)
 							{
 								if(isset($page['image']))
 								{
 									echo "<li>
-										<div class='image'><a href='".$page['url']."'>".$page['image']."</a></div>
-										<h4>".$page['title']."</h4>
+										<a href='".$page['url']."'>
+											<div class='image'>".$page['image']."</div>
+											<h4>".$page['title']."</h4>
+										</a>
 									</li>";
 								}
 

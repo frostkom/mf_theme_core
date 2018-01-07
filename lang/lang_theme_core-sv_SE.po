@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-30 09:47+0100\n"
+"POT-Creation-Date: 2018-01-07 08:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -196,128 +196,131 @@ msgstr "Fetare"
 msgid "The file %s already exists so %s can be deleted now"
 msgstr "Filen %s finns redan så %s kan tas bort nu"
 
-#: ../include/classes.php:1194
+#: ../include/classes.php:1188
 #, php-format
 msgid "The feed from %s returned an error"
 msgstr "Flödet från %s gav ett fel"
 
-#: ../include/classes.php:1200
+#: ../include/classes.php:1194
 #, php-format
 msgid "The response from %s had an error (%s)"
 msgstr "Svaret from %s hade ett fel (%s)"
 
-#: ../include/classes.php:1206
+#: ../include/classes.php:1200
 #, php-format
 msgid "I could not process the feed from %s since the URL was not a valid one"
 msgstr "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
 
-#: ../include/classes.php:1364
+#: ../include/classes.php:1358
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:1422
+#: ../include/classes.php:1416
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1479
+#: ../include/classes.php:1473
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1497
+#: ../include/classes.php:1491
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:1502
+#: ../include/classes.php:1496
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:1518
+#: ../include/classes.php:1512
 msgid "Display logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:1530
-#: ../include/classes.php:1566
-#: ../include/classes.php:1578
+#: ../include/classes.php:1524
+#: ../include/classes.php:1560
+#: ../include/classes.php:1572
 #: ../include/functions.php:100
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:1565
+#: ../include/classes.php:1559
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:1567
-#: ../include/classes.php:1589
+#: ../include/classes.php:1561
+#: ../include/classes.php:1583
 #: ../include/functions.php:109
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:1571
+#: ../include/classes.php:1565
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:1572
+#: ../include/classes.php:1566
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:1602
+#: ../include/classes.php:1596
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:1612
+#: ../include/classes.php:1606
 #: ../include/functions.php:94
 #: ../include/functions.php:95
 #: ../include/functions.php:623
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:1641
+#: ../include/classes.php:1635
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:1642
+#: ../include/classes.php:1636
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:1653
+#: ../include/classes.php:1647
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1665
+#: ../include/classes.php:1660
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1763
+#: ../include/classes.php:1762
+#: ../include/classes.php:1769
+#: ../include/classes.php:1834
+#: ../include/functions.php:1405
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:1819
-#: ../include/classes.php:1968
+#: ../include/classes.php:1829
+#: ../include/classes.php:1983
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:1820
+#: ../include/classes.php:1830
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:1821
+#: ../include/classes.php:1832
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:1827
+#: ../include/classes.php:1840
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:1840
+#: ../include/classes.php:1853
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:1848
+#: ../include/classes.php:1861
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:1969
+#: ../include/classes.php:1984
 msgid "Pages"
 msgstr "Sidor"
 
@@ -951,10 +954,6 @@ msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än 
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/functions.php:1238
-msgid "I saved the maintenance page for you"
-msgstr "Jag sparade underhållsfilen åt dig"
-
 #: ../include/functions.php:1245
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
@@ -997,10 +996,6 @@ msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egn
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1405
-msgid "Read more"
-msgstr "Läs mer"
-
 #: ../include/functions.php:1447
 msgid "A visitor accessed the public page without being logged in!"
 msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
@@ -1039,22 +1034,3 @@ msgstr "URL"
 msgid "Last Modified"
 msgstr "Senast ändrad"
 
-#~ msgid ""
-#~ "The page that you choose for Maintenance has to be published and contain "
-#~ "a title and content"
-#~ msgstr ""
-#~ "Sidan som du väljer måste vara publicerad och innehålla en titel och "
-#~ "innehåll"
-
-#~ msgid "Either the URL (%s) or the content (%s) was incorrect to save to %s"
-#~ msgstr "Antingen är URL"
-
-#~ msgid ""
-#~ "All Meta Descriptions have been moved to Excerpt so you can remove the "
-#~ "plugin Meta Description"
-#~ msgstr ""
-#~ "Alla meta-förklaringar har flyttats till utdrag så nu kan du radera "
-#~ "pluginet Meta Description"
-
-#~ msgid "I moved %d Meta Descriptions to excerpt"
-#~ msgstr "Jag flyttade %d meta-förklaringar till utdrag"
