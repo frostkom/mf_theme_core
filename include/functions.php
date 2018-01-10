@@ -70,20 +70,20 @@ function get_params_theme_core()
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'text', 'id' => "mobile_aside_img_max_width", 'title' => __("Aside Image Max Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => "mobile_breakpoint");
+				$options_params[] = array('type' => 'text', 'id' => 'mobile_aside_img_max_width', 'title' => __("Aside Image Max Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => "mobile_breakpoint");
 			}
 
 	$options_params[] = array('category_end' => "");
 
 	$options_params[] = array('category' => __("Header", 'lang_theme_core'), 'id' => 'mf_theme_header');
-		$options_params[] = array('type' => 'position', 'id' => "header_fixed", 'title' => __("Position", 'lang_theme_core'), 'default' => 'fixed');
+		$options_params[] = array('type' => 'position', 'id' => 'header_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'fixed');
 		$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
 			$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'checkbox', 'id' => "header_override_bg_with_page_bg", 'title' => __("Override background with page background", 'lang_theme_core'), 'default' => 2);
+			$options_params[] = array('type' => 'checkbox', 'id' => 'header_override_bg_with_page_bg', 'title' => __("Override background with page background", 'lang_theme_core'), 'default' => 2);
 		}
 
 		$options_params[] = array('type' => 'text', 'id' => 'header_padding', 'title' => __("Padding", 'lang_theme_core'));
@@ -114,12 +114,12 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'checkbox', 'id' => "nav_mobile", 'title' => __("Compressed", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => 2);
-				$options_params[] = array('type' => 'checkbox', 'id' => "nav_click2expand", 'title' => __("Click to expand", 'lang_theme_core'), 'default' => 1);
-			$options_params[] = array('type' => 'text', 'id' => "nav_padding", 'title' => __("Padding", 'lang_theme_core'), 'default' => "0 1em");
-				$options_params[] = array('type' => 'text', 'id' => "nav_padding_mobile", 'title' => __("Padding", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'nav_padding');
-			$options_params[] = array('type' => 'float', 'id' => "nav_float", 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
-				$options_params[] = array('type' => 'float', 'id' => "nav_float_mobile", 'title' => __("Alignment", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "none", 'show_if' => 'nav_float');
+			$options_params[] = array('type' => 'checkbox', 'id' => 'nav_mobile', 'title' => __("Compressed", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => 2);
+				$options_params[] = array('type' => 'checkbox', 'id' => 'nav_click2expand', 'title' => __("Click to expand", 'lang_theme_core'), 'default' => 1);
+			$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "0 1em");
+				$options_params[] = array('type' => 'text', 'id' => 'nav_padding_mobile', 'title' => __("Padding", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'nav_padding');
+			$options_params[] = array('type' => 'float', 'id' => 'nav_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
+				$options_params[] = array('type' => 'float', 'id' => 'nav_float_mobile', 'title' => __("Alignment", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "none", 'show_if' => 'nav_float');
 		}
 
 		$options_params[] = array('type' => 'align', 'id' => 'nav_align', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
@@ -127,9 +127,9 @@ function get_params_theme_core()
 		$options_params[] = array('type' => 'clear', 'id' => 'nav_clear', 'title' => __("Clear", 'lang_theme_core'), 'default' => "right");
 		$options_params[] = array('type' => 'font', 'id' => 'nav_font', 'title' => __("Font", 'lang_theme_core'));
 		$options_params[] = array('type' => 'text', 'id' => 'nav_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "2em");
-		$options_params[] = array('type' => 'color', 'id' => "nav_color", 'title' => __("Text Color", 'lang_theme_core'));
-			$options_params[] = array('type' => 'color', 'id' => "nav_color_hover", 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
-		$options_params[] = array('type' => 'text', 'id' => "nav_link_padding", 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1em");
+		$options_params[] = array('type' => 'color', 'id' => 'nav_color', 'title' => __("Text Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'color', 'id' => 'nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
+		$options_params[] = array('type' => 'text', 'id' => 'nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1em");
 
 		if($theme_dir_name == 'mf_theme')
 		{
@@ -155,7 +155,7 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_theme')
 		{
-			$options_params[] = array('type' => 'checkbox', 'id' => "hamburger_collapse_if_no_space", 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
+			$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
 			$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Menu", 'lang_theme_core').")");
 		}
 
@@ -227,7 +227,9 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'after_header_bg', 'title' => __("Background", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'after_header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
 					$options_params[] = array('type' => 'image', 'id' => 'after_header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
 				$options_params[] = array('type' => 'color', 'id' => 'after_header_color', 'title' => __("Text Color", 'lang_theme_core'));
 				$options_params[] = array('type' => 'overflow', 'id' => 'after_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
 				/*$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
@@ -236,7 +238,7 @@ function get_params_theme_core()
 			$options_params[] = array('category_end' => "");
 		}
 
-		/* This does not work together with Hero. Don't know why yet but will get around to it */
+		/* This does not work together with Hero */
 		/*if(is_active_widget_area('widget_front'))
 		{*/
 			$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_theme_pre_content');
@@ -244,6 +246,7 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
 					$options_params[] = array('type' => 'image', 'id' => 'pre_content_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				//$options_params[] = array('type' => 'text', 'id' => 'pre_content_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'front_padding', 'title' => __("Padding", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'front_color', 'title' => __("Text Color", 'lang_theme_core'));
 			$options_params[] = array('category_end' => "");
@@ -254,9 +257,9 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'checkbox', 'id' => "content_stretch_height", 'title' => __("Match Height with Window Size", 'lang_theme_core'), 'default' => 2);
-			$options_params[] = array('type' => 'float', 'id' => "content_main_position", 'title' => __("Main Column Alignment", 'lang_theme_core'), 'default' => "right");
-			$options_params[] = array('type' => 'number', 'id' => "content_main_width", 'title' => __("Main Column Width", 'lang_theme_core')." (%)", 'default' => "60");
+			$options_params[] = array('type' => 'checkbox', 'id' => 'content_stretch_height', 'title' => __("Match Height with Window Size", 'lang_theme_core'), 'default' => 2);
+			$options_params[] = array('type' => 'float', 'id' => 'content_main_position', 'title' => __("Main Column Alignment", 'lang_theme_core'), 'default' => "right");
+			$options_params[] = array('type' => 'number', 'id' => 'content_main_width', 'title' => __("Main Column Width", 'lang_theme_core')." (%)", 'default' => "60");
 		}
 
 		if($theme_dir_name == 'mf_theme')
@@ -264,7 +267,7 @@ function get_params_theme_core()
 			$options_params[] = array('type' => 'text', 'id' => 'content_bg', 'title' => __("Background", 'lang_theme_core'));
 		}
 
-		$options_params[] = array('type' => 'text', 'id' => "content_padding", 'title' => __("Padding", 'lang_theme_core')); //, 'default' => "30px 0 20px"
+		$options_params[] = array('type' => 'text', 'id' => 'content_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => "30px 0 20px"
 
 	$options_params[] = array('category_end' => "");
 
@@ -283,7 +286,7 @@ function get_params_theme_core()
 
 		/* H2 */
 		##################
-		$options_params[] = array('type' => 'text', 'id' => "heading_margin_h2", 'title' => __("Margin", 'lang_theme_core')." (H2)", 'default' => "0 0 .5em");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h2', 'title' => __("Margin", 'lang_theme_core')." (H2)", 'default' => "0 0 .5em");
 		$options_params[] = array('type' => 'font', 'id' => 'heading_font_h2', 'title' => __("Font", 'lang_theme_core')." (H2)");
 
 		if($theme_dir_name == 'mf_theme')
@@ -293,15 +296,15 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'text', 'id' => "heading_font_size_h2", 'title' => __("Font Size", 'lang_theme_core')." (H2)", 'default' => "2em");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h2', 'title' => __("Font Size", 'lang_theme_core')." (H2)", 'default' => "2em");
 		}
 
-		$options_params[] = array('type' => 'weight', 'id' => "heading_weight_h2", 'title' => __("Weight", 'lang_theme_core')." (H2)");
+		$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h2', 'title' => __("Weight", 'lang_theme_core')." (H2)");
 		##################
 
 		/* H3 */
 		##################
-		$options_params[] = array('type' => 'text', 'id' => "heading_margin_h3", 'title' => __("Margin", 'lang_theme_core')." (H3)");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h3', 'title' => __("Margin", 'lang_theme_core')." (H3)");
 
 		if($theme_dir_name == 'mf_theme')
 		{
@@ -311,24 +314,24 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'text', 'id' => "heading_font_size_h3", 'title' => __("Font Size", 'lang_theme_core')." (H3)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h3', 'title' => __("Font Size", 'lang_theme_core')." (H3)");
 		}
 
-		$options_params[] = array('type' => 'weight', 'id' => "heading_weight_h3", 'title' => __("Weight", 'lang_theme_core')." (H3)");
+		$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h3', 'title' => __("Weight", 'lang_theme_core')." (H3)");
 		##################
 
 		/* H4 */
 		##################
-		$options_params[] = array('type' => 'text', 'id' => "heading_margin_h4", 'title' => __("Margin", 'lang_theme_core')." (H4)");
-		$options_params[] = array('type' => 'text', 'id' => "heading_font_size_h4", 'title' => __("Font Size", 'lang_theme_core')." (H4)");
-		$options_params[] = array('type' => 'weight', 'id' => "heading_weight_h4", 'title' => __("Weight", 'lang_theme_core')." (H4)");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h4', 'title' => __("Margin", 'lang_theme_core')." (H4)");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h4', 'title' => __("Font Size", 'lang_theme_core')." (H4)");
+		$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h4', 'title' => __("Weight", 'lang_theme_core')." (H4)");
 		##################
 
 		/* H5 */
 		##################
-		$options_params[] = array('type' => 'text', 'id' => "heading_margin_h5", 'title' => __("Margin", 'lang_theme_core')." (H5)");
-		$options_params[] = array('type' => 'text', 'id' => "heading_font_size_h5", 'title' => __("Font Size", 'lang_theme_core')." (H5)");
-		$options_params[] = array('type' => 'weight', 'id' => "heading_weight_h5", 'title' => __("Weight", 'lang_theme_core')." (H5)");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h5', 'title' => __("Margin", 'lang_theme_core')." (H5)");
+		$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h5', 'title' => __("Font Size", 'lang_theme_core')." (H5)");
+		$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h5', 'title' => __("Weight", 'lang_theme_core')." (H5)");
 		##################
 
 		if($theme_dir_name == 'mf_parallax')
@@ -351,7 +354,7 @@ function get_params_theme_core()
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('type' => 'text', 'id' => "quote_size", 'title' => __("Quote Size", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'quote_size', 'title' => __("Quote Size", 'lang_theme_core'));
 		}
 
 		if($theme_dir_name == 'mf_theme')
@@ -366,7 +369,7 @@ function get_params_theme_core()
 	if($theme_dir_name == 'mf_parallax')
 	{
 		$options_params[] = array('category' => __("Aside", 'lang_theme_core'), 'id' => 'mf_parallax_aside');
-			$options_params[] = array('type' => 'text', 'id' => "aside_p", 'title' => __("Paragraph Size", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'aside_p', 'title' => __("Paragraph Size", 'lang_theme_core'));
 		$options_params[] = array('category_end' => "");
 	}
 
@@ -378,6 +381,7 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'aside_width', 'title' => __("Width", 'lang_theme_core'), 'default' => "28%");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_widget_background', 'title' => __("Widget Background", 'lang_theme_core')); //, 'default' => "#f8f8f8"
 				$options_params[] = array('type' => 'text', 'id' => 'aside_widget_border', 'title' => __("Widget Border", 'lang_theme_core')); //, 'default' => "1px solid #d8d8d8"
+				$options_params[] = array('type' => 'text', 'id' => 'aside_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'aside_heading_bg', 'title' => __("Background", 'lang_theme_core')." (H3)");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_heading_border_bottom', 'title' => __("Border Bottom", 'lang_theme_core')." (H3)");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_heading_size', 'title' => __("Size", 'lang_theme_core')." (H3)");
@@ -387,12 +391,12 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'aside_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")", 'default' => ".5em");
 			$options_params[] = array('category_end' => "");
 
-			if(is_active_widget_area('widget_after_content'))
+			/*if(is_active_widget_area('widget_after_content'))
 			{
 				$options_params[] = array('category' => " - ".__("Below Main Column", 'lang_theme'), 'id' => 'mf_theme_after_content');
-					$options_params[] = array('type' => 'text', 'id' => "after_content_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'after_content_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('category_end' => "");
-			}
+			}*/
 		}
 
 		if(is_active_widget_area('widget_pre_footer'))
@@ -402,7 +406,7 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'pre_footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
 					$options_params[] = array('type' => 'image', 'id' => 'pre_footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => "pre_footer_widget_font_size", 'title' => __("Font Size", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", 'lang_theme_core'));
 					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
 			$options_params[] = array('category_end' => "");
@@ -416,9 +420,9 @@ function get_params_theme_core()
 
 		if(is_active_widget_area('widget_footer'))
 		{
-			$options_params[] = array('type' => 'font', 'id' => "footer_font", 'title' => __("Font", 'lang_theme_core'));
-			$options_params[] = array('type' => 'text', 'id' => "footer_font_size", 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
-			$options_params[] = array('type' => 'color', 'id' => "footer_color", 'title' => __("Text Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'font', 'id' => 'footer_font', 'title' => __("Font", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'footer_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
+			$options_params[] = array('type' => 'color', 'id' => 'footer_color', 'title' => __("Text Color", 'lang_theme_core'));
 
 				if($theme_dir_name == 'mf_theme')
 				{
@@ -427,8 +431,8 @@ function get_params_theme_core()
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'align', 'id' => "footer_align", 'title' => __("Alignment", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => "footer_margin", 'title' => __("Margin", 'lang_theme_core'));
+				$options_params[] = array('type' => 'align', 'id' => 'footer_align', 'title' => __("Alignment", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'footer_margin', 'title' => __("Margin", 'lang_theme_core'));
 			}
 
 			$options_params[] = array('type' => 'text', 'id' => 'footer_padding', 'title' => __("Padding", 'lang_theme_core'));
@@ -602,6 +606,13 @@ function head_theme_core()
 	}
 
 	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
+}
+
+function body_class_theme_core($classes)
+{
+	$classes[] = "is_site";
+
+	return $classes;
 }
 
 function get_menu_type_for_select()
