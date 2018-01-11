@@ -1076,9 +1076,9 @@ function settings_theme_core()
 		{
 			$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
 		}
-
-		$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 	}
+
+	$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
 }
