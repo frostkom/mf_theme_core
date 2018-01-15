@@ -1353,6 +1353,15 @@ class mf_theme_core
 			$this->do_fix();
 		}
 
+		//Remove unused tables
+		if(is_plugin_active('email-log/email-log.php') == false)
+		{
+			mf_uninstall_plugin(array(
+				'options' => array('email-log-db'),
+				'tables' => array('email_log'),
+			));
+		}
+
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
 		return __("I have optimized the site for you", 'lang_theme_core');
@@ -1743,8 +1752,9 @@ class widget_theme_core_news extends WP_Widget
 								echo "<li>
 									<a href='".$page['url']."'>
 										<div class='image'>".$page['image']."</div>
-										<h4>".$page['title']."</h4>
-									</a>
+										<h4>".$page['title']."</h4>"
+										.apply_filters('the_content', $page['excerpt'])
+									."</a>
 								</li>";
 							}
 
@@ -1757,10 +1767,10 @@ class widget_theme_core_news extends WP_Widget
 						{
 							echo "<a href='".$page['url']."'>
 								<div class='image'>".$page['image']."</div>
-								<h4>".$page['title']."</h4>
-							</a>"
-							.apply_filters('the_content', $page['excerpt'])
-							."<a href='".$page['url']."'>".__("Read More", 'lang_theme_core')."</a>";
+								<h4>".$page['title']."</h4>"
+								.apply_filters('the_content', $page['excerpt'])
+								.__("Read More", 'lang_theme_core')
+							."</a>";
 						}
 					}
 
