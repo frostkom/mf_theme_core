@@ -1127,7 +1127,7 @@ function setting_splash_screen_callback()
 function setting_scroll_to_top_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'no');
+	$option = get_option_or_default($setting_key, 'yes');
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
