@@ -1583,7 +1583,8 @@ class widget_theme_core_logo extends WP_Widget
 
 				if($instance['logo_title'] == '')
 				{
-					echo get_file_button(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image']));
+					//echo get_file_button(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image']));
+					echo get_media_library(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image'], 'type' => 'image'));
 				}
 			}
 
@@ -1705,7 +1706,7 @@ class widget_theme_core_news extends WP_Widget
 					$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
 				}
 
-				if($post_thumbnail == '')
+				if($post_thumbnail == '' && $instance['news_amount'] > 1)
 				{
 					$post_thumbnail = get_image_fallback();
 				}
@@ -1759,26 +1760,29 @@ class widget_theme_core_news extends WP_Widget
 							}
 
 						echo "</ul>";
+
+						if($instance['news_page'] > 0)
+						{
+							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", 'lang_theme_core')."</a></p>";
+						}
 					}
 
 					else
 					{
 						foreach($this->arr_news as $page)
 						{
-							echo "<a href='".$page['url']."'>
-								<div class='image'>".$page['image']."</div>
-								<h4>".$page['title']."</h4>"
+							echo "<a href='".$page['url']."'>";
+
+								if($page['image'] != '')
+								{
+									echo "<div class='image'>".$page['image']."</div>";
+								}
+
+								echo "<h4>".$page['title']."</h4>"
 								.apply_filters('the_content', $page['excerpt'])
-								.__("Read More", 'lang_theme_core')
+								."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
 							."</a>";
 						}
-					}
-
-					if($instance['news_page'] > 0)
-					{
-						echo "<a href='".get_permalink($instance['news_page'])."'>"
-							.__("Read More", 'lang_theme_core')
-						."</a>";
 					}
 
 				echo "</div>"
