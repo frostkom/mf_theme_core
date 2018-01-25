@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-23 11:55+0100\n"
+"POT-Creation-Date: 2018-01-25 09:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -191,148 +191,148 @@ msgstr "Fet"
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/classes.php:1045
+#: ../include/classes.php:1126
 #, php-format
-msgid "The file %s already exists so %s can be deleted now"
-msgstr "Filen %s finns redan så %s kan tas bort nu"
+msgid "You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case"
+msgstr "Du kan nu med gott samvete radera alla års-mappar i %s, men bara för att vara på den säkra sidan kan du flytta dom till en temporär mapp eller ta en backup om något trots allt skulle saknas efteråt"
 
-#: ../include/classes.php:1188
+#: ../include/classes.php:1198
 #, php-format
 msgid "The feed from %s returned an error"
 msgstr "Flödet från %s gav ett fel"
 
-#: ../include/classes.php:1194
+#: ../include/classes.php:1204
 #, php-format
 msgid "The response from %s had an error (%s)"
 msgstr "Svaret from %s hade ett fel (%s)"
 
-#: ../include/classes.php:1200
+#: ../include/classes.php:1210
 #, php-format
 msgid "I could not process the feed from %s since the URL was not a valid one"
 msgstr "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
 
-#: ../include/classes.php:1367
+#: ../include/classes.php:1377
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:1425
+#: ../include/classes.php:1435
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1482
+#: ../include/classes.php:1492
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1500
+#: ../include/classes.php:1510
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:1505
+#: ../include/classes.php:1515
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:1521
+#: ../include/classes.php:1531
 msgid "Display logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:1533
-#: ../include/classes.php:1569
-#: ../include/classes.php:1581
+#: ../include/classes.php:1543
+#: ../include/classes.php:1579
+#: ../include/classes.php:1591
 #: ../include/functions.php:100
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:1568
+#: ../include/classes.php:1578
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:1570
-#: ../include/classes.php:1593
+#: ../include/classes.php:1580
+#: ../include/classes.php:1603
 #: ../include/functions.php:109
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:1574
+#: ../include/classes.php:1584
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:1575
+#: ../include/classes.php:1585
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:1606
+#: ../include/classes.php:1616
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:1616
+#: ../include/classes.php:1626
 #: ../include/functions.php:94
 #: ../include/functions.php:95
 #: ../include/functions.php:636
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:1645
+#: ../include/classes.php:1655
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:1646
+#: ../include/classes.php:1656
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:1657
+#: ../include/classes.php:1667
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1671
+#: ../include/classes.php:1681
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1766
-#: ../include/classes.php:1783
-#: ../include/classes.php:1856
+#: ../include/classes.php:1776
+#: ../include/classes.php:1793
+#: ../include/classes.php:1866
 #: ../include/functions.php:1421
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:1843
+#: ../include/classes.php:1853
 msgid "Original"
 msgstr ""
 
-#: ../include/classes.php:1844
+#: ../include/classes.php:1854
 msgid "Post It"
 msgstr ""
 
-#: ../include/classes.php:1850
-#: ../include/classes.php:2005
+#: ../include/classes.php:1860
+#: ../include/classes.php:2015
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:1851
+#: ../include/classes.php:1861
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:1852
+#: ../include/classes.php:1862
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:1854
+#: ../include/classes.php:1864
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:1862
+#: ../include/classes.php:1872
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:1875
+#: ../include/classes.php:1885
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:1883
+#: ../include/classes.php:1893
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:2006
+#: ../include/classes.php:2016
 msgid "Pages"
 msgstr "Sidor"
 
