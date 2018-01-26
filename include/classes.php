@@ -1484,7 +1484,7 @@ class mf_clone_posts
 
 		if(!$url)
 		{
-			$url = admin_url("?post_type=".$post_type);
+			$url = admin_url("edit.php?post_type=".$post_type);
 		}
 
 		$url = remove_query_arg(array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $url);
