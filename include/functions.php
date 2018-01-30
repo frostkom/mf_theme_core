@@ -1072,6 +1072,22 @@ function settings_theme_core()
 
 		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
 		$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
+
+		$users_editors = get_users(array(
+			'fields' => array('ID'),
+			'role__in' => array('editor'),
+		));
+
+		$users_authors = get_users(array(
+			'fields' => array('ID'),
+			'role__in' => array('author'),
+		));
+
+		if(count($users_editors) > 0 && count($users_authors) > 0)
+		{
+			$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", 'lang_theme_core');
+		}
+
 		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 
 		if(is_plugin_active('css-hero-ce/css-hero-main.php'))
@@ -1135,7 +1151,7 @@ function setting_scroll_to_top_callback()
 function setting_cookie_info_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key);
+	$option = get_option($setting_key);
 
 	$arr_data = array();
 	get_post_children(array('add_choose_here' => true), $arr_data);
@@ -1146,7 +1162,7 @@ function setting_cookie_info_callback()
 function setting_404_page_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key);
+	$option = get_option($setting_key);
 
 	$arr_data = array();
 	get_post_children(array('add_choose_here' => true), $arr_data);
@@ -1275,6 +1291,26 @@ function setting_maintenance_page_callback()
 
 		echo get_notification();
 	}
+}
+
+function setting_send_email_on_draft_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, 'no');
+
+	$editors = "";
+
+	$users = get_users(array(
+		'fields' => array('display_name'),
+		'role__in' => array('editor'),
+	));
+
+	foreach($users as $user)
+	{
+		$editors .= ($editors != '' ? "" : "").$user->display_name;
+	}
+
+	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
 }
 
 function setting_theme_optimize_callback()

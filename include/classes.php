@@ -779,6 +779,33 @@ class mf_theme_core
 
 		return $meta_boxes;
 	}
+
+	/* Send e-mail to all editors if it is a draft and the user saving the draft is an author, but not an editor */
+	function save_post($post_id)
+	{
+		global $post;
+
+		if($post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
+		{
+			$post_title = get_the_title($post);
+			$post_url = get_permalink($post);
+
+			$mail_subject = sprintf(__("The draft '%s' has been saved", 'lang_theme_core'), $post_title);
+			$mail_content = sprintf(__("The draft '%s' has been saved and might be ready for publishing", 'lang_theme_core'), "<a href='".$post_url."'>".$post_title."</a>");
+
+			$users = get_users(array(
+				'fields' => array('user_email'),
+				'role__in' => array('editor'),
+			));
+
+			foreach($users as $user)
+			{
+				$mail_to = $user->user_email;
+
+				$sent = send_email(array('to' => $mail_to, 'subject' => $mail_subject, 'content' => $mail_content));
+			}
+		}
+	}
 	#################################
 
 	//Customizer
