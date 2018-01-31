@@ -1071,13 +1071,15 @@ class mf_theme_core
 				{
 					//error_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
 
-					unlink($this->file_dir_from);
+					/* Some files are still in use in the old hierarchy */
+					/*unlink($this->file_dir_from);
+					do_log("Removed File: ".$upload_path.$strFileName);*/
 				}
 
-				else
+				/*else
 				{
-					//error_log("File has already been deleted: ".$this->file_dir_from);
-				}
+					error_log("File has already been deleted: ".$this->file_dir_from);
+				}*/
 			}
 		}
 
@@ -1141,7 +1143,8 @@ class mf_theme_core
 			}
 		}
 
-		if(!(get_option('option_uploads_fixed') > DEFAULT_DATE))
+		/* Some files are still in use in the old hierarchy */
+		/*if(!(get_option('option_uploads_fixed') > DEFAULT_DATE))
 		{
 			update_option('option_uploads_fixed', date("Y-m-d H:i:s"), 'no');
 		}
@@ -1155,7 +1158,7 @@ class mf_theme_core
 				update_option('option_uploads_done', date("Y-m-d H:i:s"), 'no');
 				delete_option('option_uploads_fixed');
 			}
-		}
+		}*/
 	}
 	#################################
 
@@ -1276,6 +1279,7 @@ class mf_theme_core
 		if(count(scandir($folder)) == 2)
 		{
 			rmdir($folder);
+			do_log("Removed Folder: ".$folder);
 		}
 	}
 
