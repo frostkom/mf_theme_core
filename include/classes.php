@@ -785,7 +785,7 @@ class mf_theme_core
 	{
 		global $post;
 
-		if($post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
+		if(isset($post->post_status) && $post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
 		{
 			$post_title = get_the_title($post);
 			$post_url = get_permalink($post);
