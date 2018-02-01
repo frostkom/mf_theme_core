@@ -1270,6 +1270,36 @@ class mf_theme_core
 
 		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 30))); //30 days
 		#######################
+
+		/* Set default meta boxes */
+		#######################
+		$page = 'post';
+
+		$users = get_users(array(
+			'fields' => array('ID'),
+		));
+
+		foreach($users as $user)
+		{
+			$hidden_default = $hidden = get_user_option('metaboxhidden_'.$page, $user->ID);
+
+			if(is_array($hidden))
+			{
+				$hidden = array_diff($hidden, array('postexcerpt')); // postboxes that are always shown
+
+				if($hidden != $hidden_default)
+				{
+					update_user_option($user->ID, 'metaboxhidden_'.$page, $hidden, true);
+				}
+			}
+
+			else
+			{
+				$hidden = array('slugdiv', 'trackbacksdiv', 'postcustom', 'commentstatusdiv', 'commentsdiv', 'authordiv', 'revisionsdiv');
+				update_user_option($user->ID, 'metaboxhidden_'.$page, $hidden, true);
+			}
+		}
+		#######################
 	}
 
 	function remove_empty_folder($data)
