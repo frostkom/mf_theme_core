@@ -104,7 +104,7 @@ class mf_theme_core
 			$this->options_fonts[$media_key] = array(
 				'title' => $media_font['title'],
 				'style' => "'".$media_font['title']."'",
-				'file' => $media_font['guid'],
+				'file' => remove_protocol(array('url' => $media_font['guid'])),
 				'extensions' => $media_font['extensions'],
 			);
 		}
@@ -1206,11 +1206,6 @@ class mf_theme_core
 				if(filter_var($style_source, FILTER_VALIDATE_URL))
 				{
 					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", true);
-
-					if(!isset($headers['http_code']) || $headers['http_code'] != 200) //Fallback until all sites are updated
-					{
-						list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/ajax.php?type=get_style_source", true);
-					}
 
 					if(isset($headers['http_code']) && $headers['http_code'] == 200)
 					{

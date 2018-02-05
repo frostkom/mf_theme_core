@@ -1333,7 +1333,7 @@ function setting_theme_optimize_callback()
 		$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 	}
 
-	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => " min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description))
+	echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description))
 	."<div class='form_buttons'>"
 		.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
 	."</div>
