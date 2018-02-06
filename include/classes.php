@@ -1731,6 +1731,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_type' => 'original',
 			'news_categories' => array(),
 			'news_amount' => 1,
+			'news_display_arrows' => 'no',
 			//'news_display_excerpt' => 'no',
 			'news_page' => 0,
 		);
@@ -1809,7 +1810,7 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single")."'>";
+				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single").($rows > 3 && $instance['news_display_arrows'] == 'yes' ? " news_arrows" : "")."'>";
 
 					if($rows > 1)
 					{
@@ -1867,6 +1868,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		$instance['news_display_arrows'] = sanitize_text_field($new_instance['news_display_arrows']);
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
 		$instance['news_page'] = sanitize_text_field($new_instance['news_page']);
 
@@ -1919,6 +1921,9 @@ class widget_theme_core_news extends WP_Widget
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']))
+				."</div>
+				<div class='flex_flow'>"
 					//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
 					.show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']))
 				."</div>";

@@ -90,20 +90,20 @@
 
 		.widget .section .columns_2 li
 		{
-			-webkit-box-flex: 1 0 49%;
-			-webkit-flex: 1 0 49%;
-			-ms-flex: 1 0 49%;
-			flex: 1 0 49%;
-			min-width: 49%;
+			-webkit-box-flex: 1 0 50%;
+			-webkit-flex: 1 0 50%;
+			-ms-flex: 1 0 50%;
+			flex: 1 0 50%;
+			min-width: 50%;
 		}
 
 		.widget .section .columns_3 li
 		{
-			-webkit-box-flex: 1 0 32%;
-			-webkit-flex: 1 0 32%;
-			-ms-flex: 1 0 32%;
-			flex: 1 0 32%;
-			min-width: 32%;
+			-webkit-box-flex: 1 0 33%;
+			-webkit-flex: 1 0 33%;
+			-ms-flex: 1 0 33%;
+			flex: 1 0 33%;
+			min-width: 33%;
 		}
 
 	/*.widget .section .columns_2
@@ -138,14 +138,19 @@
 		-webkit-box-pack: center;
 		-moz-box-pack: center;
 		-ms-flex-pack: center;
-		-webkit-justify-content: center;
-		justify-content: center;
+		-webkit-justify-content: flex-start;
+		justify-content: flex-start;
 		-webkit-box-align: center;
 		-moz-box-align: center;
 		-ms-flex-align: center;
 		-webkit-align-items: center;
 		align-items: stretch;
 	}
+	
+		.widget.theme_news .postit ul
+		{
+			padding-top: 1em;
+		}
 
 		.widget.theme_news li
 		{
@@ -326,5 +331,63 @@
 			{
 				width: 100%;
 			}
+	/* ########################## */
+
+	/* ########################## */
+	.widget.theme_news .news_arrows ul
+	{
+		flex-wrap: nowrap;
+		overflow: hidden;
+	}
+
+		.widget.theme_news .news_arrows .controls.fa
+		{
+			background: #000;
+			border-radius: 50%;
+			color: #fff;
+			font-size: 2em;
+			opacity: .4;
+			position: absolute;
+			top: 46%;
+			z-index: 1;
+		}
+
+			.widget.theme_news .news_arrows .controls.fa:hover
+			{
+				opacity: .7;
+			}
+
+			.widget.theme_news .news_arrows .controls.arrow_left
+			{
+				left: 1%;
+				padding: .35em .6em .35em .45em;
+			}
+
+				.is_mobile .widget.theme_news .news_arrows .controls.arrow_left
+				{
+					top: 1%;
+				}
+
+			.widget.theme_news .news_arrows .controls.arrow_right
+			{
+				padding: .35em .45em .35em .6em;
+				right: 1%;
+			}
+
+				.is_mobile .widget.theme_news .news_arrows .controls.arrow_right
+				{
+					bottom: 1%;
+					top: auto;
+				}
+
+		.widget.theme_news .news_arrows .arrow_left
+		{
+
+		}
+
+		.widget.theme_news .news_arrows .arrow_right
+		{
+			
+		}
 	/* ########################## */
 }

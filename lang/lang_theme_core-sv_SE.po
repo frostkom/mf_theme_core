@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-30 09:57+0100\n"
+"POT-Creation-Date: 2018-02-06 12:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -201,148 +201,147 @@ msgstr "Fet"
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/classes.php:1153
-#, php-format
-msgid "You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case"
-msgstr "Du kan nu med gott samvete radera alla års-mappar i %s, men bara för att vara på den säkra sidan kan du flytta dom till en temporär mapp eller ta en backup om något trots allt skulle saknas efteråt"
-
-#: ../include/classes.php:1226
+#: ../include/classes.php:1224
 #, php-format
 msgid "The feed from %s returned an error"
 msgstr "Flödet från %s gav ett fel"
 
-#: ../include/classes.php:1232
+#: ../include/classes.php:1230
 #, php-format
 msgid "The response from %s had an error (%s)"
 msgstr "Svaret from %s hade ett fel (%s)"
 
-#: ../include/classes.php:1238
+#: ../include/classes.php:1236
 #, php-format
 msgid "I could not process the feed from %s since the URL was not a valid one"
 msgstr "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
 
-#: ../include/classes.php:1405
+#: ../include/classes.php:1434
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:1463
+#: ../include/classes.php:1492
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1520
+#: ../include/classes.php:1549
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1538
+#: ../include/classes.php:1567
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:1543
+#: ../include/classes.php:1572
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:1559
+#: ../include/classes.php:1588
 msgid "Display logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:1571
-#: ../include/classes.php:1607
-#: ../include/classes.php:1619
+#: ../include/classes.php:1600
+#: ../include/classes.php:1636
+#: ../include/classes.php:1648
 #: ../include/functions.php:100
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:1606
+#: ../include/classes.php:1635
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:1608
-#: ../include/classes.php:1631
+#: ../include/classes.php:1637
+#: ../include/classes.php:1660
 #: ../include/functions.php:109
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:1612
+#: ../include/classes.php:1641
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:1613
+#: ../include/classes.php:1642
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:1644
+#: ../include/classes.php:1673
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:1654
+#: ../include/classes.php:1683
 #: ../include/functions.php:94
 #: ../include/functions.php:95
 #: ../include/functions.php:636
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:1683
+#: ../include/classes.php:1712
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:1684
+#: ../include/classes.php:1713
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:1695
+#: ../include/classes.php:1724
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1709
+#: ../include/classes.php:1739
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1804
-#: ../include/classes.php:1821
-#: ../include/classes.php:1894
-#: ../include/functions.php:1452
+#: ../include/classes.php:1834
+#: ../include/classes.php:1851
+#: ../include/classes.php:1928
+#: ../include/functions.php:1458
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:1881
+#: ../include/classes.php:1912
 msgid "Original"
 msgstr ""
 
-#: ../include/classes.php:1882
+#: ../include/classes.php:1913
 msgid "Post It"
 msgstr ""
 
-#: ../include/classes.php:1888
-#: ../include/classes.php:2043
+#: ../include/classes.php:1919
+#: ../include/classes.php:2077
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:1889
+#: ../include/classes.php:1920
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:1890
+#: ../include/classes.php:1921
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:1892
+#: ../include/classes.php:1923
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:1900
+#: ../include/classes.php:1924
+msgid "Display Arrows"
+msgstr "Visa pilar"
+
+#: ../include/classes.php:1934
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:1913
+#: ../include/classes.php:1947
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:1921
+#: ../include/classes.php:1955
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:2044
+#: ../include/classes.php:2078
 msgid "Pages"
 msgstr "Sidor"
 
@@ -850,7 +849,7 @@ msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
 #: ../include/functions.php:789
-#: ../include/functions.php:919
+#: ../include/functions.php:920
 msgid "Theme Backup"
 msgstr "Temabackup"
 
@@ -874,188 +873,188 @@ msgstr "Återställningen lyckades"
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/functions.php:900
+#: ../include/functions.php:901
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/functions.php:913
+#: ../include/functions.php:914
 #, php-format
 msgid "The theme at %s has got a newer version of saved style which can be %srestored here%s"
 msgstr "Temat på %s har en nyare version på sparad design som kan %såterställas här%s"
 
-#: ../include/functions.php:940
+#: ../include/functions.php:941
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/functions.php:941
+#: ../include/functions.php:942
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:955
+#: ../include/functions.php:956
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/functions.php:956
-#: ../include/functions.php:980
+#: ../include/functions.php:957
+#: ../include/functions.php:981
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/functions.php:960
+#: ../include/functions.php:961
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/functions.php:975
+#: ../include/functions.php:976
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/functions.php:991
+#: ../include/functions.php:992
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/functions.php:994
+#: ../include/functions.php:995
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:1041
+#: ../include/functions.php:1042
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:1045
+#: ../include/functions.php:1046
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:1061
+#: ../include/functions.php:1062
 msgid "Show scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:1065
+#: ../include/functions.php:1066
 msgid "Cookie information"
 msgstr "Cookie-information"
 
-#: ../include/functions.php:1073
+#: ../include/functions.php:1074
 msgid "404 Page"
 msgstr "404-sida"
 
-#: ../include/functions.php:1074
+#: ../include/functions.php:1075
 msgid "Maintenance Page"
 msgstr "Underhållssida"
 
-#: ../include/functions.php:1083
+#: ../include/functions.php:1089
 msgid "Send Email when Draft is Saved"
 msgstr "Skicka e-post när utkast sparas"
 
-#: ../include/functions.php:1086
+#: ../include/functions.php:1092
 msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
 
-#: ../include/functions.php:1090
+#: ../include/functions.php:1096
 msgid "CSS Hero Support"
 msgstr "CSS Hero-stöd"
 
-#: ../include/functions.php:1094
+#: ../include/functions.php:1100
 msgid "Optimize"
 msgstr "Optimera"
 
-#: ../include/functions.php:1103
+#: ../include/functions.php:1109
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:1154
+#: ../include/functions.php:1160
 msgid "The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies"
 msgstr "Innehållet från denna sida kommer att visas längst upp på sidan tills dess att besökaren klickar för att acceptera användandet av cookies"
 
-#: ../include/functions.php:1165
+#: ../include/functions.php:1171
 msgid "404"
 msgstr ""
 
-#: ../include/functions.php:1166
+#: ../include/functions.php:1172
 msgid "Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know."
 msgstr "Hoppsan! Den sida som du sökte verkar inte finnas. Om du anser att den borde finnas, var vänlig säg till oss."
 
-#: ../include/functions.php:1168
+#: ../include/functions.php:1174
 msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
-#: ../include/functions.php:1182
+#: ../include/functions.php:1188
 msgid "Temporary Maintenance"
 msgstr "Tillfälligt underhåll"
 
-#: ../include/functions.php:1183
+#: ../include/functions.php:1189
 msgid "This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual."
 msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än en minut så du har haft otur som besökte webbsidan precis vid detta tillfälle. Om du testar att ladda om sidan om en liten stund så ska den säkerligen vara klar med detta."
 
-#: ../include/functions.php:1185
+#: ../include/functions.php:1191
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/functions.php:1272
+#: ../include/functions.php:1278
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/functions.php:1278
+#: ../include/functions.php:1284
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/functions.php:1284
+#: ../include/functions.php:1290
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/functions.php:1308
+#: ../include/functions.php:1314
 #, php-format
 msgid "This will send an e-mail to all editors (%s) when an author saves a draft"
 msgstr "Detta kommer att skicka ett e-post till alla redaktörer (%s) när en författare sparar ett utkast"
 
-#: ../include/functions.php:1322
+#: ../include/functions.php:1328
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/functions.php:1327
+#: ../include/functions.php:1333
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/functions.php:1330
+#: ../include/functions.php:1336
 msgid "days"
 msgstr "dagar"
 
-#: ../include/functions.php:1332
+#: ../include/functions.php:1338
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/functions.php:1354
+#: ../include/functions.php:1360
 #, php-format
 msgid "By going to %sthe site%s you can edit any styling to your liking"
 msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egna önskemål"
 
-#: ../include/functions.php:1440
+#: ../include/functions.php:1446
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/functions.php:1494
+#: ../include/functions.php:1500
 msgid "A visitor accessed the public page without being logged in!"
 msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
 
-#: ../include/functions.php:1513
+#: ../include/functions.php:1519
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1518
+#: ../include/functions.php:1524
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1523
+#: ../include/functions.php:1529
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1528
+#: ../include/functions.php:1534
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1607
+#: ../include/functions.php:1613
 msgid "Search for"
 msgstr "Sök efter"
 
@@ -1073,3 +1072,11 @@ msgstr "URL"
 msgid "Last Modified"
 msgstr "Senast ändrad"
 
+#~ msgid ""
+#~ "You can now safely remove all year folders in %s, but just to be on the "
+#~ "safe side you can move them to a temporary folder or make a backup before "
+#~ "you do this just in case"
+#~ msgstr ""
+#~ "Du kan nu med gott samvete radera alla års-mappar i %s, men bara för att "
+#~ "vara på den säkra sidan kan du flytta dom till en temporär mapp eller ta "
+#~ "en backup om något trots allt skulle saknas efteråt"
