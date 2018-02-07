@@ -868,7 +868,7 @@ function get_options_page_theme_core()
 
 			if(is_array($json))
 			{
-				$arr_ignore_key = explode_and_trim(",", get_option('setting_theme_ignore_style_on_restore'));
+				$arr_ignore_key = array_map('trim', explode(",", get_option('setting_theme_ignore_style_on_restore')));
 
 				foreach($json as $key => $value)
 				{

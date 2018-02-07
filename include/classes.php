@@ -1330,7 +1330,7 @@ class mf_theme_core
 
 	function delete_folder($data)
 	{
-		$folder = $data['path'].$data['child']; //."/"
+		$folder = $data['path']."/".$data['child'];
 
 		if(count(scandir($folder)) == 2)
 		{
