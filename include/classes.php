@@ -298,9 +298,8 @@ class mf_theme_core
 
 			#wrapper .mf_form button:hover, #wrapper .button:hover, #wrapper .mf_form .button-primary:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
 			{
-				box-shadow: inset 0 0 10em rgba(0, 0, 0, .1);"
-				//.$this->render_css(array('property' => 'background', 'value' => 'button_color_hover'))
-			."}
+				box-shadow: inset 0 0 10em rgba(0, 0, 0, .1);
+			}
 
 		html
 		{
@@ -556,6 +555,38 @@ class mf_theme_core
 		$out .= "</a>";
 
 		return $out;
+	}
+
+	function content_meta($html, $post)
+	{
+		$setting_display_post_meta = get_option_or_default('setting_display_post_meta', array('time'));
+
+		if($post->post_type == 'post' && in_array('time', $setting_display_post_meta))
+		{
+			$html .= "<time datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
+		}
+
+		if(in_array('author', $setting_display_post_meta))
+		{
+			$html .= "<span>".sprintf(__("by %s", 'lang_theme_core'), get_user_info(array('id' => $post->post_author)))."</span>";
+		}
+
+		if(in_array('category', $setting_display_post_meta))
+		{
+			$arr_categories = get_the_category($post->ID);
+
+			if(is_array($arr_categories) && count($arr_categories) > 0)
+			{
+				$category_base_url = get_site_url()."/category/";
+
+				foreach($arr_categories as $category)
+				{
+					$html .= "<a href='".$category_base_url.$category->slug."'>".$category->name."</a>";
+				}
+			}
+		}
+
+		return $html;
 	}
 	#################################
 
@@ -1297,14 +1328,14 @@ class mf_theme_core
 		#######################
 	}
 
-	function remove_empty_folder($data)
+	function delete_folder($data)
 	{
-		$folder = $data['path']."/".$data['child'];
+		$folder = $data['path'].$data['child']; //."/"
 
 		if(count(scandir($folder)) == 2)
 		{
 			rmdir($folder);
-			do_log("Removed Folder: ".$folder);
+			do_log("Removed Empty Folder: ".$folder);
 		}
 	}
 
@@ -1407,13 +1438,9 @@ class mf_theme_core
 			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
 		}
 
-		// Can be removed later because the folder is not in use anymore
-		/*list($upload_path, $upload_url) = get_uploads_folder('mf_theme_core');
-		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files'));*/
-
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();
-		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'remove_empty_folder')));
+		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_folder')));
 
 		if(is_multisite() && !(get_option('option_uploads_done') > DEFAULT_DATE))
 		{

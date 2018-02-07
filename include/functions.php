@@ -1059,7 +1059,8 @@ function settings_theme_core()
 			delete_option('setting_splash_screen');
 		}*/
 
-		$arr_settings['setting_scroll_to_top'] = __("Show scroll-to-top-link", 'lang_theme_core');
+		$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+		$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
 		{
@@ -1140,6 +1141,20 @@ function setting_splash_screen_callback()
 
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }*/
+
+function setting_display_post_meta_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option_or_default($setting_key, array('time'));
+
+	$arr_data = array(
+		'time' => __("Time", 'lang_theme_core'),
+		'author' => __("Author", 'lang_theme_core'),
+		'category' => __("Category", 'lang_theme_core'),
+	);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
+}
 
 function setting_scroll_to_top_callback()
 {
