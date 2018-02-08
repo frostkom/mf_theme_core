@@ -1335,7 +1335,7 @@ class mf_theme_core
 		if(count(scandir($folder)) == 2)
 		{
 			rmdir($folder);
-			do_log("Removed Empty Folder: ".$folder);
+			//do_log("Removed Empty Folder: ".$folder);
 		}
 	}
 
@@ -1759,6 +1759,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_categories' => array(),
 			'news_amount' => 1,
 			'news_display_arrows' => 'no',
+			'news_autoscroll_time' => 1,
 			//'news_display_excerpt' => 'no',
 			'news_page' => 0,
 		);
@@ -1828,6 +1829,17 @@ class widget_theme_core_news extends WP_Widget
 
 		if($rows > 0)
 		{
+			$display_news_scroll = $rows > 3 && $instance['news_display_arrows'] == 'yes';
+
+			if($display_news_scroll)
+			{
+				$plugin_include_url = plugin_dir_url(__FILE__);
+				$plugin_version = get_plugin_version(__FILE__);
+
+				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css", $plugin_version);
+				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
+			}
+
 			echo $before_widget;
 
 				if($instance['news_title'] != '')
@@ -1837,7 +1849,7 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single").($rows > 3 && $instance['news_display_arrows'] == 'yes' ? " news_arrows" : "")."'>";
+				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single").($display_news_scroll ? " news_scroll" : "")."'".($instance['news_autoscroll_time'] > 0 ? " data-autoscroll='".$instance['news_autoscroll_time']."'" : "").">";
 
 					if($rows > 1)
 					{
@@ -1896,6 +1908,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		$instance['news_display_arrows'] = sanitize_text_field($new_instance['news_display_arrows']);
+		$instance['news_autoscroll_time'] = sanitize_text_field($new_instance['news_autoscroll_time']);
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
 		$instance['news_page'] = sanitize_text_field($new_instance['news_page']);
 
@@ -1926,7 +1939,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$instance_temp = $instance;
-		$instance_temp['news_amount'] = 10;
+		$instance_temp['news_amount'] = 9;
 		$this->get_posts($instance_temp);
 
 		echo "<div class='mf_form'>";
@@ -1948,8 +1961,14 @@ class widget_theme_core_news extends WP_Widget
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"))
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']))
-				."</div>
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
+
+					if($instance['news_display_arrows'] == 'yes')
+					{
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+					}
+
+				echo "</div>
 				<div class='flex_flow'>"
 					//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
 					.show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']))

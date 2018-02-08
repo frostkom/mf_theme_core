@@ -1,0 +1,83 @@
+@media all
+{
+	.widget.theme_news .news_scroll ul
+	{
+		flex-wrap: nowrap;
+	}
+
+		.widget.theme_news .news_scroll ul.translate_1 li{		transform: translate(-100%, 0);}
+		.widget.theme_news .news_scroll ul.translate_2 li{		transform: translate(-200%, 0);}
+		.widget.theme_news .news_scroll ul.translate_3 li{		transform: translate(-300%, 0);}
+		.widget.theme_news .news_scroll ul.translate_4 li{		transform: translate(-400%, 0);}
+		.widget.theme_news .news_scroll ul.translate_5 li{		transform: translate(-500%, 0);}
+		.widget.theme_news .news_scroll ul.translate_6 li{		transform: translate(-600%, 0);}
+		.widget.theme_news .news_scroll ul.translate_7 li{		transform: translate(-700%, 0);}
+		.widget.theme_news .news_scroll ul.translate_8 li{		transform: translate(-800%, 0);}
+
+		.widget.theme_news .news_scroll ul li
+		{
+			opacity: 1;
+			transform: translate(0, 0);
+			transition: all 1s ease;
+		}
+
+			.is_mobile .widget.theme_news .news_scroll ul li
+			{
+				transform: translate(0, 0) !important;
+			}
+
+			.widget.theme_news .news_scroll ul li.hidden
+			{
+				opacity: .2;
+			}
+
+				.is_mobile .widget.theme_news .news_scroll ul li.hidden
+				{
+					display: none;
+				}
+			
+			.widget.theme_news .news_scroll .controls
+			{
+				display: none;
+			}
+
+				.widget.theme_news .news_scroll .controls.fa
+				{
+					background: #000;
+					border-radius: 50%;
+					color: #fff;
+					font-size: 2em;
+					opacity: .4;
+					position: absolute;
+					top: 46%;
+					z-index: 1;
+				}
+
+					.widget.theme_news .news_scroll .controls.fa:hover
+					{
+						opacity: .7;
+					}
+
+					.widget.theme_news .news_scroll .controls.arrow_left
+					{
+						left: 1%;
+						padding: .35em .6em .35em .45em;
+					}
+
+						.is_mobile .widget.theme_news .news_scroll .controls.arrow_left
+						{
+							top: 1%;
+						}
+
+					.widget.theme_news .news_scroll .controls.arrow_right
+					{
+						padding: .35em .45em .35em .6em;
+						right: 1%;
+					}
+
+						.is_mobile .widget.theme_news .news_scroll .controls.arrow_right
+						{
+							bottom: 1%;
+							top: auto;
+						}
+}

@@ -539,12 +539,6 @@ function init_theme_core()
 			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
 		}
 
-		/*if(get_option('setting_html5_history') == 'yes')
-		{
-			mf_enqueue_style('style_theme_history', $plugin_include_url."style_history.css", $plugin_version);
-			mf_enqueue_script('script_theme_history', $plugin_include_url."script_history.js", array('site_url' => get_site_url()), $plugin_version);
-		}*/
-
 		/*if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
 		{
 			check_admin_referer('posts_logout');
