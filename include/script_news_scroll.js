@@ -37,12 +37,12 @@ jQuery(function($)
 
 				if(i >= news_current && i < (news_current + news_display))
 				{
-					dom_news.removeClass('hidden');
+					dom_news.removeClass('inactive');
 				}
 
 				else
 				{
-					dom_news.addClass('hidden');
+					dom_news.addClass('inactive');
 				}
 
 				i++;

@@ -245,7 +245,7 @@
 				.widget.theme_news .postit li > a:after
 				{
 					background: rgba(254, 254, 254, .6);
-					border: .1em solid #fff;
+					border: 1px solid #fff;
 					box-shadow: 0 0 .3em rgba(0, 0, 0, .1);  
 					content: "";
 					display: block;
