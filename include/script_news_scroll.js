@@ -85,19 +85,19 @@ jQuery(function($)
 			}, news_autoscroll_time * 1000);
 		}
 
-		dom_obj.prepend("<i class='fa fa-chevron-left controls arrow_left'></i>");
-		dom_obj.append("<i class='fa fa-chevron-right controls arrow_right'></i>");
+		dom_obj.prepend("<div class='controls arrow_left'><i class='fa fa-chevron-left'></i></div>");
+		dom_obj.append("<div class='controls arrow_right'><i class='fa fa-chevron-right'></i></div>");
 
 		change_news();
 
-		dom_obj.on('click', ".arrow_left, .arrow_right", function()
+		dom_obj.on('click', ".arrow_left .fa, .arrow_right .fa", function()
 		{
 			if(news_interval)
 			{
 				clearInterval(news_interval);
 			}
 
-			if($(this).hasClass('arrow_left'))
+			if($(this).parent(".controls").hasClass('arrow_left'))
 			{
 				news_current--;
 			}

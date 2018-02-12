@@ -206,6 +206,7 @@
 				height: 18em;
 				margin: 1em;
 				padding: 1.5em 1em;
+				-webkit-tap-highlight-color: transparent;
 				text-align: center;
 				-webkit-transform: rotate(1deg);
 				transform: rotate(1deg);
