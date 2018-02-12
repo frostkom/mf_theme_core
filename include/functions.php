@@ -890,7 +890,7 @@ function get_options_page_theme_core()
 	else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce'], 'theme_delete_'.$strFileName))
 	{
 		unlink($upload_path.$strFileName);
-		do_log("Removed File: ".$upload_path.$strFileName);
+		do_log("Removed Theme File: ".$upload_path.$strFileName);
 
 		$done_text = __("The file was deleted successfully", 'lang_theme_core');
 	}
