@@ -1332,7 +1332,7 @@ class mf_theme_core
 	{
 		$folder = $data['path']."/".$data['child'];
 
-		if(count(scandir($folder)) == 2)
+		if(is_dir($folder) && count(scandir($folder)) == 2)
 		{
 			rmdir($folder);
 			//do_log("Removed Empty Folder: ".$folder);

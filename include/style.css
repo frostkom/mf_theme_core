@@ -327,10 +327,11 @@
 					padding-bottom: .2em;
 				}
 
-			.widget.theme_news .original li p
+			/* This hides Youtube clips */
+			/*.widget.theme_news .original li p
 			{
 				display: none;
-			}
+			}*/
 
 			.widget.theme_news li .video iframe
 			{
