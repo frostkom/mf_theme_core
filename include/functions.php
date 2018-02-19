@@ -862,17 +862,22 @@ function get_options_page_theme_core()
 
 			if(is_array($json))
 			{
-				$arr_ignore_key = array_map('trim', explode(",", get_option('setting_theme_ignore_style_on_restore')));
+				$setting_theme_ignore_style_on_restore = get_option('setting_theme_ignore_style_on_restore');
+
+				if(!is_array($setting_theme_ignore_style_on_restore))
+				{
+					$setting_theme_ignore_style_on_restore = array_map('trim', explode(",", $setting_theme_ignore_style_on_restore));
+				}
 
 				foreach($json as $key => $value)
 				{
-					if(!in_array($key, $arr_ignore_key))
+					if(!in_array($key, $setting_theme_ignore_style_on_restore))
 					{
 						set_theme_mod($key, $value);
 					}
 				}
 
-				$done_text = __("The restore was successful", 'lang_theme_core');
+				$done_text = __("I restored the theme backup for you", 'lang_theme_core');
 
 				update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
 				update_option('option_theme_source_style_url', "", 'no');
@@ -1038,21 +1043,6 @@ function settings_theme_core()
 	if(get_option('setting_no_public_pages') != 'yes')
 	{
 		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-
-		/*$arr_settings['setting_html5_history'] = __("Use HTML5 History", 'lang_theme_core');
-
-		if(get_option('setting_html5_history') == 'yes')
-		{
-			$arr_settings['setting_splash_screen'] = __("Show Splash Screen", 'lang_theme_core');
-
-			delete_option('setting_strip_domain');
-		}
-
-		else
-		{
-			delete_option('setting_splash_screen');
-		}*/
-
 		$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
 		$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
@@ -1120,22 +1110,6 @@ function setting_theme_core_login_callback()
 	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 }
 
-/*function setting_html5_history_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'no');
-
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}
-
-function setting_splash_screen_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, 'no');
-
-	echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-}*/
-
 function setting_display_post_meta_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
@@ -1180,7 +1154,7 @@ function setting_404_page_callback()
 	$post_title = __("404", 'lang_theme_core');
 	$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-warning yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 }
 
 function setting_maintenance_page_callback()
@@ -1197,7 +1171,7 @@ function setting_maintenance_page_callback()
 	$post_title = __("Temporary Maintenance", 'lang_theme_core');
 	$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
 
-	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => __("This page will be displayed when the website is updating", 'lang_theme_core')));
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-lg fa-plus'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-warning yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
 
 	if($option > 0 && $option != $option_temp)
 	{
@@ -1349,12 +1323,51 @@ function setting_theme_optimize_callback()
 	<div id='optimize_debug'></div>";
 }
 
+function get_params_for_select()
+{
+	$arr_data = array();
+
+	$options_params = get_params_theme_core();
+	$arr_theme_mods = get_theme_mods();
+
+	foreach($options_params as $param_key => $param)
+	{
+		if(isset($param['category']))
+		{
+			$arr_data["opt_start_".$param['id']] = $param['category'];
+		}
+
+		else if(isset($param['category_end']))
+		{
+			$arr_data["opt_end"] = "";
+		}
+
+		else
+		{
+			$id = $param['id'];
+			$title = $param['title'];
+
+			if(isset($arr_theme_mods[$id]) && $arr_theme_mods[$id] != '')
+			{
+				$arr_data[$id] = $title;
+			}
+		}
+	}
+
+	return $arr_data;
+}
+
 function setting_theme_ignore_style_on_restore_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
 
-	echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => "header_logo, header_mobile_logo, logo_color"));
+	if(!is_array($option))
+	{
+		$option = array_map('trim', explode(",", $option));
+	}
+
+	echo show_select(array('data' => get_params_for_select(), 'name' => $setting_key."[]", 'value' => $option));
 }
 
 function setting_theme_css_hero_callback()
