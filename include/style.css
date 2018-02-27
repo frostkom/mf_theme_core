@@ -22,17 +22,6 @@
 		text-decoration: none;
 	}
 
-		p a, a .read_more
-		{
-			text-decoration: underline;
-			text-decoration-skip: ink;
-		}
-
-		.read_more
-		{
-			margin-top: .5em;
-		}
-
 	/* Images */
 	img
 	{

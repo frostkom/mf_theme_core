@@ -268,10 +268,17 @@ class mf_theme_core
 	{
 		$out = "";
 
-		$out .= "p a
+		$out .= "p a, a .read_more
 		{"
 			.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
-		."}
+			.$this->render_css(array('property' => 'text-decoration', 'value' => 'body_link_underline'))
+			."text-decoration-skip: ink;
+		}
+
+			.read_more
+			{
+				margin-top: .5em;
+			}
 
 		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button
 		{"
@@ -1055,6 +1062,16 @@ class mf_theme_core
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
 								'absolute' => __("Absolute", 'lang_theme_core'),
 								'fixed' => __("Fixed", 'lang_theme_core'),
+							);
+
+							$this->add_select(array('choices' => $arr_data));
+						break;
+
+						case 'text_decoration':
+							$arr_data = array(
+								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'none' => __("None", 'lang_theme_core'),
+								'underline' => __("Underline", 'lang_theme_core'),
 							);
 
 							$this->add_select(array('choices' => $arr_data));

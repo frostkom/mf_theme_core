@@ -49,6 +49,7 @@ function get_params_theme_core()
 
 		$options_params[] = array('type' => 'color', 'id' => 'body_color', 'title' => __("Text Color", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'body_link_color', 'title' => " - ".__("Link Color", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text_decoration', 'id' => 'body_link_underline', 'title' => " - ".__("Link Underline", 'lang_theme_core'), 'default' => 'underline');
 
 		$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => get_option('setting_webshop_color_button', "#000000"));
 			$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", 'lang_theme_core'), 'default' => get_option('setting_webshop_text_color_button', "#ffffff"));
