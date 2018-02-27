@@ -1759,7 +1759,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_categories' => array(),
 			'news_amount' => 1,
 			'news_display_arrows' => 'no',
-			'news_autoscroll_time' => 1,
+			'news_autoscroll_time' => 5,
 			//'news_display_excerpt' => 'no',
 			'news_page' => 0,
 		);
@@ -1853,7 +1853,7 @@ class widget_theme_core_news extends WP_Widget
 
 					if($rows > 1)
 					{
-						echo "<ul class='text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>";
+						echo "<ul class='text_columns ".($rows % 3 == 0 || $rows > 6 ? "columns_3" : "columns_2")."'>";
 
 							foreach($this->arr_news as $page)
 							{
@@ -1908,7 +1908,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		$instance['news_display_arrows'] = sanitize_text_field($new_instance['news_display_arrows']);
-		$instance['news_autoscroll_time'] = sanitize_text_field($new_instance['news_autoscroll_time']);
+		$instance['news_autoscroll_time'] = $new_instance['news_autoscroll_time'] >= 5 ? sanitize_text_field($new_instance['news_autoscroll_time']) : 0;
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
 		$instance['news_page'] = sanitize_text_field($new_instance['news_page']);
 
@@ -2071,7 +2071,7 @@ class widget_theme_core_promo extends WP_Widget
 					}
 
 					echo "<div class='section original'>
-						<ul class='text_columns ".($rows % 3 == 0 ? "columns_3" : "columns_2")."'>";
+						<ul class='text_columns ".($rows % 3 == 0 || $rows > 6 ? "columns_3" : "columns_2")."'>";
 
 							foreach($arr_pages as $page)
 							{
