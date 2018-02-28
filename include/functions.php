@@ -626,7 +626,7 @@ function get_menu_type_for_select()
 function search_form_theme_core($html)
 {
 	return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
-		.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core')))
+		.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
 		."<div class='form_button'>"
 			.show_button(array('text' => __("Search", 'lang_theme_core')))
 		."</div>
@@ -1637,7 +1637,7 @@ function get_search_theme_core($data = array())
 	if(!isset($data['animate']) || $data['animate'] == ''){				$data['animate'] = 'yes';}
 
 	return "<form action='".get_site_url()."' method='get' class='searchform mf_form".($data['animate'] == 'yes' ? " search_animate" : "")."'>"
-		.show_textfield(array('name' => 's', 'value' => check_var('s'), 'placeholder' => $data['placeholder']))
+		.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => $data['placeholder'], 'xtra' => " autocomplete='off'"))
 		."<i class='fa fa-search'></i>"
 	."</form>";
 }
