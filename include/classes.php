@@ -1318,9 +1318,7 @@ class mf_theme_core
 		#######################
 		$page = 'post';
 
-		$users = get_users(array(
-			'fields' => array('ID'),
-		));
+		$users = get_users(array('fields' => array('ID')));
 
 		foreach($users as $user)
 		{

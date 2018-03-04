@@ -87,8 +87,8 @@
 			content: ')';
 		}
 
-	/* Widgets */
-	.full_width .widget
+	/* Full Width */
+	nav.full_width:not(.is_hamburger), .full_width .widget
 	{
 		left: 50%;
 		margin-left: -50vw;
@@ -104,6 +104,7 @@
 			text-align: center;
 		}
 
+	/* Widgets */
 	.widget .section .text_columns
 	{
 		display: -webkit-box;
