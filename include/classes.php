@@ -115,6 +115,12 @@ class mf_theme_core
 			'url' => ""
 		);
 
+		$this->options_fonts[1] = array(
+			'title' => "Courgette",
+			'style' => "'Courgette', cursive",
+			'url' => "//fonts.googleapis.com/css?family=Courgette"
+		);
+
 		$this->options_fonts[3] = array(
 			'title' => "Droid Sans",
 			'style' => "'Droid Sans', sans-serif",
@@ -127,16 +133,16 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Droid+Serif"
 		);
 
-		$this->options_fonts[1] = array(
-			'title' => "Courgette",
-			'style' => "'Courgette', cursive",
-			'url' => "//fonts.googleapis.com/css?family=Courgette"
-		);
-
 		$this->options_fonts[6] = array(
 			'title' => "Garamond",
 			'style' => "'EB Garamond', serif",
 			'url' => "//fonts.googleapis.com/css?family=EB+Garamond"
+		);
+
+		$this->options_fonts[2] = array(
+			'title' => "Helvetica",
+			'style' => "Helvetica, sans-serif",
+			'url' => ""
 		);
 
 		$this->options_fonts['lato'] = array(
@@ -151,10 +157,10 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Montserrat:400,700"
 		);
 
-		$this->options_fonts[2] = array(
-			'title' => "Helvetica",
-			'style' => "Helvetica, sans-serif",
-			'url' => ""
+		$this->options_fonts['muli'] = array(
+			'title' => "Muli",
+			'style' => "'Muli', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Muli:300,400"
 		);
 
 		$this->options_fonts[4] = array(
