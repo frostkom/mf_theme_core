@@ -502,6 +502,7 @@ class mf_theme_core
 
 	function get_logo($data = array())
 	{
+		if(!isset($data['url'])){				$data['url'] = get_site_url();}
 		if(!isset($data['display'])){			$data['display'] = 'all';}
 		if(!isset($data['title'])){				$data['title'] = '';}
 		if(!isset($data['image'])){				$data['image'] = '';}
@@ -511,7 +512,7 @@ class mf_theme_core
 
 		$has_logo = $data['image'] != '' || isset($this->options['header_logo']) && $this->options['header_logo'] != '' || isset($this->options['header_mobile_logo']) && $this->options['header_mobile_logo'] != '';
 
-		$out = "<a href='".get_site_url()."/' id='site_logo'>";
+		$out = "<a href='".trim($data['url'], '/')."/' id='site_logo'>";
 
 			if($has_logo && $data['title'] == '')
 			{
@@ -1271,6 +1272,8 @@ class mf_theme_core
 							$style_url = $json['response']['style_url'];
 
 							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
+
+							//do_log("Saved that an update is ready (".$style_source." != ".get_site_url().")");
 						}
 
 						else
@@ -1639,6 +1642,7 @@ class widget_theme_core_logo extends WP_Widget
 		$control_ops = array('id_base' => 'theme-logo-widget');
 
 		$this->arr_default = array(
+			'logo_url' => '',
 			'logo_display' => 'all',
 			'logo_title' => '',
 			'logo_image' => '',
@@ -1657,7 +1661,7 @@ class widget_theme_core_logo extends WP_Widget
 		$obj_theme_core = new mf_theme_core();
 
 		echo $before_widget
-			.$obj_theme_core->get_logo(array('display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
+			.$obj_theme_core->get_logo(array('url' => $instance['logo_url'], 'display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
 		.$after_widget;
 	}
 
@@ -1667,6 +1671,7 @@ class widget_theme_core_logo extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
+		$instance['logo_url'] = sanitize_text_field($new_instance['logo_url']);
 		$instance['logo_display'] = sanitize_text_field($new_instance['logo_display']);
 		$instance['logo_title'] = sanitize_text_field($new_instance['logo_title']);
 		$instance['logo_image'] = sanitize_text_field($new_instance['logo_image']);
@@ -1687,6 +1692,7 @@ class widget_theme_core_logo extends WP_Widget
 
 		echo "<div class='mf_form'>
 			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", 'lang_theme_core')."</p>"
+			.show_textfield(array('type' => 'url', 'name' => $this->get_field_name('logo_url'), 'text' => __("URL", 'lang_theme_core'), 'value' => $instance['logo_url'], 'placeholder' => get_site_url()))
 			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", 'lang_theme_core'), 'value' => $instance['logo_display']));
 
 			if($instance['logo_display'] != 'tagline')
@@ -1874,16 +1880,26 @@ class widget_theme_core_news extends WP_Widget
 
 					if($rows > 1)
 					{
-						echo "<ul class='text_columns ".($rows % 3 == 0 || $rows > 6 ? "columns_3" : "columns_2")."'>";
+						echo "<ul class='text_columns ".($rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? "columns_3" : "columns_2")."'>";
 
 							foreach($this->arr_news as $page)
 							{
+								if($instance['news_type'] == 'postit')
+								{
+									$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => 120));
+								}
+
 								echo "<li>
 									<a href='".$page['url']."'>
 										<div class='image'>".$page['image']."</div>
-										<h4>".$page['title']."</h4>"
-										.apply_filters('the_content', $page['excerpt'])
-									."</a>
+										<h4>".$page['title']."</h4>";
+
+										if($instance['news_type'] == 'postit')
+										{
+											echo apply_filters('the_content', $page['excerpt']);
+										}
+
+									echo "</a>
 								</li>";
 							}
 
@@ -2092,7 +2108,7 @@ class widget_theme_core_promo extends WP_Widget
 					}
 
 					echo "<div class='section original'>
-						<ul class='text_columns ".($rows % 3 == 0 || $rows > 6 ? "columns_3" : "columns_2")."'>";
+						<ul class='text_columns ".($rows % 3 == 0 || $rows > 4 ? "columns_3" : "columns_2")."'>";
 
 							foreach($arr_pages as $page)
 							{

@@ -399,13 +399,6 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'aside_line_height', 'title' => __("Line Height", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")", 'default' => ".5em");
 			$options_params[] = array('category_end' => "");
-
-			/*if(is_active_widget_area('widget_after_content'))
-			{
-				$options_params[] = array('category' => " - ".__("Below Main Column", 'lang_theme'), 'id' => 'mf_theme_after_content');
-					$options_params[] = array('type' => 'text', 'id' => 'after_content_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-				$options_params[] = array('category_end' => "");
-			}*/
 		}
 
 		if(is_active_widget_area('widget_pre_footer'))
@@ -887,7 +880,7 @@ function get_options_page_theme_core()
 				$done_text = __("I restored the theme backup for you", 'lang_theme_core');
 
 				update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
-				update_option('option_theme_source_style_url', "", 'no');
+				delete_option('option_theme_source_style_url');
 
 				$strFileContent = "";
 			}

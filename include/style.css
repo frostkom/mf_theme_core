@@ -281,6 +281,11 @@
 						transform: scale(1.1);
 					}
 
+					.widget.theme_news .postit li h4
+					{
+						overflow: hidden;
+					}
+
 				.widget.theme_news li .image:after
 				{
 					background: linear-gradient(to top, rgba(0, 0, 0, .5) 0, transparent 100%);
