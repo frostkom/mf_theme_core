@@ -396,4 +396,9 @@
 				{
 					min-height: auto;
 				}
+
+				article a:after
+				{
+					content: ' (' attr(href) ') ';
+				}
 }
