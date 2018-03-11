@@ -69,12 +69,18 @@
 	{
 		color: #808080;
 		display: inline-block;
+		font-style: italic;
 		margin-bottom: 1em;
 	}
 
 		article .meta > * + *
 		{
 			margin-left: .5em;
+		}
+
+		article .meta > span
+		{
+			font-weight: bold;
 		}
 
 		article .meta > a:first-of-type:before
