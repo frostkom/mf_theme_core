@@ -1278,19 +1278,21 @@ class mf_theme_core
 
 						else
 						{
-							error_log(sprintf(__("The feed from %s returned an error", 'lang_theme'), $style_source));
+							error_log(sprintf(__("The feed from %s returned an error", 'lang_theme_core'), $style_source));
 						}
+
+						do_log(__("The response from", 'lang_theme_core'), 'trash');
 					}
 
 					else
 					{
-						error_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme'), $style_source, $headers['http_code']));
+						error_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme_core'), $style_source, $headers['http_code']));
 					}
 				}
 
 				else
 				{
-					error_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme'), $style_source));
+					error_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme_core'), $style_source));
 				}
 			}
 		}
