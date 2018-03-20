@@ -18,7 +18,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	<xsl:template match='/'>
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 			<head>
-				<title>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</title>
+				<title>".sprintf(__("XML Sitemap for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."</title>
 				<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 				<meta name='robots' content='noindex,follow' />
 				<style>
