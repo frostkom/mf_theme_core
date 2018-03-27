@@ -575,27 +575,30 @@ class mf_theme_core
 	{
 		$setting_display_post_meta = get_option_or_default('setting_display_post_meta', array('time'));
 
-		if($post->post_type == 'post' && in_array('time', $setting_display_post_meta))
+		if($post->post_type == 'post')
 		{
-			$html .= "<time datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
-		}
-
-		if(in_array('author', $setting_display_post_meta))
-		{
-			$html .= "<span>".sprintf(__("by %s", 'lang_theme_core'), get_user_info(array('id' => $post->post_author)))."</span>";
-		}
-
-		if(in_array('category', $setting_display_post_meta))
-		{
-			$arr_categories = get_the_category($post->ID);
-
-			if(is_array($arr_categories) && count($arr_categories) > 0)
+			if(in_array('time', $setting_display_post_meta))
 			{
-				$category_base_url = get_site_url()."/category/";
+				$html .= "<time datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
+			}
 
-				foreach($arr_categories as $category)
+			if(in_array('author', $setting_display_post_meta))
+			{
+				$html .= "<span>".sprintf(__("by %s", 'lang_theme_core'), get_user_info(array('id' => $post->post_author)))."</span>";
+			}
+
+			if(in_array('category', $setting_display_post_meta))
+			{
+				$arr_categories = get_the_category($post->ID);
+
+				if(is_array($arr_categories) && count($arr_categories) > 0)
 				{
-					$html .= "<a href='".$category_base_url.$category->slug."'>".$category->name."</a>";
+					$category_base_url = get_site_url()."/category/";
+
+					foreach($arr_categories as $category)
+					{
+						$html .= "<a href='".$category_base_url.$category->slug."'>".$category->name."</a>";
+					}
 				}
 			}
 		}
