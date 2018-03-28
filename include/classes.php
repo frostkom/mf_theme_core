@@ -300,7 +300,7 @@ class mf_theme_core
 		#wrapper .button-secondary, .color_button_2
 		{"
 			.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"))
-			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_secondary'))
+			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_secondary', 'suffix' => " !important"))
 		."}
 
 		.color_button_negative
