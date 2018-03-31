@@ -286,12 +286,12 @@ class mf_theme_core
 				margin-top: .5em;
 			}
 
-		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button
+		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button, #comments #comment, #comments #submit
 		{"
 			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 		."}
 
-		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary
+		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
 		{"
 			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
 			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color'))
@@ -309,7 +309,7 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_negative'))
 		."}
 
-			#wrapper .mf_form button:hover, #wrapper .button:hover, #wrapper .mf_form .button-primary:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
+			#wrapper .mf_form button:hover, #wrapper .button:hover, #wrapper .mf_form .button-primary:hover, #comments #submit:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
 			{
 				box-shadow: inset 0 0 10em rgba(0, 0, 0, .1);
 			}
