@@ -1790,6 +1790,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_type' => 'original',
 			'news_categories' => array(),
 			'news_amount' => 1,
+			'news_time_limit' => 0,
 			'news_display_arrows' => 'no',
 			'news_autoscroll_time' => 5,
 			//'news_display_excerpt' => 'no',
@@ -1813,6 +1814,11 @@ class widget_theme_core_news extends WP_Widget
 		{
 			$query_join .= " INNER JOIN ".$wpdb->term_relationships." ON ".$wpdb->posts.".ID = ".$wpdb->term_relationships.".object_id INNER JOIN ".$wpdb->term_taxonomy." USING (term_taxonomy_id)";
 			$query_where .= " AND term_id IN('".implode("','", $instance['news_categories'])."')";
+		}
+
+		if($instance['news_time_limit'] > 0)
+		{
+			$query_where .= " AND post_date > DATE_SUB(NOW(), INTERVAL ".esc_sql($instance['news_time_limit'])." HOUR)";
 		}
 
 		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
@@ -1949,6 +1955,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		$instance['news_time_limit'] = sanitize_text_field($new_instance['news_time_limit']);
 		$instance['news_display_arrows'] = sanitize_text_field($new_instance['news_display_arrows']);
 		$instance['news_autoscroll_time'] = $new_instance['news_autoscroll_time'] >= 5 ? sanitize_text_field($new_instance['news_autoscroll_time']) : 0;
 		//$instance['news_display_excerpt'] = sanitize_text_field($new_instance['news_display_excerpt']);
@@ -1982,6 +1989,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$instance_temp = $instance;
 		$instance_temp['news_amount'] = 9;
+		$instance_temp['news_time_limit'] = 0;
 		$this->get_posts($instance_temp);
 
 		echo "<div class='mf_form'>";
@@ -2002,8 +2010,17 @@ class widget_theme_core_news extends WP_Widget
 				.show_select(array('data' => $arr_news_types, 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
-					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"))
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
+					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
+
+					if($instance['news_amount'] == 1)
+					{
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
+					}
+
+					if($instance['news_type'] == 'postit')
+					{
+						echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
+					}
 
 					if($instance['news_display_arrows'] == 'yes')
 					{
