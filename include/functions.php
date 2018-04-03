@@ -173,7 +173,7 @@ function get_params_theme_core()
 		}
 
 		$options_params[] = array('type' => 'text', 'id' => 'hamburger_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
-		$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => ".8em");
+		$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Padding", 'lang_theme_core'), 'default' => ".8em");
 
 	$options_params[] = array('category_end' => "");
 
