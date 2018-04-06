@@ -1324,9 +1324,12 @@ class mf_theme_core
 		#######################
 		$theme_dir_name = get_theme_dir_name();
 
-		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+		if($theme_dir_name != '')
+		{
+			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-		get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+			get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+		}
 		#######################
 
 		/* Set default meta boxes */
