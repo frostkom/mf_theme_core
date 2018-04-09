@@ -524,19 +524,19 @@ class mf_theme_core
 
 					if($data['image'] != '')
 					{
-						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 					}
 
 					else
 					{
 						if($this->options['header_logo'] != '')
 						{
-							$out .= "<img src='".$this->options['header_logo']."'".($this->options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+							$out .= "<img src='".$this->options['header_logo']."'".($this->options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 
 						if($this->options['header_mobile_logo'] != '')
 						{
-							$out .= "<img src='".$this->options['header_mobile_logo']."'".($this->options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s | %s", 'lang_theme_core'), $site_name, $site_description)."'>";
+							$out .= "<img src='".$this->options['header_mobile_logo']."'".($this->options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 					}
 				}
@@ -1526,9 +1526,9 @@ class mf_clone_posts
 {
 	function __construct()
 	{
-		add_filter('post_row_actions', 		array(&$this, 'row_actions'), 10, 2);
-		add_filter('page_row_actions', 		array(&$this, 'row_actions'), 10, 2);
-		add_action('wp_loaded', 			array(&$this, 'wp_loaded'));
+		add_filter('post_row_actions', array(&$this, 'row_actions'), 10, 2);
+		add_filter('page_row_actions', array(&$this, 'row_actions'), 10, 2);
+		add_action('wp_loaded', array(&$this, 'wp_loaded'));
 	}
 
 	function clone_single_post()
