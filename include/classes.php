@@ -1606,7 +1606,10 @@ class mf_clone_posts
 		$url = remove_query_arg(array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $url);
 		$url = add_query_arg(array('action' => 'clone-single', 'post' => $post->ID, 'redirect' => $_SERVER['REQUEST_URI']), $url);
 
-		$actions['clone'] = "<a href='".$url."'>".__("Clone", 'lang_theme_core')."</a>";
+		if(IS_EDITOR)
+		{
+			$actions['clone'] = "<a href='".$url."'>".__("Clone", 'lang_theme_core')."</a>";
+		}
 
 		return $actions;
 	}
