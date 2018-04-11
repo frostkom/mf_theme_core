@@ -335,8 +335,8 @@ class mf_theme_core
 					.$this->render_css(array('property' => 'background', 'value' => 'body_bg'))
 					.$this->render_css(array('property' => 'background-color', 'value' => 'body_bg_color'))
 					.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'))
-					."min-height: 100vh;
-				}";
+					//."min-height: 100vh;" /* This will override footer background below footer */
+				."}";
 
 		return $out;
 	}
