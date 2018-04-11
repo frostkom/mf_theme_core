@@ -141,6 +141,15 @@
 			min-width: 33%;
 		}
 
+		.widget .section .columns_4 li
+		{
+			-webkit-box-flex: 1 0 25%;
+			-webkit-flex: 1 0 25%;
+			-ms-flex: 1 0 25%;
+			flex: 1 0 25%;
+			min-width: 25%;
+		}
+
 	/*.widget .section .columns_2
 	{
 		-webkit-column-count: 2;
@@ -208,6 +217,11 @@
 				transform: rotate(1deg);
 				max-width: 20em;
 			}
+			
+				.widget.theme_news .postit .columns_4 li > a
+				{
+					height: 12em;
+				}
 
 				.widget.theme_news .postit li:nth-child(2n+1) > a
 				{

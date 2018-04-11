@@ -7,10 +7,10 @@ jQuery(function($)
 			dom_items = dom_obj.find("ul li"),
 			news_amount = dom_items.length,
 			news_current = 0,
-			news_display = 3,
+			news_display = dom_list.attr('data-columns'),
 			news_autoscroll_time = parseInt(dom_obj.attr('data-autoscroll')) || 0;
 
-		if(news_amount <= 3)
+		if(news_amount <= news_display)
 		{
 			return false;
 		}

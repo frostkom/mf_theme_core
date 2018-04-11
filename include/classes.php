@@ -1797,6 +1797,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_type' => 'original',
 			'news_categories' => array(),
 			'news_amount' => 1,
+			'news_columns' => 0,
 			'news_time_limit' => 0,
 			'news_display_arrows' => 'no',
 			'news_autoscroll_time' => 5,
@@ -1898,13 +1899,18 @@ class widget_theme_core_news extends WP_Widget
 
 					if($rows > 1)
 					{
-						echo "<ul class='text_columns ".($rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? "columns_3" : "columns_2")."'>";
+						if(!($instance['news_columns'] > 0))
+						{
+							$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? 3 : 2;
+						}
+
+						echo "<ul class='text_columns columns_".$instance['news_columns']."' data-columns='".$instance['news_columns']."'>";
 
 							foreach($this->arr_news as $page)
 							{
 								if($instance['news_type'] == 'postit')
 								{
-									$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => 120));
+									$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
 								}
 
 								echo "<li>
@@ -1962,6 +1968,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
 		$instance['news_time_limit'] = sanitize_text_field($new_instance['news_time_limit']);
 		$instance['news_display_arrows'] = sanitize_text_field($new_instance['news_display_arrows']);
 		$instance['news_autoscroll_time'] = $new_instance['news_autoscroll_time'] >= 5 ? sanitize_text_field($new_instance['news_autoscroll_time']) : 0;
@@ -2019,6 +2026,14 @@ class widget_theme_core_news extends WP_Widget
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
 
+					if($count_temp > 3)
+					{
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+					}
+
+				echo "</div>
+				<div class='flex_flow'>";
+
 					if($instance['news_amount'] == 1)
 					{
 						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
@@ -2027,11 +2042,11 @@ class widget_theme_core_news extends WP_Widget
 					if($instance['news_type'] == 'postit')
 					{
 						echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
-					}
 
-					if($instance['news_display_arrows'] == 'yes')
-					{
-						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+						if($instance['news_display_arrows'] == 'yes')
+						{
+							echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+						}
 					}
 
 				echo "</div>

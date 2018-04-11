@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 10:50+0100\n"
+"POT-Creation-Date: 2018-04-11 09:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -239,140 +239,144 @@ msgstr "Jag har optimerat webbplatsen åt dig"
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1609
+#: ../include/classes.php:1611
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1627
+#: ../include/classes.php:1630
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:1632
+#: ../include/classes.php:1635
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:1648
+#: ../include/classes.php:1651
 msgid "Display logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:1661
-#: ../include/classes.php:1698
-#: ../include/classes.php:1711
+#: ../include/classes.php:1664
+#: ../include/classes.php:1701
+#: ../include/classes.php:1714
 #: ../include/functions.php:103
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:1697
+#: ../include/classes.php:1700
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:1699
-#: ../include/classes.php:1723
+#: ../include/classes.php:1702
+#: ../include/classes.php:1726
 #: ../include/functions.php:112
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:1703
+#: ../include/classes.php:1706
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:1704
+#: ../include/classes.php:1707
 #: ../include/sitemap-xsl.php:104
 msgid "URL"
 msgstr "URL"
 
-#: ../include/classes.php:1705
+#: ../include/classes.php:1708
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:1736
+#: ../include/classes.php:1739
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:1746
+#: ../include/classes.php:1749
 #: ../include/functions.php:97
 #: ../include/functions.php:630
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:1775
+#: ../include/classes.php:1778
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:1776
+#: ../include/classes.php:1779
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:1787
+#: ../include/classes.php:1790
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:1804
+#: ../include/classes.php:1808
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:1925
-#: ../include/classes.php:1942
-#: ../include/classes.php:2037
+#: ../include/classes.php:1939
+#: ../include/classes.php:1956
+#: ../include/classes.php:2060
 #: ../include/functions.php:1480
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:2006
+#: ../include/classes.php:2021
 msgid "Original"
 msgstr ""
 
-#: ../include/classes.php:2007
+#: ../include/classes.php:2022
 msgid "Post It"
 msgstr ""
 
-#: ../include/classes.php:2013
-#: ../include/classes.php:2186
+#: ../include/classes.php:2028
+#: ../include/classes.php:2209
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:2014
+#: ../include/classes.php:2029
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:2015
+#: ../include/classes.php:2030
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:2017
+#: ../include/classes.php:2032
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:2021
+#: ../include/classes.php:2036
+msgid "Columns"
+msgstr "Kolumner"
+
+#: ../include/classes.php:2044
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:2021
+#: ../include/classes.php:2044
 msgid "h"
 msgstr ""
 
-#: ../include/classes.php:2026
+#: ../include/classes.php:2049
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:2031
+#: ../include/classes.php:2053
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:2043
+#: ../include/classes.php:2066
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:2056
+#: ../include/classes.php:2079
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:2064
+#: ../include/classes.php:2087
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:2187
+#: ../include/classes.php:2210
 msgid "Pages"
 msgstr "Sidor"
 
