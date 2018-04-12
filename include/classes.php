@@ -1361,6 +1361,53 @@ class mf_theme_core
 		#######################
 	}
 
+	function has_comments()
+	{
+		global $wpdb;
+
+		$wpdb->get_results("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') LIMIT 0, 1");
+
+		return ($wpdb->num_rows > 0);
+	}
+
+	function admin_menu()
+	{
+		global $menu;
+
+		$count_message = "";
+		$rows = 0;
+
+		if(get_option('option_theme_source_style_url') != ''){		$rows++;}
+
+		if($rows > 0)
+		{
+			$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
+				<span>".$rows."</span>
+			</span>";
+
+			if(count($menu) > 0)
+			{
+				foreach($menu as $key => $item)
+				{
+					if($item[2] == 'themes.php')
+					{
+						$menu_name = $item[0];
+
+						$menu[$key][0] = strip_tags($menu_name).$count_message;
+					}
+				}
+			}
+		}
+
+		$menu_title = __("Theme Backup", 'lang_theme_core');
+		add_theme_page($menu_title, $menu_title.$count_message, 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
+
+		if($this->has_comments() == false)
+		{
+			remove_menu_page("edit-comments.php");
+		}
+	}
+
 	function delete_folder($data)
 	{
 		$folder = $data['path']."/".$data['child'];

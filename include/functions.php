@@ -750,41 +750,6 @@ function get_previous_backups_list($upload_path)
 	return $globals['mf_theme_files'];
 }
 
-function options_theme_core()
-{
-	global $menu;
-
-	$count_message = "";
-	$rows = 0;
-	$option_theme_source_style_url = get_option('option_theme_source_style_url');
-
-	if($option_theme_source_style_url != ''){		$rows++;}
-
-	if($rows > 0)
-	{
-		$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
-			<span>".$rows."</span>
-		</span>";
-
-		if(count($menu) > 0)
-		{
-			foreach($menu as $key => $item)
-			{
-				if($item[2] == 'themes.php')
-				{
-					$menu_name = $item[0];
-
-					$menu[$key][0] = strip_tags($menu_name).$count_message;
-				}
-			}
-		}
-	}
-
-	$menu_title = __("Theme Backup", 'lang_theme_core');
-
-	add_theme_page($menu_title, $menu_title.$count_message, 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
-}
-
 function get_theme_dir_name()
 {
 	return str_replace(get_theme_root()."/", "", get_template_directory());
@@ -1038,7 +1003,21 @@ function settings_theme_core()
 	if(get_option('setting_no_public_pages') != 'yes')
 	{
 		$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-		$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+
+		$arr_data = array();
+		get_post_children(array('post_type' => 'post'), $arr_data);
+
+		if(count($arr_data) > 0)
+		{
+			$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+			$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_display_post_meta');
+		}
+
 		$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
 		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
@@ -1069,11 +1048,32 @@ function settings_theme_core()
 			$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", 'lang_theme_core');
 		}
 
-		$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
+		else
+		{
+			delete_option('setting_send_email_on_draft');
+		}
+
+		$obj_theme_core = new mf_theme_core();
+		$obj_theme_core->get_params();
+
+		if($obj_theme_core->options['style_source'] != '')
+		{
+			$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_theme_ignore_style_on_restore');
+		}
 
 		if(is_plugin_active('css-hero-ce/css-hero-main.php'))
 		{
 			$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
+		}
+
+		else
+		{
+			delete_option('setting_theme_css_hero');
 		}
 	}
 
@@ -1122,6 +1122,59 @@ function setting_display_post_meta_callback()
 	);
 
 	echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
+}
+
+function get_comment_status_amount($status)
+{
+	global $wpdb;
+
+	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = 'post' AND comment_status = %s LIMIT 0, 1", $status));
+
+	return $wpdb->num_rows;
+}
+
+function get_comment_status_for_select($option)
+{
+	global $wpdb;
+
+	$arr_data = array(
+		//'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
+	);
+
+	$arr_data['open'] = __("Yes", 'lang_theme_core');
+
+	if(get_comment_status_amount('closed') > 0)
+	{
+		$arr_data['open_all'] = __("Yes", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+	}
+
+	$arr_data['closed'] = __("No", 'lang_theme_core');
+
+	if(get_comment_status_amount('open') > 0)
+	{
+		$arr_data['closed_all'] = __("No", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+	}
+
+	return $arr_data;
+}
+
+function default_comment_status_callback()
+{
+	global $wpdb;
+
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+
+	if(in_array($option, array('open_all', 'closed_all')))
+	{
+		$option = str_replace('_all', '', $option);
+
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE post_type = 'post' AND comment_status != %s", $option, $option));
+
+		update_option('default_comment_status', $option);
+	}
+
+	echo show_select(array('data' => get_comment_status_for_select($option), 'name' => $setting_key, 'value' => $option));
 }
 
 function setting_scroll_to_top_callback()
