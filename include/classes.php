@@ -9,6 +9,137 @@ class mf_theme_core
 		$this->options_params = $this->options = $this->options_fonts = array();
 	}
 
+	function admin_init()
+	{
+		global $pagenow;
+
+		if($pagenow == 'options-general.php' && check_var('page') == 'settings_mf_base')
+		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+			$plugin_version = get_plugin_version(__FILE__);
+
+			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('plugin_url' => $plugin_include_url, 'ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
+		}
+	}
+
+	function wp_head()
+	{
+		global $wpdb;
+
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
+
+		if(get_option('setting_scroll_to_top') == 'yes')
+		{
+			mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
+			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
+		}
+
+		echo "<meta charset='".get_bloginfo('charset')."'>
+		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
+		<meta name='author' content='frostkom.se'>
+		<title>".get_wp_title()."</title>";
+
+		if(!(get_current_user_id() > 0))
+		{
+			wp_deregister_style('dashicons');
+		}
+
+		$this->add_page_index();
+
+		$meta_description = get_the_excerpt();
+
+		if($meta_description != '')
+		{
+			echo "<meta name='description' content='".esc_attr($meta_description)."'>";
+		}
+
+		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
+
+		$this->footer_output = '';
+
+		if(!isset($_COOKIE['cookie_accepted']))
+		{
+			$setting_cookie_info = get_option('setting_cookie_info');
+
+			if($setting_cookie_info > 0)
+			{
+				mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
+				mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
+
+				$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
+
+				foreach($result as $r)
+				{
+					$post_id = $r->ID;
+					$post_title = $r->post_title;
+					$post_excerpt = $r->post_excerpt;
+					$post_content = apply_filters('the_content', $r->post_content);
+
+					$this->footer_output .= "<div id='accept_cookies'>
+						<div>
+							<i class='fa fa-legal red'></i>";
+
+							$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+
+							if($post_excerpt != '')
+							{
+								$this->footer_output .= "<p>"
+									.$post_excerpt
+								."</p>";
+
+								if($post_content != '' && $post_content != $post_excerpt)
+								{
+									$post_url = get_permalink($post_id);
+
+									$this->footer_output .= "<a href='".$post_url."'>".__("Read More", 'lang_theme_core')."</a>";
+								}
+
+								$this->footer_output .= $accept_link;
+							}
+
+							else
+							{
+								$this->footer_output .= $post_content
+								.$accept_link;
+							}
+
+						$this->footer_output .= "</div>
+					</div>";
+				}
+			}
+		}
+
+		/*if(get_option('setting_splash_screen') == 'yes')
+		{
+			$this->footer_output .= "<div id='overlay_splash'>
+				<div>"
+					.$this->get_logo()
+					."<div><i class='fa fa-spinner fa-spin'></i></div>"
+				."</div>
+				<i class='fa fa-arrow-circle-down'></i>
+			</div>";
+		}*/
+
+		if(get_option('setting_theme_core_login') == 'yes')
+		{
+			if(get_current_user_id() > 0)
+			{
+				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+
+				$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
+			}
+
+			else
+			{
+				do_log(__("A visitor accessed the public page without being logged in!", 'lang_theme_core'));
+			}
+		}
+	}
+
 	function has_noindex($post_id)
 	{
 		$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
@@ -605,6 +736,14 @@ class mf_theme_core
 		}
 
 		return $html;
+	}
+
+	function wp_footer()
+	{
+		if(isset($this->footer_output) && $this->footer_output != '')
+		{
+			echo $this->footer_output;
+		}
 	}
 	#################################
 
@@ -1763,7 +1902,6 @@ class widget_theme_core_logo extends WP_Widget
 
 				if($instance['logo_title'] == '')
 				{
-					//echo get_file_button(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image']));
 					echo get_media_library(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image'], 'type' => 'image'));
 				}
 			}
@@ -1929,7 +2067,7 @@ class widget_theme_core_news extends WP_Widget
 				$plugin_include_url = plugin_dir_url(__FILE__);
 				$plugin_version = get_plugin_version(__FILE__);
 
-				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css", $plugin_version);
+				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css", $plugin_version); //Should be set in wp_head instead
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
 			}
 

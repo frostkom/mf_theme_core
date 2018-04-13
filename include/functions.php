@@ -523,23 +523,11 @@ function gather_params($options_params)
 	return array($options_params, $options);
 }
 
-function init_theme_core()
+/*function init_theme_core()
 {
 	if(!is_admin())
 	{
-		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
-
-		mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
-		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
-
-		if(get_option('setting_scroll_to_top') == 'yes')
-		{
-			mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
-			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
-		}
-
-		/*if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
+		if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
 		{
 			check_admin_referer('posts_logout');
 			setcookie('wp-postpass_'.COOKIEHASH, '', strtotime("-1 month"), COOKIEPATH);
@@ -548,9 +536,9 @@ function init_theme_core()
 
 			wp_redirect(wp_get_referer());
 			die();
-		}*/
+		}
 	}
-}
+}*/
 
 function header_theme_core()
 {
@@ -579,7 +567,7 @@ function get_wp_title()
 	return $out;
 }
 
-function head_theme_core()
+/*function head_theme_core()
 {
 	echo "<meta charset='".get_bloginfo('charset')."'>
 	<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
@@ -602,7 +590,7 @@ function head_theme_core()
 	}
 
 	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
-}
+}*/
 
 function body_class_theme_core($classes)
 {
@@ -1084,11 +1072,6 @@ function settings_theme_core()
 
 function settings_theme_core_callback()
 {
-	$plugin_include_url = plugin_dir_url(__FILE__);
-	$plugin_version = get_plugin_version(__FILE__);
-
-	mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('plugin_url' => $plugin_include_url, 'ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
-
 	$setting_key = get_setting_key(__FUNCTION__);
 
 	echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
@@ -1487,94 +1470,6 @@ function default_scripts_theme_core(&$scripts)
 function print_scripts_theme_core()
 {
 	wp_deregister_script('wp-embed');
-}
-
-function footer_theme_core()
-{
-	global $wpdb;
-
-	$plugin_include_url = plugin_dir_url(__FILE__);
-	$plugin_version = get_plugin_version(__FILE__);
-
-	if(!isset($_COOKIE['cookie_accepted']))
-	{
-		$setting_cookie_info = get_option('setting_cookie_info');
-
-		if($setting_cookie_info > 0)
-		{
-			mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
-			mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
-
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
-
-			foreach($result as $r)
-			{
-				$post_id = $r->ID;
-				$post_title = $r->post_title;
-				$post_excerpt = $r->post_excerpt;
-				$post_content = apply_filters('the_content', $r->post_content);
-
-				echo "<div id='accept_cookies'>
-					<div>
-						<i class='fa fa-legal red'></i>";
-
-						$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
-
-						if($post_excerpt != '')
-						{
-							echo "<p>"
-								.$post_excerpt
-							."</p>";
-
-							if($post_content != '' && $post_content != $post_excerpt)
-							{
-								$post_url = get_permalink($post_id);
-
-								echo "<a href='".$post_url."'>".__("Read More", 'lang_theme_core')."</a>";
-							}
-
-							echo $accept_link;
-						}
-
-						else
-						{
-							echo $post_content
-							.$accept_link;
-						}
-
-					echo "</div>
-				</div>";
-			}
-		}
-	}
-
-	/*if(get_option('setting_splash_screen') == 'yes')
-	{
-		$obj_theme_core = new mf_theme_core();
-
-		echo "<div id='overlay_splash'>
-			<div>"
-				.$obj_theme_core->get_logo()
-				."<div><i class='fa fa-spinner fa-spin'></i></div>"
-			."</div>
-			<i class='fa fa-arrow-circle-down'></i>
-		</div>";
-	}*/
-
-	if(get_option('setting_theme_core_login') == 'yes')
-	{
-		if(get_current_user_id() > 0)
-		{
-			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
-
-			echo "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
-		}
-
-		else
-		{
-			do_log(__("A visitor accessed the public page without being logged in!", 'lang_theme_core'));
-		}
-	}
 }
 
 function admin_bar_theme_core()

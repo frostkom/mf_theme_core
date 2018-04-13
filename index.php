@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 6.16.3
+Version: 6.16.5
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: http://frostkom.se
@@ -23,7 +23,7 @@ $obj_theme_core = new mf_theme_core();
 
 add_action('cron_base', array($obj_theme_core, 'run_cron'), mt_rand(1, 10));
 
-add_action('init', 'init_theme_core');
+//add_action('init', 'init_theme_core');
 
 if(is_admin())
 {
@@ -34,6 +34,7 @@ if(is_admin())
 
 	add_action('wp_before_admin_bar_render', 'admin_bar_theme_core');
 	add_action('admin_init', 'settings_theme_core');
+	add_action('admin_init', array($obj_theme_core, 'admin_init'));
 	add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
 
 	add_filter('manage_page_posts_columns', array($obj_theme_core, 'column_header'), 5);
@@ -52,7 +53,8 @@ else
 	add_filter('template_redirect', array($obj_theme_core, 'do_sitemap'), 1, 0);
 
 	add_action('get_header', 'header_theme_core', 0);
-	add_action('wp_head', 'head_theme_core', 0);
+	add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
+	//add_action('wp_head', 'head_theme_core', 0);
 	add_filter('body_class', 'body_class_theme_core');
 
 	remove_action('wp_head', 'rest_output_link_wp_head');
@@ -101,7 +103,7 @@ else
 
 	add_filter('wp_default_scripts', 'default_scripts_theme_core');
 	add_action('wp_print_scripts', 'print_scripts_theme_core', 1);
-	add_action('wp_footer', 'footer_theme_core');
+	add_action('wp_footer', array($obj_theme_core, 'wp_footer'));
 }
 
 add_action('after_setup_theme', 'setup_theme_core');
