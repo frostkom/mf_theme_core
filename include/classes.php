@@ -405,7 +405,7 @@ class mf_theme_core
 	{
 		$out = "";
 
-		$out .= "p a, a .read_more
+		$out .= "p a, td a, a .read_more
 		{"
 			.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
 			.$this->render_css(array('property' => 'text-decoration', 'value' => 'body_link_underline'))
@@ -1267,7 +1267,7 @@ class mf_theme_core
 			{
 				if(file_exists($this->file_dir_from) && is_file($this->file_dir_from))
 				{
-					//error_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
+					//do_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
 
 					/* Some files are still in use in the old hierarchy */
 					/*unlink($this->file_dir_from);
@@ -1276,7 +1276,7 @@ class mf_theme_core
 
 				/*else
 				{
-					error_log("File has already been deleted: ".$this->file_dir_from);
+					do_log("File has already been deleted: ".$this->file_dir_from);
 				}*/
 			}
 		}
@@ -1289,12 +1289,12 @@ class mf_theme_core
 
 				if(copy($this->file_dir_from, $this->file_dir_to))
 				{
-					//error_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+					//do_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
 				}
 
 				else
 				{
-					error_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
+					do_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
 				}
 			}
 		}
@@ -1351,7 +1351,7 @@ class mf_theme_core
 		{
 			if(file_exists($upload_path_from.date("Y")))
 			{
-				error_log(sprintf(__("You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case"), $upload_path_from));
+				do_log(sprintf(__("You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case"), $upload_path_from));
 
 				update_option('option_uploads_done', date("Y-m-d H:i:s"), 'no');
 				delete_option('option_uploads_fixed');
@@ -1421,7 +1421,7 @@ class mf_theme_core
 
 						else
 						{
-							error_log(sprintf(__("The feed from %s returned an error", 'lang_theme_core'), $style_source));
+							do_log(sprintf(__("The feed from %s returned an error", 'lang_theme_core'), $style_source));
 						}
 
 						do_log(__("The response from", 'lang_theme_core'), 'trash');
@@ -1429,13 +1429,13 @@ class mf_theme_core
 
 					else
 					{
-						error_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme_core'), $style_source, $headers['http_code']));
+						do_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme_core'), $style_source, $headers['http_code']));
 					}
 				}
 
 				else
 				{
-					error_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme_core'), $style_source));
+					do_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme_core'), $style_source));
 				}
 			}
 		}
@@ -1593,7 +1593,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			error_log("Remove orphan relations: ".$wpdb->last_query);
+			do_log("Remove orphan relations: ".$wpdb->last_query);
 
 			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
 			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
@@ -1604,7 +1604,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			error_log("Remove orphan usermeta: ".$wpdb->last_query);
+			do_log("Remove orphan usermeta: ".$wpdb->last_query);
 
 			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
 		}
@@ -1644,7 +1644,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			error_log("Remove expired transients: ".$wpdb->last_query);
+			do_log("Remove expired transients: ".$wpdb->last_query);
 		}*/
 
 		/* Optimize Tables */

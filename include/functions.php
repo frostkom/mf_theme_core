@@ -532,7 +532,7 @@ function gather_params($options_params)
 			check_admin_referer('posts_logout');
 			setcookie('wp-postpass_'.COOKIEHASH, '', strtotime("-1 month"), COOKIEPATH);
 
-			error_log("Did remove cookie");
+			do_log("Did remove cookie");
 
 			wp_redirect(wp_get_referer());
 			die();
@@ -639,7 +639,7 @@ function the_content_protected_theme_core($html)
 	{
 		if(!isset($post->post_password))
 		{
-			error_log("post_password did not exist even though it was a protected page");
+			do_log("post_password did not exist even though it was a protected page");
 		}
 
 		$html = password_form_theme_core();
@@ -677,8 +677,6 @@ function is_active_widget_area($widget)
 		if(isset($sidebars_widgets[$widget]) && (!is_array($sidebars_widgets[$widget]) || count($sidebars_widgets[$widget]) > 0))
 		{
 			$is_active = true;
-
-			//error_log($widget." was not active BUT the DB said other (".var_export($sidebars_widgets, true).")");
 		}
 	}
 
