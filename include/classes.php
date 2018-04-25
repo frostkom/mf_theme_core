@@ -487,16 +487,40 @@ class mf_theme_core
 
 		$out = '';
 
-		if($prop == 'font-family' && (!isset($this->options[$val]) || !isset($this->options_fonts[$this->options[$val]]['style'])))
+		switch($prop)
 		{
-			$this->options[$val] = '';
-		}
+			case 'font-family':
+				if(!isset($this->options[$val]) || !isset($this->options_fonts[$this->options[$val]]['style']))
+				{
+					$this->options[$val] = '';
+				}
+			break;
 
-		if($prop == 'float' && $this->options[$val] == 'center')
-		{
-			$prop = 'margin';
-			$this->options[$val] = '0 auto';
-		}
+			case 'float':
+				if($this->options[$val] == 'center')
+				{
+					$prop = 'margin';
+					$this->options[$val] = '0 auto';
+				}
+			break;
+
+			case 'position':
+				switch($this->options[$val])
+				{
+					case 'absolute':
+					case 'fixed':
+						$suf .= ";left: 0;
+						right: 0;
+						z-index: 10";
+					break;
+
+					case 'sticky':
+						$suf .= ";top: 0;
+						z-index: 10";
+					break;
+				}
+			break;
+		}		
 
 		if(isset($this->options[$val]) && $this->options[$val] != '')
 		{
@@ -1212,6 +1236,8 @@ class mf_theme_core
 								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
 								'absolute' => __("Absolute", 'lang_theme_core'),
 								'fixed' => __("Fixed", 'lang_theme_core'),
+								'relative' => __("Relative", 'lang_theme_core'),
+								'sticky' => __("Sticky", 'lang_theme_core'),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
