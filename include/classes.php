@@ -1419,6 +1419,8 @@ class mf_theme_core
 
 	function check_style_source()
 	{
+		delete_option('option_theme_source_style_url');
+
 		$this->get_params();
 
 		if(isset($this->options['style_source']) && $this->options['style_source'] != '')
@@ -1535,7 +1537,7 @@ class mf_theme_core
 		return ($wpdb->num_rows > 0);
 	}
 
-	function admin_menu()
+	function get_theme_updates_message()
 	{
 		global $menu;
 
@@ -1564,8 +1566,13 @@ class mf_theme_core
 			}
 		}
 
+		return $count_message;
+	}
+
+	function admin_menu()
+	{
 		$menu_title = __("Theme Backup", 'lang_theme_core');
-		add_theme_page($menu_title, $menu_title.$count_message, 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
+		add_theme_page($menu_title, $menu_title.$this->get_theme_updates_message(), 'edit_theme_options', 'theme_options', 'get_options_page_theme_core');
 
 		if($this->has_comments() == false)
 		{
