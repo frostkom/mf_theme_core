@@ -665,8 +665,11 @@ class mf_theme_core
 		if(!isset($data['description'])){		$data['description'] = '';}
 
 		$this->get_params();
+		
+		$header_logo = isset($this->options['header_logo']) ? $this->options['header_logo'] : '';
+		$header_mobile_logo = isset($this->options['header_mobile_logo']) ? $this->options['header_mobile_logo'] : '';
 
-		$has_logo = $data['image'] != '' || isset($this->options['header_logo']) && $this->options['header_logo'] != '' || isset($this->options['header_mobile_logo']) && $this->options['header_mobile_logo'] != '';
+		$has_logo = $data['image'] != '' || $header_logo != '' || $header_mobile_logo != '';
 
 		$out = "<a href='".trim($data['url'], '/')."/' id='site_logo'>";
 
@@ -684,14 +687,14 @@ class mf_theme_core
 
 					else
 					{
-						if($this->options['header_logo'] != '')
+						if($header_logo != '')
 						{
-							$out .= "<img src='".$this->options['header_logo']."'".($this->options['header_mobile_logo'] != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 
-						if($this->options['header_mobile_logo'] != '')
+						if($header_mobile_logo != '')
 						{
-							$out .= "<img src='".$this->options['header_mobile_logo']."'".($this->options['header_logo'] != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 					}
 				}
