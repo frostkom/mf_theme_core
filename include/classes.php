@@ -1158,6 +1158,15 @@ class mf_theme_core
 							$this->add_select(array('choices' => $arr_data));
 						break;
 
+						case 'direction':
+							$arr_data = array(
+								'horizontal' => __("Horizontal", 'lang_theme_core'),
+								'vertical' => __("Vertical", 'lang_theme_core'),
+							);
+
+							$this->add_select(array('choices' => $arr_data));
+						break;
+
 						case 'date':
 						case 'email':
 						case 'hidden':
