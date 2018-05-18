@@ -145,6 +145,11 @@
 		flex-wrap: wrap;
 	}
 
+		.is_mobile .widget .section .text_columns
+		{
+			display: block;
+		}
+
 		.widget .section .columns_2 li
 		{
 			-webkit-box-flex: 1 0 50%;

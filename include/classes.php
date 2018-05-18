@@ -628,16 +628,19 @@ class mf_theme_core
 
 	function display_custom_widget_area($id)
 	{
-		foreach($this->custom_widget_area[$id] as $arr_custom)
+		if(isset($this->custom_widget_area[$id]) && is_array($this->custom_widget_area[$id]))
 		{
-			register_sidebar(array(
-				'name' => " - ".$arr_custom['widget_area_name'],
-				'id' => 'widget_area_'.$arr_custom['widget_area_id'],
-				'before_widget' => "<div class='widget %s %s'>",
-				'before_title' => "<h3>",
-				'after_title' => "</h3>",
-				'after_widget' => "</div>"
-			));
+			foreach($this->custom_widget_area[$id] as $arr_custom)
+			{
+				register_sidebar(array(
+					'name' => " - ".$arr_custom['widget_area_name'],
+					'id' => 'widget_area_'.$arr_custom['widget_area_id'],
+					'before_widget' => "<div class='widget %s %s'>",
+					'before_title' => "<h3>",
+					'after_title' => "</h3>",
+					'after_widget' => "</div>"
+				));
+			}
 		}
 	}
 	#################################
