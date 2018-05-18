@@ -568,31 +568,6 @@ function get_wp_title()
 	return $out;
 }
 
-/*function head_theme_core()
-{
-	echo "<meta charset='".get_bloginfo('charset')."'>
-	<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
-	<meta name='author' content='frostkom.se'>
-	<title>".get_wp_title()."</title>";
-
-	if(!(get_current_user_id() > 0))
-	{
-		wp_deregister_style('dashicons');
-	}
-
-	$obj_theme_core = new mf_theme_core();
-	$obj_theme_core->add_page_index();
-
-	$meta_description = get_the_excerpt();
-
-	if($meta_description != '')
-	{
-		echo "<meta name='description' content='".esc_attr($meta_description)."'>";
-	}
-
-	echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
-}*/
-
 function body_class_theme_core($classes)
 {
 	$classes[] = "is_site";
@@ -1552,6 +1527,7 @@ function setup_theme_core()
 
 function widgets_theme_core()
 {
+	register_widget('widget_theme_core_area');
 	register_widget('widget_theme_core_logo');
 	register_widget('widget_theme_core_search');
 	register_widget('widget_theme_core_news');

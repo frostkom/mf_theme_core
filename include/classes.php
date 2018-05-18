@@ -139,6 +139,11 @@ class mf_theme_core
 			}
 		}
 	}
+ 
+	function embed_oembed_html($cached_html, $url, $attr, $post_id)
+	{
+		return "<div class='embed_content'>".$cached_html."</div>";
+	}
 
 	function has_noindex($post_id)
 	{
@@ -586,6 +591,53 @@ class mf_theme_core
 					mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
 				}
 			}
+		}
+	}
+	#################################
+	
+	/* Widgets */
+	#################################
+	function get_custom_widget_areas()
+	{
+		$this->custom_widget_area = array();
+
+		$arr_custom_widget_area = get_option('widget_theme-widget-area-widget');
+
+		if(is_array($arr_custom_widget_area) && count($arr_custom_widget_area) > 0)
+		{
+			$arr_widget_area = get_option('sidebars_widgets');
+
+			foreach($arr_custom_widget_area as $key_custom => $arr_custom)
+			{
+				if($arr_custom['widget_area_id'] != '')
+				{
+					foreach($arr_widget_area as $key_area => $arr_area)
+					{
+						foreach($arr_area as $str_area)
+						{
+							if('theme-widget-area-widget-'.$key_custom == $str_area)
+							{
+								$this->custom_widget_area[$key_area][] = $arr_custom;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	function display_custom_widget_area($id)
+	{
+		foreach($this->custom_widget_area[$id] as $arr_custom)
+		{
+			register_sidebar(array(
+				'name' => " - ".$arr_custom['widget_area_name'],
+				'id' => 'widget_area_'.$arr_custom['widget_area_id'],
+				'before_widget' => "<div class='widget %s %s'>",
+				'before_title' => "<h3>",
+				'after_title' => "</h3>",
+				'after_widget' => "</div>"
+			));
 		}
 	}
 	#################################
@@ -1873,13 +1925,76 @@ class mf_clone_posts
 	}
 }
 
+class widget_theme_core_area extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_widget_area',
+			'description' => __("Add Widget Area", 'lang_theme_core')
+		);
+
+		$control_ops = array('id_base' => 'theme-widget-area-widget');
+
+		$this->arr_default = array(
+			'widget_area_id' => '',
+			'widget_area_name' => '',
+			'widget_area_columns' => 1,
+		);
+
+		parent::__construct('theme-widget-area-widget', __("Widget Area", 'lang_theme_core'), $widget_ops, $control_ops);
+	}
+
+	function widget($args, $instance)
+	{
+		extract($args);
+
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		if(is_active_sidebar('widget_area_'.$instance['widget_area_id']))
+		{
+			echo $before_widget
+				."<div class='widget_columns columns_".$instance['widget_area_columns']."'>";
+
+					dynamic_sidebar('widget_area_'.$instance['widget_area_id']);
+
+				echo "</div>"
+			.$after_widget;
+		}
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+
+		$instance['widget_area_id'] = sanitize_text_field($new_instance['widget_area_id']);
+		$instance['widget_area_name'] = sanitize_text_field($new_instance['widget_area_name']);
+		$instance['widget_area_columns'] = sanitize_text_field($new_instance['widget_area_columns']);
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", 'lang_theme_core'), 'value' => $instance['widget_area_id'], 'required' => true))
+			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", 'lang_theme_core'), 'value' => $instance['widget_area_name'], 'required' => true))
+			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='3'"))
+		."</div>";
+	}
+}
+
 class widget_theme_core_logo extends WP_Widget
 {
 	function __construct()
 	{
 		$widget_ops = array(
 			'classname' => 'theme_logo',
-			'description' => __("Display logo", 'lang_theme_core')
+			'description' => __("Display Logo", 'lang_theme_core')
 		);
 
 		$control_ops = array('id_base' => 'theme-logo-widget');
