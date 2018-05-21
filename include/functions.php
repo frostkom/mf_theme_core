@@ -1128,7 +1128,7 @@ function default_comment_status_callback()
 
 		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE post_type = 'post' AND comment_status != %s", $option, $option));
 
-		update_option('default_comment_status', $option);
+		update_option('default_comment_status', $option, 'no');
 	}
 
 	echo show_select(array('data' => get_comment_status_for_select($option), 'name' => $setting_key, 'value' => $option));

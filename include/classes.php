@@ -525,7 +525,7 @@ class mf_theme_core
 					break;
 				}
 			break;
-		}		
+		}
 
 		if(isset($this->options[$val]) && $this->options[$val] != '')
 		{
@@ -594,7 +594,7 @@ class mf_theme_core
 		}
 	}
 	#################################
-	
+
 	/* Widgets */
 	#################################
 	function get_custom_widget_areas()
@@ -720,7 +720,7 @@ class mf_theme_core
 		if(!isset($data['description'])){		$data['description'] = '';}
 
 		$this->get_params();
-		
+
 		$header_logo = isset($this->options['header_logo']) ? $this->options['header_logo'] : '';
 		$header_mobile_logo = isset($this->options['header_mobile_logo']) ? $this->options['header_mobile_logo'] : '';
 
