@@ -613,11 +613,14 @@ class mf_theme_core
 				{
 					foreach($arr_widget_area as $key_area => $arr_area)
 					{
-						foreach($arr_area as $str_area)
+						if(is_array($arr_area))
 						{
-							if('theme-widget-area-widget-'.$key_custom == $str_area)
+							foreach($arr_area as $str_area)
 							{
-								$this->custom_widget_area[$key_area][] = $arr_custom;
+								if('theme-widget-area-widget-'.$key_custom == $str_area)
+								{
+									$this->custom_widget_area[$key_area][] = $arr_custom;
+								}
 							}
 						}
 					}
