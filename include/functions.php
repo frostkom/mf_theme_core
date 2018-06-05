@@ -1344,12 +1344,12 @@ function get_params_for_select()
 	{
 		if(isset($param['category']))
 		{
-			$arr_data["opt_start_".$param['id']] = $param['category'];
+			$arr_data['opt_start_'.$param['id']] = $param['category'];
 		}
 
 		else if(isset($param['category_end']))
 		{
-			$arr_data["opt_end"] = "";
+			$arr_data['opt_end'] = "";
 		}
 
 		else
