@@ -182,14 +182,20 @@ class mf_theme_core
 
 		foreach($this->arr_post_types as $post_id => $post_title)
 		{
-			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || post_password_required($post_id))
-			{}
+			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || post_password_required($post_id)){}
 
 			else
 			{
 				$this->arr_public_posts[$post_id] = $post_title;
 			}
 		}
+	}
+
+	function display_featured_image($post_id)
+	{
+		$post_meta = get_post_meta($post_id, $this->meta_prefix.'display_featured_image', true);
+
+		return ($post_meta != 'no');
 	}
 
 	// Style
@@ -1019,12 +1025,24 @@ class mf_theme_core
 		}
 	}
 
+	function admin_post_thumbnail_html($content, $post_id)
+	{
+		$field_id = $this->meta_prefix.'display_featured_image';
+		$field_value = get_post_meta($post_id, $field_id, true);
+
+		$content .= "<div class='mf_form'>"
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display Featured Image in Posts", 'lang_theme_core'), 'compare' => $field_value))
+		."</div>";
+
+		return $content;
+	}
+
 	function meta_boxes($meta_boxes)
 	{
 		if(is_site_public())
 		{
 			$meta_boxes[] = array(
-				'id' => 'theme_core',
+				'id' => 'theme_core_publish',
 				'title' => __("Publish Settings", 'lang_theme_core'),
 				'post_types' => get_post_types_for_metabox(),
 				'context' => 'side',
@@ -1053,11 +1071,19 @@ class mf_theme_core
 		return $meta_boxes;
 	}
 
-	/* Send e-mail to all editors if it is a draft and the user saving the draft is an author, but not an editor */
-	function save_post($post_id)
+	function save_post($post_id, $post, $update)
 	{
-		global $post;
+		//global $post;
 
+		if($post->post_type == 'post')
+		{
+			$field_id = $this->meta_prefix.'display_featured_image';
+			$field_value = check_var($field_id);
+
+			update_post_meta($post_id, $field_id, $field_value);
+		}
+
+		/* Send e-mail to all editors if it is a draft and the user saving the draft is an author, but not an editor */
 		if(isset($post->post_status) && $post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
 		{
 			$post_title = get_the_title($post);
