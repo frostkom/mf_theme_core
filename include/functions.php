@@ -1532,7 +1532,7 @@ function widgets_theme_core()
 	register_widget('widget_theme_core_search');
 	register_widget('widget_theme_core_news');
 	register_widget('widget_theme_core_promo');
-	mf_unregister_widget('WP_Widget_Recent_Posts');
+	//mf_unregister_widget('WP_Widget_Recent_Posts');
 
 	mf_unregister_widget('WP_Widget_Archives');
 	mf_unregister_widget('WP_Widget_Calendar');
