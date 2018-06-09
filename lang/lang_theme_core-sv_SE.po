@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-06 07:51+0100\n"
+"POT-Creation-Date: 2018-06-09 05:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -102,7 +102,7 @@ msgstr "Indexering"
 #: ../include/classes.php:1344
 #: ../include/classes.php:1354
 #: ../include/classes.php:1364
-#: ../include/functions.php:581
+#: ../include/functions.php:582
 msgid "Choose here"
 msgstr "Välj här"
 
@@ -150,14 +150,14 @@ msgid "Right"
 msgstr "Höger"
 
 #: ../include/classes.php:1226
-#: ../include/functions.php:1101
-#: ../include/functions.php:1105
+#: ../include/functions.php:1102
+#: ../include/functions.php:1106
 msgid "Yes"
 msgstr "Ja"
 
 #: ../include/classes.php:1227
-#: ../include/functions.php:1108
-#: ../include/functions.php:1112
+#: ../include/functions.php:1109
+#: ../include/functions.php:1113
 msgid "No"
 msgstr "Nej"
 
@@ -275,7 +275,7 @@ msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
 #: ../include/classes.php:1670
-#: ../include/functions.php:846
+#: ../include/functions.php:847
 msgid "Theme Backup"
 msgstr "Temabackup"
 
@@ -360,7 +360,7 @@ msgstr "Visa sökformulär"
 
 #: ../include/classes.php:2126
 #: ../include/functions.php:97
-#: ../include/functions.php:594
+#: ../include/functions.php:595
 msgid "Search"
 msgstr "Sök"
 
@@ -464,8 +464,8 @@ msgstr "Hämta uppdateringar från"
 #: ../include/functions.php:288
 #: ../include/functions.php:358
 #: ../include/functions.php:395
-#: ../include/functions.php:409
-#: ../include/functions.php:420
+#: ../include/functions.php:410
+#: ../include/functions.php:421
 msgid "Background"
 msgstr "Bakgrund"
 
@@ -478,8 +478,8 @@ msgstr "Bakgrund"
 #: ../include/functions.php:236
 #: ../include/functions.php:255
 #: ../include/functions.php:276
-#: ../include/functions.php:410
-#: ../include/functions.php:421
+#: ../include/functions.php:411
+#: ../include/functions.php:422
 msgid "Color"
 msgstr "Färg"
 
@@ -492,8 +492,8 @@ msgstr "Färg"
 #: ../include/functions.php:237
 #: ../include/functions.php:256
 #: ../include/functions.php:277
-#: ../include/functions.php:411
-#: ../include/functions.php:422
+#: ../include/functions.php:412
+#: ../include/functions.php:423
 msgid "Image"
 msgstr "Bild"
 
@@ -512,8 +512,8 @@ msgstr "Bild"
 #: ../include/functions.php:372
 #: ../include/functions.php:398
 #: ../include/functions.php:401
-#: ../include/functions.php:413
-#: ../include/functions.php:441
+#: ../include/functions.php:414
+#: ../include/functions.php:442
 msgid "Padding"
 msgstr "Tomrum"
 
@@ -523,7 +523,7 @@ msgstr "Tomrum"
 #: ../include/functions.php:290
 #: ../include/functions.php:300
 #: ../include/functions.php:321
-#: ../include/functions.php:426
+#: ../include/functions.php:427
 msgid "Font"
 msgstr "Typsnitt"
 
@@ -541,8 +541,8 @@ msgstr "Typsnitt"
 #: ../include/functions.php:210
 #: ../include/functions.php:241
 #: ../include/functions.php:259
-#: ../include/functions.php:428
-#: ../include/functions.php:432
+#: ../include/functions.php:429
+#: ../include/functions.php:433
 msgid "Text Color"
 msgstr "Textfärg"
 
@@ -571,7 +571,7 @@ msgstr "Textfärg på knapp"
 #: ../include/functions.php:56
 #: ../include/functions.php:57
 #: ../include/functions.php:183
-#: ../include/functions.php:583
+#: ../include/functions.php:584
 msgid "Secondary"
 msgstr "Sekundär"
 
@@ -590,8 +590,13 @@ msgid "Form Fields"
 msgstr "Formulärfält"
 
 #: ../include/functions.php:65
-msgid "Max Width"
-msgstr "Maxbredd"
+#: ../include/functions.php:67
+msgid "Breakpoint"
+msgstr "Brytpunkt"
+
+#: ../include/functions.php:65
+msgid "Tablet"
+msgstr "Platta"
 
 #: ../include/functions.php:66
 #: ../include/functions.php:68
@@ -611,14 +616,10 @@ msgstr "Maxbredd"
 #: ../include/functions.php:343
 #: ../include/functions.php:361
 #: ../include/functions.php:394
-#: ../include/functions.php:412
-#: ../include/functions.php:427
+#: ../include/functions.php:413
+#: ../include/functions.php:428
 msgid "Font Size"
 msgstr "Textstorlek"
-
-#: ../include/functions.php:67
-msgid "Breakpoint"
-msgstr "Brytpunkt"
 
 #: ../include/functions.php:67
 #: ../include/functions.php:68
@@ -629,7 +630,7 @@ msgstr "Brytpunkt"
 #: ../include/functions.php:123
 #: ../include/functions.php:125
 #: ../include/functions.php:349
-#: ../include/functions.php:466
+#: ../include/functions.php:467
 msgid "Mobile"
 msgstr "Mobil"
 
@@ -638,7 +639,7 @@ msgid "Scroll Bar"
 msgstr "Skrollbar"
 
 #: ../include/functions.php:74
-msgid "Aside Image Max Width"
+msgid "Aside Image Width"
 msgstr "Bredd på bilder i sidokolumn"
 
 #: ../include/functions.php:79
@@ -666,7 +667,7 @@ msgstr "Overflow"
 #: ../include/functions.php:172
 #: ../include/functions.php:188
 #: ../include/functions.php:202
-#: ../include/functions.php:437
+#: ../include/functions.php:438
 msgid "Alignment"
 msgstr "Justering"
 
@@ -692,7 +693,7 @@ msgstr "Klicka för att expandera"
 #: ../include/functions.php:220
 #: ../include/functions.php:234
 #: ../include/functions.php:253
-#: ../include/functions.php:408
+#: ../include/functions.php:409
 msgid "Full Width"
 msgstr "Fullbredd"
 
@@ -708,14 +709,14 @@ msgstr "Rensa"
 #: ../include/functions.php:190
 #: ../include/functions.php:207
 #: ../include/functions.php:209
-#: ../include/functions.php:432
+#: ../include/functions.php:433
 msgid "Hover"
 msgstr "Mus över"
 
 #: ../include/functions.php:139
 #: ../include/functions.php:185
 #: ../include/functions.php:205
-#: ../include/functions.php:458
+#: ../include/functions.php:459
 msgid "Link Padding"
 msgstr "Tomrum runt länkar"
 
@@ -769,8 +770,8 @@ msgid "After Header"
 msgstr "Efter sidhuvud"
 
 #: ../include/functions.php:240
-#: ../include/functions.php:414
-#: ../include/functions.php:449
+#: ../include/functions.php:415
+#: ../include/functions.php:450
 msgid "Widget Padding"
 msgstr "Tomrum runt widget"
 
@@ -816,7 +817,7 @@ msgstr "Vikt"
 #: ../include/functions.php:335
 #: ../include/functions.php:342
 #: ../include/functions.php:363
-#: ../include/functions.php:438
+#: ../include/functions.php:439
 msgid "Margin"
 msgstr "Marginal"
 
@@ -838,6 +839,7 @@ msgid "Quote Size"
 msgstr "Textstorlek på citat"
 
 #: ../include/functions.php:373
+#: ../include/functions.php:402
 msgid "Margin between Content"
 msgstr "Marginal mellan innehåll"
 
@@ -863,311 +865,311 @@ msgstr "Kant runt widget"
 msgid "Size"
 msgstr "Storlek"
 
-#: ../include/functions.php:407
+#: ../include/functions.php:408
 msgid "Pre Footer"
 msgstr "Före sidfot"
 
-#: ../include/functions.php:419
+#: ../include/functions.php:420
 msgid "Footer"
 msgstr "Sidfot"
 
-#: ../include/functions.php:445
+#: ../include/functions.php:446
 msgid "Widget Flex"
 msgstr "Flexbox för widget"
 
-#: ../include/functions.php:446
+#: ../include/functions.php:447
 msgid "Widget Overflow"
 msgstr "Overflow på widget"
 
-#: ../include/functions.php:453
+#: ../include/functions.php:454
 msgid "Widget Heading Margin"
 msgstr "Marginal på rubrik i widget"
 
-#: ../include/functions.php:454
+#: ../include/functions.php:455
 msgid "Widget Heading Text Transform"
 msgstr "Transform på rubrik i widget"
 
-#: ../include/functions.php:455
+#: ../include/functions.php:456
 msgid "Paragraph/List Margin"
 msgstr "Marginal på paragraf/lista"
 
-#: ../include/functions.php:456
+#: ../include/functions.php:457
 msgid "Link Background"
 msgstr "Bakgrund på länkar"
 
-#: ../include/functions.php:457
+#: ../include/functions.php:458
 msgid "Link Margin"
 msgstr "Marginal på länkar"
 
-#: ../include/functions.php:464
+#: ../include/functions.php:465
 msgid "Custom"
 msgstr "Anpassat"
 
-#: ../include/functions.php:465
 #: ../include/functions.php:466
+#: ../include/functions.php:467
 msgid "Custom CSS"
 msgstr "Anpassad CSS"
 
-#: ../include/functions.php:565
+#: ../include/functions.php:566
 #, php-format
 msgid "Page %s"
 msgstr "Sida %s"
 
-#: ../include/functions.php:582
+#: ../include/functions.php:583
 msgid "Main menu"
 msgstr "Huvudmeny"
 
-#: ../include/functions.php:584
+#: ../include/functions.php:585
 msgid "Main and Secondary menues"
 msgstr "Huvud- och sekundär meny"
 
-#: ../include/functions.php:585
+#: ../include/functions.php:586
 msgid "Slide in from right"
 msgstr "Glid in från höger"
 
-#: ../include/functions.php:592
+#: ../include/functions.php:593
 msgid "Search here"
 msgstr "Sök här"
 
-#: ../include/functions.php:602
+#: ../include/functions.php:603
 msgid "To view this protected post, enter the password below"
 msgstr "För att se denna lösenordsskyddade sida, fyll i lösenordet nedan"
 
-#: ../include/functions.php:603
+#: ../include/functions.php:604
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/functions.php:605
+#: ../include/functions.php:606
 msgid "Submit"
 msgstr "Skicka"
 
-#: ../include/functions.php:668
+#: ../include/functions.php:669
 msgid "Not Found"
 msgstr "Hittades inte"
 
-#: ../include/functions.php:670
+#: ../include/functions.php:671
 msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
 msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
-#: ../include/functions.php:754
+#: ../include/functions.php:755
 msgid "The theme settings were backed up"
 msgstr "Temainställningarna sparades"
 
-#: ../include/functions.php:759
+#: ../include/functions.php:760
 msgid "It was not possible to backup the theme settings"
 msgstr "Det gick inte att ta backup på temainställningarna"
 
-#: ../include/functions.php:765
+#: ../include/functions.php:766
 msgid "There were no theme settings to save"
 msgstr "Det fanns inga temainställningar att spara"
 
-#: ../include/functions.php:807
+#: ../include/functions.php:808
 msgid "I restored the theme backup for you"
 msgstr "Jag återställde temabackupen åt dig"
 
-#: ../include/functions.php:817
+#: ../include/functions.php:818
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/functions.php:827
+#: ../include/functions.php:828
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/functions.php:840
+#: ../include/functions.php:841
 #, php-format
 msgid "The theme at %s has got a newer version of saved style which can be %srestored here%s"
 msgstr "Temat på %s har en nyare version på sparad design som kan %såterställas här%s"
 
-#: ../include/functions.php:867
+#: ../include/functions.php:868
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/functions.php:868
+#: ../include/functions.php:869
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:882
+#: ../include/functions.php:883
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/functions.php:883
-#: ../include/functions.php:907
+#: ../include/functions.php:884
+#: ../include/functions.php:908
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/functions.php:887
+#: ../include/functions.php:888
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/functions.php:902
+#: ../include/functions.php:903
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/functions.php:918
+#: ../include/functions.php:919
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/functions.php:921
+#: ../include/functions.php:922
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:963
+#: ../include/functions.php:964
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid vidare besökare till loginsidan"
 
-#: ../include/functions.php:967
+#: ../include/functions.php:968
 msgid "Require login for public site"
 msgstr "Kräv inlogg innan besök på webbsidan"
 
-#: ../include/functions.php:974
+#: ../include/functions.php:975
 msgid "Display Post Meta"
 msgstr "Visa information om inlägg"
 
-#: ../include/functions.php:975
+#: ../include/functions.php:976
 msgid "Allow Comments"
 msgstr "Tillåt kommentarer"
 
-#: ../include/functions.php:983
+#: ../include/functions.php:984
 msgid "Display scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/functions.php:987
+#: ../include/functions.php:988
 msgid "Cookie information"
 msgstr "Cookie-information"
 
-#: ../include/functions.php:995
+#: ../include/functions.php:996
 msgid "404 Page"
 msgstr "404-sida"
 
-#: ../include/functions.php:996
+#: ../include/functions.php:997
 msgid "Maintenance Page"
 msgstr "Underhållssida"
 
-#: ../include/functions.php:1010
+#: ../include/functions.php:1011
 msgid "Send Email when Draft is Saved"
 msgstr "Skicka e-post när utkast sparas"
 
-#: ../include/functions.php:1023
+#: ../include/functions.php:1024
 msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
 
-#: ../include/functions.php:1033
+#: ../include/functions.php:1034
 msgid "CSS Hero Support"
 msgstr "CSS Hero-stöd"
 
-#: ../include/functions.php:1042
+#: ../include/functions.php:1043
 msgid "Optimize"
 msgstr "Optimera"
 
-#: ../include/functions.php:1051
+#: ../include/functions.php:1052
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/functions.php:1076
+#: ../include/functions.php:1077
 msgid "Time"
 msgstr "Tid"
 
-#: ../include/functions.php:1077
+#: ../include/functions.php:1078
 msgid "Author"
 msgstr "Författare"
 
-#: ../include/functions.php:1078
+#: ../include/functions.php:1079
 msgid "Category"
 msgstr "Kategori"
 
-#: ../include/functions.php:1105
-#: ../include/functions.php:1112
+#: ../include/functions.php:1106
+#: ../include/functions.php:1113
 msgid "And Change Setting on All Posts"
 msgstr "Och ändra inställning på alla inlägg"
 
-#: ../include/functions.php:1153
+#: ../include/functions.php:1154
 msgid "The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies"
 msgstr "Innehållet från denna sida kommer att visas längst upp på sidan tills dess att besökaren klickar för att acceptera användandet av cookies"
 
-#: ../include/functions.php:1164
+#: ../include/functions.php:1165
 msgid "404"
 msgstr "404"
 
-#: ../include/functions.php:1165
+#: ../include/functions.php:1166
 msgid "Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know."
 msgstr "Hoppsan! Den sida som du sökte verkar inte finnas. Om du anser att den borde finnas, var vänlig säg till oss."
 
-#: ../include/functions.php:1167
+#: ../include/functions.php:1168
 msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
-#: ../include/functions.php:1181
+#: ../include/functions.php:1182
 msgid "Temporary Maintenance"
 msgstr "Tillfälligt underhåll"
 
-#: ../include/functions.php:1182
+#: ../include/functions.php:1183
 msgid "This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual."
 msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än en minut så du har haft otur som besökte webbsidan precis vid detta tillfälle. Om du testar att ladda om sidan om en liten stund så ska den säkerligen vara klar med detta."
 
-#: ../include/functions.php:1184
+#: ../include/functions.php:1185
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/functions.php:1271
+#: ../include/functions.php:1272
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/functions.php:1277
+#: ../include/functions.php:1278
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/functions.php:1283
+#: ../include/functions.php:1284
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/functions.php:1307
+#: ../include/functions.php:1308
 #, php-format
 msgid "This will send an e-mail to all editors (%s) when an author saves a draft"
 msgstr "Detta kommer att skicka ett e-post till alla redaktörer (%s) när en författare sparar ett utkast"
 
-#: ../include/functions.php:1321
+#: ../include/functions.php:1322
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/functions.php:1326
+#: ../include/functions.php:1327
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/functions.php:1329
+#: ../include/functions.php:1330
 msgid "days"
 msgstr "dagar"
 
-#: ../include/functions.php:1331
+#: ../include/functions.php:1332
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/functions.php:1392
+#: ../include/functions.php:1393
 #, php-format
 msgid "By going to %sthe site%s you can edit any styling to your liking"
 msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egna önskemål"
 
-#: ../include/functions.php:1463
+#: ../include/functions.php:1464
 msgid "No public pages"
 msgstr "Inga publika sidor"
 
-#: ../include/functions.php:1468
+#: ../include/functions.php:1469
 msgid "Requires login"
 msgstr "Kräver inloggning"
 
-#: ../include/functions.php:1473
+#: ../include/functions.php:1474
 msgid "No index"
 msgstr "Ingen indexering"
 
-#: ../include/functions.php:1478
+#: ../include/functions.php:1479
 msgid "Public"
 msgstr "Publik"
 
-#: ../include/functions.php:1558
+#: ../include/functions.php:1559
 msgid "Search for"
 msgstr "Sök efter"
 
