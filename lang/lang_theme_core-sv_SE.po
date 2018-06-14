@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-09 05:56+0100\n"
+"POT-Creation-Date: 2018-06-12 12:22+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -81,8 +81,8 @@ msgid "The excerpt (meta description) might be too long to show in search engine
 msgstr "Utdraget (meta description) kan vara för lång för att visas i sin helhet i sökmotorer"
 
 #: ../include/classes.php:1034
-msgid "Display Featured Image in Posts"
-msgstr "Visa utvald bild i inlägg"
+msgid "Display on Single Page"
+msgstr "Visa på den egna sidan"
 
 #: ../include/classes.php:1046
 msgid "Publish Settings"
@@ -103,7 +103,7 @@ msgstr "Indexering"
 #: ../include/classes.php:1354
 #: ../include/classes.php:1364
 #: ../include/functions.php:582
-msgid "Choose here"
+msgid "Choose Here"
 msgstr "Välj här"
 
 #: ../include/classes.php:1057
@@ -1187,3 +1187,5 @@ msgstr "Sidkarta för %s | %s"
 msgid "Last Modified"
 msgstr "Senast ändrad"
 
+#~ msgid "Display Featured Image in Posts"
+#~ msgstr "Visa utvald bild i inlägg"

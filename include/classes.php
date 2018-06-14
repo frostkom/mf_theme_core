@@ -1031,7 +1031,7 @@ class mf_theme_core
 		$field_value = get_post_meta($post_id, $field_id, true);
 
 		$content .= "<div class='mf_form'>"
-			.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display Featured Image in Posts", 'lang_theme_core'), 'compare' => $field_value))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display on Single Page", 'lang_theme_core'), 'compare' => $field_value))
 		."</div>";
 
 		return $content;
@@ -1053,7 +1053,7 @@ class mf_theme_core
 						'id' => $this->meta_prefix.'page_index',
 						'type' => 'select',
 						'options' => array(
-							'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+							'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 							'noindex' => __("Don't Index", 'lang_theme_core'),
 							'nofollow' => __("Don't Follow Links", 'lang_theme_core'),
 							'none' => __("Don't Index & don't follow links", 'lang_theme_core'),
@@ -1075,7 +1075,7 @@ class mf_theme_core
 	{
 		//global $post;
 
-		if($post->post_type == 'post')
+		if(in_array($post->post_type, array('page', 'post')))
 		{
 			$field_id = $this->meta_prefix.'display_featured_image';
 			$field_value = check_var($field_id);
@@ -1198,7 +1198,7 @@ class mf_theme_core
 					{
 						case 'align':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'left' => __("Left", 'lang_theme_core'),
 								'center' => __("Center", 'lang_theme_core'),
 								'right' => __("Right", 'lang_theme_core'),
@@ -1232,7 +1232,7 @@ class mf_theme_core
 
 						case 'clear':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'left' => __("Left", 'lang_theme_core'),
 								'right' => __("Right", 'lang_theme_core'),
 								'both' => __("Both", 'lang_theme_core'),
@@ -1270,7 +1270,7 @@ class mf_theme_core
 
 						case 'float':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'none' => __("None", 'lang_theme_core'),
 								'left' => __("Left", 'lang_theme_core'),
 								'center' => __("Center", 'lang_theme_core'),
@@ -1284,7 +1284,7 @@ class mf_theme_core
 
 						case 'font':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --"
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --"
 							);
 
 							if(count($this->options_fonts) > 0)
@@ -1315,7 +1315,7 @@ class mf_theme_core
 
 						case 'overflow':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'visible' => __("Visible", 'lang_theme_core'),
 								'hidden' => __("Hidden", 'lang_theme_core'),
 								'scroll' => __("Scroll", 'lang_theme_core'),
@@ -1329,7 +1329,7 @@ class mf_theme_core
 
 						case 'position':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'absolute' => __("Absolute", 'lang_theme_core'),
 								'fixed' => __("Fixed", 'lang_theme_core'),
 								'relative' => __("Relative", 'lang_theme_core'),
@@ -1341,7 +1341,7 @@ class mf_theme_core
 
 						case 'text_decoration':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'none' => __("None", 'lang_theme_core'),
 								'underline' => __("Underline", 'lang_theme_core'),
 							);
@@ -1351,7 +1351,7 @@ class mf_theme_core
 
 						case 'text_transform':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'uppercase' => __("Uppercase", 'lang_theme_core'),
 								'lowercase' => __("Lowercase", 'lang_theme_core'),
 							);
@@ -1361,7 +1361,7 @@ class mf_theme_core
 
 						case 'weight':
 							$arr_data = array(
-								'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 								'lighter' => __("Lighter", 'lang_theme_core'),
 								'normal' => __("Normal", 'lang_theme_core'),
 								'bold' => __("Bold", 'lang_theme_core'),

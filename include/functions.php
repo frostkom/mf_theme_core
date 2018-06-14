@@ -579,7 +579,7 @@ function body_class_theme_core($classes)
 function get_menu_type_for_select()
 {
 	return array(
-		'' => "-- ".__("Choose here", 'lang_theme_core')." --",
+		'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 		'main' => __("Main menu", 'lang_theme_core'),
 		'secondary' => __("Secondary", 'lang_theme_core'),
 		'both' => __("Main and Secondary menues", 'lang_theme_core'),
@@ -742,7 +742,7 @@ function get_options_page_theme_core()
 	$obj_theme_core = new mf_theme_core();
 	$obj_theme_core->get_params();
 
-	if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce'], 'theme_backup'))
+	if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce_theme_backup'], 'theme_backup'))
 	{
 		if(count($obj_theme_core->options) > 0)
 		{
@@ -820,7 +820,7 @@ function get_options_page_theme_core()
 		}
 	}
 
-	else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce'], 'theme_delete_'.$strFileName))
+	else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce_theme_delete'], 'theme_delete_'.$strFileName))
 	{
 		unlink($upload_path.$strFileName);
 		do_log("Removed Theme File: ".$upload_path.$strFileName);
@@ -885,7 +885,7 @@ function get_options_page_theme_core()
 
 													if($is_allowed_to_backup)
 													{
-														$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name)."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
+														$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name, '_wpnonce_theme_delete')."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
 													}
 
 												$out .= "</div>
@@ -920,7 +920,7 @@ function get_options_page_theme_core()
 								<div class='inside'>
 									<form method='post' action='' class='mf_form'>"
 										.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
-										.wp_nonce_field('theme_backup', '_wpnonce', true, false)
+										.wp_nonce_field('theme_backup', '_wpnonce_theme_backup', true, false)
 									."</form>
 								</div>
 							</div>
