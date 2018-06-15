@@ -522,12 +522,12 @@ class mf_theme_core
 					case 'fixed':
 						$suf .= ";left: 0;
 						right: 0;
-						z-index: 10";
+						z-index: 1001";
 					break;
 
 					case 'sticky':
 						$suf .= ";top: 0;
-						z-index: 10";
+						z-index: 1001";
 					break;
 				}
 			break;
