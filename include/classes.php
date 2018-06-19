@@ -1107,6 +1107,29 @@ class mf_theme_core
 	}
 	#################################
 
+	function widgets_init()
+	{
+		register_widget('widget_theme_core_area');
+		register_widget('widget_theme_core_logo');
+		register_widget('widget_theme_core_search');
+		register_widget('widget_theme_core_news');
+		register_widget('widget_theme_core_related_news');
+		register_widget('widget_theme_core_promo');
+		//mf_unregister_widget('WP_Widget_Recent_Posts');
+
+		mf_unregister_widget('WP_Widget_Archives');
+		mf_unregister_widget('WP_Widget_Calendar');
+		mf_unregister_widget('WP_Widget_Categories');
+		//mf_unregister_widget('WP_Nav_Menu_Widget');
+		mf_unregister_widget('WP_Widget_Links');
+		mf_unregister_widget('WP_Widget_Meta');
+		mf_unregister_widget('WP_Widget_Pages');
+		mf_unregister_widget('WP_Widget_Recent_Comments');
+		mf_unregister_widget('WP_Widget_RSS');
+		mf_unregister_widget('WP_Widget_Search');
+		mf_unregister_widget('WP_Widget_Tag_Cloud');
+	}
+
 	//Customizer
 	#################################
 	function add_select($data = array())
@@ -2431,6 +2454,196 @@ class widget_theme_core_news extends WP_Widget
 					//.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
 					.show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']))
 				."</div>";
+			}
+
+			else
+			{
+				echo __("There are no posts to display in this widget", 'lang_theme_core');
+			}
+
+		echo "</div>";
+	}
+}
+
+class widget_theme_core_related_news extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_news',
+			'description' => __("Display Related News/Posts", 'lang_theme_core')
+		);
+
+		$control_ops = array('id_base' => 'theme-related-news-widget');
+
+		$this->arr_default = array(
+			'news_title' => '',
+			'news_amount' => 1,
+			'news_columns' => 0,
+		);
+
+		parent::__construct('theme-related-news-widget', __("Related News", 'lang_theme_core'), $widget_ops, $control_ops);
+	}
+
+	function get_posts($instance)
+	{
+		global $wpdb, $post;
+
+		$this->arr_news = array();
+
+		if(isset($post) && isset($post->ID))
+		{
+			if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
+
+			$post_id = $post->ID;
+
+			$query_join = $query_where = "";
+
+			$arr_categories = get_the_category($post_id);
+
+			if(count($arr_categories) > 0)
+			{
+				$arr_related_categories = array();
+
+				foreach($arr_categories as $category)
+				{
+					$arr_related_categories[] = $category->term_id;
+				}
+
+				$query_join .= " INNER JOIN ".$wpdb->term_relationships." ON ".$wpdb->posts.".ID = ".$wpdb->term_relationships.".object_id INNER JOIN ".$wpdb->term_taxonomy." USING (term_taxonomy_id)";
+				$query_where .= " AND term_id IN('".implode("','", $arr_related_categories)."')";
+			}
+
+			//do_log("Post: ".var_export($post, true)." -> ".var_export(get_the_category($post_id), true));
+
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish' AND ID != '%d'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], $post_id));
+
+			if($wpdb->num_rows > 0)
+			{
+				$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
+
+				foreach($result as $post)
+				{
+					$post_id = $post->ID;
+					$post_title = $post->post_title;
+					$post_excerpt = $post->post_excerpt;
+
+					$post_thumbnail = '';
+
+					if(has_post_thumbnail($post_id))
+					{
+						$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
+					}
+
+					if($post_thumbnail == '' && $instance['news_amount'] > 1)
+					{
+						$post_thumbnail = get_image_fallback();
+					}
+
+					$this->arr_news[$post_id] = array(
+						'title' => $post_title,
+						'url' => get_permalink($post_id),
+						'image' => $post_thumbnail,
+						'excerpt' => $post_excerpt,
+					);
+				}
+			}
+		}
+	}
+
+	function widget($args, $instance)
+	{
+		extract($args);
+
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		$this->get_posts($instance);
+
+		$rows = count($this->arr_news);
+
+		if($rows > 0)
+		{
+			echo $before_widget;
+
+				if($instance['news_title'] != '')
+				{
+					echo $before_title
+						.$instance['news_title']
+					.$after_title;
+				}
+
+				echo "<div class='section original'>";
+
+					/*if(!($instance['news_columns'] > 0))
+					{
+						$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 ? 3 : 2;
+					}*/
+
+					echo "<ul class='text_columns columns_".$instance['news_columns']."'>";
+
+						$i = 0;
+
+						foreach($this->arr_news as $page)
+						{
+							echo "<li>
+								<a href='".$page['url']."'>
+									<div class='image'>".$page['image']."</div>
+									<h4>".$page['title']."</h4>
+								</a>
+							</li>";
+
+							$i++;
+						}
+
+						for($j = 0; $j <= ($i % $instance['news_columns']); $j++)
+						{
+							echo "<li></li>";
+						}
+
+					echo "</ul>";
+
+				echo "</div>"
+			.$after_widget;
+		}
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+
+		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
+		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		$instance_temp = $instance;
+		$instance_temp['news_amount'] = 9;
+		$this->get_posts($instance_temp);
+
+		echo "<div class='mf_form'>";
+
+			$count_temp = count($this->arr_news);
+
+			if($count_temp > 0)
+			{
+				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+				."<div class='flex_flow'>"
+					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
+
+					if($count_temp > 3)
+					{
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+					}
+
+				echo "</div>";
 			}
 
 			else

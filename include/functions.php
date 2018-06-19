@@ -1526,28 +1526,6 @@ function setup_theme_core()
 	add_action('wp_footer', 'wp_print_head_scripts', 5);
 }
 
-function widgets_theme_core()
-{
-	register_widget('widget_theme_core_area');
-	register_widget('widget_theme_core_logo');
-	register_widget('widget_theme_core_search');
-	register_widget('widget_theme_core_news');
-	register_widget('widget_theme_core_promo');
-	//mf_unregister_widget('WP_Widget_Recent_Posts');
-
-	mf_unregister_widget('WP_Widget_Archives');
-	mf_unregister_widget('WP_Widget_Calendar');
-	mf_unregister_widget('WP_Widget_Categories');
-	//mf_unregister_widget('WP_Nav_Menu_Widget');
-	mf_unregister_widget('WP_Widget_Links');
-	mf_unregister_widget('WP_Widget_Meta');
-	mf_unregister_widget('WP_Widget_Pages');
-	mf_unregister_widget('WP_Widget_Recent_Comments');
-	mf_unregister_widget('WP_Widget_RSS');
-	mf_unregister_widget('WP_Widget_Search');
-	mf_unregister_widget('WP_Widget_Tag_Cloud');
-}
-
 function customize_save_theme_core()
 {
 	update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');

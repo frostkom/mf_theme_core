@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.0.12
+Version: 7.1.0
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: http://frostkom.se
@@ -104,7 +104,7 @@ else
 }
 
 add_action('after_setup_theme', 'setup_theme_core');
-add_action('widgets_init', 'widgets_theme_core');
+add_action('widgets_init', array($obj_theme_core, 'widgets_init'));
 
 add_action('customize_register', array($obj_theme_core, 'customize_theme'), 11);
 add_action('customize_save', 'customize_save_theme_core');
