@@ -1194,12 +1194,7 @@ class mf_theme_core
 
 				else
 				{
-					/*if(isset($this->param['ignore_default_if']) && $this->param['ignore_default_if'] != '' && $this->options[$this->param['ignore_default_if']] != '')
-					{
-						$default_value = '';
-					}
-
-					else */if(isset($this->param['default']))
+					if(isset($this->param['default']))
 					{
 						$default_value = $this->param['default'];
 					}
