@@ -796,10 +796,10 @@ class mf_theme_core
 
 	function content_meta($html, $post)
 	{
-		$setting_display_post_meta = get_option_or_default('setting_display_post_meta', array('time'));
-
-		if($post->post_type == 'post')
+		if(isset($post->post_type) && $post->post_type == 'post')
 		{
+			$setting_display_post_meta = get_option_or_default('setting_display_post_meta', array('time'));
+
 			if(in_array('time', $setting_display_post_meta))
 			{
 				$html .= "<time datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
@@ -1113,6 +1113,7 @@ class mf_theme_core
 		register_widget('widget_theme_core_logo');
 		register_widget('widget_theme_core_search');
 		register_widget('widget_theme_core_news');
+		register_widget('widget_theme_core_info');
 		register_widget('widget_theme_core_related_news');
 		register_widget('widget_theme_core_promo');
 		//mf_unregister_widget('WP_Widget_Recent_Posts');
@@ -1984,21 +1985,18 @@ class widget_theme_core_area extends WP_Widget
 			'description' => __("Add Widget Area", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-widget-area-widget');
-
 		$this->arr_default = array(
 			'widget_area_id' => '',
 			'widget_area_name' => '',
 			'widget_area_columns' => 1,
 		);
 
-		parent::__construct('theme-widget-area-widget', __("Widget Area", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-widget-area-widget', __("Widget Area", 'lang_theme_core'), $widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		if(is_active_sidebar('widget_area_'.$instance['widget_area_id']))
@@ -2016,7 +2014,6 @@ class widget_theme_core_area extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['widget_area_id'] = sanitize_text_field($new_instance['widget_area_id']);
@@ -2047,8 +2044,6 @@ class widget_theme_core_logo extends WP_Widget
 			'description' => __("Display Logo", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-logo-widget');
-
 		$this->arr_default = array(
 			'logo_url' => '',
 			'logo_display' => 'all',
@@ -2057,13 +2052,12 @@ class widget_theme_core_logo extends WP_Widget
 			'logo_description' => '',
 		);
 
-		parent::__construct('theme-logo-widget', __("Logo", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-logo-widget', __("Logo", 'lang_theme_core'), $widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$obj_theme_core = new mf_theme_core();
@@ -2076,7 +2070,6 @@ class widget_theme_core_logo extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['logo_url'] = sanitize_text_field($new_instance['logo_url']);
@@ -2134,20 +2127,17 @@ class widget_theme_core_search extends WP_Widget
 			'description' => __("Display Search Form", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-search-widget');
-
 		$this->arr_default = array(
 			'search_placeholder' => "",
 			'search_animate' => 'yes',
 		);
 
-		parent::__construct('theme-search-widget', __("Search", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-search-widget', __("Search", 'lang_theme_core'), $widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo get_search_theme_core(array('placeholder' => $instance['search_placeholder'], 'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : 'yes')));
@@ -2156,7 +2146,6 @@ class widget_theme_core_search extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['search_placeholder'] = sanitize_text_field($new_instance['search_placeholder']);
@@ -2185,8 +2174,6 @@ class widget_theme_core_news extends WP_Widget
 			'description' => __("Display News/Posts", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-news-widget');
-
 		$this->arr_default = array(
 			'news_title' => "",
 			'news_type' => 'original',
@@ -2200,7 +2187,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_page' => 0,
 		);
 
-		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops);
 	}
 
 	function get_posts($instance)
@@ -2261,7 +2248,6 @@ class widget_theme_core_news extends WP_Widget
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$this->get_posts($instance);
@@ -2356,7 +2342,6 @@ class widget_theme_core_news extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
@@ -2460,6 +2445,107 @@ class widget_theme_core_news extends WP_Widget
 	}
 }
 
+class widget_theme_core_info extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_info',
+			'description' => __("Display Info Module", 'lang_theme_core')
+		);
+
+		$this->arr_default = array(
+			'info_title' => '',
+			'info_content' => '',
+			'info_button_text' => '',
+			'info_page' => 0,
+			'info_link' => '',
+		);
+
+		parent::__construct('theme-info-widget', __("Info Module", 'lang_theme_core'), $widget_ops);
+	}
+
+	function widget($args, $instance)
+	{
+		extract($args);
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo $before_widget;
+
+			if($instance['info_title'] != '')
+			{
+				echo $before_title
+					.$instance['info_title']
+				.$after_title;
+			}
+
+			echo "<div class='section'>";
+
+				if($instance['info_content'] != '')
+				{
+					echo apply_filters('the_content', $instance['info_content']);
+				}
+
+				if($instance['info_button_text'] != '')
+				{
+					if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
+					else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
+					else{									$button_link = "#";}
+
+					echo "<div class='form_button'>
+						<a href='".$button_link."' class='button color_button'>"
+							.$instance['info_button_text']
+						."</a>
+					</div>";
+				}
+
+			echo "</div>"
+		.$after_widget;
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+
+		$instance['info_title'] = sanitize_text_field($new_instance['info_title']);
+		$instance['info_content'] = sanitize_text_field($new_instance['info_content']);
+		$instance['info_button_text'] = sanitize_text_field($new_instance['info_button_text']);
+		$instance['info_page'] = sanitize_text_field($new_instance['info_page']);
+		$instance['info_link'] = esc_url_raw($new_instance['info_link']);
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title']))
+			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
+			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text']));
+
+			if($instance['info_button_text'] != '')
+			{
+				if($instance['info_link'] == '')
+				{
+					$arr_data = array();
+					get_post_children(array('add_choose_here' => true), $arr_data);
+
+					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page']));
+				}
+
+				if(!($instance['info_page'] > 0))
+				{
+					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link']));
+				}
+			}
+
+		echo "</div>";
+	}
+}
+
 class widget_theme_core_related_news extends WP_Widget
 {
 	function __construct()
@@ -2469,15 +2555,13 @@ class widget_theme_core_related_news extends WP_Widget
 			'description' => __("Display Related News/Posts", 'lang_theme_core')
 		);
 
-		$control_ops = array('id_base' => 'theme-related-news-widget');
-
 		$this->arr_default = array(
 			'news_title' => '',
 			'news_amount' => 1,
 			'news_columns' => 0,
 		);
 
-		parent::__construct('theme-related-news-widget', __("Related News", 'lang_theme_core'), $widget_ops, $control_ops);
+		parent::__construct('theme-related-news-widget', __("Related News", 'lang_theme_core'), $widget_ops);
 	}
 
 	function get_posts($instance)
@@ -2549,7 +2633,6 @@ class widget_theme_core_related_news extends WP_Widget
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$this->get_posts($instance);
@@ -2605,7 +2688,6 @@ class widget_theme_core_related_news extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
@@ -2672,7 +2754,6 @@ class widget_theme_core_promo extends WP_Widget
 		global $wpdb;
 
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		if(count($instance['promo_include']) > 0)
@@ -2769,7 +2850,6 @@ class widget_theme_core_promo extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['promo_title'] = sanitize_text_field($new_instance['promo_title']);

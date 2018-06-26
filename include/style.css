@@ -452,6 +452,41 @@
 				width: 100%;
 			}
 	/* ########################## */
+
+	.widget.theme_info
+	{
+		background: linear-gradient(to bottom, #f9f9fa 0, #eee 100%);
+		padding: .5em 1em 1.5em;
+		position: relative;
+	}
+
+		.is_mobile .widget.theme_info
+		{
+			text-align: center;
+		}
+
+		.widget.theme_info .section
+		{
+			
+		}
+
+			.is_tablet .widget.theme_info h3, .is_tablet .widget.theme_info p, .is_desktop .widget.theme_info h3, .is_desktop .widget.theme_info p
+			{
+				float: left;
+				width: 70%;
+			}
+
+			.widget.theme_info .button
+			{
+				margin: 1em 0 0;
+			}
+
+				.is_tablet .widget.theme_info .form_button, .is_desktop .widget.theme_info .form_button
+				{
+					right: 1.5em;
+					position: absolute;
+					top: .5em;
+				}
 }
 
 @media print
