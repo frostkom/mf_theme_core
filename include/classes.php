@@ -2470,36 +2470,37 @@ class widget_theme_core_info extends WP_Widget
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		echo $before_widget;
+		echo $before_widget
+			."<div class='section'>
+				<div>";
 
-			if($instance['info_title'] != '')
-			{
-				echo $before_title
-					.$instance['info_title']
-				.$after_title;
-			}
+					if($instance['info_title'] != '')
+					{
+						echo $before_title
+							.$instance['info_title']
+						.$after_title;
+					}
 
-			echo "<div class='section'>";
+					if($instance['info_content'] != '')
+					{
+						echo apply_filters('the_content', $instance['info_content']);
+					}
 
-				if($instance['info_content'] != '')
-				{
-					echo apply_filters('the_content', $instance['info_content']);
-				}
+					if($instance['info_button_text'] != '')
+					{
+						if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
+						else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
+						else{									$button_link = "#";}
 
-				if($instance['info_button_text'] != '')
-				{
-					if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
-					else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
-					else{									$button_link = "#";}
+						echo "<div class='form_button'>
+							<a href='".$button_link."' class='button color_button'>"
+								.$instance['info_button_text']
+							."</a>
+						</div>";
+					}
 
-					echo "<div class='form_button'>
-						<a href='".$button_link."' class='button color_button'>"
-							.$instance['info_button_text']
-						."</a>
-					</div>";
-				}
-
-			echo "</div>"
+				echo "</div>
+			</div>"
 		.$after_widget;
 	}
 
