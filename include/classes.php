@@ -2230,11 +2230,11 @@ class widget_theme_core_news extends WP_Widget
 		{
 			$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
 
-			foreach($result as $post)
+			foreach($result as $r)
 			{
-				$post_id = $post->ID;
-				$post_title = $post->post_title;
-				$post_excerpt = $post->post_excerpt;
+				$post_id = $r->ID;
+				$post_title = $r->post_title;
+				$post_excerpt = $r->post_excerpt;
 
 				$post_thumbnail = '';
 
@@ -2517,11 +2517,11 @@ class widget_theme_core_related_news extends WP_Widget
 			{
 				$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
 
-				foreach($result as $post)
+				foreach($result as $r)
 				{
-					$post_id = $post->ID;
-					$post_title = $post->post_title;
-					$post_excerpt = $post->post_excerpt;
+					$post_id = $r->ID;
+					$post_title = $r->post_title;
+					$post_excerpt = $r->post_excerpt;
 
 					$post_thumbnail = '';
 
@@ -2685,11 +2685,11 @@ class widget_theme_core_promo extends WP_Widget
 			{
 				$post_thumbnail_size = 'large';
 
-				foreach($result as $post)
+				foreach($result as $r)
 				{
-					$post_id = $post->ID;
-					$post_title = $post->post_title;
-					$post_content = $post->post_content;
+					$post_id = $r->ID;
+					$post_title = $r->post_title;
+					$post_content = $r->post_content;
 
 					if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
 					{
