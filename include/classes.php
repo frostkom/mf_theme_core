@@ -2525,24 +2525,26 @@ class widget_theme_core_info extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title']))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
-			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text']));
+			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text'])); //, 'xtra' => " condition_type='hide_if_empty' condition_field='info_button_links'"
+			//echo "<div class='widgets-right .info_button_links'>";
 
-			if($instance['info_button_text'] != '')
-			{
-				if($instance['info_link'] == '')
+				if($instance['info_button_text'] != '')
 				{
-					$arr_data = array();
-					get_post_children(array('add_choose_here' => true), $arr_data);
+					if($instance['info_link'] == '')
+					{
+						$arr_data = array();
+						get_post_children(array('add_choose_here' => true), $arr_data);
 
-					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page']));
+						echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page'])); //, 'xtra' => " class='info_page' condition_type='show_if_empty' condition_field='widgets-right .info_link'"
+					}
+
+					if(!($instance['info_page'] > 0))
+					{
+						echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link'])); //, 'xtra' => " class='info_link' condition_type='show_if_empty' condition_field='widgets-right .info_page'"
+					}
 				}
 
-				if(!($instance['info_page'] > 0))
-				{
-					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link']));
-				}
-			}
-
+			//echo "</div>";
 		echo "</div>";
 	}
 }
