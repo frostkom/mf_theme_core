@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-26 09:09+0100\n"
+"POT-Creation-Date: 2018-06-27 11:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -20,9 +20,9 @@ msgid "Accept"
 msgstr "Acceptera"
 
 #: ../include/classes.php:98
-#: ../include/classes.php:2315
-#: ../include/classes.php:2332
-#: ../include/classes.php:2435
+#: ../include/classes.php:2337
+#: ../include/classes.php:2354
+#: ../include/classes.php:2461
 msgid "Read More"
 msgstr "Läs mer"
 
@@ -316,8 +316,8 @@ msgid "Name"
 msgstr "Namn"
 
 #: ../include/classes.php:2033
-#: ../include/classes.php:2411
-#: ../include/classes.php:2720
+#: ../include/classes.php:2437
+#: ../include/classes.php:2749
 msgid "Columns"
 msgstr "Kolumner"
 
@@ -381,65 +381,69 @@ msgstr "Visa nyheter/inlägg"
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:2396
-msgid "Original"
-msgstr "Original"
+#: ../include/classes.php:2405
+msgid "Default"
+msgstr "Standard"
 
-#: ../include/classes.php:2397
+#: ../include/classes.php:2406
 msgid "Post It"
 msgstr "Post-It"
 
-#: ../include/classes.php:2403
-#: ../include/classes.php:2525
-#: ../include/classes.php:2714
-#: ../include/classes.php:2869
+#: ../include/classes.php:2407
+msgid "Simple"
+msgstr "Enkel"
+
+#: ../include/classes.php:2429
+#: ../include/classes.php:2552
+#: ../include/classes.php:2743
+#: ../include/classes.php:2898
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:2404
+#: ../include/classes.php:2430
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:2405
+#: ../include/classes.php:2431
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:2407
-#: ../include/classes.php:2716
+#: ../include/classes.php:2433
+#: ../include/classes.php:2745
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:2419
+#: ../include/classes.php:2445
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:2419
+#: ../include/classes.php:2445
 msgid "h"
 msgstr "tim"
 
-#: ../include/classes.php:2424
+#: ../include/classes.php:2450
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:2428
+#: ../include/classes.php:2454
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:2441
-#: ../include/classes.php:2728
+#: ../include/classes.php:2467
+#: ../include/classes.php:2757
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:2454
+#: ../include/classes.php:2480
 msgid "Display Info Module"
 msgstr "Visa infomodul"
 
-#: ../include/classes.php:2465
+#: ../include/classes.php:2491
 msgid "Info Module"
 msgstr "Infomodul"
 
-#: ../include/classes.php:2526
+#: ../include/classes.php:2553
 #: ../include/functions.php:264
 #: ../include/functions.php:400
 #: ../include/functions.php:401
@@ -447,35 +451,35 @@ msgstr "Infomodul"
 msgid "Content"
 msgstr "Innehåll"
 
-#: ../include/classes.php:2527
+#: ../include/classes.php:2554
 msgid "Button Text"
 msgstr "Knapptext"
 
-#: ../include/classes.php:2536
+#: ../include/classes.php:2564
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:2541
+#: ../include/classes.php:2569
 msgid "Link"
 msgstr "Länk"
 
-#: ../include/classes.php:2555
+#: ../include/classes.php:2584
 msgid "Display Related News/Posts"
 msgstr "Visa relaterade nyheter/inlägg"
 
-#: ../include/classes.php:2564
+#: ../include/classes.php:2593
 msgid "Related News"
 msgstr "Relaterade nyheter"
 
-#: ../include/classes.php:2741
+#: ../include/classes.php:2770
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:2749
+#: ../include/classes.php:2778
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:2870
+#: ../include/classes.php:2899
 msgid "Pages"
 msgstr "Sidor"
 

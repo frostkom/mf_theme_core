@@ -2256,7 +2256,7 @@ class widget_theme_core_news extends WP_Widget
 
 		if($rows > 0)
 		{
-			$display_news_scroll = $rows > 3 && $instance['news_display_arrows'] == 'yes';
+			$display_news_scroll = ($rows > 3 && $instance['news_display_arrows'] == 'yes');
 
 			if($display_news_scroll)
 			{
@@ -2276,7 +2276,29 @@ class widget_theme_core_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section ".$instance['news_type']." ".($rows > 1 ? "news_multiple" : "news_single").($display_news_scroll ? " news_scroll" : "")."'".($instance['news_autoscroll_time'] > 0 ? " data-autoscroll='".$instance['news_autoscroll_time']."'" : "").">";
+				$widget_class = "section ".$instance['news_type'];
+
+				if($rows > 1)
+				{
+					$widget_class .= " news_multiple";
+
+					if($display_news_scroll)
+					{
+						$widget_class .= " news_scroll";
+					}
+
+					if($instance['news_autoscroll_time'] > 0)
+					{
+						$widget_class .= " data-autoscroll='".$instance['news_autoscroll_time']."'";
+					}
+				}
+
+				else
+				{
+					$widget_class .= " news_single";
+				}
+
+				echo "<div class='".$widget_class.">";
 
 					if($rows > 1)
 					{
@@ -2295,11 +2317,16 @@ class widget_theme_core_news extends WP_Widget
 								}
 
 								echo "<li>
-									<a href='".$page['url']."'>
-										<div class='image'>".$page['image']."</div>
-										<h4>".$page['title']."</h4>";
+									<a href='".$page['url']."'>";
 
-										if($instance['news_type'] == 'postit')
+										if(in_array($instance['news_type'], array('original', 'simple')))
+										{
+											echo "<div class='image'>".$page['image']."</div>";
+										}
+
+										echo "<h4>".$page['title']."</h4>";
+
+										if(in_array($instance['news_type'], array('postit', 'simple')))
 										{
 											echo apply_filters('the_content', $page['excerpt']);
 										}
@@ -2377,6 +2404,15 @@ class widget_theme_core_news extends WP_Widget
 		return $arr_data;
 	}
 
+	function get_news_type_for_select()
+	{
+		return array(
+			'original' => __("Default", 'lang_theme_core'),
+			'postit' => __("Post It", 'lang_theme_core'),
+			'simple' => __("Simple", 'lang_theme_core'),
+		);
+	}
+
 	function form($instance)
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
@@ -2392,16 +2428,11 @@ class widget_theme_core_news extends WP_Widget
 
 			if($count_temp > 0)
 			{
-				$arr_news_types = array(
-					'original' => __("Original", 'lang_theme_core'),
-					'postit' => __("Post It", 'lang_theme_core'),
-				);
-
 				$arr_data_pages = array();
 				get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
-				.show_select(array('data' => $arr_news_types, 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
+				.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
