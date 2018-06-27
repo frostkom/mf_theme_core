@@ -433,6 +433,11 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 		."}
 
+			.form_button button, .form_button .button
+			{"
+				.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
+			."}
+
 		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
 		{"
 			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
