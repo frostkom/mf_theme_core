@@ -145,7 +145,7 @@
 		flex-wrap: wrap;
 	}
 
-		.is_mobile .widget .section .text_columns
+		.is_mobile .widget .section .text_columns, .aside .widget .section .text_columns
 		{
 			display: block;
 		}
