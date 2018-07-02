@@ -357,6 +357,12 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
 		);
 
+		$this->options_fonts['rouge_script'] = array(
+			'title' => "Rouge Script",
+			'style' => "'Rouge Script', cursive",
+			'url' => "//fonts.googleapis.com/css?family=Rouge+Script"
+		);
+
 		$this->options_fonts['sorts_mill_goudy'] = array(
 			'title' => "Sorts Mill Goudy",
 			'style' => "'sorts-mill-goudy',serif",
@@ -2485,7 +2491,7 @@ class widget_theme_core_news extends WP_Widget
 
 					echo "</div>";
 				}
-				
+
 				echo "<div class='flex_flow'>"
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", 'lang_theme_core'), 'value' => $instance['news_display_title']))
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))

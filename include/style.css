@@ -145,7 +145,7 @@
 		flex-wrap: wrap;
 	}
 
-		.is_mobile .widget .section .text_columns, .aside .widget .section .text_columns
+		.is_mobile .widget .section .text_columns, .aside.left .widget .section .text_columns, .aside.right .widget .section .text_columns
 		{
 			display: block;
 		}
@@ -421,7 +421,7 @@
 				top: -1.2em;
 				width: 8em;
 			}
-			
+
 				/*.widget.theme_news .postit li .image
 				{
 					display: none;
