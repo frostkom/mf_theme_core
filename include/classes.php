@@ -22,6 +22,16 @@ class mf_theme_core
 		}
 	}
 
+	function upload_mimes($existing_mimes = array())
+	{
+		$existing_mimes['eot'] = 'application/vnd.ms-fontobject';
+		$existing_mimes['ttf'] = 'application/x-font-ttf';
+		$existing_mimes['woff'] = 'application/octet-stream';
+		$existing_mimes['svg'] = 'image/svg+xmln';
+
+		return $existing_mimes;
+	}
+
 	function wp_head()
 	{
 		global $wpdb;
