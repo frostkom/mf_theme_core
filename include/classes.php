@@ -1135,7 +1135,7 @@ class mf_theme_core
 		register_widget('widget_theme_core_search');
 		register_widget('widget_theme_core_news');
 		register_widget('widget_theme_core_info');
-		register_widget('widget_theme_core_related_news');
+		register_widget('widget_theme_core_related');
 		register_widget('widget_theme_core_promo');
 		//mf_unregister_widget('WP_Widget_Recent_Posts');
 
@@ -2411,7 +2411,7 @@ class widget_theme_core_news extends WP_Widget
 		return $instance;
 	}
 
-	function get_categories_for_select($data = array())
+	/*function get_categories_for_select($data = array())
 	{
 		if(!isset($data['hierarchical'])){		$data['hierarchical'] = true;}
 
@@ -2428,7 +2428,7 @@ class widget_theme_core_news extends WP_Widget
 		}
 
 		return $arr_data;
-	}
+	}*/
 
 	function get_news_type_for_select()
 	{
@@ -2459,7 +2459,7 @@ class widget_theme_core_news extends WP_Widget
 
 				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
 				.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
-				.show_select(array('data' => $this->get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
+				.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
 
@@ -2612,22 +2612,24 @@ class widget_theme_core_info extends WP_Widget
 	}
 }
 
-class widget_theme_core_related_news extends WP_Widget
+class widget_theme_core_related extends WP_Widget
 {
 	function __construct()
 	{
 		$widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display Related News/Posts", 'lang_theme_core')
+			'description' => __("Display Related Posts", 'lang_theme_core')
 		);
 
 		$this->arr_default = array(
 			'news_title' => '',
+			'news_post_type' => 'post',
+			'news_categories' => array(),
 			'news_amount' => 1,
-			'news_columns' => 0,
+			'news_columns' => 1,
 		);
 
-		parent::__construct('theme-related-news-widget', __("Related News", 'lang_theme_core'), $widget_ops);
+		parent::__construct('theme-related-news-widget', __("Related Posts", 'lang_theme_core'), $widget_ops);
 	}
 
 	function get_posts($instance)
@@ -2638,30 +2640,41 @@ class widget_theme_core_related_news extends WP_Widget
 
 		if(isset($post) && isset($post->ID))
 		{
-			if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
+			//if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
 
 			$post_id = $post->ID;
 
 			$query_join = $query_where = "";
 
-			$arr_categories = get_the_category($post_id);
+			$arr_related_categories = array();
 
-			if(count($arr_categories) > 0)
+			if(count($instance['news_categories']) > 0)
 			{
-				$arr_related_categories = array();
+				$arr_related_categories = $instance['news_categories'];
+			}
 
-				foreach($arr_categories as $category)
+			else
+			{
+				$arr_categories = get_the_category($post_id);
+
+				if(count($arr_categories) > 0)
 				{
-					$arr_related_categories[] = $category->term_id;
+					foreach($arr_categories as $category)
+					{
+						$arr_related_categories[] = $category->term_id;
+					}
 				}
+			}
 
+			if(count($arr_related_categories) > 0)
+			{
 				$query_join .= " INNER JOIN ".$wpdb->term_relationships." ON ".$wpdb->posts.".ID = ".$wpdb->term_relationships.".object_id INNER JOIN ".$wpdb->term_taxonomy." USING (term_taxonomy_id)";
 				$query_where .= " AND term_id IN('".implode("','", $arr_related_categories)."')";
 			}
 
-			//do_log("Post: ".var_export($post, true)." -> ".var_export(get_the_category($post_id), true));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = %s AND post_status = %s AND ID != '%d'".$query_where." GROUP BY post_title ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], $instance['news_post_type'], 'publish', $post_id));
 
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish' AND ID != '%d'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], $post_id));
+			//do_log("Related: ".$wpdb->last_query);
 
 			if($wpdb->num_rows > 0)
 			{
@@ -2703,9 +2716,7 @@ class widget_theme_core_related_news extends WP_Widget
 
 		$this->get_posts($instance);
 
-		$rows = count($this->arr_news);
-
-		if($rows > 0)
+		if(count($this->arr_news) > 0)
 		{
 			echo $before_widget;
 
@@ -2716,14 +2727,8 @@ class widget_theme_core_related_news extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section original'>";
-
-					/*if(!($instance['news_columns'] > 0))
-					{
-						$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 ? 3 : 2;
-					}*/
-
-					echo "<ul class='text_columns columns_".$instance['news_columns']."'>";
+				echo "<div class='section original'>
+					<ul class='text_columns columns_".$instance['news_columns']."'>";
 
 						$i = 0;
 
@@ -2744,9 +2749,8 @@ class widget_theme_core_related_news extends WP_Widget
 							echo "<li></li>";
 						}
 
-					echo "</ul>";
-
-				echo "</div>"
+					echo "</ul>
+				</div>"
 			.$after_widget;
 		}
 	}
@@ -2757,6 +2761,8 @@ class widget_theme_core_related_news extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
+		$instance['news_post_type'] = sanitize_text_field($new_instance['news_post_type']);
+		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
 
@@ -2767,32 +2773,34 @@ class widget_theme_core_related_news extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$instance_temp = $instance;
+		/*$instance_temp = $instance;
 		$instance_temp['news_amount'] = 9;
-		$this->get_posts($instance_temp);
+		$this->get_posts($instance_temp);*/
 
-		echo "<div class='mf_form'>";
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
+			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']));
 
-			$count_temp = count($this->arr_news);
+			/*$count_temp = count($this->arr_news);
 
 			if($count_temp > 0)
-			{
-				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
-				."<div class='flex_flow'>"
-					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
+			{*/
+				echo "<div class='flex_flow'>"
+					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'")); // max='".$count_temp."'
 
-					if($count_temp > 3)
-					{
+					/*if($count_temp > 3)
+					{*/
 						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
-					}
+					//}
 
 				echo "</div>";
-			}
+			/*}
 
 			else
 			{
 				echo __("There are no posts to display in this widget", 'lang_theme_core');
-			}
+			}*/
 
 		echo "</div>";
 	}
