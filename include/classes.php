@@ -2121,7 +2121,7 @@ class widget_theme_core_logo extends WP_Widget
 			{
 				if($instance['logo_image'] == '')
 				{
-					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title']));
+					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title'], 'xtra' => " id='logo-title'"));
 				}
 
 				if($instance['logo_title'] == '')
@@ -2457,7 +2457,7 @@ class widget_theme_core_news extends WP_Widget
 				$arr_data_pages = array();
 				get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
-				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
 				.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 				.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 				."<div class='flex_flow'>"
@@ -2586,7 +2586,7 @@ class widget_theme_core_info extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title']))
+			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='info-title'"))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
 			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text'])); //, 'xtra' => " condition_type='hide_if_empty' condition_field='info_button_links'"
 			//echo "<div class='widgets-right .info_button_links'>";
@@ -2778,7 +2778,7 @@ class widget_theme_core_related extends WP_Widget
 		$this->get_posts($instance_temp);*/
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title']))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
 			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']));
 
@@ -2940,7 +2940,7 @@ class widget_theme_core_promo extends WP_Widget
 		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title']))
+			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='promo-title'"))
 			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
 		."</div>";
 	}
