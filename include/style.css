@@ -116,7 +116,7 @@
 		}
 
 	/* Full Width */
-	body:not(.is_mobile) nav.full_width:not(.is_hamburger), .full_width .widget
+	body:not(.is_mobile) nav.full_width:not(.is_hamburger), .full_width > div > .widget
 	{
 		left: 50%;
 		margin-left: -50vw;
@@ -127,7 +127,7 @@
 		max-width: none;
 	}
 
-		.full_width .widget.widget_media_image
+		.full_width > div > .widget.widget_media_image
 		{
 			text-align: center;
 		}
@@ -410,7 +410,7 @@
 			{
 				background: rgba(254, 254, 254, .6);
 				border: 1px solid #fff;
-				box-shadow: 0 0 .3em rgba(0, 0, 0, .1);  
+				box-shadow: 0 0 .3em rgba(0, 0, 0, .1);
 				content: "";
 				display: block;
 				height: 2em;

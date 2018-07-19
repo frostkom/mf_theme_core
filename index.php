@@ -3,10 +3,10 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.2.16
+Version: 7.2.22
 Licence: GPLv2 or later
 Author: Martin Fors
-Author URI: http://frostkom.se
+Author URI: https://frostkom.se
 Text Domain: lang_theme_core
 Domain Path: /lang
 
@@ -38,10 +38,14 @@ if(is_admin())
 	add_filter('upload_mimes', array($obj_theme_core, 'upload_mimes'));
 	add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
 
+	add_filter('wp_get_default_privacy_policy_content', array($obj_theme_core, 'add_policy'));
+
 	add_filter('manage_page_posts_columns', array($obj_theme_core, 'column_header'), 5);
 	add_action('manage_page_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
 	add_filter('manage_post_posts_columns', array($obj_theme_core, 'column_header'), 5);
 	add_action('manage_post_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
+
+	add_filter('map_meta_cap', array($obj_theme_core, 'map_meta_cap'), 10, 2);
 
 	add_filter('admin_post_thumbnail_html', array($obj_theme_core, 'admin_post_thumbnail_html'), 10, 2);
 

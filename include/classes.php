@@ -93,7 +93,7 @@ class mf_theme_core
 						<div>
 							<i class='fa fa-legal red'></i>";
 
-							$accept_link = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+							$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 
 							if($post_excerpt != '')
 							{
@@ -103,18 +103,16 @@ class mf_theme_core
 
 								if($post_content != '' && $post_content != $post_excerpt)
 								{
-									$post_url = get_permalink($post_id);
-
-									$this->footer_output .= "<a href='".$post_url."'>".__("Read More", 'lang_theme_core')."</a>";
+									$buttons .= " <a href='".get_permalink($post_id)."' class='button color_button' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
 								}
 
-								$this->footer_output .= $accept_link;
+								$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
 							}
 
 							else
 							{
 								$this->footer_output .= $post_content
-								.$accept_link;
+								."<div class='form_button'>".$buttons."</div>";
 							}
 
 						$this->footer_output .= "</div>
@@ -149,7 +147,7 @@ class mf_theme_core
 			}
 		}
 	}
- 
+
 	function embed_oembed_html($cached_html, $url, $attr, $post_id)
 	{
 		return "<div class='embed_content'>".$cached_html."</div>";
@@ -1605,6 +1603,18 @@ class mf_theme_core
 		}
 	}
 
+	function map_meta_cap($caps, $cap)
+	{
+		switch($cap)
+		{
+			case 'manage_privacy_options':
+				$caps = array('manage_options');
+			break;
+		}
+
+		return $caps;
+	}
+
 	function run_cron()
 	{
 		global $wpdb;
@@ -1714,6 +1724,19 @@ class mf_theme_core
 		{
 			remove_menu_page("edit-comments.php");
 		}
+	}
+
+	function add_policy($content)
+	{
+		if(get_option('setting_cookie_info') > 0)
+		{
+			$content .= "<h3>".__("Theme", 'lang_analytics')."</h3>
+			<p>"
+				.__("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core')
+			."</p>";
+		}
+
+		return $content;
 	}
 
 	function delete_folder($data)

@@ -988,7 +988,7 @@ function settings_theme_core()
 
 		$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
-		if(is_plugin_active("mf_analytics/index.php") && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != ''))
+		if(is_plugin_active("mf_analytics/index.php")) // && (get_option('setting_analytics_google') != '' || get_option('setting_analytics_clicky') != '')
 		{
 			$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
 		}

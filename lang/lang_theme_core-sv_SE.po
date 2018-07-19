@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-03 08:13+0100\n"
+"POT-Creation-Date: 2018-07-19 07:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -20,9 +20,9 @@ msgid "Accept"
 msgstr "Acceptera"
 
 #: ../include/classes.php:108
-#: ../include/classes.php:2367
-#: ../include/classes.php:2384
-#: ../include/classes.php:2499
+#: ../include/classes.php:2392
+#: ../include/classes.php:2409
+#: ../include/classes.php:2524
 msgid "Read More"
 msgstr "Läs mer"
 
@@ -272,188 +272,197 @@ msgstr "Svaret från %s hade ett fel (%s)"
 msgid "I could not process the feed from %s since the URL was not a valid one"
 msgstr "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
 
-#: ../include/classes.php:1687
+#: ../include/classes.php:1699
 msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
-#: ../include/classes.php:1710
+#: ../include/classes.php:1722
 #: ../include/functions.php:852
 msgid "Theme Backup"
 msgstr "Temabackup"
 
-#: ../include/classes.php:1849
+#: ../include/classes.php:1735
+#: ../include/functions.php:1057
+msgid "Theme"
+msgstr "Tema"
+
+#: ../include/classes.php:1737
+msgid "A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again."
+msgstr "A kaka sparas när besökaren godkänner användning av kakor på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
+
+#: ../include/classes.php:1874
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:1907
+#: ../include/classes.php:1932
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1966
+#: ../include/classes.php:1991
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1985
+#: ../include/classes.php:2010
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:1990
+#: ../include/classes.php:2015
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:2006
+#: ../include/classes.php:2031
 msgid "Add Widget Area"
 msgstr "Lägg till widgetområde"
 
-#: ../include/classes.php:2015
+#: ../include/classes.php:2040
 msgid "Widget Area"
 msgstr "Widgetområde"
 
-#: ../include/classes.php:2052
+#: ../include/classes.php:2077
 msgid "ID (Has to be unique)"
 msgstr "ID (Måste vara unikt)"
 
-#: ../include/classes.php:2053
+#: ../include/classes.php:2078
 msgid "Name"
 msgstr "Namn"
 
-#: ../include/classes.php:2054
-#: ../include/classes.php:2468
-#: ../include/classes.php:2786
+#: ../include/classes.php:2079
+#: ../include/classes.php:2493
+#: ../include/classes.php:2819
 msgid "Columns"
 msgstr "Kolumner"
 
-#: ../include/classes.php:2065
+#: ../include/classes.php:2090
 msgid "Display Logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:2076
-#: ../include/classes.php:2111
-#: ../include/classes.php:2124
+#: ../include/classes.php:2101
+#: ../include/classes.php:2136
+#: ../include/classes.php:2149
 #: ../include/functions.php:106
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:2110
+#: ../include/classes.php:2135
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:2112
-#: ../include/classes.php:2135
+#: ../include/classes.php:2137
+#: ../include/classes.php:2160
 #: ../include/functions.php:115
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:2116
+#: ../include/classes.php:2141
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:2117
+#: ../include/classes.php:2142
 #: ../include/sitemap-xsl.php:104
 msgid "URL"
 msgstr "URL"
 
-#: ../include/classes.php:2118
+#: ../include/classes.php:2143
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:2148
+#: ../include/classes.php:2173
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:2156
+#: ../include/classes.php:2181
 #: ../include/functions.php:100
 #: ../include/functions.php:600
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:2183
+#: ../include/classes.php:2208
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:2184
+#: ../include/classes.php:2209
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:2195
+#: ../include/classes.php:2220
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:2212
+#: ../include/classes.php:2237
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:2436
+#: ../include/classes.php:2461
 msgid "Default"
 msgstr "Standard"
 
-#: ../include/classes.php:2437
+#: ../include/classes.php:2462
 msgid "Post It"
 msgstr "Post-It"
 
-#: ../include/classes.php:2438
+#: ../include/classes.php:2463
 msgid "Simple"
 msgstr "Enkel"
 
-#: ../include/classes.php:2460
-#: ../include/classes.php:2589
-#: ../include/classes.php:2780
-#: ../include/classes.php:2935
+#: ../include/classes.php:2485
+#: ../include/classes.php:2614
+#: ../include/classes.php:2806
+#: ../include/classes.php:2968
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:2461
+#: ../include/classes.php:2486
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:2462
+#: ../include/classes.php:2487
+#: ../include/classes.php:2808
 msgid "Categories"
 msgstr "Kategorier"
 
-#: ../include/classes.php:2464
-#: ../include/classes.php:2782
+#: ../include/classes.php:2489
+#: ../include/classes.php:2815
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:2479
+#: ../include/classes.php:2504
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:2479
+#: ../include/classes.php:2504
 msgid "h"
 msgstr "tim"
 
-#: ../include/classes.php:2484
+#: ../include/classes.php:2509
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:2488
+#: ../include/classes.php:2513
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:2496
+#: ../include/classes.php:2521
 msgid "Display Title"
 msgstr "Visa rubrik"
 
-#: ../include/classes.php:2497
+#: ../include/classes.php:2522
 msgid "Display Excerpt"
 msgstr "Visa utdrag"
 
-#: ../include/classes.php:2504
-#: ../include/classes.php:2794
+#: ../include/classes.php:2529
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:2517
+#: ../include/classes.php:2542
 msgid "Display Info Module"
 msgstr "Visa infomodul"
 
-#: ../include/classes.php:2528
+#: ../include/classes.php:2553
 msgid "Info Module"
 msgstr "Infomodul"
 
-#: ../include/classes.php:2590
+#: ../include/classes.php:2615
 #: ../include/functions.php:267
 #: ../include/functions.php:404
 #: ../include/functions.php:405
@@ -461,35 +470,35 @@ msgstr "Infomodul"
 msgid "Content"
 msgstr "Innehåll"
 
-#: ../include/classes.php:2591
+#: ../include/classes.php:2616
 msgid "Button Text"
 msgstr "Knapptext"
 
-#: ../include/classes.php:2601
+#: ../include/classes.php:2626
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:2606
+#: ../include/classes.php:2631
 msgid "Link"
 msgstr "Länk"
 
-#: ../include/classes.php:2621
+#: ../include/classes.php:2646
 msgid "Display Related Posts"
 msgstr "Visa relaterade inlägg"
 
-#: ../include/classes.php:2630
+#: ../include/classes.php:2657
 msgid "Related Posts"
 msgstr "Relaterade inlägg"
 
-#: ../include/classes.php:2807
+#: ../include/classes.php:2840
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:2815
+#: ../include/classes.php:2848
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:2936
+#: ../include/classes.php:2969
 msgid "Pages"
 msgstr "Sidor"
 
@@ -1115,10 +1124,6 @@ msgstr "CSS Hero-stöd"
 #: ../include/functions.php:1048
 msgid "Optimize"
 msgstr "Optimera"
-
-#: ../include/functions.php:1057
-msgid "Theme"
-msgstr "Tema"
 
 #: ../include/functions.php:1082
 msgid "Time"
