@@ -813,7 +813,7 @@ class mf_theme_core
 		return $out;
 	}
 
-	function content_meta($html, $post)
+	function the_content_meta($html, $post)
 	{
 		if(isset($post->post_type) && $post->post_type == 'post')
 		{
