@@ -776,7 +776,7 @@ function get_options_page_theme_core()
 	{
 		if($strFileUrl != '')
 		{
-			list($strFileContent, $headers) = get_url_content($strFileUrl, true);
+			list($strFileContent, $headers) = get_url_content(array('url' => $strFileUrl, 'catch_head' => true));
 		}
 
 		else if($strFileName != '')

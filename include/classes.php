@@ -1565,7 +1565,7 @@ class mf_theme_core
 			{
 				if(filter_var($style_source, FILTER_VALIDATE_URL))
 				{
-					list($content, $headers) = get_url_content($style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", true);
+					list($content, $headers) = get_url_content(array('url' => $style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
 
 					if(isset($headers['http_code']) && $headers['http_code'] == 200)
 					{
