@@ -39,7 +39,7 @@ jQuery(function($)
 		{
 			'button': $(e.currentTarget),
 			'action': 'optimize_theme',
-			'selector': $('#optimize_debug')
+			'selector': $("#optimize_debug")
 		});
 	});
 });

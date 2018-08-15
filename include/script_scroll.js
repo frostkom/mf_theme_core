@@ -4,12 +4,12 @@ jQuery(function($)
 	{
 		if($(this).scrollTop() > 300)
 		{
-			$('#scroll_to_top').fadeIn();
+			$("#scroll_to_top").fadeIn();
 		}
 
 		else
 		{
-			$('#scroll_to_top').fadeOut();
+			$("#scroll_to_top").fadeOut();
 		}
 	}
 
@@ -22,7 +22,7 @@ jQuery(function($)
 		show_or_hide_scroll();
 	});
 
-	$(document).on('click', '#scroll_to_top', function()
+	$(document).on('click', "#scroll_to_top", function()
 	{
 		scroll_to_top();
 

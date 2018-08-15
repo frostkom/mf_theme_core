@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.2.25
+Version: 7.3.4
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -23,7 +23,7 @@ $obj_theme_core = new mf_theme_core();
 
 add_action('cron_base', array($obj_theme_core, 'run_cron'), mt_rand(1, 10));
 
-//add_action('init', 'init_theme_core');
+add_action('init', array($obj_theme_core, 'init'));
 
 if(is_admin())
 {
@@ -32,8 +32,8 @@ if(is_admin())
 
 	new mf_clone_posts();
 
-	add_action('wp_before_admin_bar_render', 'admin_bar_theme_core');
-	add_action('admin_init', 'settings_theme_core');
+	add_action('wp_before_admin_bar_render', array($obj_theme_core, 'wp_before_admin_bar_render'));
+	add_action('admin_init', array($obj_theme_core, 'settings_theme_core'));
 	add_action('admin_init', array($obj_theme_core, 'admin_init'), 0);
 	add_filter('upload_mimes', array($obj_theme_core, 'upload_mimes'));
 	add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
@@ -62,9 +62,9 @@ else
 	add_action('do_robots', array($obj_theme_core, 'do_robots'), 100, 0);
 	add_filter('template_redirect', array($obj_theme_core, 'do_sitemap'), 1, 0);
 
-	add_action('get_header', 'header_theme_core', 0);
+	add_action('get_header', array($obj_theme_core, 'get_header'), 0);
 	add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
-	add_filter('body_class', 'body_class_theme_core');
+	add_filter('body_class', array($obj_theme_core, 'body_class'));
 
 	add_filter('embed_oembed_html', array($obj_theme_core, 'embed_oembed_html'), 99, 4);
 
@@ -94,29 +94,27 @@ else
 	remove_action('wp_head', 'wp_oembed_add_discovery_links');
 	add_filter('rewrite_rules_array', 'disable_embeds_rewrites');*/
 
-	add_filter('wp_nav_menu_args', 'nav_args_theme_core');
+	add_filter('wp_nav_menu_args', array($obj_theme_core, 'wp_nav_menu_args'));
 
-	add_filter('get_search_form', 'search_form_theme_core');
+	add_filter('get_search_form', array($obj_theme_core, 'get_search_form'));
 
-	add_filter('the_password_form', 'password_form_theme_core');
-	add_filter('the_content', 'the_content_protected_theme_core');
+	add_filter('the_password_form', array($obj_theme_core, 'the_password_form'));
+	add_filter('the_content', array($obj_theme_core, 'the_content'));
 
 	add_filter('the_content_meta', array($obj_theme_core, 'the_content_meta'), 1, 2);
 
-	add_filter('wp_default_scripts', 'default_scripts_theme_core');
-	add_action('wp_print_scripts', 'print_scripts_theme_core', 1);
+	add_filter('wp_default_scripts', array($obj_theme_core, 'wp_default_scripts'));
+	add_action('wp_print_scripts', array($obj_theme_core, 'wp_print_scripts'), 1);
 	add_action('wp_footer', array($obj_theme_core, 'wp_footer'));
 }
 
-add_action('after_setup_theme', 'setup_theme_core');
+add_action('after_setup_theme', array($obj_theme_core, 'after_setup_theme'));
 add_action('widgets_init', array($obj_theme_core, 'widgets_init'));
 
-add_action('customize_register', array($obj_theme_core, 'customize_theme'), 11);
-add_action('customize_save', 'customize_save_theme_core');
+add_action('customize_register', array($obj_theme_core, 'customize_register'), 11);
+add_action('customize_save', array($obj_theme_core, 'customize_save'));
 
-$obj_theme_core = new mf_theme_core();
-
-add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'run_optimize'));
+add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'optimize_theme'));
 
 load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__)).'/lang/');
 
@@ -135,6 +133,6 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_theme_core_login', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_send_email_on_draft', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed', 'option_uploads_done', 'setting_maintenance_page_temp'),
+		'options' => array('setting_theme_core_login', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed', 'option_uploads_done'),
 	));
 }
