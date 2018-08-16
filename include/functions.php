@@ -818,41 +818,6 @@ function get_params_for_select()
 	return $arr_data;
 }
 
-function setting_theme_ignore_style_on_restore_callback()
-{
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option($setting_key);
-
-	if(!is_array($option))
-	{
-		$option = array_map('trim', explode(",", $option));
-	}
-
-	echo show_select(array('data' => get_params_for_select(), 'name' => $setting_key."[]", 'value' => $option));
-}
-
-function setting_theme_css_hero_callback()
-{
-	$css_hero_key = 'wpcss_quick_config_settings_'.get_theme_slug();
-
-	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option_or_default($setting_key, get_option($css_hero_key));
-
-	if($option != '')
-	{
-		echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
-	}
-
-	else
-	{
-		$option = "";
-
-		//echo __("I have generated a list of selectors to use. Please reload the page for further instructions", 'lang_theme_core');
-	}
-
-	update_option($css_hero_key, $option);
-}
-
 function is_site_public()
 {
 	return (get_option('blog_public') == 1 && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes');
