@@ -3250,6 +3250,7 @@ class widget_theme_core_info extends WP_Widget
 		);
 
 		$this->arr_default = array(
+			'info_image' => '',
 			'info_title' => '',
 			'info_content' => '',
 			'info_button_text' => '',
@@ -3269,32 +3270,40 @@ class widget_theme_core_info extends WP_Widget
 			."<div class='section'>
 				<div>";
 
-					if($instance['info_title'] != '')
+					if($instance['info_image'] != '')
 					{
-						echo $before_title
-							.$instance['info_title']
-						.$after_title;
+						echo render_image_tag(array('src' => $instance['info_image']));
 					}
 
-					if($instance['info_content'] != '')
-					{
-						echo apply_filters('the_content', $instance['info_content']);
-					}
+					echo "<div>";
 
-					if($instance['info_button_text'] != '')
-					{
-						if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
-						else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
-						else{									$button_link = "#";}
+						if($instance['info_title'] != '')
+						{
+							echo $before_title
+								.$instance['info_title']
+							.$after_title;
+						}
 
-						echo "<div class='form_button'>
-							<a href='".$button_link."' class='button color_button'>"
-								.$instance['info_button_text']
-							."</a>
-						</div>";
-					}
+						if($instance['info_content'] != '')
+						{
+							echo apply_filters('the_content', $instance['info_content']);
+						}
 
-				echo "</div>
+						if($instance['info_button_text'] != '')
+						{
+							if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
+							else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
+							else{									$button_link = "#";}
+
+							echo "<div class='form_button'>
+								<a href='".$button_link."' class='button color_button'>"
+									.$instance['info_button_text']
+								."</a>
+							</div>";
+						}
+
+					echo "</div>
+				</div>
 			</div>"
 		.$after_widget;
 	}
@@ -3304,6 +3313,7 @@ class widget_theme_core_info extends WP_Widget
 		$instance = $old_instance;
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
+		$instance['info_image'] = sanitize_text_field($new_instance['info_image']);
 		$instance['info_title'] = sanitize_text_field($new_instance['info_title']);
 		$instance['info_content'] = sanitize_text_field($new_instance['info_content']);
 		$instance['info_button_text'] = sanitize_text_field($new_instance['info_button_text']);
@@ -3318,6 +3328,7 @@ class widget_theme_core_info extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
+			.get_media_library(array('name' => $this->get_field_name('info_image'), 'value' => $instance['info_image'], 'type' => 'image'))
 			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='info-title'"))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
 			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text'])); //, 'xtra' => " condition_type='hide_if_empty' condition_field='info_button_links'"

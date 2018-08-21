@@ -468,7 +468,12 @@
 			text-align: center;
 		}
 
-		.widget.theme_info .section > div
+		.widget.theme_info .section > div > img
+		{
+			display: block;
+		}
+
+		.widget.theme_info .section > div > div
 		{
 			background: linear-gradient(to bottom, #f9f9fa 0, #eee 100%);
 			overflow: hidden;
