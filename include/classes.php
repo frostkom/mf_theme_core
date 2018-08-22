@@ -190,13 +190,17 @@ class mf_theme_core
 			}
 
 			$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
-			$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
+		}
 
-			if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
-			{
-				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
-			}
+		$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
 
+		if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
+		{
+			$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
+		}
+
+		if(get_option('setting_no_public_pages') != 'yes')
+		{
 			$users_editors = get_users(array(
 				'fields' => array('ID'),
 				'role__in' => array('editor'),
@@ -217,10 +221,10 @@ class mf_theme_core
 				delete_option('setting_send_email_on_draft');
 			}
 
-			$obj_theme_core = new mf_theme_core();
-			$obj_theme_core->get_params();
+			//$obj_theme_core = new mf_theme_core();
+			$this->get_params();
 
-			if($obj_theme_core->options['style_source'] != '')
+			if($this->options['style_source'] != '')
 			{
 				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 			}
@@ -3272,10 +3276,10 @@ class widget_theme_core_info extends WP_Widget
 
 					if($instance['info_image'] != '')
 					{
-						echo render_image_tag(array('src' => $instance['info_image']));
+						echo "<div class='image'>".render_image_tag(array('src' => $instance['info_image']))."</div>";
 					}
 
-					echo "<div>";
+					echo "<div class='content'>";
 
 						if($instance['info_title'] != '')
 						{

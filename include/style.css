@@ -468,12 +468,12 @@
 			text-align: center;
 		}
 
-		.widget.theme_info .section > div > img
+		.widget.theme_info .section .image img
 		{
 			display: block;
 		}
 
-		.widget.theme_info .section > div > div
+		.widget.theme_info .section .content
 		{
 			background: linear-gradient(to bottom, #f9f9fa 0, #eee 100%);
 			overflow: hidden;
