@@ -1,4 +1,4 @@
-## MF Base
+## Description
 Wordpress plugin to act as a base for MF themes. It has some basic functionality to require login and activating maintenance page.
 
 ## Installation
