@@ -221,7 +221,6 @@ class mf_theme_core
 				delete_option('setting_send_email_on_draft');
 			}
 
-			//$obj_theme_core = new mf_theme_core();
 			$this->get_params();
 
 			if($this->options['style_source'] != '')
