@@ -3053,7 +3053,7 @@ class widget_theme_core_news extends WP_Widget
 					$widget_class .= " news_single";
 				}
 
-				echo "<div class='".$widget_class.">";
+				echo "<div class='".$widget_class."'>";
 
 					if($rows > 1)
 					{
