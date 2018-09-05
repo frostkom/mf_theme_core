@@ -2417,6 +2417,8 @@ class mf_theme_core
 						$menu_name = $item[0];
 
 						$menu[$key][0] = strip_tags($menu_name).$count_message;
+
+						break;
 					}
 				}
 			}
