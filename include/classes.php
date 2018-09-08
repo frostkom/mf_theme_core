@@ -2442,7 +2442,7 @@ class mf_theme_core
 	{
 		if(get_option('setting_cookie_info') > 0)
 		{
-			$content .= "<h3>".__("Theme", 'lang_analytics')."</h3>
+			$content .= "<h3>".__("Theme", 'lang_theme_core')."</h3>
 			<p>"
 				.__("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core')
 			."</p>";
