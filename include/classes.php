@@ -1223,15 +1223,17 @@ class mf_theme_core
 				margin-top: .5em;
 			}
 
-		.form_textfield input, .mf_form textarea, .mf_form select, .form_button button, .form_button .button, #comments #comment, #comments #submit
+		.form_textfield input, .form_password input, .mf_form textarea, .mf_form select, #comments #comment
 		{"
 			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 		."}
 
-			.form_button button, .form_button .button
-			{"
-				.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
-			."}
+		.form_button button, .form_button .button, #comments #submit
+		{"
+			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_button_border_radius'))
+			.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
+			.$this->render_css(array('property' => 'padding', 'value' => 'form_button_padding'))
+		."}
 
 		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
 		{"
@@ -1794,7 +1796,7 @@ class mf_theme_core
 		return $content;
 	}
 
-	function meta_boxes($meta_boxes)
+	function rwmb_meta_boxes($meta_boxes)
 	{
 		if(is_site_public())
 		{
