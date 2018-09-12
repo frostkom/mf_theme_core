@@ -353,7 +353,7 @@ class mf_theme_core
 		$arr_data = array();
 		get_post_children(array('add_choose_here' => true), $arr_data);
 
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-plus fa-lg'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-plus-circle fa-lg'></i></a>", 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
 	}
 
 	function setting_404_page_callback()
@@ -367,7 +367,7 @@ class mf_theme_core
 		$post_title = __("404", 'lang_theme_core');
 		$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
 
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-plus fa-lg'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fas fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-plus-circle fa-lg'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fas fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 	}
 
 	function setting_maintenance_page_callback()
@@ -384,7 +384,7 @@ class mf_theme_core
 		$post_title = __("Temporary Maintenance", 'lang_theme_core');
 		$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
 
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-plus fa-lg'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fas fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => "<a href='".admin_url("post-new.php?post_type=page&post_title=".$post_title."&content=".$post_content)."'><i class='fa fa-plus-circle fa-lg'></i></a>", 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fas fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
 
 		if($option > 0 && $option != $option_temp)
 		{
@@ -1715,7 +1715,7 @@ class mf_theme_core
 					switch($seo_type)
 					{
 						case 'duplicate_title':
-							echo "<i class='fa fa-close fa-lg red'></i>
+							echo "<i class='fa fa-times fa-lg red'></i>
 							<div class='row-actions'>
 								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
 									.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
@@ -1724,14 +1724,14 @@ class mf_theme_core
 						break;
 
 						case 'no_title':
-							echo "<i class='fa fa-close fa-lg red'></i>
+							echo "<i class='fa fa-times fa-lg red'></i>
 							<div class='row-actions'>"
 								.__("You have not set a title for this page", 'lang_theme_core')
 							."</div>";
 						break;
 
 						case 'duplicate_excerpt':
-							echo "<i class='fa fa-close fa-lg red'></i>
+							echo "<i class='fa fa-times fa-lg red'></i>
 							<div class='row-actions'>
 								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
 									.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
@@ -1740,7 +1740,7 @@ class mf_theme_core
 						break;
 
 						case 'no_excerpt':
-							echo "<i class='fa fa-close fa-lg red'></i>
+							echo "<i class='fa fa-times fa-lg red'></i>
 							<div class='row-actions'>"
 								.__("You have not set an excerpt for this page", 'lang_theme_core')
 							."</div>";
