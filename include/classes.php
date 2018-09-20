@@ -2348,13 +2348,11 @@ class mf_theme_core
 							$style_url = $json['response']['style_url'];
 
 							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
-
-							//do_log("Saved that an update is ready (".$style_source." != ".get_site_url().")");
 						}
 
 						else
 						{
-							do_log(sprintf(__("The feed from %s returned an error", 'lang_theme_core'), $style_source));
+							do_log(sprintf(__("The feed from %s returned an error (%s)", 'lang_theme_core'), $style_source, $content));
 						}
 
 						do_log(__("The response from", 'lang_theme_core'), 'trash');
