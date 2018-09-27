@@ -688,7 +688,7 @@ class mf_theme_core
 
 					$this->footer_output .= "<div id='accept_cookies'>
 						<div>
-							<i class='fas fa-gavel red'></i>";
+							<i class='fa fa-gavel red'></i>";
 
 							$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 
@@ -2455,9 +2455,9 @@ class mf_theme_core
 	{
 		$folder = $data['path']."/".$data['child'];
 
-		if(is_dir($folder) && count(scandir($folder)) == 2)
+		if(is_dir($folder) && count(@scandir($folder)) == 2)
 		{
-			rmdir($folder);
+			@rmdir($folder);
 			//do_log("Removed Empty Folder: ".$folder);
 		}
 	}
