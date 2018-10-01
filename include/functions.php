@@ -592,7 +592,8 @@ function get_options_page_theme_core()
 	{
 		if(count($obj_theme_core->options) > 0)
 		{
-			$file = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")))."_".date("YmdHi").".json";
+			$file_base = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")));
+			$file = prepare_file_name($file_base).".json";
 
 			$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($obj_theme_core->options)));
 
