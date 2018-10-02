@@ -396,6 +396,7 @@ function get_params_theme_core()
 				$options_params[] = array('type' => 'text', 'id' => 'aside_sticky_position', 'title' => __("Sticky Position", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'aside_left_width', 'title' => __("Width", 'lang_theme_core')." (".__("Left", 'lang_theme_core').")", 'default' => "28%");
 				$options_params[] = array('type' => 'text', 'id' => 'aside_width', 'title' => __("Width", 'lang_theme_core')." (".__("Right", 'lang_theme_core').")", 'default' => "28%");
+				$options_params[] = array('type' => 'text', 'id' => 'aside_container_margin', 'title' => __("Margin", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'aside_container_padding', 'title' => __("Padding", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'aside_widget_background', 'title' => __("Widget Background", 'lang_theme_core')); //, 'default' => "#f8f8f8"
 				$options_params[] = array('type' => 'text', 'id' => 'aside_widget_border', 'title' => __("Widget Border", 'lang_theme_core')); //, 'default' => "1px solid #d8d8d8"
