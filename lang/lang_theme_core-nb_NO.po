@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-07 13:21+0100\n"
+"POT-Creation-Date: 2018-10-02 05:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -14,6 +14,9 @@ msgstr ""
 "X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_attr__;esc_attr_e;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+msgid "Theme"
+msgstr "Tema"
 
 msgid "Yes"
 msgstr "Ja"
@@ -44,9 +47,6 @@ msgstr "Ingen"
 
 msgid "Hidden"
 msgstr "Skjult"
-
-msgid "Theme"
-msgstr "Tema"
 
 msgid "Name"
 msgstr "Navn"
