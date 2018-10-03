@@ -538,7 +538,7 @@ class mf_theme_core
 		}
 
 		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description))
-		."<div class='form_buttons'>"
+		."<div>" // class='form_buttons'
 			.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
 		."</div>
 		<div id='optimize_debug'></div>";
