@@ -14,7 +14,7 @@ class mf_theme_core
 		return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
 	}
 
-	function run_cron()
+	function cron_base()
 	{
 		global $wpdb;
 
