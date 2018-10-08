@@ -551,11 +551,11 @@
 
 						.theme_widget_area .widget.theme_info .form_button a
 						{
+							font-size: 1.6em;
 							overflow: hidden;
 							text-align: center;
 							text-overflow: ellipsis;
 							white-space: nowrap;
-							width: 75%;
 						}
 }
 

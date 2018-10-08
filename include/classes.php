@@ -3250,13 +3250,17 @@ class widget_theme_core_info extends WP_Widget
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
+		if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
+		else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
+		else{									$button_link = "#";}
+
 		echo $before_widget
 			."<div class='section'>
 				<div>";
 
 					if($instance['info_image'] != '')
 					{
-						echo "<div class='image'>".render_image_tag(array('src' => $instance['info_image']))."</div>";
+						echo "<div class='image'><a href='".$button_link."'>".render_image_tag(array('src' => $instance['info_image']))."</a></div>";
 					}
 
 					echo "<div class='content'>";
@@ -3275,10 +3279,6 @@ class widget_theme_core_info extends WP_Widget
 
 						if($instance['info_button_text'] != '')
 						{
-							if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
-							else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
-							else{									$button_link = "#";}
-
 							echo "<div class='form_button'>
 								<a href='".$button_link."' class='button color_button'>"
 									.$instance['info_button_text']
