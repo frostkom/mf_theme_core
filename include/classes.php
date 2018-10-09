@@ -690,7 +690,7 @@ class mf_theme_core
 						<div>
 							<i class='fa fa-gavel red'></i>";
 
-							$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+							$buttons = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 
 							if($post_excerpt != '')
 							{
@@ -700,7 +700,7 @@ class mf_theme_core
 
 								if($post_content != '' && $post_content != $post_excerpt)
 								{
-									$buttons .= " <a href='".get_permalink($post_id)."' class='button color_button' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
+									$buttons .= " <a href='".get_permalink($post_id)."' class='button' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
 								}
 
 								$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
@@ -1866,6 +1866,29 @@ class mf_theme_core
 	}
 	#################################
 
+	function count_shortcode_button($count)
+	{
+		if($count == 0)
+		{
+			$count++;
+		}
+
+		return $count;
+	}
+
+	function get_shortcode_output($out)
+	{
+		$arr_data = array(
+			'' => __("No", 'lang_theme_core'),
+			'yes' => __("Yes", 'lang_theme_core')
+		);
+
+		$out .= "<h3>".__("Redirect", 'lang_theme_core')."</h3>"
+		.show_select(array('data' => $arr_data, 'xtra' => "rel='redirect url=https://domain.com sec=5'"));
+
+		return $out;
+	}
+
 	function require_user_login()
 	{
 		if(get_option('setting_no_public_pages') == 'yes')
@@ -2610,6 +2633,23 @@ class mf_theme_core
 		die();
 	}
 	#################################
+
+	function shortcode_redirect($atts)
+	{
+		extract(shortcode_atts(array(
+			'url' => '',
+			'sec' => 3,
+		), $atts));
+
+		$out = "";
+		
+		if($url != '')
+		{
+			$out .= "<meta http-equiv='refresh' content='".$sec."; url=".$url."'>";
+		}
+
+		return $out;
+	}
 }
 
 class mf_clone_posts
@@ -3280,7 +3320,7 @@ class widget_theme_core_info extends WP_Widget
 						if($instance['info_button_text'] != '')
 						{
 							echo "<div class='form_button'>
-								<a href='".$button_link."' class='button color_button'>"
+								<a href='".$button_link."' class='button'>"
 									.$instance['info_button_text']
 								."</a>
 							</div>";
