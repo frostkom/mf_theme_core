@@ -46,7 +46,7 @@ class mf_theme_core
 
 		/* Set default meta boxes */
 		#######################
-		$page = 'post';
+		/*$page = 'post';
 
 		$users = get_users(array('fields' => array('ID')));
 
@@ -56,7 +56,7 @@ class mf_theme_core
 
 			if(is_array($hidden))
 			{
-				$hidden = array_diff($hidden, array('postexcerpt')); // postboxes that are always shown
+				$hidden = array_diff($hidden, array('postexcerpt'));
 
 				if($hidden != $hidden_default)
 				{
@@ -69,7 +69,7 @@ class mf_theme_core
 				$hidden = array('slugdiv', 'trackbacksdiv', 'postcustom', 'commentstatusdiv', 'commentsdiv', 'authordiv', 'revisionsdiv');
 				update_user_option($user->ID, 'metaboxhidden_'.$page, $hidden, true);
 			}
-		}
+		}*/
 		#######################
 	}
 
@@ -162,7 +162,12 @@ class mf_theme_core
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
+		}
 
+		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", 'lang_theme_core');
+
+		if(get_option('setting_no_public_pages') != 'yes')
+		{
 			$arr_data = array();
 			get_post_children(array('post_type' => 'post'), $arr_data);
 
@@ -270,6 +275,32 @@ class mf_theme_core
 		$option = get_option_or_default($setting_key, 'no');
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+	}
+
+	function get_meta_boxes_for_select()
+	{
+		return array(
+			'authordiv' => __("Author", 'lang_theme_core'),
+			'categorydiv' => __("Categories", 'lang_theme_core'),
+			'commentstatusdiv' => __("Discussion", 'lang_theme_core'),
+			'commentsdiv' => __("Comments", 'lang_theme_core'),
+			'pageparentdiv' => __("Page Attributes", 'lang_theme_core'),
+			'postcustom' => __("Custom Fields", 'lang_theme_core'),
+			'postexcerpt' => __("Excerpt", 'lang_theme_core'),
+			'postimagediv' => __("Featured Image", 'lang_theme_core'),
+			'revisionsdiv' => __("Revisions", 'lang_theme_core'),
+			'slugdiv' => __("Slug", 'lang_theme_core'),
+			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
+			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
+		); //'formatdiv',  'tagsdiv', 
+	}
+
+	function setting_theme_core_hidden_meta_boxes_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key, array('authordiv', 'commentstatusdiv', 'commentsdiv', 'postcustom', 'revisionsdiv', 'slugdiv', 'trackbacksdiv'));
+
+		echo show_select(array('data' => $this->get_meta_boxes_for_select(), 'name' => $setting_key."[]", 'value' => $option));
 	}
 
 	function setting_display_post_meta_callback()
@@ -1794,6 +1825,11 @@ class mf_theme_core
 		."</div>";
 
 		return $content;
+	}
+
+	function hidden_meta_boxes($hidden, $screen)
+	{
+		return get_option('setting_theme_core_hidden_meta_boxes', $hidden);
 	}
 
 	function rwmb_meta_boxes($meta_boxes)
