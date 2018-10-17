@@ -1834,7 +1834,7 @@ class mf_theme_core
 
 	function rwmb_meta_boxes($meta_boxes)
 	{
-		if(is_site_public())
+		if(is_site_public() && IS_ADMIN)
 		{
 			$meta_boxes[] = array(
 				'id' => 'theme_core_publish',
@@ -2678,7 +2678,7 @@ class mf_theme_core
 		), $atts));
 
 		$out = "";
-		
+
 		if($url != '')
 		{
 			$out .= "<meta http-equiv='refresh' content='".$sec."; url=".$url."'>";
