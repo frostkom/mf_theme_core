@@ -554,7 +554,7 @@ class mf_theme_core
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option_or_default($setting_key, 7);
 
-		$option_database_optimized = get_option('option_cache_prepopulated');
+		$option_database_optimized = get_option('option_database_optimized');
 
 		if($option_database_optimized > DEFAULT_DATE)
 		{
@@ -2525,10 +2525,8 @@ class mf_theme_core
 	{
 		global $wpdb;
 
-		$setting_theme_optimize_age = 12;
-
 		//Remove old revisions and auto-drafts
-		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL ".$setting_theme_optimize_age." MONTH)");
+		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL 12 MONTH)");
 
 		//Remove orphan postmeta
 		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL LIMIT 0, 1");
