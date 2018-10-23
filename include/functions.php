@@ -828,11 +828,13 @@ function is_site_public()
 	return (get_option('blog_public') == 1 && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes');
 }
 
-function get_post_types_for_metabox()
+function get_post_types_for_metabox($data = array())
 {
+	if(!isset($data['public'])){		$data['public'] = true;}
+
 	$arr_data = array();
 
-	foreach(get_post_types(array('public' => true), 'objects') as $post_type)
+	foreach(get_post_types($data, 'objects') as $post_type)
 	{
 		if(!in_array($post_type->name, array('attachment')))
 		{

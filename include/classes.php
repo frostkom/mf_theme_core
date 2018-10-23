@@ -1846,7 +1846,7 @@ class mf_theme_core
 			$meta_boxes[] = array(
 				'id' => 'theme_core_publish',
 				'title' => __("Publish Settings", 'lang_theme_core'),
-				'post_types' => get_post_types_for_metabox(),
+				'post_types' => get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)),
 				'context' => 'side',
 				'priority' => 'low',
 				'fields' => array(
