@@ -1829,7 +1829,14 @@ class mf_theme_core
 
 	function hidden_meta_boxes($hidden, $screen)
 	{
-		return get_option('setting_theme_core_hidden_meta_boxes', $hidden);
+		$setting_theme_core_hidden_meta_boxes = get_option('setting_theme_core_hidden_meta_boxes');
+
+		if(is_array($setting_theme_core_hidden_meta_boxes))
+		{
+			$hidden = array_merge($hidden, $setting_theme_core_hidden_meta_boxes);
+		}
+
+		return $hidden;
 	}
 
 	function rwmb_meta_boxes($meta_boxes)
