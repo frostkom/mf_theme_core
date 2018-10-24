@@ -22,9 +22,9 @@ class mf_theme_core
 
 		/* Optimize */
 		#########################
-		$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
+		//$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
 
-		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-".$setting_theme_optimize." day")))
+		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 		{
 			$this->do_optimize();
 		}
@@ -551,14 +551,14 @@ class mf_theme_core
 
 	function setting_theme_optimize_callback()
 	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 7);
+		/*$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option_or_default($setting_key, 7);*/
 
 		$option_database_optimized = get_option('option_database_optimized');
 
 		if($option_database_optimized > DEFAULT_DATE)
 		{
-			$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +".$option." day")));
+			$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +7 day")));
 
 			$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
 		}
@@ -568,9 +568,11 @@ class mf_theme_core
 			$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 		}
 
-		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description))
-		."<div>"
+		//echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description));
+
+		echo "<div>"
 			.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
+			."<p class='italic'>".$description."</p>"
 		."</div>
 		<div id='optimize_debug'></div>";
 	}
@@ -2556,27 +2558,6 @@ class mf_theme_core
 			}
 		}
 
-		//Remove orphan relations
-		$wpdb->get_results("SELECT term_taxonomy_id FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT ID FROM ".$wpdb->posts.") LIMIT 0, 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan relations: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->term_relationships." WHERE term_taxonomy_id = 1 AND object_id NOT IN (SELECT id FROM ".$wpdb->posts.")");
-			//"SELECT COUNT(object_id) FROM ".$wpdb->term_relationships." AS tr INNER JOIN ".$wpdb->term_taxonomy." AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM ".$wpdb->posts.")"
-		}
-
-		//Remove orphan usermeta
-		$wpdb->get_results("SELECT user_id FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.") LIMIT 0, 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove orphan usermeta: ".$wpdb->last_query);
-
-			//$wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE user_id NOT IN (SELECT ID FROM ".$wpdb->users.")");
-		}
-
 		//Remove duplicate usermeta
 		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
 
@@ -2590,30 +2571,45 @@ class mf_theme_core
 			}
 		}
 
-		//Unused tags
-		//do_log unused tags ready for deletion
-
 		//Pingbacks
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'pingback'"
-
-		//Trackbacks
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_type = 'trackback'"
-
-		//Spam comments
-		//"SELECT COUNT(*) FROM ".$wpdb->comments." WHERE comment_approved = %s", "spam"
-
-		//Duplicate comments
-		//"SELECT COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1
-
-		//oEmbed caches
-		//"SELECT COUNT(meta_id) FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"
-
-		/*$wpdb->get_results("SELECT COUNT(*) as total, COUNT(case when option_value < NOW() then 1 end) as expired FROM ".$wpdb->options." WHERE (option_name LIKE '\_transient\_timeout\_%' OR option_name like '\_site\_transient\_timeout\_%') LIMIT 0, 1");
+		$wpdb->get_results("SELECT * FROM ".$wpdb->comments." WHERE comment_type = 'pingback'");
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove expired transients: ".$wpdb->last_query);
-		}*/
+			do_log("Remove pingbacks: ".$wpdb->last_query);
+		}
+
+		//Trackbacks
+		$wpdb->get_results("SELECT * FROM ".$wpdb->comments." WHERE comment_type = 'trackback'");
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove trackbacks: ".$wpdb->last_query);
+		}
+
+		//Spam comments
+		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_approved = %s", 'spam'));
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove spam comments: ".$wpdb->last_query);
+		}
+
+		//Duplicate comments
+		$wpdb->get_results($wpdb->prepare("SELECT *, COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1));
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove spam comments: ".$wpdb->last_query);
+		}
+
+		//oEmbed caches
+		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"));
+
+		if($wpdb->num_rows > 0)
+		{
+			do_log("Remove oEmbed caches: ".$wpdb->last_query);
+		}
 
 		/* Optimize Tables */
 		$result = $wpdb->get_results("SHOW TABLE STATUS");
@@ -2632,15 +2628,6 @@ class mf_theme_core
 		if(is_multisite() && !(get_option('option_uploads_done') > DEFAULT_DATE))
 		{
 			$this->do_fix();
-		}
-
-		//Remove unused tables
-		if(is_plugin_active('email-log/email-log.php') == false)
-		{
-			mf_uninstall_plugin(array(
-				'options' => array('email-log-db'),
-				'tables' => array('email_log'),
-			));
 		}
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
