@@ -481,13 +481,19 @@ function get_params_theme_core()
 
 function get_menu_type_for_select()
 {
-	return array(
+	$arr_data = array(
 		'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 		'main' => __("Main menu", 'lang_theme_core'),
 		'secondary' => __("Secondary", 'lang_theme_core'),
 		'both' => __("Main and Secondary menues", 'lang_theme_core'),
 		'slide' => __("Slide in from right", 'lang_theme_core'),
 	);
+
+	/*$menus = wp_get_nav_menus();
+
+	do_log("Menus: ".var_export($menus, true));*/
+
+	return $arr_data;
 }
 
 function is_active_widget_area($widget)

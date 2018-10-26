@@ -1654,7 +1654,7 @@ class mf_theme_core
 				$title_limit = 64;
 				$excerpt_limit = 156;
 
-				$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
+				$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name, post_status FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
 
 				foreach($result as $r)
 				{
@@ -1662,8 +1662,17 @@ class mf_theme_core
 					$post_excerpt = $r->post_excerpt;
 					$post_type = $r->post_type;
 					$post_name = $r->post_name;
+					$post_status = $r->post_status;
 
 					$seo_type = '';
+
+					if($seo_type == '')
+					{
+						if($post_status != 'publish')
+						{
+							$seo_type = 'not_published';
+						}
+					}
 
 					if($seo_type == '')
 					{
@@ -1757,10 +1766,7 @@ class mf_theme_core
 						break;
 
 						case 'no_title':
-							echo "<i class='fa fa-times fa-lg red'></i>
-							<div class='row-actions'>"
-								.__("You have not set a title for this page", 'lang_theme_core')
-							."</div>";
+							echo "<i class='fa fa-times fa-lg red' title='".__("You have not set a title for this page", 'lang_theme_core')."'></i>";
 						break;
 
 						case 'duplicate_excerpt':
@@ -1773,43 +1779,32 @@ class mf_theme_core
 						break;
 
 						case 'no_excerpt':
-							echo "<i class='fa fa-times fa-lg red'></i>
-							<div class='row-actions'>"
-								.__("You have not set an excerpt for this page", 'lang_theme_core')
-							."</div>";
+							echo "<i class='fa fa-times fa-lg red' title='".__("You have not set an excerpt for this page", 'lang_theme_core')."'></i>";
 						break;
 
 						case 'inconsistent_url':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow'></i>
-							<div class='row-actions'>"
-								.__("The URL is not correlated to the title", 'lang_theme_core')
-							."</div>";
+							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The URL is not correlated to the title", 'lang_theme_core')."'></i>";
 						break;
 
 						case 'long_title':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow'></i>
-							<div class='row-actions'>"
-								.__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")"
-							."</div>";
+							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")'></i>";
 						break;
 
 						case 'long_excerpt':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow'></i>
-							<div class='row-actions'>"
-								.__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")"
-							."</div>";
+							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")'></i>";
 						break;
 
+						case 'not_published':
 						case 'not_indexed':
-							echo "<i class='fa fa-check fa-lg grey'></i>";
+							echo "<i class='fa fa-eye-slash fa-lg grey' title='".__("The page is not published or indexed", 'lang_theme_core')."'></i>";
 						break;
 
 						case 'password_protected':
-							echo "<i class='fa fa-lock fa-lg'></i>";
+							echo "<i class='fa fa-lock fa-lg grey' title='".__("The page is password protected", 'lang_theme_core')."'></i>";
 						break;
 
 						default:
-							echo "<i class='fa fa-check fa-lg green'></i>";
+							echo "<i class='fa fa-check fa-lg green' title='".__("Well done! The page is SEO approved!", 'lang_theme_core')."'></i>";
 						break;
 					}
 				}

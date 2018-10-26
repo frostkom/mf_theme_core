@@ -488,8 +488,21 @@
 
 		.theme_widget_area .widget.theme_info .section
 		{
+			height: 100%;
 			padding: 0;
 		}
+
+			.widget.theme_info .section > div
+			{
+				background: linear-gradient(to bottom, #f9f9fa 0, #eee 100%);
+				height: 100%;
+				position: relative;
+			}
+			
+				.theme_widget_area .widget.theme_info:nth-child(2n+1) .section > div
+				{
+					background: linear-gradient(to bottom, #f9f9fa 0, #fafafa 100%);
+				}
 
 		.widget.theme_info .section .image img
 		{
@@ -498,15 +511,13 @@
 
 		.widget.theme_info .section .content
 		{
-			background: linear-gradient(to bottom, #f9f9fa 0, #eee 100%);
 			overflow: hidden;
 			padding: .5em 1em 1em;
-			position: relative;
 		}
 
-			.theme_widget_area .widget.theme_info:nth-child(2n+1) .section .content
+			.theme_widget_area .widget.theme_info .section .content
 			{
-				background: linear-gradient(to bottom, #f9f9fa 0, #fafafa 100%);
+				padding-bottom: 4em;
 			}
 
 			.widget.theme_info h3
@@ -530,26 +541,29 @@
 						width: 100%;
 					}
 
-			.widget.theme_info .button
+			.is_tablet .widget.theme_info .form_button, .is_desktop .widget.theme_info .form_button
 			{
-				margin: 1em 0 0;
+				position: absolute;
+				right: 1.5em;
+				top: 2em;
 			}
 
-				.is_tablet .widget.theme_info .form_button, .is_desktop .widget.theme_info .form_button
+				.theme_widget_area .widget.theme_info .form_button
 				{
+					font-size: .7em;
 					position: absolute;
-					right: 1.5em;
-					top: .5em;
+					bottom: 1em;
+					left: 0;
+					right: 0;
+					top: unset;
 				}
 
-					.theme_widget_area .widget.theme_info .form_button
+					.widget.theme_info .button
 					{
-						font-size: .7em;
-						position: unset;
-						width: 100%;
+						margin: 0;
 					}
 
-						.theme_widget_area .widget.theme_info .form_button a
+						.theme_widget_area .widget.theme_info .form_button .button
 						{
 							font-size: 1.6em;
 							overflow: hidden;
