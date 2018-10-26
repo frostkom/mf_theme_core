@@ -483,15 +483,41 @@ function get_menu_type_for_select()
 {
 	$arr_data = array(
 		'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-		'main' => __("Main menu", 'lang_theme_core'),
-		'secondary' => __("Secondary", 'lang_theme_core'),
-		'both' => __("Main and Secondary menues", 'lang_theme_core'),
-		'slide' => __("Slide in from right", 'lang_theme_core'),
 	);
 
-	/*$menus = wp_get_nav_menus();
+	$arr_menus = wp_get_nav_menus();
 
-	do_log("Menus: ".var_export($menus, true));*/
+	if(count($arr_menus) > 0)
+	{
+		$arr_data['opt_start_menu'] = __("Regular", 'lang_theme_core');
+
+			foreach($arr_menus as $menu)
+			{
+				if($menu->count > 0)
+				{
+					$arr_data[$menu->slug] = $menu->name;
+				}
+			}
+
+		$arr_data['opt_end_menu'] = "";
+	}
+
+	$arr_data['opt_start_advanced'] = __("Advanced", 'lang_theme_core');
+
+		if(!isset($arr_data['main-menu']))
+		{
+			$arr_data['main'] = __("Main", 'lang_theme_core');
+		}
+
+		if(!isset($arr_data['secondary-menu']))
+		{
+			$arr_data['secondary'] = __("Secondary", 'lang_theme_core');
+		}
+
+		$arr_data['both'] = __("Main & Secondary Menu", 'lang_theme_core');
+		$arr_data['slide'] = __("Slide in From Right", 'lang_theme_core');
+
+	$arr_data['opt_end_advanced'] = "";
 
 	return $arr_data;
 }

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-25 12:35+0100\n"
+"POT-Creation-Date: 2018-10-26 11:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -538,7 +538,7 @@ msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
 #: ../include/classes.php:2495
-#: ../include/functions.php:695
+#: ../include/functions.php:779
 msgid "Theme Backup"
 msgstr "Temabackup"
 
@@ -954,7 +954,7 @@ msgstr "Textfärg på knapp"
 #: ../include/functions.php:77
 #: ../include/functions.php:78
 #: ../include/functions.php:188
-#: ../include/functions.php:487
+#: ../include/functions.php:566
 msgid "Secondary"
 msgstr "Sekundär"
 
@@ -1231,89 +1231,97 @@ msgstr "Anpassat"
 msgid "Custom CSS"
 msgstr "Anpassad CSS"
 
-#: ../include/functions.php:486
-msgid "Main menu"
+#: ../include/functions.php:544
+msgid "Regular"
+msgstr "Vanliga"
+
+#: ../include/functions.php:557
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: ../include/functions.php:561
+msgid "Main"
 msgstr "Huvudmeny"
 
-#: ../include/functions.php:488
-msgid "Main and Secondary menues"
-msgstr "Huvud- och sekundär meny"
+#: ../include/functions.php:569
+msgid "Main & Secondary Menu"
+msgstr "Huvud- & sekundär meny"
 
-#: ../include/functions.php:489
-msgid "Slide in from right"
+#: ../include/functions.php:570
+msgid "Slide in From Right"
 msgstr "Glid in från höger"
 
-#: ../include/functions.php:516
+#: ../include/functions.php:600
 msgid "Not Found"
 msgstr "Hittades inte"
 
-#: ../include/functions.php:518
+#: ../include/functions.php:602
 msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
 msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
-#: ../include/functions.php:603
+#: ../include/functions.php:687
 msgid "The theme settings were backed up"
 msgstr "Temainställningarna sparades"
 
-#: ../include/functions.php:608
+#: ../include/functions.php:692
 msgid "It was not possible to backup the theme settings"
 msgstr "Det gick inte att ta backup på temainställningarna"
 
-#: ../include/functions.php:614
+#: ../include/functions.php:698
 msgid "There were no theme settings to save"
 msgstr "Det fanns inga temainställningar att spara"
 
-#: ../include/functions.php:656
+#: ../include/functions.php:740
 msgid "I restored the theme backup for you"
 msgstr "Jag återställde temabackupen åt dig"
 
-#: ../include/functions.php:666
+#: ../include/functions.php:750
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/functions.php:676
+#: ../include/functions.php:760
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/functions.php:689
+#: ../include/functions.php:773
 #, php-format
 msgid "The theme at %s has got a newer version of saved style which can be %srestored here%s"
 msgstr "Temat på %s har en nyare version på sparad design som kan %såterställas här%s"
 
-#: ../include/functions.php:716
+#: ../include/functions.php:800
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/functions.php:717
+#: ../include/functions.php:801
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:731
+#: ../include/functions.php:815
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/functions.php:732
-#: ../include/functions.php:756
+#: ../include/functions.php:816
+#: ../include/functions.php:840
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/functions.php:736
+#: ../include/functions.php:820
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/functions.php:751
+#: ../include/functions.php:835
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/functions.php:767
+#: ../include/functions.php:851
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/functions.php:770
+#: ../include/functions.php:854
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:878
+#: ../include/functions.php:962
 msgid "Search for"
 msgstr "Sök efter"
 

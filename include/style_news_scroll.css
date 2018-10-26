@@ -1,5 +1,10 @@
 @media all
 {
+	.widget.theme_news .news_scroll
+	{
+		position: relative;
+	}
+
 	.widget.theme_news .news_scroll ul
 	{
 		flex-wrap: nowrap;
