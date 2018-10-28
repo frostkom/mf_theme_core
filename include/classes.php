@@ -2599,11 +2599,13 @@ class mf_theme_core
 		}
 
 		//oEmbed caches
-		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->postmeta." WHERE meta_key LIKE(%s)", "%_oembed_%"));
+		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->postmeta." WHERE meta_key LIKE %s", "%_oembed_%"));
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove oEmbed caches: ".$wpdb->last_query);
+			//do_log("Remove oEmbed caches: ".$wpdb->last_query);
+
+			$wpdb->get_results($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_key LIKE %s", "%_oembed_%"));
 		}
 
 		/* Optimize Tables */

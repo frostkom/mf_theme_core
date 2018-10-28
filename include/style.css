@@ -498,7 +498,7 @@
 				height: 100%;
 				position: relative;
 			}
-			
+
 				.theme_widget_area .widget.theme_info:nth-child(2n+1) .section > div
 				{
 					background: linear-gradient(to bottom, #f9f9fa 0, #fafafa 100%);
