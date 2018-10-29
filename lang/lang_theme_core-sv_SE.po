@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-26 11:11+0100\n"
+"POT-Creation-Date: 2018-10-29 17:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -102,8 +102,8 @@ msgid "Author"
 msgstr "Författare"
 
 #: ../include/classes.php:284
-#: ../include/classes.php:3241
-#: ../include/classes.php:3573
+#: ../include/classes.php:3243
+#: ../include/classes.php:3575
 msgid "Categories"
 msgstr "Kategorier"
 
@@ -255,9 +255,9 @@ msgid "Accept"
 msgstr "Acceptera"
 
 #: ../include/classes.php:736
-#: ../include/classes.php:3165
-#: ../include/classes.php:3182
-#: ../include/classes.php:3278
+#: ../include/classes.php:3167
+#: ../include/classes.php:3184
+#: ../include/classes.php:3280
 msgid "Read More"
 msgstr "Läs mer"
 
@@ -270,7 +270,7 @@ msgid "Search here"
 msgstr "Sök här"
 
 #: ../include/classes.php:810
-#: ../include/classes.php:2954
+#: ../include/classes.php:2956
 #: ../include/functions.php:102
 msgid "Search"
 msgstr "Sök"
@@ -538,7 +538,7 @@ msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
 #: ../include/classes.php:2495
-#: ../include/functions.php:779
+#: ../include/functions.php:727
 msgid "Theme Backup"
 msgstr "Temabackup"
 
@@ -546,168 +546,168 @@ msgstr "Temabackup"
 msgid "A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again."
 msgstr "En kaka sparas när besökaren godkänner användning av kakor på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
 
-#: ../include/classes.php:2630
+#: ../include/classes.php:2632
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:2705
+#: ../include/classes.php:2707
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:2764
+#: ../include/classes.php:2766
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:2783
+#: ../include/classes.php:2785
 msgid "You are not allowed to clone this post"
 msgstr "Du har inte behörighet att klona denna sida"
 
-#: ../include/classes.php:2788
+#: ../include/classes.php:2790
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:2804
+#: ../include/classes.php:2806
 msgid "Add Widget Area"
 msgstr "Lägg till widgetområde"
 
-#: ../include/classes.php:2813
+#: ../include/classes.php:2815
 msgid "Widget Area"
 msgstr "Widgetområde"
 
-#: ../include/classes.php:2850
+#: ../include/classes.php:2852
 msgid "ID (Has to be unique)"
 msgstr "ID (Måste vara unikt)"
 
-#: ../include/classes.php:2851
+#: ../include/classes.php:2853
 msgid "Name"
 msgstr "Namn"
 
-#: ../include/classes.php:2852
-#: ../include/classes.php:3247
-#: ../include/classes.php:3584
+#: ../include/classes.php:2854
+#: ../include/classes.php:3249
+#: ../include/classes.php:3586
 msgid "Columns"
 msgstr "Kolumner"
 
-#: ../include/classes.php:2863
+#: ../include/classes.php:2865
 msgid "Display Logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:2874
-#: ../include/classes.php:2909
-#: ../include/classes.php:2922
+#: ../include/classes.php:2876
+#: ../include/classes.php:2911
+#: ../include/classes.php:2924
 #: ../include/functions.php:108
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:2908
+#: ../include/classes.php:2910
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:2910
-#: ../include/classes.php:2933
+#: ../include/classes.php:2912
+#: ../include/classes.php:2935
 #: ../include/functions.php:117
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:2914
+#: ../include/classes.php:2916
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:2915
+#: ../include/classes.php:2917
 #: ../include/sitemap-xsl.php:104
 msgid "URL"
 msgstr "URL"
 
-#: ../include/classes.php:2916
+#: ../include/classes.php:2918
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:2946
+#: ../include/classes.php:2948
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:2981
+#: ../include/classes.php:2983
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:2982
+#: ../include/classes.php:2984
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:2993
+#: ../include/classes.php:2995
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:3010
+#: ../include/classes.php:3012
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:3215
+#: ../include/classes.php:3217
 msgid "Default"
 msgstr "Standard"
 
-#: ../include/classes.php:3216
+#: ../include/classes.php:3218
 msgid "Post It"
 msgstr "Post-It"
 
-#: ../include/classes.php:3217
+#: ../include/classes.php:3219
 msgid "Simple"
 msgstr "Enkel"
 
-#: ../include/classes.php:3239
-#: ../include/classes.php:3379
-#: ../include/classes.php:3571
-#: ../include/classes.php:3733
+#: ../include/classes.php:3241
+#: ../include/classes.php:3381
+#: ../include/classes.php:3573
+#: ../include/classes.php:3735
 #: ../include/sitemap-xsl.php:103
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:3240
+#: ../include/classes.php:3242
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:3243
-#: ../include/classes.php:3580
+#: ../include/classes.php:3245
+#: ../include/classes.php:3582
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:3258
+#: ../include/classes.php:3260
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:3258
+#: ../include/classes.php:3260
 msgid "h"
 msgstr "tim"
 
-#: ../include/classes.php:3263
+#: ../include/classes.php:3265
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:3267
+#: ../include/classes.php:3269
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:3275
+#: ../include/classes.php:3277
 msgid "Display Title"
 msgstr "Visa rubrik"
 
-#: ../include/classes.php:3276
+#: ../include/classes.php:3278
 msgid "Display Excerpt"
 msgstr "Visa utdrag"
 
-#: ../include/classes.php:3283
+#: ../include/classes.php:3285
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:3296
+#: ../include/classes.php:3298
 msgid "Display Info Module"
 msgstr "Visa infomodul"
 
-#: ../include/classes.php:3308
+#: ../include/classes.php:3310
 msgid "Info Module"
 msgstr "Infomodul"
 
-#: ../include/classes.php:3380
+#: ../include/classes.php:3382
 #: ../include/functions.php:269
 #: ../include/functions.php:408
 #: ../include/functions.php:409
@@ -715,35 +715,35 @@ msgstr "Infomodul"
 msgid "Content"
 msgstr "Innehåll"
 
-#: ../include/classes.php:3381
+#: ../include/classes.php:3383
 msgid "Button Text"
 msgstr "Knapptext"
 
-#: ../include/classes.php:3391
+#: ../include/classes.php:3393
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:3396
+#: ../include/classes.php:3398
 msgid "Link"
 msgstr "Länk"
 
-#: ../include/classes.php:3411
+#: ../include/classes.php:3413
 msgid "Display Related Posts"
 msgstr "Visa relaterade inlägg"
 
-#: ../include/classes.php:3422
+#: ../include/classes.php:3424
 msgid "Related Posts"
 msgstr "Relaterade inlägg"
 
-#: ../include/classes.php:3605
+#: ../include/classes.php:3607
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:3613
+#: ../include/classes.php:3615
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:3734
+#: ../include/classes.php:3736
 msgid "Pages"
 msgstr "Sidor"
 
@@ -954,7 +954,7 @@ msgstr "Textfärg på knapp"
 #: ../include/functions.php:77
 #: ../include/functions.php:78
 #: ../include/functions.php:188
-#: ../include/functions.php:566
+#: ../include/functions.php:514
 msgid "Secondary"
 msgstr "Sekundär"
 
@@ -1231,97 +1231,97 @@ msgstr "Anpassat"
 msgid "Custom CSS"
 msgstr "Anpassad CSS"
 
-#: ../include/functions.php:544
+#: ../include/functions.php:492
 msgid "Regular"
 msgstr "Vanliga"
 
-#: ../include/functions.php:557
+#: ../include/functions.php:505
 msgid "Advanced"
 msgstr "Avancerat"
 
-#: ../include/functions.php:561
+#: ../include/functions.php:509
 msgid "Main"
 msgstr "Huvudmeny"
 
-#: ../include/functions.php:569
+#: ../include/functions.php:517
 msgid "Main & Secondary Menu"
 msgstr "Huvud- & sekundär meny"
 
-#: ../include/functions.php:570
+#: ../include/functions.php:518
 msgid "Slide in From Right"
 msgstr "Glid in från höger"
 
-#: ../include/functions.php:600
+#: ../include/functions.php:548
 msgid "Not Found"
 msgstr "Hittades inte"
 
-#: ../include/functions.php:602
+#: ../include/functions.php:550
 msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
 msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
-#: ../include/functions.php:687
+#: ../include/functions.php:635
 msgid "The theme settings were backed up"
 msgstr "Temainställningarna sparades"
 
-#: ../include/functions.php:692
+#: ../include/functions.php:640
 msgid "It was not possible to backup the theme settings"
 msgstr "Det gick inte att ta backup på temainställningarna"
 
-#: ../include/functions.php:698
+#: ../include/functions.php:646
 msgid "There were no theme settings to save"
 msgstr "Det fanns inga temainställningar att spara"
 
-#: ../include/functions.php:740
+#: ../include/functions.php:688
 msgid "I restored the theme backup for you"
 msgstr "Jag återställde temabackupen åt dig"
 
-#: ../include/functions.php:750
+#: ../include/functions.php:698
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/functions.php:760
+#: ../include/functions.php:708
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/functions.php:773
+#: ../include/functions.php:721
 #, php-format
 msgid "The theme at %s has got a newer version of saved style which can be %srestored here%s"
 msgstr "Temat på %s har en nyare version på sparad design som kan %såterställas här%s"
 
-#: ../include/functions.php:800
+#: ../include/functions.php:748
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/functions.php:801
+#: ../include/functions.php:749
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:815
+#: ../include/functions.php:763
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/functions.php:816
-#: ../include/functions.php:840
+#: ../include/functions.php:764
+#: ../include/functions.php:788
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/functions.php:820
+#: ../include/functions.php:768
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/functions.php:835
+#: ../include/functions.php:783
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/functions.php:851
+#: ../include/functions.php:799
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/functions.php:854
+#: ../include/functions.php:802
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/functions.php:962
+#: ../include/functions.php:910
 msgid "Search for"
 msgstr "Sök efter"
 

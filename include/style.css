@@ -481,7 +481,7 @@
 
 	.widget.theme_info{}
 
-		.is_mobile .widget.theme_info
+		.widget_columns .widget.theme_info, .is_mobile .widget.theme_info
 		{
 			text-align: center;
 		}
