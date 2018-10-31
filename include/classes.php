@@ -2583,11 +2583,11 @@ class mf_theme_core
 		}
 
 		//Spam comments
-		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_approved = %s", 'spam'));
+		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_approved = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", 'spam'));
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove spam comments: ".$wpdb->last_query);
+			$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->comments." WHERE comment_approved = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", 'spam'));
 		}
 
 		//Duplicate comments
@@ -2595,7 +2595,7 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("Remove spam comments: ".$wpdb->last_query);
+			do_log("Remove duplicate comments: ".$wpdb->last_query);
 		}
 
 		//oEmbed caches
