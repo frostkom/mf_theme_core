@@ -1646,167 +1646,178 @@ class mf_theme_core
 
 	function column_cell($col, $id)
 	{
-		global $wpdb;
+		global $wpdb, $post;
 
 		switch($col)
 		{
 			case 'seo':
 				$title_limit = 64;
 				$excerpt_limit = 156;
+				$content_limit = 400;
 
-				$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_excerpt, post_type, post_name, post_status FROM ".$wpdb->posts." WHERE ID = '%d' LIMIT 0, 1", $id));
+				$seo_type = '';
 
-				foreach($result as $r)
+				if($seo_type == '')
 				{
-					$post_title = $r->post_title;
-					$post_excerpt = $r->post_excerpt;
-					$post_type = $r->post_type;
-					$post_name = $r->post_name;
-					$post_status = $r->post_status;
-
-					$seo_type = '';
-
-					if($seo_type == '')
+					if($post->post_status != 'publish')
 					{
-						if($post_status != 'publish')
+						$seo_type = 'not_published';
+					}
+				}
+
+				if($seo_type == '')
+				{
+					$page_index = get_post_meta($id, $this->meta_prefix.'page_index', true);
+
+					if(in_array($page_index, array('noindex', 'none')))
+					{
+						$seo_type = 'not_indexed';
+					}
+				}
+
+				if($seo_type == '')
+				{
+					if(post_password_required($id))
+					{
+						$seo_type = 'password_protected';
+					}
+				}
+
+				if($seo_type == '')
+				{
+					if($post->post_excerpt != '')
+					{
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, $post_type, $id));
+
+						if($post_id_duplicate > 0)
 						{
-							$seo_type = 'not_published';
+							$seo_type = 'duplicate_excerpt';
+						}
+
+						else if(strlen($post->post_excerpt) > $excerpt_limit)
+						{
+							$seo_type = 'long_excerpt';
 						}
 					}
 
-					if($seo_type == '')
+					else
 					{
-						$page_index = get_post_meta($id, $this->meta_prefix.'page_index', true);
+						$seo_type = 'no_excerpt';
+					}
+				}
 
-						if(in_array($page_index, array('noindex', 'none')))
+				if($seo_type == '')
+				{
+					if($post->post_title != '')
+					{
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, $post_type, $id));
+
+						if($post_id_duplicate > 0)
 						{
-							$seo_type = 'not_indexed';
+							$seo_type = 'duplicate_title';
 						}
 					}
 
-					if($seo_type == '')
+					else
 					{
-						if(post_password_required($id))
+						$seo_type = 'no_title';
+					}
+				}
+
+				if($seo_type == '')
+				{
+					if($post->post_name != '')
+					{
+						if(sanitize_title_with_dashes(sanitize_title($post->post_title)) != $post->post_name)
 						{
-							$seo_type = 'password_protected';
+							$seo_type = 'inconsistent_url';
 						}
 					}
+				}
 
-					if($seo_type == '')
+				if($seo_type == '')
+				{
+					$site_title = $post->post_title." | ".$this->get_wp_title();
+
+					if(strlen($site_title) > $title_limit)
 					{
-						if($post_excerpt != '')
-						{
-							$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_excerpt, $post_type, $id));
+						$seo_type = 'long_title';
+					}
+				}
 
-							if($post_id_duplicate > 0)
-							{
-								$seo_type = 'duplicate_excerpt';
-							}
-
-							else if(strlen($post_excerpt) > $excerpt_limit)
-							{
-								$seo_type = 'long_excerpt';
-							}
-						}
-
-						else
-						{
-							$seo_type = 'no_excerpt';
-						}
+				if($seo_type == '')
+				{
+					if(strlen($post->post_content) < $content_limit)
+					{
+						$seo_type = 'short_content';
 					}
 
-					if($seo_type == '')
+					else if(strlen($post->post_content) > 0 && preg_match("/\<h2/", $post->post_content) == false)
 					{
-						if($post_title != '')
-						{
-							$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post_title, $post_type, $id));
-
-							if($post_id_duplicate > 0)
-							{
-								$seo_type = 'duplicate_title';
-							}
-						}
-
-						else
-						{
-							$seo_type = 'no_title';
-						}
+						$seo_type = 'no_sub_heading';
 					}
+				}
 
-					if($seo_type == '')
-					{
-						if($post_name != '')
-						{
-							if(sanitize_title_with_dashes(sanitize_title($post_title)) != $post_name)
-							{
-								$seo_type = 'inconsistent_url';
-							}
-						}
-					}
+				switch($seo_type)
+				{
+					case 'duplicate_title':
+						echo "<i class='fa fa-times fa-lg red'></i>
+						<div class='row-actions'>
+							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+							."</a>
+						</div>";
+					break;
 
-					if($seo_type == '')
-					{
-						$site_title = $post_title." | ".$this->get_wp_title();
+					case 'no_title':
+						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set a title for this page", 'lang_theme_core')."'></i>";
+					break;
 
-						if(strlen($site_title) > $title_limit)
-						{
-							$seo_type = 'long_title';
-						}
-					}
+					case 'duplicate_excerpt':
+						echo "<i class='fa fa-times fa-lg red'></i>
+						<div class='row-actions'>
+							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
+								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
+							."</a>
+						</div>";
+					break;
 
-					switch($seo_type)
-					{
-						case 'duplicate_title':
-							echo "<i class='fa fa-times fa-lg red'></i>
-							<div class='row-actions'>
-								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-									.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
-								."</a>
-							</div>";
-						break;
+					case 'no_excerpt':
+						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set an excerpt for this page", 'lang_theme_core')."'></i>";
+					break;
 
-						case 'no_title':
-							echo "<i class='fa fa-times fa-lg red' title='".__("You have not set a title for this page", 'lang_theme_core')."'></i>";
-						break;
+					case 'inconsistent_url':
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The URL is not correlated to the title", 'lang_theme_core')."'></i>";
+					break;
 
-						case 'duplicate_excerpt':
-							echo "<i class='fa fa-times fa-lg red'></i>
-							<div class='row-actions'>
-								<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-									.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
-								."</a>
-							</div>";
-						break;
+					case 'long_title':
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")'></i>";
+					break;
 
-						case 'no_excerpt':
-							echo "<i class='fa fa-times fa-lg red' title='".__("You have not set an excerpt for this page", 'lang_theme_core')."'></i>";
-						break;
+					case 'long_excerpt':
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post->post_excerpt)." > ".$excerpt_limit.")'></i>";
+					break;
 
-						case 'inconsistent_url':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The URL is not correlated to the title", 'lang_theme_core')."'></i>";
-						break;
+					case 'short_content':
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The content should be longer", 'lang_theme_core')." (".strlen($post->post_content)." > ".$content_limit.")'></i>";
+					break;
 
-						case 'long_title':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")'></i>";
-						break;
+					case 'no_sub_heading':
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("There should be an H2 in the content", 'lang_theme_core')."'></i>";
+					break;
 
-						case 'long_excerpt':
-							echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post_excerpt)." > ".$excerpt_limit.")'></i>";
-						break;
+					case 'password_protected':
+						echo "<i class='fa fa-lock fa-lg grey' title='".__("The page is password protected", 'lang_theme_core')."'></i>";
+					break;
 
-						case 'not_published':
-						case 'not_indexed':
-							echo "<i class='fa fa-eye-slash fa-lg grey' title='".__("The page is not published or indexed", 'lang_theme_core')."'></i>";
-						break;
+					case 'not_published':
+					case 'not_indexed':
+						echo "<i class='fa fa-eye-slash fa-lg grey' title='".__("The page is not published or indexed", 'lang_theme_core')."'></i>";
+					break;
 
-						case 'password_protected':
-							echo "<i class='fa fa-lock fa-lg grey' title='".__("The page is password protected", 'lang_theme_core')."'></i>";
-						break;
-
-						default:
-							echo "<i class='fa fa-check fa-lg green' title='".__("Well done! The page is SEO approved!", 'lang_theme_core')."'></i>";
-						break;
-					}
+					default:
+						echo "<i class='fa fa-check fa-lg green' title='".__("Well done! The page is SEO approved!", 'lang_theme_core')."'></i>";
+					break;
 				}
 			break;
 		}
@@ -1814,12 +1825,15 @@ class mf_theme_core
 
 	function admin_post_thumbnail_html($content, $post_id)
 	{
-		$field_id = $this->meta_prefix.'display_featured_image';
-		$field_value = get_post_meta($post_id, $field_id, true);
+		if(has_post_thumbnail($post_id))
+		{
+			$field_id = $this->meta_prefix.'display_featured_image';
+			$field_value = get_post_meta($post_id, $field_id, true);
 
-		$content .= "<div class='mf_form'>"
-			.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display on Single Page", 'lang_theme_core'), 'compare' => $field_value))
-		."</div>";
+			$content .= "<div class='mf_form'>"
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display on Single Page", 'lang_theme_core'), 'compare' => $field_value))
+			."</div>";
+		}
 
 		return $content;
 	}
@@ -1872,8 +1886,6 @@ class mf_theme_core
 
 	function save_post($post_id, $post, $update)
 	{
-		//global $post;
-
 		if(in_array($post->post_type, array('page', 'post')))
 		{
 			$field_id = $this->meta_prefix.'display_featured_image';
@@ -2566,20 +2578,19 @@ class mf_theme_core
 			}
 		}
 
-		//Pingbacks
-		$wpdb->get_results("SELECT * FROM ".$wpdb->comments." WHERE comment_type = 'pingback'");
+		// Pingbacks / Trackbacks
+		$arr_comment_types = array('pingback', 'trackback');
 
-		if($wpdb->num_rows > 0)
+		foreach($arr_comment_types as $comment_type)
 		{
-			do_log("Remove pingbacks: ".$wpdb->last_query);
-		}
+			$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_type = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", $comment_type));
 
-		//Trackbacks
-		$wpdb->get_results("SELECT * FROM ".$wpdb->comments." WHERE comment_type = 'trackback'");
+			if($wpdb->num_rows > 0)
+			{
+				do_log("Remove ".$comment_type.": ".$wpdb->last_query);
 
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove trackbacks: ".$wpdb->last_query);
+				//$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->comments." WHERE comment_type = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", $comment_type));
+			}
 		}
 
 		//Spam comments
