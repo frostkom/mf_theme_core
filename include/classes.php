@@ -2185,7 +2185,6 @@ class mf_theme_core
 										'label' => $this->param['title'],
 										'section' => $this->id_temp,
 										'settings' => $this->param['id'],
-										//'context' => 'your_setting_context'
 									)
 								)
 							);
