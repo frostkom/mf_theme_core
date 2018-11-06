@@ -1687,7 +1687,7 @@ class mf_theme_core
 				{
 					if($post->post_excerpt != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, $post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, $post->post_type, $id));
 
 						if($post_id_duplicate > 0)
 						{
@@ -1710,7 +1710,7 @@ class mf_theme_core
 				{
 					if($post->post_title != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, $post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, $post->post_type, $id));
 
 						if($post_id_duplicate > 0)
 						{
@@ -3109,6 +3109,7 @@ class widget_theme_core_news extends WP_Widget
 				}
 
 				$widget_class = "section ".$instance['news_type'];
+				$widget_xtra = "";
 
 				if($rows > 1)
 				{
@@ -3121,7 +3122,7 @@ class widget_theme_core_news extends WP_Widget
 
 					if($instance['news_autoscroll_time'] > 0)
 					{
-						$widget_class .= " data-autoscroll='".$instance['news_autoscroll_time']."'";
+						$widget_xtra .= " data-autoscroll='".$instance['news_autoscroll_time']."'";
 					}
 				}
 
@@ -3130,7 +3131,7 @@ class widget_theme_core_news extends WP_Widget
 					$widget_class .= " news_single";
 				}
 
-				echo "<div class='".$widget_class."'>";
+				echo "<div class='".$widget_class."'".$widget_xtra.">";
 
 					if($rows > 1)
 					{
