@@ -2578,7 +2578,7 @@ class mf_theme_core
 		}
 
 		// Pingbacks / Trackbacks
-		$arr_comment_types = array('pingback', 'trackback');
+		/*$arr_comment_types = array('pingback', 'trackback');
 
 		foreach($arr_comment_types as $comment_type)
 		{
@@ -2590,7 +2590,7 @@ class mf_theme_core
 
 				//$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->comments." WHERE comment_type = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", $comment_type));
 			}
-		}
+		}*/
 
 		//Spam comments
 		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_approved = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", 'spam'));
