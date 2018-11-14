@@ -5,7 +5,7 @@ function get_image_fallback()
 	return "<img src='".get_site_url()."/wp-content/plugins/mf_theme_core/images/blank.svg' class='image_fallback'>";
 }
 
-function add_css_selectors($array = array())
+/*function add_css_selectors($array = array())
 {
 	if(is_plugin_active('css-hero-ce/css-hero-main.php'))
 	{
@@ -31,7 +31,7 @@ function add_css_selectors($array = array())
 			update_option('setting_theme_css_hero', $setting_theme_css_hero);
 		}
 	}
-}
+}*/
 
 function get_params_theme_core()
 {

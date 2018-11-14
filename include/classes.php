@@ -75,16 +75,33 @@ class mf_theme_core
 
 	function init()
 	{
-		if(get_option('setting_activate_maintenance') == 'yes' && IS_SUPER_ADMIN == false && $this->is_login_page() == false)
+		if(get_option('setting_activate_maintenance') == 'yes')
 		{
-			$option_ms = get_option('setting_maintenance_page');
-
-			if($option_ms > 0)
+			if(IS_SUPER_ADMIN || $this->is_login_page()) //is_admin()
 			{
-				$post_title = get_the_title($option_ms);
-				$post_content = mf_get_post_content($option_ms);
+				// Do nothing
+			}
 
-				wp_die("<h1>".$post_title."</h1><p>".$post_content."</p>");
+			else
+			{
+				$option_ms = get_option('setting_maintenance_page');
+
+				if($option_ms > 0)
+				{
+					$post_title = get_the_title($option_ms);
+					$post_content = mf_get_post_content($option_ms);
+
+					$out = "";
+
+					if($post_title != '')
+					{
+						$out .= "<h1>".$post_title."</h1>";
+					}
+
+					$out .= "<p>".$post_content."</p>";
+
+					wp_die($out);
+				}
 			}
 		}
 
