@@ -7,7 +7,7 @@ jQuery(function($)
 			dom_items = dom_obj.find("ul li"),
 			news_amount = dom_items.length,
 			news_current = 0,
-			news_display = dom_list.attr('data-columns'),
+			news_display = parseInt(dom_list.attr('data-columns') || 0),
 			news_autoscroll_time = parseInt(dom_obj.attr('data-autoscroll')) || 0;
 
 		if(news_amount <= news_display)
@@ -17,8 +17,6 @@ jQuery(function($)
 
 		function change_news()
 		{
-			var i = 0;
-
 			if(news_current < 0)
 			{
 				news_current = news_amount - news_display;
@@ -30,6 +28,8 @@ jQuery(function($)
 			}
 
 			dom_list.removeClass('translate_0 translate_1 translate_2 translate_3 translate_4 translate_5 translate_6 translate_7 translate_8').addClass('translate_' + news_current);
+
+			var i = 0;
 
 			dom_items.each(function()
 			{

@@ -19,6 +19,25 @@
 		.widget.theme_news .news_scroll ul.translate_7 li{		transform: translate(-700%, 0);}
 		.widget.theme_news .news_scroll ul.translate_8 li{		transform: translate(-800%, 0);}
 
+		.is_mobile .widget.theme_news .news_scroll ul.translate_1 li, .aside .widget.theme_news .news_scroll ul.translate_1 li{		transform: translate(0, -100%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_2 li, .aside .widget.theme_news .news_scroll ul.translate_2 li{		transform: translate(0, -200%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_3 li, .aside .widget.theme_news .news_scroll ul.translate_3 li{		transform: translate(0, -300%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_4 li, .aside .widget.theme_news .news_scroll ul.translate_4 li{		transform: translate(0, -400%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_5 li, .aside .widget.theme_news .news_scroll ul.translate_5 li{		transform: translate(0, -500%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_6 li, .aside .widget.theme_news .news_scroll ul.translate_6 li{		transform: translate(0, -600%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_7 li, .aside .widget.theme_news .news_scroll ul.translate_7 li{		transform: translate(0, -700%);}
+		.is_mobile .widget.theme_news .news_scroll ul.translate_8 li, .aside .widget.theme_news .news_scroll ul.translate_8 li{		transform: translate(0, -800%);}
+
+			/*.is_mobile .widget.theme_news .postit .columns_3, .aside .widget.theme_news .postit .columns_3
+			{
+				height: 49em;
+			}*/
+
+			.is_mobile .widget.theme_news .postit .columns_4, .aside .widget.theme_news .postit .columns_4
+			{
+				height: 65em;
+			}
+
 		.widget.theme_news .news_scroll ul li
 		{
 			-webkit-filter: blur(0);
@@ -28,22 +47,13 @@
 			transition: all 1s ease;
 		}
 
-			.is_mobile .widget.theme_news .news_scroll ul li, .aside .widget.theme_news .news_scroll ul li
-			{
-				transform: translate(0, 0) !important;
-			}
-
 			.widget.theme_news .news_scroll ul li.inactive
 			{
 				-webkit-filter: blur(.2em);
 				filter: blur(.2em);
 				opacity: .2;
+				pointer-events: none;
 			}
-
-				.is_mobile .widget.theme_news .news_scroll ul li.inactive, .aside .widget.theme_news .news_scroll ul li.inactive
-				{
-					display: none;
-				}
 
 			.widget.theme_news .news_scroll .controls
 			{

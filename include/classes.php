@@ -1271,6 +1271,7 @@ class mf_theme_core
 			.read_more
 			{
 				margin-top: .5em;
+				position: relative;
 			}
 
 		.form_textfield input, .form_password input, .mf_form textarea, .mf_form select, #comments #comment
