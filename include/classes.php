@@ -3639,6 +3639,7 @@ class widget_theme_core_promo extends WP_Widget
 		$this->arr_default = array(
 			'promo_title' => "",
 			'promo_include' => array(),
+			'promo_page_titles' => 'yes',
 		);
 
 		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $widget_ops);
@@ -3721,9 +3722,14 @@ class widget_theme_core_promo extends WP_Widget
 								{
 									echo "<li>
 										<a href='".$page['url']."'>
-											<div class='image'>".$page['image']."</div>
-											<h4>".$page['title']."</h4>
-										</a>
+											<div class='image'>".$page['image']."</div>";
+
+											if($instance['promo_page_titles'] == 'yes')
+											{
+												echo "<h4>".$page['title']."</h4>";
+											}
+
+										echo "</a>
 									</li>";
 								}
 
@@ -3749,6 +3755,7 @@ class widget_theme_core_promo extends WP_Widget
 
 		$instance['promo_title'] = sanitize_text_field($new_instance['promo_title']);
 		$instance['promo_include'] = is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : array();
+		$instance['promo_page_titles'] = sanitize_text_field($new_instance['promo_page_titles']);
 
 		return $instance;
 	}
@@ -3763,6 +3770,7 @@ class widget_theme_core_promo extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='promo-title'"))
 			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", 'lang_theme_core'), 'value' => $instance['promo_page_titles']))
 		."</div>";
 	}
 }
