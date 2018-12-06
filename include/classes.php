@@ -309,7 +309,7 @@ class mf_theme_core
 			'slugdiv' => __("Slug", 'lang_theme_core'),
 			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
 			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
-		); //'formatdiv',  'tagsdiv', 
+		); //'formatdiv',  'tagsdiv',
 	}
 
 	function setting_theme_core_hidden_meta_boxes_callback()
@@ -681,7 +681,7 @@ class mf_theme_core
 
 	function wp_head()
 	{
-		global $wpdb;
+		global $wpdb, $post;
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
@@ -715,6 +715,26 @@ class mf_theme_core
 		}
 
 		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
+
+		echo "<meta property='og:site_name' content='".get_bloginfo('name')."'>";
+
+		if(isset($post->ID))
+		{
+			echo "<meta property='og:title' content='".$post->post_title."'>
+			<meta property='og:url' content='".get_permalink($post)."'>";
+
+			if(has_post_thumbnail($post->ID))
+			{
+				echo "<meta property='og:image' content='".get_the_post_thumbnail_url($post->ID, 'thumbnail')."'>";
+			}
+
+			if(isset($post->post_excerpt) && $post->post_excerpt != '')
+			{
+				echo "<meta property='og:description' content='".$post->post_excerpt."'>";
+			}
+
+			//echo "<meta property='og:type' content='article'>";
+		}
 
 		$this->footer_output = '';
 
