@@ -1358,82 +1358,104 @@ class mf_theme_core
 
 	function render_css($data)
 	{
-		$prop = isset($data['property']) ? $data['property'] : '';
-		$pre = isset($data['prefix']) ? $data['prefix'] : '';
-		$suf = isset($data['suffix']) ? $data['suffix'] : '';
-		$val = isset($data['value']) ? $data['value'] : '';
+		$property = isset($data['property']) ? $data['property'] : '';
+		$prefix = isset($data['prefix']) ? $data['prefix'] : '';
+		$suffix = isset($data['suffix']) ? $data['suffix'] : '';
+		$value = isset($data['value']) ? $data['value'] : '';
 
-		if(is_array($val) && count($val) > 1)
+		if(is_array($value) && count($value) > 1)
 		{
-			$arr_val = $val;
-			$val = $arr_val[0];
+			$arr_val = $value;
+			$value = $arr_val[0];
 		}
 
 		$out = '';
 
-		switch($prop)
+		switch($property)
 		{
 			case 'font-family':
-				if(!isset($this->options[$val]) || !isset($this->options_fonts[$this->options[$val]]['style']))
+				if(!isset($this->options[$value]) || !isset($this->options_fonts[$this->options[$value]]['style']))
 				{
-					$this->options[$val] = '';
+					$this->options[$value] = '';
 				}
 			break;
 
 			case 'float':
-				if($this->options[$val] == 'center')
+				if($this->options[$value] == 'center')
 				{
-					$prop = 'margin';
-					$this->options[$val] = '0 auto';
+					$property = 'margin';
+					$this->options[$value] = '0 auto';
 				}
 			break;
 
 			case 'position':
-				switch($this->options[$val])
+				switch($this->options[$value])
 				{
 					case 'absolute':
 					case 'fixed':
-						$suf .= ";left: 0;
-						right: 0;
-						z-index: 1001";
+						if($value == 'footer_fixed')
+						{
+							$suffix .= ";
+							bottom: 0;
+							left: 0;
+							right: 0";
+						}
+
+						else
+						{
+							$suffix .= ";
+							left: 0;
+							right: 0;
+							z-index: 1001";
+						}
 					break;
 
 					case 'sticky':
-						$suf .= ";top: 0;
-						z-index: 1001";
+						if($value == 'footer_fixed')
+						{
+							$suffix = ";
+							bottom: 0";
+						}
+
+						else
+						{
+							$suffix .= ";
+							top: 0;
+							z-index: 1001";
+						}
 					break;
 				}
 			break;
 		}
 
-		if(isset($this->options[$val]) && $this->options[$val] != '')
+		if(isset($this->options[$value]) && $this->options[$value] != '')
 		{
-			if($prop != '')
+			if($property != '')
 			{
-				$out .= $prop.": ";
+				$out .= $property.": ";
 			}
 
-			if($pre != '')
+			if($prefix != '')
 			{
-				$out .= $pre;
+				$out .= $prefix;
 			}
 
-				if($prop == 'font-family')
+				if($property == 'font-family')
 				{
-					$out .= $this->options_fonts[$this->options[$val]]['style'];
+					$out .= $this->options_fonts[$this->options[$value]]['style'];
 				}
 
 				else
 				{
-					$out .= $this->options[$val];
+					$out .= $this->options[$value];
 				}
 
-			if($suf != '')
+			if($suffix != '')
 			{
-				$out .= $suf;
+				$out .= $suffix;
 			}
 
-			if($prop != '' || $pre != '' || $suf != '')
+			if($property != '' || $prefix != '' || $suffix != '')
 			{
 				$out .= ";";
 			}
