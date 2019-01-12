@@ -449,7 +449,7 @@ class mf_theme_core
 				{
 					$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
 
-					$result = get_sites(array('order' => 'DESC'));
+					$result = get_sites(array('deleted' => 0, 'order' => 'DESC'));
 
 					foreach($result as $r)
 					{
