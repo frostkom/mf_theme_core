@@ -995,13 +995,6 @@ class mf_theme_core
 		}
 	}
 
-	function display_featured_image($post_id)
-	{
-		$post_meta = get_post_meta($post_id, $this->meta_prefix.'display_featured_image', true);
-
-		return ($post_meta != 'no');
-	}
-
 	// Style
 	#########################
 	function gather_params($options_params)
@@ -1883,7 +1876,7 @@ class mf_theme_core
 		}
 	}
 
-	function admin_post_thumbnail_html($content, $post_id)
+	/*function admin_post_thumbnail_html($content, $post_id)
 	{
 		if(has_post_thumbnail($post_id))
 		{
@@ -1896,7 +1889,7 @@ class mf_theme_core
 		}
 
 		return $content;
-	}
+	}*/
 
 	function hidden_meta_boxes($hidden, $screen)
 	{
@@ -1946,13 +1939,13 @@ class mf_theme_core
 
 	function save_post($post_id, $post, $update)
 	{
-		if(in_array($post->post_type, array('page', 'post')))
+		/*if(in_array($post->post_type, array('page', 'post')))
 		{
 			$field_id = $this->meta_prefix.'display_featured_image';
 			$field_value = check_var($field_id);
 
 			update_post_meta($post_id, $field_id, $field_value);
-		}
+		}*/
 
 		/* Send e-mail to all editors if it is a draft and the user saving the draft is an author, but not an editor */
 		if(isset($post->post_status) && $post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
@@ -3590,7 +3583,7 @@ class widget_theme_core_related extends WP_Widget
 					.$after_title;
 				}
 
-				echo "<div class='section original'>
+				echo "<div class='section original display_page_titles'>
 					<ul class='text_columns columns_".$instance['news_columns']."'>";
 
 						$i = 0;
@@ -3755,7 +3748,7 @@ class widget_theme_core_promo extends WP_Widget
 						.$after_title;
 					}
 
-					echo "<div class='section original'>
+					echo "<div class='section original".($instance['promo_page_titles'] == 'yes' ? " display_page_titles" : "")."'>
 						<ul class='text_columns ".($rows % 3 == 0 || $rows > 4 ? "columns_3" : "columns_2")."'>";
 
 							foreach($arr_pages as $page)

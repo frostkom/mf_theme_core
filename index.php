@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.5.20
+Version: 7.5.21
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -48,7 +48,7 @@ if(is_admin())
 
 	add_filter('map_meta_cap', array($obj_theme_core, 'map_meta_cap'), 10, 2);
 
-	add_filter('admin_post_thumbnail_html', array($obj_theme_core, 'admin_post_thumbnail_html'), 10, 2);
+	//add_filter('admin_post_thumbnail_html', array($obj_theme_core, 'admin_post_thumbnail_html'), 10, 2);
 
 	add_filter('hidden_meta_boxes', array($obj_theme_core, 'hidden_meta_boxes'), 10, 2);
 
