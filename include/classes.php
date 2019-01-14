@@ -1685,6 +1685,109 @@ class mf_theme_core
 
 	/* Admin */
 	#################################
+	function clone_single_post()
+	{
+    	$p = get_post($this->post_id_old);
+
+		if($p == null)
+		{
+			return false;
+		}
+
+		$newpost = array(
+			'post_name'				=> $p->post_name,
+			'post_type'				=> $p->post_type,
+			'ping_status'			=> $p->ping_status,
+			'post_parent'			=> $p->post_parent,
+			'menu_order'			=> $p->menu_order,
+			'post_password'			=> $p->post_password,
+			'post_excerpt'			=> $p->post_excerpt,
+			'comment_status'		=> $p->comment_status,
+			'post_title'			=> $p->post_title." (".__("copy", 'lang_theme_core').")",
+			'post_content'			=> $p->post_content,
+			'post_author'			=> $p->post_author,
+			'to_ping'				=> $p->to_ping,
+			'pinged'				=> $p->pinged,
+			'post_content_filtered' => $p->post_content_filtered,
+			'post_category'			=> $p->post_category,
+			'tags_input'			=> $p->tags_input,
+			'tax_input'				=> $p->tax_input,
+			'page_template'			=> $p->page_template
+			// 'post_date'			=> $p->post_date,				// default: current date
+			// 'post_date_gmt'  	=> $p->post_date_gmt, 			// default: current gmt date
+			// 'post_status'    	=> $p->post_status 				// default: draft
+		);
+
+		$this->post_id_new = wp_insert_post($newpost);
+
+		$format = get_post_format($this->post_id_old);
+		set_post_format($this->post_id_new, $format);
+
+		$arr_meta = get_post_meta($this->post_id_old);
+
+		foreach($arr_meta as $key => $value)
+		{
+			if(substr($key, 0, 1) != '_')
+			{
+				if(is_array($value))
+				{
+					if(!(count($value) > 1))
+					{
+						$value = $value[0];
+					}
+				}
+
+				update_post_meta($this->post_id_new, $key, $value);
+			}
+		}
+
+		do_action('clone_page', $this->post_id_old, $this->post_id_new);
+
+		return true;
+	}
+
+	function wp_loaded()
+	{
+		if(isset($_REQUEST['btnPostClone']))
+		{
+			$post_id = check_var('post_id');
+
+			if($post_id > 0)
+			{
+				if(current_user_can('edit_post', $post_id))
+				{
+					$this->post_id_old = $post_id;
+
+					if($this->clone_single_post())
+					{
+						mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_post_title($post_id)));
+						//mf_redirect(admin_url("post.php?post=".$this->post_id."&action=edit"));
+					}
+
+					else
+					{
+						wp_die(__("Error cloning post", 'lang_theme_core'));
+					}
+				}
+
+				else
+				{
+					wp_die(__("You are not allowed to clone this post", 'lang_theme_core'));
+				}
+			}
+		}
+	}
+
+	function row_actions($actions, $post)
+	{
+		if(IS_EDITOR)
+		{
+			$actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", 'lang_theme_core')."</a>";
+		}
+
+		return $actions;
+	}
+
 	function column_header($cols)
 	{
 		unset($cols['comments']);
@@ -2737,126 +2840,6 @@ class mf_theme_core
 		}
 
 		return $out;
-	}
-}
-
-class mf_clone_posts
-{
-	function __construct()
-	{
-		add_filter('post_row_actions', array(&$this, 'row_actions'), 10, 2);
-		add_filter('page_row_actions', array(&$this, 'row_actions'), 10, 2);
-		add_action('wp_loaded', array(&$this, 'wp_loaded'));
-	}
-
-	function clone_single_post()
-	{
-    	$p = get_post($this->post_id_old);
-
-		if($p == null)
-		{
-			return false;
-		}
-
-		$newpost = array(
-			'post_name'				=> $p->post_name,
-			'post_type'				=> $p->post_type,
-			'ping_status'			=> $p->ping_status,
-			'post_parent'			=> $p->post_parent,
-			'menu_order'			=> $p->menu_order,
-			'post_password'			=> $p->post_password,
-			'post_excerpt'			=> $p->post_excerpt,
-			'comment_status'		=> $p->comment_status,
-			'post_title'			=> $p->post_title." (".__("copy", 'lang_theme_core').")",
-			'post_content'			=> $p->post_content,
-			'post_author'			=> $p->post_author,
-			'to_ping'				=> $p->to_ping,
-			'pinged'				=> $p->pinged,
-			'post_content_filtered' => $p->post_content_filtered,
-			'post_category'			=> $p->post_category,
-			'tags_input'			=> $p->tags_input,
-			'tax_input'				=> $p->tax_input,
-			'page_template'			=> $p->page_template
-			// 'post_date'			=> $p->post_date,				// default: current date
-			// 'post_date_gmt'  	=> $p->post_date_gmt, 			// default: current gmt date
-			// 'post_status'    	=> $p->post_status 				// default: draft
-		);
-
-		$this->post_id_new = wp_insert_post($newpost);
-
-		$format = get_post_format($this->post_id_old);
-		set_post_format($this->post_id_new, $format);
-
-		$arr_meta = get_post_meta($this->post_id_old);
-
-		foreach($arr_meta as $key => $value)
-		{
-			if(substr($key, 0, 1) != '_')
-			{
-				if(is_array($value))
-				{
-					if(!(count($value) > 1))
-					{
-						$value = $value[0];
-					}
-				}
-
-				update_post_meta($this->post_id_new, $key, $value);
-			}
-		}
-
-		do_action('clone_page', $this->post_id_old, $this->post_id_new);
-
-		return true;
-	}
-
-	function row_actions($actions, $post)
-	{
-		global $post_type;
-
-		$url = remove_query_arg(array('cloned', 'untrashed', 'deleted', 'ids'), "");
-
-		if(!$url)
-		{
-			$url = admin_url("edit.php?post_type=".$post_type);
-		}
-
-		$url = remove_query_arg(array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $url);
-		$url = add_query_arg(array('action' => 'clone-single', 'post' => $post->ID, 'redirect' => $_SERVER['REQUEST_URI']), $url);
-
-		if(IS_EDITOR)
-		{
-			$actions['clone'] = "<a href='".$url."'>".__("Clone", 'lang_theme_core')."</a>";
-		}
-
-		return $actions;
-	}
-
-	function wp_loaded()
-	{
-		global $post_type;
-
-		if(!isset($_GET['action']) || $_GET['action'] !== "clone-single")
-		{
-			return;
-		}
-
-		$this->post_id_old = check_var('post');
-
-		if(!current_user_can('edit_post', $this->post_id_old))
-		{
-			wp_die(__("You are not allowed to clone this post", 'lang_theme_core'));
-		}
-
-		else if(!$this->clone_single_post())
-		{
-			wp_die(__("Error cloning post", 'lang_theme_core'));
-		}
-
-		else
-		{
-			mf_redirect(admin_url("post.php?post=".$this->post_id_new."&action=edit"));
-		}
 	}
 }
 

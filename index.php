@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.5.21
+Version: 7.6.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -31,8 +31,6 @@ if(is_admin())
 	register_activation_hook(__FILE__, 'activate_theme_core');
 	register_uninstall_hook(__FILE__, 'uninstall_theme_core');
 
-	new mf_clone_posts();
-
 	add_action('wp_before_admin_bar_render', array($obj_theme_core, 'wp_before_admin_bar_render'));
 	add_action('admin_init', array($obj_theme_core, 'settings_theme_core'));
 	add_action('admin_init', array($obj_theme_core, 'admin_init'), 0);
@@ -40,6 +38,10 @@ if(is_admin())
 	add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
 
 	add_filter('wp_get_default_privacy_policy_content', array($obj_theme_core, 'add_policy'));
+
+	add_action('wp_loaded', array($obj_theme_core, 'wp_loaded'));
+	add_filter('post_row_actions', array($obj_theme_core, 'row_actions'), 10, 2);
+	add_filter('page_row_actions', array($obj_theme_core, 'row_actions'), 10, 2);
 
 	add_filter('manage_page_posts_columns', array($obj_theme_core, 'column_header'), 5);
 	add_action('manage_page_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
