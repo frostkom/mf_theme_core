@@ -903,7 +903,7 @@ class mf_theme_core
 
 			if(in_array('time', $setting_display_post_meta))
 			{
-				$html .= "<time datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
+				$html .= "<time itemprop='dateCreated pubdate datePublished' datetime='".$post->post_date."'>".format_date($post->post_date)."</time>";
 			}
 
 			if(in_array('author', $setting_display_post_meta))
