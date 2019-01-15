@@ -1748,31 +1748,23 @@ class mf_theme_core
 
 	function wp_loaded()
 	{
-		if(isset($_REQUEST['btnPostClone']))
+		if(isset($_REQUEST['btnPostClone']) && IS_EDITOR)
 		{
 			$post_id = check_var('post_id');
 
 			if($post_id > 0)
 			{
-				if(current_user_can('edit_post', $post_id))
+				$this->post_id_old = $post_id;
+
+				if($this->clone_single_post())
 				{
-					$this->post_id_old = $post_id;
-
-					if($this->clone_single_post())
-					{
-						mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_post_title($post_id)));
-						//mf_redirect(admin_url("post.php?post=".$this->post_id."&action=edit"));
-					}
-
-					else
-					{
-						wp_die(__("Error cloning post", 'lang_theme_core'));
-					}
+					mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_post_title($post_id)));
+					//mf_redirect(admin_url("post.php?post=".$this->post_id."&action=edit"));
 				}
 
 				else
 				{
-					wp_die(__("You are not allowed to clone this post", 'lang_theme_core'));
+					wp_die(__("Error cloning post", 'lang_theme_core'));
 				}
 			}
 		}
@@ -1780,7 +1772,7 @@ class mf_theme_core
 
 	function row_actions($actions, $post)
 	{
-		if(IS_EDITOR)
+		if(IS_EDITOR && $post->post_status == 'publish')
 		{
 			$actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", 'lang_theme_core')."</a>";
 		}
