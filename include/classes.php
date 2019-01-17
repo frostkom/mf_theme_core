@@ -126,7 +126,8 @@ class mf_theme_core
 
 		if(IS_ADMIN)
 		{
-			$site_url = get_site_url();
+			//$site_url = get_site_url();
+			$site_url = get_home_url();
 
 			if(get_option('setting_activate_maintenance') == 'yes')
 			{
@@ -399,7 +400,7 @@ class mf_theme_core
 		$option = get_option($setting_key);
 
 		$arr_data = array();
-		get_post_children(array('add_choose_here' => true), $arr_data);
+		get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
 
 		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
 	}
@@ -714,9 +715,8 @@ class mf_theme_core
 			echo "<meta name='description' content='".esc_attr($meta_description)."'>";
 		}
 
-		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>";
-
-		echo "<meta property='og:site_name' content='".get_bloginfo('name')."'>";
+		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>
+		<meta property='og:site_name' content='".get_bloginfo('name')."'>";
 
 		if(isset($post->ID))
 		{
@@ -758,7 +758,7 @@ class mf_theme_core
 
 					$this->footer_output .= "<div id='accept_cookies'>
 						<div>
-							<i class='fa fa-gavel red'></i>";
+							<i class='fa fa-gavel red fa-2x'></i>";
 
 							$buttons = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 

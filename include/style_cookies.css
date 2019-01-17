@@ -45,6 +45,7 @@
 
 			#accept_cookies .form_button
 			{
+				clear: both;
 				margin-top: .5em;
 			}
 }
