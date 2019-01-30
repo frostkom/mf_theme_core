@@ -16,8 +16,6 @@ class mf_theme_core
 
 	function cron_base()
 	{
-		global $wpdb;
-
 		$this->unpublish_posts();
 
 		/* Optimize */
@@ -346,10 +344,7 @@ class mf_theme_core
 
 	function get_comment_status_for_select($option)
 	{
-		global $wpdb;
-
 		$arr_data = array();
-
 		$arr_data['open'] = __("Yes", 'lang_theme_core');
 
 		if($this->get_comment_status_amount('closed') > 0)
@@ -421,7 +416,7 @@ class mf_theme_core
 
 	function setting_maintenance_page_callback()
 	{
-		global $wpdb, $done_text, $error_text;
+		global $done_text, $error_text;
 
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key);
@@ -853,7 +848,7 @@ class mf_theme_core
 	{
 		return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
 			<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
-			.show_password_field(array('name' => "post_password", 'placeholder' => __("Password", 'lang_theme_core'), 'maxlength' => 20))
+			.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password", 'lang_theme_core'), 'maxlength' => 20))
 			."<div class='form_button'>"
 				.show_button(array('text' => __("Submit", 'lang_theme_core')))
 			."</div>

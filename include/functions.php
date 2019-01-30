@@ -70,7 +70,7 @@ function get_params_theme_core()
 		$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
 		$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")");
 
-		$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (is_plugin_active('mf_webshop/index.php') ? "1.3em" : ''));
+		$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active('mf_webshop/index.php') ? "1.3em" : ''));
 
 		$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => "#000000");
 			$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", 'lang_theme_core'), 'default' => "#ffffff");
@@ -786,7 +786,7 @@ function get_options_page_theme_core()
 								<form method='post' action='' class='mf_form'>
 									<div>"
 										.show_textarea(array('name' => 'strFileContent', 'value' => stripslashes($strFileContent)))
-										.show_button(array('name' => "btnThemeRestore", 'text' => __("Restore", 'lang_theme_core')))
+										.show_button(array('name' => 'btnThemeRestore', 'text' => __("Restore", 'lang_theme_core')))
 									."</div>
 								</form>
 							</div>
@@ -800,7 +800,7 @@ function get_options_page_theme_core()
 								<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
 								<div class='inside'>
 									<form method='post' action='' class='mf_form'>"
-										.show_button(array('name' => "btnThemeBackup", 'text' => __("Save", 'lang_theme_core')))
+										.show_button(array('name' => 'btnThemeBackup', 'text' => __("Save", 'lang_theme_core')))
 										.wp_nonce_field('theme_backup', '_wpnonce_theme_backup', true, false)
 									."</form>
 								</div>
