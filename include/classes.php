@@ -495,11 +495,6 @@ class mf_theme_core
 						$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
 						$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
 					}
-
-					/*else
-					{
-						$error_text = __("The page that you choose for Maintenance has to be published and contain a title and content", 'lang_theme_core');
-					}*/
 				}
 
 				if(strlen($recommend_maintenance) > 0)
@@ -508,8 +503,6 @@ class mf_theme_core
 
 					if($success == true)
 					{
-						//$done_text = __("I saved the maintenance page for you", 'lang_theme_core');
-
 						update_option($setting_key.'_temp', $option, 'no');
 					}
 
@@ -581,7 +574,7 @@ class mf_theme_core
 			$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 		}
 
-		//echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'suffix' => __("days", 'lang_theme_core'), 'description' => $description));
+		//echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'description' => $description));
 
 		echo "<div>"
 			.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
@@ -613,13 +606,6 @@ class mf_theme_core
 		if($option != '')
 		{
 			echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
-		}
-
-		else
-		{
-			$option = "";
-
-			//echo __("I have generated a list of selectors to use. Please reload the page for further instructions", 'lang_theme_core');
 		}
 
 		update_option($css_hero_key, $option);
@@ -879,7 +865,7 @@ class mf_theme_core
 			{
 				$html .= "<form action='".wp_nonce_url(add_query_arg(array('action' => 'posts_logout'), site_url('wp-login.php', 'login')), 'posts_logout')."' method='post' class='mf_form'>
 					<div class='form_button'>"
-						.show_button(array('text' => __("Logout", 'lang_theme_core')))
+						.show_button(array('text' => "Logout"))
 					."</div>
 				</form>";
 
@@ -1966,21 +1952,6 @@ class mf_theme_core
 		}
 	}
 
-	/*function admin_post_thumbnail_html($content, $post_id)
-	{
-		if(has_post_thumbnail($post_id))
-		{
-			$field_id = $this->meta_prefix.'display_featured_image';
-			$field_value = get_post_meta($post_id, $field_id, true);
-
-			$content .= "<div class='mf_form'>"
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $field_id, 'text' => __("Display on Single Page", 'lang_theme_core'), 'compare' => $field_value))
-			."</div>";
-		}
-
-		return $content;
-	}*/
-
 	function hidden_meta_boxes($hidden, $screen)
 	{
 		$setting_theme_core_hidden_meta_boxes = get_option('setting_theme_core_hidden_meta_boxes');
@@ -2415,7 +2386,7 @@ class mf_theme_core
 			{
 				if(file_exists($this->file_dir_from) && is_file($this->file_dir_from))
 				{
-					//do_log(sprintf(__("The file %s already exists so %s can be deleted now", 'lang_theme_core'), $this->file_dir_to, $this->file_dir_from));
+					//do_log(sprintf("The file %s already exists so %s can be deleted now", $this->file_dir_to, $this->file_dir_from));
 
 					/* Some files are still in use in the old hierarchy */
 					/*unlink($this->file_dir_from);
