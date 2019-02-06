@@ -92,11 +92,10 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 		</html>
 	</xsl:template>
 
-
 	<xsl:template match='sitemap:urlset'>
-        <h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>";
+		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>";
 
-        /*echo "<div id='intro'><p></p></div>";*/
+		/*echo "<div id='intro'><p></p></div>";*/
 
 		echo "<table>
 			<tr>

@@ -308,7 +308,7 @@ class mf_theme_core
 			'slugdiv' => __("Slug", 'lang_theme_core'),
 			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
 			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
-		); //'formatdiv',  'tagsdiv',
+		); //'formatdiv', 'tagsdiv',
 	}
 
 	function setting_theme_core_hidden_meta_boxes_callback()
@@ -1286,11 +1286,21 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color'))
 		."}
 
+			.color_text
+			{"
+				.$this->render_css(array('property' => 'color', 'value' => 'button_color'))
+			."}
+
 		#wrapper .button-secondary, .color_button_2
 		{"
 			.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"))
 			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_secondary', 'suffix' => " !important"))
 		."}
+
+			.color_text_2
+			{"
+				.$this->render_css(array('property' => 'color', 'value' => 'button_color_secondary'))
+			."}
 
 		.color_button_negative
 		{"
@@ -1668,7 +1678,7 @@ class mf_theme_core
 	#################################
 	function clone_single_post()
 	{
-    	$p = get_post($this->post_id_old);
+		$p = get_post($this->post_id_old);
 
 		if($p == null)
 		{
@@ -1676,27 +1686,27 @@ class mf_theme_core
 		}
 
 		$newpost = array(
-			'post_name'				=> $p->post_name,
-			'post_type'				=> $p->post_type,
-			'ping_status'			=> $p->ping_status,
-			'post_parent'			=> $p->post_parent,
-			'menu_order'			=> $p->menu_order,
-			'post_password'			=> $p->post_password,
-			'post_excerpt'			=> $p->post_excerpt,
-			'comment_status'		=> $p->comment_status,
-			'post_title'			=> $p->post_title." (".__("copy", 'lang_theme_core').")",
-			'post_content'			=> $p->post_content,
-			'post_author'			=> $p->post_author,
-			'to_ping'				=> $p->to_ping,
-			'pinged'				=> $p->pinged,
+			'post_name' => $p->post_name,
+			'post_type' => $p->post_type,
+			'ping_status' => $p->ping_status,
+			'post_parent' => $p->post_parent,
+			'menu_order' => $p->menu_order,
+			'post_password' => $p->post_password,
+			'post_excerpt' => $p->post_excerpt,
+			'comment_status' => $p->comment_status,
+			'post_title' => $p->post_title." (".__("copy", 'lang_theme_core').")",
+			'post_content' => $p->post_content,
+			'post_author' => $p->post_author,
+			'to_ping' => $p->to_ping,
+			'pinged' => $p->pinged,
 			'post_content_filtered' => $p->post_content_filtered,
-			'post_category'			=> $p->post_category,
-			'tags_input'			=> $p->tags_input,
-			'tax_input'				=> $p->tax_input,
-			'page_template'			=> $p->page_template
-			// 'post_date'			=> $p->post_date,				// default: current date
-			// 'post_date_gmt'  	=> $p->post_date_gmt, 			// default: current gmt date
-			// 'post_status'    	=> $p->post_status 				// default: draft
+			'post_category' => $p->post_category,
+			'tags_input' => $p->tags_input,
+			'tax_input' => $p->tax_input,
+			'page_template' => $p->page_template
+			// 'post_date' => $p->post_date,				// default: current date
+			// 'post_date_gmt' => $p->post_date_gmt, 			// default: current gmt date
+			// 'post_status' => $p->post_status 				// default: draft
 		);
 
 		$this->post_id_new = wp_insert_post($newpost);
