@@ -9,7 +9,7 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-if(is_plugin_active('mf_cache/index.php'))
+if(function_exists('is_plugin_active') && is_plugin_active('mf_cache/index.php'))
 {
 	$obj_cache = new mf_cache();
 	$obj_cache->fetch_request();
