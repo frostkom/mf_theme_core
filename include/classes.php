@@ -668,7 +668,7 @@ class mf_theme_core
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
-		mf_enqueue_style('style_theme_core', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_style('style_theme_core', $plugin_include_url."style.php", $plugin_version);
 		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js", $plugin_version);
 
 		if(get_option('setting_scroll_to_top') == 'yes')
