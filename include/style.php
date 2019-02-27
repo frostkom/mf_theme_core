@@ -201,7 +201,7 @@ echo "@media all
 				min-width: 50%;
 			}";
 
-	if(apply_filters('get_widget_search', 'theme-widget-area-widget') > 0)
+	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-widget-area-widget') > 0)
 	{
 		echo ".widget.theme_widget_area .widget_columns
 		{
@@ -257,7 +257,7 @@ echo "@media all
 				}";
 	}
 
-	if(apply_filters('get_widget_search', 'theme-news-widget') > 0 || apply_filters('get_widget_search', 'theme-related-news-widget') > 0 || apply_filters('get_widget_search', 'theme-promo-widget') > 0)
+	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-news-widget') > 0 || apply_filters('get_widget_search', 'theme-related-news-widget') > 0 || apply_filters('get_widget_search', 'theme-promo-widget') > 0)
 	{
 		/* If > 1 */
 		echo ".widget.theme_news ul
@@ -469,7 +469,7 @@ echo "@media all
 				}";
 	}
 
-	if(apply_filters('get_widget_search', 'theme-info-widget') > 0)
+	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-info-widget') > 0)
 	{
 		echo ".widget_columns .widget.theme_info, .is_mobile .widget.theme_info
 		{
