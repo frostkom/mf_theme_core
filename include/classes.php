@@ -791,7 +791,7 @@ class mf_theme_core
 
 			else
 			{
-				do_log(__("A visitor accessed the public page without being logged in!", 'lang_theme_core'));
+				do_log("A visitor accessed the public page without being logged in!");
 			}
 		}
 	}
@@ -832,7 +832,8 @@ class mf_theme_core
 
 	function the_password_form()
 	{
-		return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
+		//site_url('wp-login.php?action=postpass', 'login_post')
+		return "<form action='".wp_lostpassword_url()."' method='post' class='mf_form'>
 			<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
 			.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password", 'lang_theme_core'), 'maxlength' => 20))
 			."<div class='form_button'>"
@@ -2074,7 +2075,8 @@ class mf_theme_core
 
 		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
 		{
-			mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
+			//mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
+			mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
 		}
 	}
 
@@ -2480,7 +2482,7 @@ class mf_theme_core
 		{
 			if(file_exists($upload_path_from.date("Y")))
 			{
-				do_log(sprintf(__("You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case"), $upload_path_from));
+				do_log(sprintf("You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case", $upload_path_from));
 
 				update_option('option_uploads_done', date("Y-m-d H:i:s"), 'no');
 				delete_option('option_uploads_fixed');
@@ -2550,21 +2552,21 @@ class mf_theme_core
 
 						else
 						{
-							do_log(sprintf(__("The feed from %s returned an error (%s)", 'lang_theme_core'), $style_source, $content));
+							do_log(sprintf("The feed from %s returned an error (%s)", $style_source, $content));
 						}
 
-						do_log(__("The response from", 'lang_theme_core'), 'trash');
+						do_log("The response from", 'trash');
 					}
 
 					else
 					{
-						do_log(sprintf(__("The response from %s had an error (%s)", 'lang_theme_core'), $style_source, $headers['http_code']));
+						do_log(sprintf("The response from %s had an error (%s)", $style_source, $headers['http_code']));
 					}
 				}
 
 				else
 				{
-					do_log(sprintf(__("I could not process the feed from %s since the URL was not a valid one", 'lang_theme_core'), $style_source));
+					do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $style_source));
 				}
 			}
 		}
