@@ -1254,9 +1254,7 @@ class mf_theme_core
 
 	function get_common_style()
 	{
-		$out = "";
-
-		$out .= "p a, td a, a .read_more
+		$out = "p a, td a, a .read_more
 		{"
 			.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
 			.$this->render_css(array('property' => 'text-decoration', 'value' => 'body_link_underline'))
@@ -1283,9 +1281,30 @@ class mf_theme_core
 
 		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
 		{"
-			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
-			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color'))
-		."}
+			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')));
+			//.$this->render_css(array('property' => 'color', 'value' => 'button_text_color'))
+
+			if(isset($this->options['button_color']) && $this->options['button_color'] != '')
+			{
+				if(!isset($obj_base))
+				{
+					$obj_base = new mf_base();
+				}
+
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary'])." !important";
+			}
+
+			else if(isset($this->options['nav_color_hover']) && $this->options['nav_color_hover'] != '')
+			{
+				if(!isset($obj_base))
+				{
+					$obj_base = new mf_base();
+				}
+
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary'])." !important";
+			}
+
+		$out .= "}
 
 			.color_text
 			{"
@@ -1294,9 +1313,20 @@ class mf_theme_core
 
 		#wrapper .button-secondary, .color_button_2
 		{"
-			.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"))
-			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_secondary', 'suffix' => " !important"))
-		."}
+			.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"));
+			//.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_secondary', 'suffix' => " !important"))
+
+			if(isset($this->options['button_color_secondary']) && $this->options['button_color_secondary'] != '')
+			{
+				if(!isset($obj_base))
+				{
+					$obj_base = new mf_base();
+				}
+
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary'])." !important";
+			}
+
+		$out .= "}
 
 			.color_text_2
 			{"
@@ -1305,9 +1335,20 @@ class mf_theme_core
 
 		.color_button_negative
 		{"
-			.$this->render_css(array('property' => 'background', 'value' => 'button_color_negative', 'suffix' => " !important"))
-			.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_negative'))
-		."}
+			.$this->render_css(array('property' => 'background', 'value' => 'button_color_negative', 'suffix' => " !important"));
+			//.$this->render_css(array('property' => 'color', 'value' => 'button_text_color_negative'))
+
+			if(isset($this->options['button_color_negative']) && $this->options['button_color_negative'] != '')
+			{
+				if(!isset($obj_base))
+				{
+					$obj_base = new mf_base();
+				}
+
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_negative'])." !important";
+			}
+
+		$out .= "}
 
 			#wrapper .mf_form button:hover, #wrapper .button:hover, #wrapper .mf_form .button-primary:hover, #comments #submit:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
 			{
