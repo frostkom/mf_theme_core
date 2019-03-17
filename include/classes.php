@@ -3375,7 +3375,7 @@ class widget_theme_core_info extends WP_Widget
 
 		if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
 		else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
-		else{									$button_link = "#";}
+		else{									$button_link = apply_filters('get_theme_core_info_button_link', "#");}
 
 		echo $before_widget
 			."<div class='section'>
@@ -3402,11 +3402,11 @@ class widget_theme_core_info extends WP_Widget
 
 						if($instance['info_button_text'] != '')
 						{
-							echo "<div class='form_button'>
-								<a href='".$button_link."' class='button'>"
+							echo "<div class='form_button'>"
+								.apply_filters('the_content', "<a href='".$button_link."' class='button'>"
 									.$instance['info_button_text']
-								."</a>
-							</div>";
+								."</a>")
+							."</div>";
 						}
 
 					echo "</div>
