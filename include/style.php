@@ -263,7 +263,7 @@ echo "@media all
 		echo ".widget.theme_news ul
 		{
 			list-style: none;
-			margin: 0 -.5em -1em;
+			margin: 0 -.5em -.8em;
 
 			/* Fix for iOS */
 			-webkit-box-pack: center;
