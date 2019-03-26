@@ -553,6 +553,11 @@ echo "@media all
 						margin: 0;
 					}
 
+						.is_mobile .widget.theme_info .button
+						{
+							margin-top: .5em;
+						}
+
 						.theme_widget_area .widget.theme_info .form_button .button
 						{
 							font-size: 1.6em;

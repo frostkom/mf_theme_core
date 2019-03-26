@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 07:22+0100\n"
+"POT-Creation-Date: 2019-03-22 09:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,8 +15,17 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
+msgid "Public"
+msgstr "Offentlig"
+
 msgid "Theme"
 msgstr "Tema"
+
+msgid "Categories"
+msgstr "Kategorier"
+
+msgid "Category"
+msgstr "Kategori"
 
 msgid "Yes"
 msgstr "Ja"
@@ -48,8 +57,14 @@ msgstr "Ingen"
 msgid "Hidden"
 msgstr "Skjult"
 
+msgid "Theme Updates"
+msgstr "Tema-Oppdateringer"
+
 msgid "Name"
 msgstr "Navn"
+
+msgid "URL"
+msgstr "Nettadresse"
 
 msgid "Default"
 msgstr "Standard"
@@ -66,8 +81,17 @@ msgstr "Side"
 msgid "Pages"
 msgstr "Sider"
 
+msgid "Color"
+msgstr "Farge"
+
 msgid "Image"
 msgstr "Bilde"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Header"
+msgstr "Overskrift"
 
 msgid "Position"
 msgstr "Posisjon"
@@ -75,8 +99,20 @@ msgstr "Posisjon"
 msgid "Compressed"
 msgstr "Komprimert"
 
+msgid "Menu"
+msgstr "Meny"
+
+msgid "Pre Content"
+msgstr "Før innhold"
+
+msgid "After Header"
+msgstr "Under overskrift"
+
 msgid "Text"
 msgstr "Tekst"
+
+msgid "Advanced"
+msgstr "Avansert"
 
 msgid "Date"
 msgstr "Dato"
