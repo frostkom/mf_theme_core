@@ -568,6 +568,48 @@ echo "@media all
 						}";
 	}
 
+	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
+	{
+		echo ".widget.theme_page_index ul
+		{
+			list-style: none;
+		}
+
+			.widget.theme_page_index ul li
+			{
+				font-weight: bold;
+				margin-bottom: .5em;
+			}
+
+				.widget.theme_page_index ul li a
+				{
+					display: inline-block;
+					text-indent: 0;
+					transition: all 1s ease;
+				}
+
+					.widget.theme_page_index ul li a.toc-already-read
+					{
+						color: #ccc;
+					}
+
+					.widget.theme_page_index ul li a.toc-reading
+					{
+						color: inherit;
+						text-indent: .5em;
+					}
+
+				.widget.theme_page_index ul ul
+				{
+					font-size: .9em;
+				}
+
+					.widget.theme_page_index ul ul li
+					{
+						font-weight: normal;
+					}";
+	}
+
 echo "}
 
 @media print

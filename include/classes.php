@@ -677,6 +677,11 @@ class mf_theme_core
 			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
 		}
 
+		if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
+		{
+			mf_enqueue_script('script_theme_page_index', $plugin_include_url."script_page_index.js", $plugin_version);
+		}
+
 		echo "<meta charset='".get_bloginfo('charset')."'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
 		<meta name='author' content='frostkom.se'>
@@ -2142,6 +2147,7 @@ class mf_theme_core
 		register_widget('widget_theme_core_info');
 		register_widget('widget_theme_core_related');
 		register_widget('widget_theme_core_promo');
+		register_widget('widget_theme_core_page_index');
 		//mf_unregister_widget('WP_Widget_Recent_Posts');
 
 		mf_unregister_widget('WP_Widget_Archives');
@@ -3800,6 +3806,99 @@ class widget_theme_core_promo extends WP_Widget
 			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='promo-title'"))
 			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
 			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", 'lang_theme_core'), 'value' => $instance['promo_page_titles']))
+		."</div>";
+	}
+}
+
+class widget_theme_core_page_index extends WP_Widget
+{
+	function __construct()
+	{
+		$widget_ops = array(
+			'classname' => 'theme_page_index',
+			'description' => __("Display Page Index", 'lang_theme_core')
+		);
+
+		$this->arr_default = array(
+			'widget_title' => "",
+		);
+
+		parent::__construct('theme-page-index-widget', __("Page Index", 'lang_theme_core'), $widget_ops);
+	}
+
+	function widget($args, $instance)
+	{
+		global $wpdb, $post;
+
+		extract($args);
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		if(isset($post->ID) && $post->ID > 0)
+		{
+			$post_content = $post->post_content;
+
+			$arr_tags = get_match_all('/\<h(.*?)>(.*?)\<\/h/is', $post_content, false);
+
+			if(count($arr_tags) > 1)
+			{
+				echo $before_widget;
+
+					if($instance['widget_title'] != '')
+					{
+						echo $before_title
+							.$instance['widget_title']
+						.$after_title;
+					}
+
+					echo "<ul>";
+
+						/*$count_temp = count($arr_tags[0]);
+
+						for($i = 0; $i < $count_temp; $i++)
+						{
+							$depth_prev = (isset($arr_tags[0][$i - 1]) ? $arr_tags[0][$i - 1] : 0);
+							$depth_next = (isset($arr_tags[0][$i + 1]) ? $arr_tags[0][$i + 1] : 0);
+
+							$depth = $arr_tags[0][$i];
+							$heading = $arr_tags[1][$i];
+
+							if($depth_prev > 0 && $depth > $depth_prev)
+							{
+								echo "<ul>";
+							}
+
+								echo "<li>
+									<a href='#'>".$heading."</a>
+								</li>";
+
+							if($depth > $depth_next)
+							{
+								echo "</ul>";
+							}
+						}*/
+
+					echo "</ul>"
+				.$after_widget;
+			}
+		}
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = $old_instance;
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+
+		$instance['widget_title'] = sanitize_text_field($new_instance['widget_title']);
+
+		return $instance;
+	}
+
+	function form($instance)
+	{
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
+
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['widget_title'], 'xtra' => " id='widget-title'"))
 		."</div>";
 	}
 }

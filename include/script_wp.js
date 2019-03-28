@@ -33,7 +33,7 @@ jQuery(function($)
 		return false;
 	}
 
-	$(document).on('click', "button[name=btnOptimizeTheme]", function(e)
+	$(document).on('click', "button[name='btnOptimizeTheme']", function(e)
 	{
 		run_ajax(
 		{
