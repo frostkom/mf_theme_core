@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-31 09:19+0100\n"
+"POT-Creation-Date: 2019-03-30 08:24+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -92,7 +92,7 @@ msgid "Optimize"
 msgstr "Optimera"
 
 #: ../include/classes.php:277
-#: ../include/classes.php:2655
+#: ../include/classes.php:2692
 msgid "Theme"
 msgstr "Tema"
 
@@ -102,8 +102,8 @@ msgid "Author"
 msgstr "Författare"
 
 #: ../include/classes.php:300
-#: ../include/classes.php:3270
-#: ../include/classes.php:3602
+#: ../include/classes.php:3307
+#: ../include/classes.php:3639
 msgid "Categories"
 msgstr "Kategorier"
 
@@ -157,8 +157,8 @@ msgstr "Kategori"
 
 #: ../include/classes.php:348
 #: ../include/classes.php:352
-#: ../include/classes.php:2071
-#: ../include/classes.php:2240
+#: ../include/classes.php:2106
+#: ../include/classes.php:2277
 msgid "Yes"
 msgstr "Ja"
 
@@ -169,8 +169,8 @@ msgstr "Och ändra inställning på alla inlägg"
 
 #: ../include/classes.php:355
 #: ../include/classes.php:359
-#: ../include/classes.php:2070
-#: ../include/classes.php:2241
+#: ../include/classes.php:2105
+#: ../include/classes.php:2278
 msgid "No"
 msgstr "Nej"
 
@@ -202,512 +202,490 @@ msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än 
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/classes.php:518
+#: ../include/classes.php:511
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/classes.php:524
+#: ../include/classes.php:517
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/classes.php:530
+#: ../include/classes.php:523
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/classes.php:542
+#: ../include/classes.php:535
 msgid "This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again"
 msgstr "Detta kommer att visa underhållsmeddelandet för alla utom du som är superadmin, tills dess att du inaktiverar detta läge igen"
 
-#: ../include/classes.php:562
+#: ../include/classes.php:555
 #, php-format
 msgid "This will send an e-mail to all editors (%s) when an author saves a draft"
 msgstr "Detta kommer att skicka ett e-post till alla redaktörer (%s) när en författare sparar ett utkast"
 
-#: ../include/classes.php:576
+#: ../include/classes.php:569
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/classes.php:581
+#: ../include/classes.php:574
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/classes.php:587
+#: ../include/classes.php:580
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/classes.php:615
+#: ../include/classes.php:608
 #, php-format
 msgid "By going to %sthe site%s you can edit any styling to your liking"
 msgstr "Genom att gå till %swebbsidan%s så kan du redigera utseendet efter egna önskemål"
 
-#: ../include/classes.php:660
+#: ../include/classes.php:653
 #, php-format
 msgid "Page %s"
 msgstr "Sida %s"
 
-#: ../include/classes.php:751
+#: ../include/classes.php:749
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/classes.php:761
-#: ../include/classes.php:3194
-#: ../include/classes.php:3211
-#: ../include/classes.php:3307
+#: ../include/classes.php:759
+#: ../include/classes.php:3231
+#: ../include/classes.php:3248
+#: ../include/classes.php:3344
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:801
-msgid "A visitor accessed the public page without being logged in!"
-msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
-
-#: ../include/classes.php:833
+#: ../include/classes.php:831
 msgid "Search here"
 msgstr "Sök här"
 
-#: ../include/classes.php:835
-#: ../include/classes.php:2982
+#: ../include/classes.php:833
+#: ../include/classes.php:3019
 #: ../include/functions.php:102
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:843
+#: ../include/classes.php:842
 msgid "To view this protected post, enter the password below"
 msgstr "För att se denna lösenordsskyddade sida, fyll i lösenordet nedan"
 
-#: ../include/classes.php:844
+#: ../include/classes.php:843
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/classes.php:846
+#: ../include/classes.php:845
 msgid "Submit"
 msgstr "Skicka"
 
-#: ../include/classes.php:899
+#: ../include/classes.php:898
 #, php-format
 msgid "by %s"
 msgstr "av %s"
 
-#: ../include/classes.php:1625
-#: ../include/classes.php:1632
+#: ../include/classes.php:1675
+#: ../include/classes.php:1682
 #, php-format
 msgid "Logo for %s"
 msgstr "Logga för %s"
 
-#: ../include/classes.php:1637
+#: ../include/classes.php:1687
 #, php-format
 msgid "Mobile Logo for %s"
 msgstr "Mobil logga för %s"
 
-#: ../include/classes.php:1694
+#: ../include/classes.php:1744
 msgid "copy"
 msgstr "kopia"
 
-#: ../include/classes.php:1755
+#: ../include/classes.php:1805
 msgid "Error cloning post"
 msgstr "Något gick fel vid kloningen"
 
-#: ../include/classes.php:1765
+#: ../include/classes.php:1815
 msgid "Clone"
 msgstr "Klona"
 
-#: ../include/classes.php:1777
+#: ../include/classes.php:1827
 msgid "SEO"
 msgstr "Sökmotoroptimering"
 
-#: ../include/classes.php:1903
+#: ../include/classes.php:1953
 #, php-format
 msgid "The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO."
 msgstr "Sidan %s har exakt samma titel. Försök att inte ha sidor med samma titel för det skadar din SEO"
 
-#: ../include/classes.php:1909
+#: ../include/classes.php:1959
 msgid "You have not set a title for this page"
 msgstr "Du har inte angett en titel för denna sida"
 
-#: ../include/classes.php:1916
+#: ../include/classes.php:1966
 #, php-format
 msgid "The page %s have the exact same excerpt"
 msgstr "Sidan %s har exakt samma utdrag"
 
-#: ../include/classes.php:1922
+#: ../include/classes.php:1972
 msgid "You have not set an excerpt for this page"
 msgstr "Du har inte angett ett utdrag för denna sida"
 
-#: ../include/classes.php:1926
+#: ../include/classes.php:1976
 msgid "The URL is not correlated to the title"
 msgstr "URLen stämmer inte överens med titeln"
 
-#: ../include/classes.php:1930
+#: ../include/classes.php:1980
 msgid "The title might be too long to show in search engines"
 msgstr "Rubriken kan vara för lång för att visas i sin helhet i sökmotorer"
 
-#: ../include/classes.php:1934
+#: ../include/classes.php:1984
 msgid "The excerpt (meta description) might be too long to show in search engines"
 msgstr "Utdraget (meta description) kan vara för lång för att visas i sin helhet i sökmotorer"
 
-#: ../include/classes.php:1938
+#: ../include/classes.php:1988
 msgid "The content should be longer"
 msgstr "Innehållet bör vara längre"
 
-#: ../include/classes.php:1942
+#: ../include/classes.php:1992
 msgid "There should be an H2 in the content"
 msgstr "Det bör finnas med en H2 i innehållet"
 
-#: ../include/classes.php:1946
+#: ../include/classes.php:1996
 msgid "The page is password protected"
 msgstr "Sidan är lösenordsskyddad"
 
-#: ../include/classes.php:1951
+#: ../include/classes.php:2001
 msgid "The page is not published or indexed"
 msgstr "Sidan är inte publicerad eller indexerad"
 
-#: ../include/classes.php:1955
+#: ../include/classes.php:2005
 msgid "Well done! The page is SEO approved!"
 msgstr "Bra jobbat! Sidan är SEO-godkänd!"
 
-#: ../include/classes.php:1995
+#: ../include/classes.php:2030
 msgid "Publish Settings"
 msgstr "Inställningar för publicering"
 
-#: ../include/classes.php:2001
+#: ../include/classes.php:2036
 msgid "Index"
 msgstr "Indexering"
 
-#: ../include/classes.php:2005
-#: ../include/classes.php:2215
-#: ../include/classes.php:2249
-#: ../include/classes.php:2287
-#: ../include/classes.php:2301
-#: ../include/classes.php:2331
-#: ../include/classes.php:2345
-#: ../include/classes.php:2357
-#: ../include/classes.php:2367
-#: ../include/classes.php:2377
+#: ../include/classes.php:2040
+#: ../include/classes.php:2252
+#: ../include/classes.php:2286
+#: ../include/classes.php:2324
+#: ../include/classes.php:2338
+#: ../include/classes.php:2368
+#: ../include/classes.php:2382
+#: ../include/classes.php:2394
+#: ../include/classes.php:2404
+#: ../include/classes.php:2414
 #: ../include/functions.php:486
 msgid "Choose Here"
 msgstr "Välj här"
 
-#: ../include/classes.php:2006
+#: ../include/classes.php:2041
 msgid "Don't Index"
 msgstr "Indexera inte"
 
-#: ../include/classes.php:2007
+#: ../include/classes.php:2042
 msgid "Don't Follow Links"
 msgstr "Följ inte länkar"
 
-#: ../include/classes.php:2008
+#: ../include/classes.php:2043
 msgid "Don't Index & don't follow links"
 msgstr "Indexera inte och följ inte länkar"
 
-#: ../include/classes.php:2012
+#: ../include/classes.php:2047
 msgid "Unpublish"
 msgstr "Avpublicera"
 
-#: ../include/classes.php:2039
+#: ../include/classes.php:2074
 #, php-format
 msgid "The draft '%s' has been saved"
 msgstr "Utkastet '%s' har sparats"
 
-#: ../include/classes.php:2040
+#: ../include/classes.php:2075
 #, php-format
 msgid "The draft '%s' has been saved and might be ready for publishing"
 msgstr "Utkastet '%s' har sparats och kan vara redo för publicering"
 
-#: ../include/classes.php:2074
+#: ../include/classes.php:2109
 msgid "Redirect"
 msgstr "Vidarebefordra"
 
-#: ../include/classes.php:2216
-#: ../include/classes.php:2250
-#: ../include/classes.php:2289
+#: ../include/classes.php:2253
+#: ../include/classes.php:2287
+#: ../include/classes.php:2326
 #: ../include/functions.php:397
 msgid "Left"
 msgstr "Vänster"
 
-#: ../include/classes.php:2217
-#: ../include/classes.php:2290
+#: ../include/classes.php:2254
+#: ../include/classes.php:2327
 msgid "Center"
 msgstr "Centrera"
 
-#: ../include/classes.php:2218
-#: ../include/classes.php:2251
-#: ../include/classes.php:2291
+#: ../include/classes.php:2255
+#: ../include/classes.php:2288
+#: ../include/classes.php:2328
 #: ../include/functions.php:398
 msgid "Right"
 msgstr "Höger"
 
-#: ../include/classes.php:2252
+#: ../include/classes.php:2289
 msgid "Both"
 msgstr "Båda"
 
-#: ../include/classes.php:2253
-#: ../include/classes.php:2288
-#: ../include/classes.php:2358
+#: ../include/classes.php:2290
+#: ../include/classes.php:2325
+#: ../include/classes.php:2395
 msgid "None"
 msgstr "Ingen"
 
-#: ../include/classes.php:2261
+#: ../include/classes.php:2298
 msgid "Horizontal"
 msgstr "Horisontell"
 
-#: ../include/classes.php:2262
+#: ../include/classes.php:2299
 msgid "Vertical"
 msgstr "Vertikal"
 
-#: ../include/classes.php:2292
-#: ../include/classes.php:2336
-#: ../include/classes.php:2382
+#: ../include/classes.php:2329
+#: ../include/classes.php:2373
+#: ../include/classes.php:2419
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/classes.php:2293
-#: ../include/classes.php:2337
-#: ../include/classes.php:2383
+#: ../include/classes.php:2330
+#: ../include/classes.php:2374
+#: ../include/classes.php:2420
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/classes.php:2332
+#: ../include/classes.php:2369
 msgid "Visible"
 msgstr "Visa"
 
-#: ../include/classes.php:2333
+#: ../include/classes.php:2370
 msgid "Hidden"
 msgstr "Dölj"
 
-#: ../include/classes.php:2334
+#: ../include/classes.php:2371
 msgid "Scroll"
 msgstr "Skroll"
 
-#: ../include/classes.php:2335
+#: ../include/classes.php:2372
 msgid "Auto"
 msgstr ""
 
-#: ../include/classes.php:2346
+#: ../include/classes.php:2383
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../include/classes.php:2347
+#: ../include/classes.php:2384
 msgid "Fixed"
 msgstr "Fixerad"
 
-#: ../include/classes.php:2348
+#: ../include/classes.php:2385
 msgid "Relative"
 msgstr "Relativ"
 
-#: ../include/classes.php:2349
+#: ../include/classes.php:2386
 msgid "Sticky"
 msgstr "Klistrad"
 
-#: ../include/classes.php:2359
+#: ../include/classes.php:2396
 msgid "Underline"
 msgstr "Linje"
 
-#: ../include/classes.php:2368
+#: ../include/classes.php:2405
 msgid "Uppercase"
 msgstr "Versaler"
 
-#: ../include/classes.php:2369
+#: ../include/classes.php:2406
 msgid "Lowercase"
 msgstr "Gemener"
 
-#: ../include/classes.php:2378
+#: ../include/classes.php:2415
 msgid "Lighter"
 msgstr "Tunnare"
 
-#: ../include/classes.php:2379
+#: ../include/classes.php:2416
 msgid "Normal"
 msgstr ""
 
-#: ../include/classes.php:2380
+#: ../include/classes.php:2417
 msgid "Bold"
 msgstr "Fet"
 
-#: ../include/classes.php:2381
+#: ../include/classes.php:2418
 msgid "Bolder"
 msgstr "Fetare"
 
-#: ../include/classes.php:2565
-#, php-format
-msgid "The feed from %s returned an error (%s)"
-msgstr "Flödet från %s svarade med ett fel (%s)"
-
-#: ../include/classes.php:2568
-msgid "The response from"
-msgstr "Svaret från"
-
-#: ../include/classes.php:2573
-#, php-format
-msgid "The response from %s had an error (%s)"
-msgstr "Svaret från %s hade ett fel (%s)"
-
-#: ../include/classes.php:2579
-#, php-format
-msgid "I could not process the feed from %s since the URL was not a valid one"
-msgstr "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
-
-#: ../include/classes.php:2617
+#: ../include/classes.php:2654
 msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
-#: ../include/classes.php:2642
+#: ../include/classes.php:2679
 #: ../include/functions.php:728
 msgid "Theme Backup"
 msgstr "Temabackup"
 
-#: ../include/classes.php:2657
+#: ../include/classes.php:2694
 msgid "A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again."
 msgstr "En kaka sparas när besökaren godkänner användning av kakor på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
 
-#: ../include/classes.php:2778
+#: ../include/classes.php:2815
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:2832
+#: ../include/classes.php:2869
 msgid "Add Widget Area"
 msgstr "Lägg till widgetområde"
 
-#: ../include/classes.php:2841
+#: ../include/classes.php:2878
 msgid "Widget Area"
 msgstr "Widgetområde"
 
-#: ../include/classes.php:2878
+#: ../include/classes.php:2915
 msgid "ID (Has to be unique)"
 msgstr "ID (Måste vara unikt)"
 
-#: ../include/classes.php:2879
+#: ../include/classes.php:2916
 msgid "Name"
 msgstr "Namn"
 
-#: ../include/classes.php:2880
-#: ../include/classes.php:3276
-#: ../include/classes.php:3613
+#: ../include/classes.php:2917
+#: ../include/classes.php:3313
+#: ../include/classes.php:3650
 msgid "Columns"
 msgstr "Kolumner"
 
-#: ../include/classes.php:2891
+#: ../include/classes.php:2928
 msgid "Display Logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:2902
-#: ../include/classes.php:2937
-#: ../include/classes.php:2950
+#: ../include/classes.php:2939
+#: ../include/classes.php:2974
+#: ../include/classes.php:2987
 #: ../include/functions.php:108
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:2936
+#: ../include/classes.php:2973
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:2938
-#: ../include/classes.php:2961
+#: ../include/classes.php:2975
+#: ../include/classes.php:2998
 #: ../include/functions.php:117
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:2942
+#: ../include/classes.php:2979
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:2943
-#: ../include/sitemap-xsl.php:104
+#: ../include/classes.php:2980
+#: ../include/sitemap-xsl.php:103
 msgid "URL"
 msgstr ""
 
-#: ../include/classes.php:2944
+#: ../include/classes.php:2981
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:2974
+#: ../include/classes.php:3011
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:3009
+#: ../include/classes.php:3046
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:3010
+#: ../include/classes.php:3047
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:3021
+#: ../include/classes.php:3058
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:3038
+#: ../include/classes.php:3075
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:3244
+#: ../include/classes.php:3281
 msgid "Default"
 msgstr "Standard"
 
-#: ../include/classes.php:3245
+#: ../include/classes.php:3282
 msgid "Post It"
 msgstr "Post-It"
 
-#: ../include/classes.php:3246
+#: ../include/classes.php:3283
 msgid "Simple"
 msgstr "Enkel"
 
-#: ../include/classes.php:3268
-#: ../include/classes.php:3408
-#: ../include/classes.php:3600
-#: ../include/classes.php:3769
-#: ../include/sitemap-xsl.php:103
+#: ../include/classes.php:3305
+#: ../include/classes.php:3445
+#: ../include/classes.php:3637
+#: ../include/classes.php:3806
+#: ../include/classes.php:3877
+#: ../include/sitemap-xsl.php:102
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:3269
+#: ../include/classes.php:3306
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:3272
-#: ../include/classes.php:3609
+#: ../include/classes.php:3309
+#: ../include/classes.php:3646
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:3287
+#: ../include/classes.php:3324
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:3287
+#: ../include/classes.php:3324
 msgid "h"
 msgstr "tim"
 
-#: ../include/classes.php:3292
+#: ../include/classes.php:3329
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:3296
+#: ../include/classes.php:3333
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:3304
+#: ../include/classes.php:3341
 msgid "Display Title"
 msgstr "Visa rubrik"
 
-#: ../include/classes.php:3305
+#: ../include/classes.php:3342
 msgid "Display Excerpt"
 msgstr "Visa utdrag"
 
-#: ../include/classes.php:3312
+#: ../include/classes.php:3349
 msgid "There are no posts to display in this widget"
 msgstr "Det finns inga inlägg att visa i denna widget"
 
-#: ../include/classes.php:3325
+#: ../include/classes.php:3362
 msgid "Display Info Module"
 msgstr "Visa infomodul"
 
-#: ../include/classes.php:3337
+#: ../include/classes.php:3374
 msgid "Info Module"
 msgstr "Infomodul"
 
-#: ../include/classes.php:3409
+#: ../include/classes.php:3446
 #: ../include/functions.php:269
 #: ../include/functions.php:408
 #: ../include/functions.php:409
@@ -715,41 +693,49 @@ msgstr "Infomodul"
 msgid "Content"
 msgstr "Innehåll"
 
-#: ../include/classes.php:3410
+#: ../include/classes.php:3447
 msgid "Button Text"
 msgstr "Knapptext"
 
-#: ../include/classes.php:3420
+#: ../include/classes.php:3457
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:3425
+#: ../include/classes.php:3462
 msgid "Link"
 msgstr "Länk"
 
-#: ../include/classes.php:3440
+#: ../include/classes.php:3477
 msgid "Display Related Posts"
 msgstr "Visa relaterade inlägg"
 
-#: ../include/classes.php:3451
+#: ../include/classes.php:3488
 msgid "Related Posts"
 msgstr "Relaterade inlägg"
 
-#: ../include/classes.php:3634
+#: ../include/classes.php:3671
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:3643
+#: ../include/classes.php:3680
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:3770
+#: ../include/classes.php:3807
 msgid "Pages"
 msgstr "Sidor"
 
-#: ../include/classes.php:3771
+#: ../include/classes.php:3808
 msgid "Display Titles"
 msgstr "Visa rubriker"
+
+#: ../include/classes.php:3819
+msgid "Display Table of Contents"
+msgstr "Visa innehållsförteckning"
+
+#: ../include/classes.php:3826
+msgid "Table of Contents"
+msgstr "Innehållsförteckning"
 
 #: ../include/functions.php:42
 msgid "Generic"
@@ -949,21 +935,13 @@ msgstr "Knappar"
 msgid "Button Color"
 msgstr "Knappfärg"
 
-#: ../include/functions.php:76
-#: ../include/functions.php:78
-#: ../include/functions.php:80
-msgid "Button Text Color"
-msgstr "Textfärg på knapp"
-
 #: ../include/functions.php:77
-#: ../include/functions.php:78
 #: ../include/functions.php:188
 #: ../include/functions.php:515
 msgid "Secondary"
 msgstr "Sekundär"
 
 #: ../include/functions.php:79
-#: ../include/functions.php:80
 #: ../include/functions.php:82
 msgid "Negative"
 msgstr "Negativ"
@@ -1335,12 +1313,37 @@ msgstr "Sök efter"
 msgid "XML Sitemap for %s"
 msgstr "Sidkarta för %s"
 
-#: ../include/sitemap-xsl.php:97
+#: ../include/sitemap-xsl.php:96
 #, php-format
 msgid "XML Sitemap for %s | %s"
 msgstr "Sidkarta för %s | %s"
 
-#: ../include/sitemap-xsl.php:109
+#: ../include/sitemap-xsl.php:108
 msgid "Last Modified"
 msgstr "Senast ändrad"
 
+#~ msgid "Display Page Index"
+#~ msgstr "Visa sidindex"
+
+#~ msgid "Page Index"
+#~ msgstr "Sidindex"
+
+#~ msgid "A visitor accessed the public page without being logged in!"
+#~ msgstr "En besökare kom åt den publika sidan utan att vara inloggad!"
+
+#~ msgid "The feed from %s returned an error (%s)"
+#~ msgstr "Flödet från %s svarade med ett fel (%s)"
+
+#~ msgid "The response from"
+#~ msgstr "Svaret från"
+
+#~ msgid "The response from %s had an error (%s)"
+#~ msgstr "Svaret från %s hade ett fel (%s)"
+
+#~ msgid ""
+#~ "I could not process the feed from %s since the URL was not a valid one"
+#~ msgstr ""
+#~ "Jag kunde inte gå igenom flödet från %s eftersom URLen inte godkändes"
+
+#~ msgid "Button Text Color"
+#~ msgstr "Textfärg på knapp"

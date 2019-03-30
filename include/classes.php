@@ -3816,14 +3816,14 @@ class widget_theme_core_page_index extends WP_Widget
 	{
 		$widget_ops = array(
 			'classname' => 'theme_page_index',
-			'description' => __("Display Page Index", 'lang_theme_core')
+			'description' => __("Display Table of Contents", 'lang_theme_core')
 		);
 
 		$this->arr_default = array(
 			'widget_title' => "",
 		);
 
-		parent::__construct('theme-page-index-widget', __("Page Index", 'lang_theme_core'), $widget_ops);
+		parent::__construct('theme-page-index-widget', __("Table of Contents", 'lang_theme_core'), $widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -3850,34 +3850,10 @@ class widget_theme_core_page_index extends WP_Widget
 						.$after_title;
 					}
 
-					echo "<ul>";
-
-						/*$count_temp = count($arr_tags[0]);
-
-						for($i = 0; $i < $count_temp; $i++)
-						{
-							$depth_prev = (isset($arr_tags[0][$i - 1]) ? $arr_tags[0][$i - 1] : 0);
-							$depth_next = (isset($arr_tags[0][$i + 1]) ? $arr_tags[0][$i + 1] : 0);
-
-							$depth = $arr_tags[0][$i];
-							$heading = $arr_tags[1][$i];
-
-							if($depth_prev > 0 && $depth > $depth_prev)
-							{
-								echo "<ul>";
-							}
-
-								echo "<li>
-									<a href='#'>".$heading."</a>
-								</li>";
-
-							if($depth > $depth_next)
-							{
-								echo "</ul>";
-							}
-						}*/
-
-					echo "</ul>"
+					echo "<div>
+						<i class='fa fa-bars'></i>
+						<ul></ul>
+					</div>"
 				.$after_widget;
 			}
 		}

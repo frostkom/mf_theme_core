@@ -1,10 +1,12 @@
 jQuery(function($)
 {
-	if($(".widget.theme_page_index").length > 0)
+	var dom_widget = $(".widget.theme_page_index");
+
+	if(dom_widget.length > 0)
 	{
 		var output = "",
 			dom_article = $("article"),
-			dom_headings = dom_article.find("h2, h3"),
+			dom_headings = dom_article.find("h2:visible, h3:visible"),
 			i = 0;
 
 		if(dom_headings.length > 1)
@@ -50,44 +52,7 @@ jQuery(function($)
 				i++;
 			});
 
-			$(".widget.theme_page_index > ul").html(output);
-
-			$(document).on('click', ".theme_page_index a", function()
-			{
-				var dom_href = $(this).attr('href');
-
-				jQuery("html, body").animate(
-				{
-					scrollTop: $(dom_href).offset().top
-				}, 800);
-
-				return false;
-			});
-
-			function page_index_interaction()
-			{
-				$(".widget.theme_page_index a").removeClass('active');
-
-				$(".widget.theme_page_index a").each(function()
-				{
-					var dom_obj = $(this),
-						dom_url = dom_obj.attr('href');
-
-					if($(dom_url).is(':visible'))
-					{
-						dom_obj.addClass('active');
-
-						return false;
-					}
-				});
-			}
-
-			page_index_interaction();
-
-			$(window).scroll(function()
-			{
-				page_index_interaction();
-			});*/
+			dom_widget.find("div > ul").html(output);*/
 
 			var positions = [],
 				build_toc = function()
@@ -211,7 +176,7 @@ jQuery(function($)
 					}
 				};
 
-			$(".widget.theme_page_index > ul").html(build_toc());
+			dom_widget.find("div > ul").html(build_toc());
 
 			get_positions();
 

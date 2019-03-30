@@ -570,44 +570,84 @@ echo "@media all
 
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
 	{
-		echo ".widget.theme_page_index ul
+		echo ".widget.theme_page_index
 		{
-			list-style: none;
+			text-align: right;
 		}
-
-			.widget.theme_page_index ul li
+		
+			.is_mobile .widget.theme_page_index
 			{
-				font-weight: bold;
-				margin-bottom: .5em;
+				display: none;
+				position: fixed;
+				right: 0;
+				top: 0;
 			}
 
-				.widget.theme_page_index ul li a
+			.widget.theme_page_index .fa-bars
+			{
+				display: none;
+			}
+
+				.is_mobile .widget.theme_page_index .fa-bars
 				{
-					display: inline-block;
-					text-indent: 0;
-					transition: all 1s ease;
+					display: block;
+					font-size: 1.5em;
+					margin: .4em;
+				}
+				
+			.widget.theme_page_index ul
+			{
+				list-style: none;
+				text-align: left;
+			}
+
+				.is_mobile .widget.theme_page_index > div > ul
+				{
+					display: none;
 				}
 
-					.widget.theme_page_index ul li a.toc-already-read
+					.is_mobile .widget.theme_page_index:hover > div > ul
 					{
-						color: #ccc;
+						background: inherit;
+						border-radius: .5em;
+						box-shadow: 0 0 1em rgba(0, 0, 0, .3);
+						display: block;
+						padding: .5em 1em;
 					}
 
-					.widget.theme_page_index ul li a.toc-reading
-					{
-						color: inherit;
-						text-indent: .5em;
-					}
-
-				.widget.theme_page_index ul ul
+				.widget.theme_page_index ul li
 				{
-					font-size: .9em;
+					font-weight: bold;
+					margin-bottom: .5em;
 				}
 
-					.widget.theme_page_index ul ul li
+					.widget.theme_page_index ul li a
 					{
-						font-weight: normal;
-					}";
+						display: inline-block;
+						text-indent: 0;
+						transition: all 1s ease;
+					}
+
+						.widget.theme_page_index ul li a.toc-already-read
+						{
+							color: #ccc;
+						}
+
+						.widget.theme_page_index ul li a.toc-reading
+						{
+							color: inherit;
+							text-indent: .5em;
+						}
+
+					.widget.theme_page_index ul ul
+					{
+						font-size: .9em;
+					}
+
+						.widget.theme_page_index ul ul li
+						{
+							font-weight: normal;
+						}";
 	}
 
 echo "}
