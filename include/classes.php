@@ -4,7 +4,7 @@ class mf_theme_core
 {
 	function __construct()
 	{
-		$this->meta_prefix = "mf_theme_core_";
+		$this->meta_prefix = 'mf_theme_core_';
 
 		$this->options_params = $this->options = $this->options_fonts = array();
 	}
@@ -20,8 +20,6 @@ class mf_theme_core
 
 		/* Optimize */
 		#########################
-		//$setting_theme_optimize = get_option_or_default('setting_theme_optimize', 7);
-
 		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 		{
 			$this->do_optimize();
@@ -75,7 +73,7 @@ class mf_theme_core
 	{
 		if(get_option('setting_activate_maintenance') == 'yes')
 		{
-			if(IS_SUPER_ADMIN || $this->is_login_page()) //is_admin()
+			if(IS_SUPER_ADMIN || $this->is_login_page())
 			{
 				// Do nothing
 			}
@@ -110,8 +108,6 @@ class mf_theme_core
 				check_admin_referer('posts_logout');
 				setcookie('wp-postpass_'.COOKIEHASH, '', strtotime("-1 month"), COOKIEPATH);
 
-				do_log("Did remove cookie");
-
 				wp_redirect(wp_get_referer());
 				die();
 			}
@@ -124,7 +120,6 @@ class mf_theme_core
 
 		if(IS_ADMIN)
 		{
-			//$site_url = get_site_url();
 			$site_url = get_home_url();
 
 			if(get_option('setting_activate_maintenance') == 'yes')
@@ -557,9 +552,6 @@ class mf_theme_core
 
 	function setting_theme_optimize_callback()
 	{
-		/*$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 7);*/
-
 		$option_database_optimized = get_option('option_database_optimized');
 
 		if($option_database_optimized > DEFAULT_DATE)
@@ -573,8 +565,6 @@ class mf_theme_core
 		{
 			$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 		}
-
-		//echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option, 'xtra' => "min='1' max='30'", 'description' => $description));
 
 		echo "<div>"
 			.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
@@ -679,6 +669,7 @@ class mf_theme_core
 
 		if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
 		{
+			mf_enqueue_style('style_theme_page_index', $plugin_include_url."style_page_index.css", $plugin_version);
 			mf_enqueue_script('script_theme_page_index', $plugin_include_url."script_page_index.js", $plugin_version);
 		}
 
