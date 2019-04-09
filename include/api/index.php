@@ -27,17 +27,21 @@ switch($type)
 
 		if($theme->exists())
 		{
-			$theme_dir_name = get_theme_dir_name();
+			$obj_theme_core = new mf_theme_core();
+
+			$theme_dir_name = $obj_theme_core->get_theme_dir_name();
 
 			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-			$arr_backups = get_previous_backups_list($upload_path);
+			$arr_backups = $obj_theme_core->get_previous_backups_list($upload_path);
 			$count_temp = count($arr_backups);
 
 			if($count_temp > 0)
 			{
 				$style_url = $upload_url.$arr_backups[0]['name'];
-				$style_changed = date("Y-m-d H:i:s", strtotime(substr($style_url, -17, 12)));
+
+				$style_path = str_replace($upload_url, $upload_path, $style_url);
+				$style_changed = date("Y-m-d H:i:s", filemtime($style_path));
 			}
 
 			else
@@ -46,7 +50,7 @@ switch($type)
 				$style_changed = DEFAULT_DATE;
 			}
 
-			$json_output['success'] = true;
+			$json_output['success'] = ($style_changed > DEFAULT_DATE);
 			$json_output['response'] = array(
 				'theme_version' => $theme->get('Version'), //Deprecated
 				'style_changed' => $style_changed,
