@@ -50,7 +50,7 @@ switch($type)
 				$style_changed = DEFAULT_DATE;
 			}
 
-			$json_output['success'] = ($style_changed > DEFAULT_DATE);
+			$json_output['success'] = ($style_changed >= DEFAULT_DATE);
 			$json_output['response'] = array(
 				'theme_version' => $theme->get('Version'), //Deprecated
 				'style_changed' => $style_changed,
