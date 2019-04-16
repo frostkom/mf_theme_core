@@ -455,7 +455,7 @@ class mf_theme_core
 		$arr_data = array();
 		get_post_children(array('add_choose_here' => true), $arr_data);
 
-		$post_title = __("404", 'lang_theme_core');
+		$post_title = "404";
 		$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
 
 		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
@@ -3140,7 +3140,7 @@ class mf_theme_core
 					{
 						do_log(sprintf("The response from %s had an error (%s)", $style_source, $headers['http_code']));
 					}
-					
+
 					do_log("I could not process the feed from", 'trash');
 				}
 
