@@ -880,14 +880,23 @@ class mf_theme_core
 
 	function the_password_form()
 	{
-		//site_url('wp-login.php?action=postpass', 'login_post')
-		return "<form action='".wp_lostpassword_url()."' method='post' class='mf_form'>
-			<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
-			.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password"), 'maxlength' => 20))
-			."<div class='form_button'>"
-				.show_button(array('text' => __("Submit", 'lang_theme_core')))
-			."</div>
-		</form>";
+		if(!isset($this->displayed_password_form) || $this->displayed_password_form == false)
+		{
+			$this->displayed_password_form = true;
+
+			return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
+				<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
+				.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password"), 'maxlength' => 20))
+				."<div class='form_button'>"
+					.show_button(array('text' => __("Submit", 'lang_theme_core')))
+				."</div>
+			</form>";
+		}
+
+		else
+		{
+			return "";
+		}
 	}
 
 	function the_content($html)
