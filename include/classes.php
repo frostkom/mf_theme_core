@@ -7,6 +7,8 @@ class mf_theme_core
 		$this->meta_prefix = 'mf_theme_core_';
 
 		$this->options_params = $this->options = $this->options_fonts = array();
+
+		$this->title_format = "[page_title][site_title][site_description][page_number]";
 	}
 
 	function is_site_public()
@@ -227,6 +229,8 @@ class mf_theme_core
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 		}
 
+		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
+
 		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", 'lang_theme_core');
 
 		if(get_option('setting_no_public_pages') != 'yes')
@@ -338,6 +342,14 @@ class mf_theme_core
 		$option = get_option_or_default($setting_key, 'no');
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+	}
+
+	function setting_theme_core_title_format_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key);
+
+		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => $this->title_format, 'description' => __("This will replace the default format", 'lang_theme_core')));
 	}
 
 	function get_meta_boxes_for_select()
@@ -679,23 +691,39 @@ class mf_theme_core
 	function get_wp_title()
 	{
 		global $page, $paged;
+		
+		$title_format = get_option_or_default('setting_theme_core_title_format', $this->title_format);
+		$separator = "|";
+		$separator_full = " ".$separator." ";
 
-		$out = wp_title('|', false, 'right')
-		.get_bloginfo('name');
-
+		$page_title = trim(wp_title($separator, false), $separator);
+		$site_title = get_bloginfo('name');
 		$site_description = get_bloginfo('description', 'display');
+
+		if($page_title != '')
+		{
+			$title_format = str_replace("[page_title]", $separator_full.$page_title, $title_format);
+		}
+
+		if($site_title != '')
+		{
+			$title_format = str_replace("[site_title]", $separator_full.$site_title, $title_format);
+		}
 
 		if($site_description != '' && (is_home() || is_front_page()))
 		{
-			$out .= " | ".$site_description;
+			$title_format = str_replace("[site_description]", $separator_full.$site_description, $title_format);
 		}
 
 		if($paged >= 2 || $page >= 2)
 		{
-			$out .= " | ".sprintf( __("Page %s", 'lang_theme_core'), max($paged, $page));
+			$title_format = str_replace("[page_number]", $separator_full.sprintf( __("Page %s", 'lang_theme_core'), max($paged, $page)), $title_format);
 		}
 
-		return $out;
+		$title_format = str_replace(array("[page_title]", "[site_title]", "[site_description]", "[page_number]", $separator_full.$separator_full), "", $title_format);
+		$title_format = trim($title_format, $separator_full);
+
+		return $title_format;
 	}
 
 	function get_header()
