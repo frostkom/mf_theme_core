@@ -691,7 +691,7 @@ class mf_theme_core
 	function get_wp_title()
 	{
 		global $page, $paged;
-		
+
 		$title_format = get_option_or_default('setting_theme_core_title_format', $this->title_format);
 		$separator = "|";
 		$separator_full = " ".$separator." ";
@@ -865,7 +865,7 @@ class mf_theme_core
 				$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
 			}
 
-			else
+			else if(apply_filters('is_public_page', true))
 			{
 				do_log("A visitor accessed the public page without being logged in!");
 			}
@@ -2659,8 +2659,10 @@ class mf_theme_core
 
 		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
 		{
-			//mf_redirect(get_site_url()."/wp-login.php?redirect_to=".$_SERVER['REQUEST_URI']);
-			mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
+			if(apply_filters('is_public_page', true))
+			{
+				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
+			}
 		}
 	}
 

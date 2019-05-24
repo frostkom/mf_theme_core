@@ -6,9 +6,9 @@ jQuery(function($)
 
 		$.ajax(
 		{
-			type: "post",
-			dataType: "json",
 			url: script_theme_core.ajax_url,
+			type: 'post',
+			dataType: 'json',
 			data: {
 				action: obj.action
 			},

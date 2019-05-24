@@ -16,12 +16,12 @@ jQuery(function($)
 				var dom_obj = $(this),
 					dom_title = dom_obj.text();
 
-				if(dom_obj.is('h2'))
+				if(dom_obj.is("h2"))
 				{
 					var dom_depth = 2;
 				}
 
-				else if(dom_obj.is('h3'))
+				else if(dom_obj.is("h3"))
 				{
 					var dom_depth = 3;
 				}
@@ -64,12 +64,12 @@ jQuery(function($)
 						var dom_obj = $(this),
 							dom_title = dom_obj.text();
 
-						if(dom_obj.is('h2'))
+						if(dom_obj.is("h2"))
 						{
 							var dom_depth = 2;
 						}
 
-						else if(dom_obj.is('h3'))
+						else if(dom_obj.is("h3"))
 						{
 							var dom_depth = 3;
 						}
