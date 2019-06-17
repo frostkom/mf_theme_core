@@ -4128,7 +4128,7 @@ class widget_theme_core_news extends WP_Widget
 
 				echo "</div>";
 
-				if($instance['news_amount'] == 1 && $instance['news_type'] == 'postit')
+				if($instance['news_amount'] == 1 || $instance['news_type'] == 'postit')
 				{
 					echo "<div class='flex_flow'>";
 
