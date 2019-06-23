@@ -3909,7 +3909,7 @@ class widget_theme_core_news extends WP_Widget
 			$query_where .= " AND post_date > DATE_SUB(NOW(), INTERVAL ".esc_sql($instance['news_time_limit'])." HOUR)";
 		}
 
-		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
+		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt, post_date FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
 
 		if($wpdb->num_rows > 0)
 		{
@@ -3918,8 +3918,6 @@ class widget_theme_core_news extends WP_Widget
 			foreach($result as $r)
 			{
 				$post_id = $r->ID;
-				$post_title = $r->post_title;
-				$post_excerpt = $r->post_excerpt;
 
 				$post_thumbnail = '';
 
@@ -3934,10 +3932,11 @@ class widget_theme_core_news extends WP_Widget
 				}
 
 				$this->arr_news[$post_id] = array(
-					'title' => $post_title,
+					'title' => $r->post_title,
+					'date' => $r->post_date,
 					'url' => get_permalink($post_id),
 					'image' => $post_thumbnail,
-					'excerpt' => $post_excerpt,
+					'excerpt' => $r->post_excerpt,
 				);
 			}
 		}
@@ -4018,9 +4017,16 @@ class widget_theme_core_news extends WP_Widget
 								echo "<li>
 									<a href='".$page['url']."'>";
 
-										if(in_array($instance['news_type'], array('original', 'simple')))
+										switch($instance['news_type'])
 										{
-											echo "<div class='image'>".$page['image']."</div>";
+											case 'original':
+											case 'simple':
+												echo "<div class='image'>".$page['image']."</div>";
+											break;
+
+											case 'compact':
+												echo "<span>".format_date($page['date'])."</span>";
+											break;
 										}
 
 										if($instance['news_display_title'] == 'yes')
@@ -4028,9 +4034,15 @@ class widget_theme_core_news extends WP_Widget
 											echo "<h4>".$page['title']."</h4>";
 										}
 
-										if($instance['news_display_excerpt'] == 'yes' && in_array($instance['news_type'], array('postit', 'simple')))
+										switch($instance['news_type'])
 										{
-											echo apply_filters('the_content', $page['excerpt']);
+											case 'postit':
+											case 'simple':
+												if($instance['news_display_excerpt'] == 'yes')
+												{
+													echo apply_filters('the_content', $page['excerpt']);
+												}
+											break;
 										}
 
 									echo "</a>
@@ -4094,6 +4106,7 @@ class widget_theme_core_news extends WP_Widget
 			'original' => __("Default", 'lang_theme_core'),
 			'postit' => __("Post It", 'lang_theme_core'),
 			'simple' => __("Simple", 'lang_theme_core'),
+			'compact' => __("Compact", 'lang_theme_core'),
 		);
 	}
 
@@ -4106,63 +4119,57 @@ class widget_theme_core_news extends WP_Widget
 		$instance_temp['news_time_limit'] = 0;
 		$this->get_posts($instance_temp);
 
-		echo "<div class='mf_form'>";
+		$rows = count($this->arr_news);
 
-			$count_temp = count($this->arr_news);
+		$arr_data_pages = array();
+		get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
-			if($count_temp > 0)
+		echo "<div class='mf_form'>"
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
+			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
+			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
+			."<div class='flex_flow'>"
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
+
+				if($rows > 3 && $instance['news_type'] != 'compact')
+				{
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+				}
+
+			echo "</div>";
+
+			if($instance['news_amount'] == 1 || $instance['news_type'] == 'postit')
 			{
-				$arr_data_pages = array();
-				get_post_children(array('add_choose_here' => true), $arr_data_pages);
+				echo "<div class='flex_flow'>";
 
-				echo show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
-				.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
-				.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
-				."<div class='flex_flow'>"
-					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".$count_temp."'"));
-
-					if($count_temp > 3)
+					if($instance['news_amount'] == 1)
 					{
-						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
+					}
+
+					if($instance['news_type'] == 'postit')
+					{
+						echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
+
+						if($instance['news_display_arrows'] == 'yes')
+						{
+							echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+						}
 					}
 
 				echo "</div>";
+			}
 
-				if($instance['news_amount'] == 1 || $instance['news_type'] == 'postit')
-				{
-					echo "<div class='flex_flow'>";
-
-						if($instance['news_amount'] == 1)
-						{
-							echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
-						}
-
-						if($instance['news_type'] == 'postit')
-						{
-							echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
-
-							if($instance['news_display_arrows'] == 'yes')
-							{
-								echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
-							}
-						}
-
-					echo "</div>";
-				}
-
+			if($instance['news_type'] != 'compact')
+			{
 				echo "<div class='flex_flow'>"
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", 'lang_theme_core'), 'value' => $instance['news_display_title']))
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
-				."</div>"
-				.show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']));
+				."</div>";
 			}
 
-			else
-			{
-				echo __("There are no posts to display in this widget", 'lang_theme_core');
-			}
-
-		echo "</div>";
+			echo show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']))
+		."</div>";
 	}
 }
 
@@ -4309,8 +4316,6 @@ class widget_theme_core_related extends WP_Widget
 
 		if(isset($post) && isset($post->ID))
 		{
-			//if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
-
 			$post_id = $post->ID;
 
 			$query_join = $query_where = "";
@@ -4343,8 +4348,6 @@ class widget_theme_core_related extends WP_Widget
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = %s AND post_status = %s AND ID != '%d'".$query_where." GROUP BY post_title ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], $instance['news_post_type'], 'publish', $post_id));
 
-			//do_log("Related: ".$wpdb->last_query);
-
 			if($wpdb->num_rows > 0)
 			{
 				$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
@@ -4352,8 +4355,6 @@ class widget_theme_core_related extends WP_Widget
 				foreach($result as $r)
 				{
 					$post_id = $r->ID;
-					$post_title = $r->post_title;
-					$post_excerpt = $r->post_excerpt;
 
 					$post_thumbnail = '';
 
@@ -4368,10 +4369,10 @@ class widget_theme_core_related extends WP_Widget
 					}
 
 					$this->arr_news[$post_id] = array(
-						'title' => $post_title,
+						'title' => $r->post_title,
 						'url' => get_permalink($post_id),
 						'image' => $post_thumbnail,
-						'excerpt' => $post_excerpt,
+						'excerpt' => $r->post_excerpt,
 					);
 				}
 			}
@@ -4442,36 +4443,15 @@ class widget_theme_core_related extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		/*$instance_temp = $instance;
-		$instance_temp['news_amount'] = 9;
-		$this->get_posts($instance_temp);*/
-
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
-			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']));
-
-			/*$count_temp = count($this->arr_news);
-
-			if($count_temp > 0)
-			{*/
-				echo "<div class='flex_flow'>"
-					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'")); // max='".$count_temp."'
-
-					/*if($count_temp > 3)
-					{*/
-						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
-					//}
-
-				echo "</div>";
-			/*}
-
-			else
-			{
-				echo __("There are no posts to display in this widget", 'lang_theme_core');
-			}*/
-
-		echo "</div>";
+			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
+			."<div class='flex_flow'>"
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'"))
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"))
+			."</div>
+		</div>";
 	}
 }
 
