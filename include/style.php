@@ -463,6 +463,11 @@ echo "@media all
 				width: 60%;
 			}
 
+			.widget.theme_news .section.news_single h3
+			{
+				padding-left: 0;
+			}
+
 				.is_mobile .widget.theme_news .section.news_single > a > *, .aside.right .widget.theme_news .section.news_single > a > *, .aside.left .widget.theme_news .section.news_single > a > *
 				{
 					width: 100%;

@@ -4068,7 +4068,9 @@ class widget_theme_core_news extends WP_Widget
 									echo "<div class='image'>".$page['image']."</div>";
 								}
 
-								echo "<h4>".$page['title']."</h4>"
+								echo ($instance['news_title'] == '' ? $before_title : "<h4>")
+									.$page['title']
+								.($instance['news_title'] == '' ? $after_title : "</h4>")
 								.apply_filters('the_content', $page['excerpt'])
 								."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
 							."</a>";
