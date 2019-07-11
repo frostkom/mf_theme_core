@@ -260,7 +260,7 @@ echo "@media all
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-news-widget') > 0 || apply_filters('get_widget_search', 'theme-related-news-widget') > 0 || apply_filters('get_widget_search', 'theme-promo-widget') > 0)
 	{
 		/* If > 1 */
-		echo ".widget.theme_news ul
+		echo ".aside .widget.theme_news ul
 		{
 			list-style: none;
 			margin: 0 -.5em -.8em;
@@ -280,9 +280,15 @@ echo "@media all
 
 			.widget.theme_news li
 			{
-				padding: 0 .5em 1em;
+				overflow: hidden;
+				padding: 0 .5em;
 				position: relative;
 			}
+
+				.widget.theme_news li + li
+				{
+					padding-top: .5em;
+				}
 
 				.widget.theme_news li .image
 				{

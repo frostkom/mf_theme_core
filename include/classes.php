@@ -1795,7 +1795,7 @@ class mf_theme_core
 
 			.read_more
 			{
-				margin-top: .5em;
+				margin-top: 1em;
 				position: relative;
 			}
 
