@@ -3968,6 +3968,8 @@ class widget_theme_core_news extends WP_Widget
 
 				if($instance['news_title'] != '')
 				{
+					$instance['news_title'] = apply_filters('widget_title', $instance['news_title'], $instance, $this->id_base);
+
 					echo $before_title
 						.$instance['news_title']
 					.$after_title;
@@ -4218,6 +4220,8 @@ class widget_theme_core_info extends WP_Widget
 
 						if($instance['info_title'] != '')
 						{
+							$instance['info_title'] = apply_filters('widget_title', $instance['info_title'], $instance, $this->id_base);
+
 							echo $before_title
 								.apply_filters('get_theme_core_info_title', $instance['info_title'])
 							.$after_title;
@@ -4394,6 +4398,8 @@ class widget_theme_core_related extends WP_Widget
 
 				if($instance['news_title'] != '')
 				{
+					$instance['news_title'] = apply_filters('widget_title', $instance['news_title'], $instance, $this->id_base);
+
 					echo $before_title
 						.$instance['news_title']
 					.$after_title;
@@ -4538,6 +4544,8 @@ class widget_theme_core_promo extends WP_Widget
 
 					if($instance['promo_title'] != '')
 					{
+						$instance['promo_title'] = apply_filters('widget_title', $instance['promo_title'], $instance, $this->id_base);
+
 						echo $before_title
 							.$instance['promo_title']
 						.$after_title;
@@ -4640,6 +4648,8 @@ class widget_theme_core_page_index extends WP_Widget
 
 					if($instance['widget_title'] != '')
 					{
+						$instance['widget_title'] = apply_filters('widget_title', $instance['widget_title'], $instance, $this->id_base);
+
 						echo $before_title
 							.$instance['widget_title']
 						.$after_title;
