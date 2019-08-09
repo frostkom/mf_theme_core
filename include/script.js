@@ -35,4 +35,13 @@ jQuery(function($)
 	{
 		set_breakpoint();
 	});
+
+	/*$(".widget.theme_news .news_expand_content .content").shorten();*/
+
+	$(".widget.theme_news .news_expand_content .read_more a").on('click', function()
+	{
+		$(this).parent(".read_more").addClass('hide').siblings(".excerpt").addClass('hide').siblings(".content").removeClass('hide');
+
+		return false;
+	});
 });
