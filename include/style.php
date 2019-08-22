@@ -285,7 +285,7 @@ echo "@media all
 				position: relative;
 			}
 
-				.widget.theme_news li + li
+				.widget.theme_news ul:not(.text_columns) li + li
 				{
 					padding-top: .5em;
 				}

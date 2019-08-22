@@ -3800,7 +3800,7 @@ class widget_theme_core_logo extends WP_Widget
 
 				if($instance['logo_title'] == '')
 				{
-					echo get_media_library(array('name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image'], 'type' => 'image'));
+					echo get_media_library(array('type' => 'image', 'name' => $this->get_field_name('logo_image'), 'value' => $instance['logo_image']));
 				}
 			}
 
@@ -4184,7 +4184,7 @@ class widget_theme_core_news extends WP_Widget
 					{
 						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
 					}
-					
+
 				echo "</div>";
 			}
 
@@ -4300,7 +4300,7 @@ class widget_theme_core_info extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.get_media_library(array('name' => $this->get_field_name('info_image'), 'value' => $instance['info_image'], 'type' => 'image'))
+			.get_media_library(array('type' => 'image', 'name' => $this->get_field_name('info_image'), 'value' => $instance['info_image']))
 			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='info-title'"))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
 			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text'])); //, 'xtra' => " condition_type='hide_if_empty' condition_field='info_button_links'"
