@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-09 07:20+0100\n"
+"POT-Creation-Date: 2019-08-26 13:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -443,6 +443,9 @@ msgstr "Marginal på länkar"
 
 msgid "Custom"
 msgstr "Anpassat"
+
+msgid "External CSS"
+msgstr "Extern CSS"
 
 msgid "Custom CSS"
 msgstr "Anpassad CSS"

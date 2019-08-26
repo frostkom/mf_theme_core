@@ -1559,6 +1559,7 @@ class mf_theme_core
 		$options_params[] = array('category_end' => "");
 
 		$options_params[] = array('category' => __("Custom", 'lang_theme_core'), 'id' => 'mf_theme_generic');
+			$options_params[] = array('type' => 'textarea', 'id' => 'external_css', 'title' => __("External CSS", 'lang_theme_core'));
 			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_all', 'title' => __("Custom CSS", 'lang_theme_core'));
 			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_mobile', 'title' => __("Custom CSS", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'mobile_breakpoint');
 		$options_params[] = array('category_end' => "");
@@ -2049,6 +2050,19 @@ class mf_theme_core
 				{
 					mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
 				}
+			}
+		}
+	}
+
+	function get_external_css($theme_version)
+	{
+		if(isset($this->options['external_css']) && $this->options['external_css'] != '')
+		{
+			$arr_external_css = explode("\n", $this->options['external_css']);
+
+			foreach($arr_external_css as $external_css)
+			{
+				mf_enqueue_style('style_'.md5($external_css), $external_css, $theme_version);
 			}
 		}
 	}
