@@ -4683,7 +4683,7 @@ class widget_theme_core_page_index extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		global $wpdb, $post;
+		global $post;
 
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);

@@ -9,11 +9,6 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-/*else
-{
-	global $wpdb;
-}*/
-
 echo "@media all
 {
 	body:before
