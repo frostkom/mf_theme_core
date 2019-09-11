@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 13:47+0100\n"
+"POT-Creation-Date: 2019-09-11 09:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -80,6 +80,9 @@ msgstr "Skicka e-post när utkast sparas"
 
 msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
+
+msgid "CSS Hero Support"
+msgstr "Stöd för CSS Hero"
 
 msgid "Optimize"
 msgstr "Optimera"
