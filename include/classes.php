@@ -69,7 +69,6 @@ class mf_theme_core
 
 	function cron_base()
 	{
-
 		$this->unpublish_posts();
 
 		/* Optimize */
@@ -80,19 +79,23 @@ class mf_theme_core
 		}
 		#########################
 
-		$this->check_style_source();
-
-		/* Delete old uploads */
-		#######################
-		$theme_dir_name = $this->get_theme_dir_name();
-
-		if($theme_dir_name != '')
+		if($this->is_theme_active())
 		{
-			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+			$this->check_style_source();
 
-			get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+			/* Delete old uploads */
+			#######################
+		
+			$theme_dir_name = $this->get_theme_dir_name();
+
+			if($theme_dir_name != '')
+			{
+				list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+
+				get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+			}
+			#######################
 		}
-		#######################
 
 		/* Set default meta boxes */
 		#######################
@@ -1014,6 +1017,18 @@ class mf_theme_core
 		{
 			echo $this->footer_output;
 		}
+	}
+
+	function is_theme_active()
+	{
+		if(!isset($this->is_theme_active))
+		{
+			$theme_dir_name = $this->get_theme_dir_name();
+
+			$this->is_theme_active = in_array($theme_dir_name, array('mf_parallax', 'mf_theme'));
+		}
+
+		return $this->is_theme_active;
 	}
 
 	function has_noindex($post_id)

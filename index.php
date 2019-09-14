@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.7.17
+Version: 7.7.18
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -38,7 +38,10 @@ if(is_admin())
 
 	add_filter('upload_mimes', array($obj_theme_core, 'upload_mimes'));
 
-	add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
+	if($obj_theme_core->is_theme_active())
+	{
+		add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
+	}
 
 	add_filter('wp_get_default_privacy_policy_content', array($obj_theme_core, 'add_policy'));
 
@@ -64,7 +67,6 @@ if(is_admin())
 
 	remove_action('admin_print_styles', 'print_emoji_styles');
 	remove_action('admin_print_scripts', 'print_emoji_detection_script');
-
 }
 
 else
@@ -73,8 +75,12 @@ else
 	add_filter('template_redirect', array($obj_theme_core, 'do_sitemap'), 1, 0);
 
 	add_action('get_header', array($obj_theme_core, 'get_header'), 0);
-	add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
-	add_filter('body_class', array($obj_theme_core, 'body_class'));
+
+	if($obj_theme_core->is_theme_active())
+	{
+		add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
+		add_filter('body_class', array($obj_theme_core, 'body_class'));
+	}
 
 	add_filter('embed_oembed_html', array($obj_theme_core, 'embed_oembed_html'), 99, 4);
 
@@ -104,25 +110,34 @@ else
 	remove_action('wp_head', 'wp_oembed_add_discovery_links');
 	add_filter('rewrite_rules_array', 'disable_embeds_rewrites');*/
 
-	add_filter('wp_nav_menu_args', array($obj_theme_core, 'wp_nav_menu_args'));
+	if($obj_theme_core->is_theme_active())
+	{
+		add_filter('wp_nav_menu_args', array($obj_theme_core, 'wp_nav_menu_args'));
 
-	add_filter('get_search_form', array($obj_theme_core, 'get_search_form'));
+		add_filter('get_search_form', array($obj_theme_core, 'get_search_form'));
 
-	add_filter('the_password_form', array($obj_theme_core, 'the_password_form'));
-	add_filter('the_content', array($obj_theme_core, 'the_content'));
+		add_filter('the_password_form', array($obj_theme_core, 'the_password_form'));
+		add_filter('the_content', array($obj_theme_core, 'the_content'));
 
-	add_filter('the_content_meta', array($obj_theme_core, 'the_content_meta'), 1, 2);
+		add_filter('the_content_meta', array($obj_theme_core, 'the_content_meta'), 1, 2);
+	}
 
 	add_filter('wp_default_scripts', array($obj_theme_core, 'wp_default_scripts'));
 	add_action('wp_print_scripts', array($obj_theme_core, 'wp_print_scripts'), 1);
 	add_action('wp_footer', array($obj_theme_core, 'wp_footer'));
 }
 
-add_action('after_setup_theme', array($obj_theme_core, 'after_setup_theme'));
-add_action('widgets_init', array($obj_theme_core, 'widgets_init'));
+add_filter('is_theme_active', array($obj_theme_core, 'is_theme_active'));
 
-add_action('customize_register', array($obj_theme_core, 'customize_register'), 11);
-add_action('customize_save', array($obj_theme_core, 'customize_save'));
+add_action('after_setup_theme', array($obj_theme_core, 'after_setup_theme'));
+
+if($obj_theme_core->is_theme_active())
+{
+	add_action('widgets_init', array($obj_theme_core, 'widgets_init'));
+
+	add_action('customize_register', array($obj_theme_core, 'customize_register'), 11);
+	add_action('customize_save', array($obj_theme_core, 'customize_save'));
+}
 
 add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'optimize_theme'));
 
