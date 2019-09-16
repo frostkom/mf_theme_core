@@ -85,7 +85,6 @@ class mf_theme_core
 
 			/* Delete old uploads */
 			#######################
-		
 			$theme_dir_name = $this->get_theme_dir_name();
 
 			if($theme_dir_name != '')
@@ -780,20 +779,37 @@ class mf_theme_core
 
 		if(isset($post->ID))
 		{
-			echo "<meta property='og:title' content='".$post->post_title."'>
-			<meta property='og:url' content='".get_permalink($post)."'>";
+			$post_image = "";
 
 			if(has_post_thumbnail($post->ID))
 			{
-				echo "<meta property='og:image' content='".get_the_post_thumbnail_url($post->ID, 'thumbnail')."'>";
+				$post_image = get_the_post_thumbnail_url($post->ID, 'thumbnail');	
+			}
+
+			else
+			{
+				$this->get_params();
+
+				if($this->options['header_logo'] != '')
+				{
+					$post_image = $this->options['header_logo'];
+				}
+			}
+
+			//echo "<meta property='og:type' content='article'>";
+
+			echo "<meta property='og:title' content='".$post->post_title."'>
+			<meta property='og:url' content='".get_permalink($post)."'>";
+
+			if($post_image != '')
+			{
+				echo "<meta property='og:image' content='".$post_image."'>";
 			}
 
 			if(isset($post->post_excerpt) && $post->post_excerpt != '')
 			{
 				echo "<meta property='og:description' content='".$post->post_excerpt."'>";
 			}
-
-			//echo "<meta property='og:type' content='article'>";
 		}
 
 		$this->footer_output = '';

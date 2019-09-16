@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-12 09:08+0100\n"
+"POT-Creation-Date: 2019-09-16 08:39+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,6 +15,60 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
+msgid "Categories"
+msgstr "Kategorier"
+
+msgid "Excerpt"
+msgstr "Uddrag"
+
+msgid "Featured Image"
+msgstr "Udvalgt billede"
+
+msgid "Time"
+msgstr "Tidspunkt"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "Read More"
+msgstr "Læs mere"
+
+msgid "Search"
+msgstr "Søg"
+
+msgid "Image"
+msgstr "Billede"
+
+msgid "Content"
+msgstr "Indhold"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "Choose Here"
+msgstr "Vælg her"
+
+msgid "Date"
+msgstr "Dato"
+
+msgid "Delete"
+msgstr "Slet"
+
 msgid "Save"
 msgstr "Gem"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Page"
+msgstr "Side"
+
+msgid "Link"
+msgstr "Link"
 

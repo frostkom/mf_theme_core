@@ -588,9 +588,14 @@ echo "}
 		background: none;
 	}
 
-		header, #mf-after-header, #mf-slide-nav, #mf-pre-content, .aside, #mf-pre-footer, footer, #window_side
+		body
 		{
-			display: none;
+			font-size: .5em;
+		}
+
+		header, #mf-after-header, #mf-slide-nav, #mf-pre-content, #aside_left, #aside_right, #mf-pre-footer, footer, #window_side
+		{
+			display: none !important;
 		}
 
 			#mf-content > div
