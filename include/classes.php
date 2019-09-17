@@ -2621,9 +2621,9 @@ class mf_theme_core
 						'type' => 'select',
 						'options' => array(
 							'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-							'noindex' => __("Don't Index", 'lang_theme_core'),
-							'nofollow' => __("Don't Follow Links", 'lang_theme_core'),
-							'none' => __("Don't Index & don't follow links", 'lang_theme_core'),
+							'noindex' => __("Do not Index", 'lang_theme_core'),
+							'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
+							'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
 						),
 					),
 					array(
@@ -2654,8 +2654,8 @@ class mf_theme_core
 			$post_title = get_the_title($post);
 			$post_url = get_permalink($post);
 
-			$mail_subject = sprintf(__("The draft '%s' has been saved", 'lang_theme_core'), $post_title);
-			$mail_content = sprintf(__("The draft '%s' has been saved and might be ready for publishing", 'lang_theme_core'), "<a href='".$post_url."'>".$post_title."</a>");
+			$mail_subject = sprintf(__("The draft (%s) has been saved", 'lang_theme_core'), $post_title);
+			$mail_content = sprintf(__("The draft (%s) has been saved and might be ready for publishing", 'lang_theme_core'), "<a href='".$post_url."'>".$post_title."</a>");
 
 			$users = get_users(array(
 				'fields' => array('user_email'),

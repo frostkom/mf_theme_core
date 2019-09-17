@@ -68,7 +68,7 @@ function get_menu_type_for_select()
 			$arr_data['secondary'] = __("Secondary", 'lang_theme_core');
 		}
 
-		$arr_data['both'] = __("Main & Secondary Menu", 'lang_theme_core');
+		$arr_data['both'] = __("Main and Secondary Menu", 'lang_theme_core');
 		$arr_data['slide'] = __("Slide in From Right", 'lang_theme_core');
 
 	$arr_data['opt_end_advanced'] = "";

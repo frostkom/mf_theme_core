@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-16 08:39+0100\n"
+"POT-Creation-Date: 2019-09-17 09:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -27,6 +27,9 @@ msgstr "Udvalgt billede"
 msgid "Time"
 msgstr "Tidspunkt"
 
+msgid "Category"
+msgstr "Kategori"
+
 msgid "Yes"
 msgstr "Ja"
 
@@ -39,8 +42,17 @@ msgstr "Læs mere"
 msgid "Search"
 msgstr "Søg"
 
+msgid "Color"
+msgstr "Farve"
+
 msgid "Image"
 msgstr "Billede"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Forms"
+msgstr "Formularer"
 
 msgid "Content"
 msgstr "Indhold"
@@ -50,6 +62,9 @@ msgstr "Tekst"
 
 msgid "Size"
 msgstr "Størrelse"
+
+msgid "Search for"
+msgstr "Søg efter"
 
 msgid "Choose Here"
 msgstr "Vælg her"
@@ -63,12 +78,18 @@ msgstr "Slet"
 msgid "Save"
 msgstr "Gem"
 
+msgid "Name"
+msgstr "Navn"
+
+msgid "Default"
+msgstr "Standard"
+
 msgid "Title"
 msgstr "Titel"
 
+msgid "Amount"
+msgstr "Antal"
+
 msgid "Page"
 msgstr "Side"
-
-msgid "Link"
-msgstr "Link"
 
