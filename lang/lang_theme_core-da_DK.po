@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-17 09:44+0100\n"
+"POT-Creation-Date: 2019-09-18 09:41+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -14,6 +14,9 @@ msgstr ""
 "X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_attr__;esc_attr_e;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+msgid "Public"
+msgstr "Offentlig"
 
 msgid "Categories"
 msgstr "Kategorier"
@@ -54,20 +57,50 @@ msgstr "Mobil"
 msgid "Forms"
 msgstr "Formularer"
 
+msgid "Header"
+msgstr "Overskrift"
+
+msgid "Clear"
+msgstr "Ryd"
+
+msgid "Pre Content"
+msgstr "Præ indhold"
+
+msgid "After Header"
+msgstr "Efter overskrift"
+
 msgid "Content"
 msgstr "Indhold"
 
 msgid "Text"
 msgstr "Tekst"
 
+msgid "Aside"
+msgstr "Udover"
+
+msgid "Left"
+msgstr "Venstre"
+
+msgid "Right"
+msgstr "Højre"
+
 msgid "Size"
 msgstr "Størrelse"
+
+msgid "Pre Footer"
+msgstr "Præ footer"
+
+msgid "Footer"
+msgstr "Sidefod"
 
 msgid "Search for"
 msgstr "Søg efter"
 
 msgid "Choose Here"
 msgstr "Vælg her"
+
+msgid "Hidden"
+msgstr "Skjult"
 
 msgid "Date"
 msgstr "Dato"
@@ -90,6 +123,15 @@ msgstr "Titel"
 msgid "Amount"
 msgstr "Antal"
 
+msgid "Button Text"
+msgstr "Knap tekst"
+
 msgid "Page"
 msgstr "Side"
+
+msgid "Link"
+msgstr "Lænke"
+
+msgid "Pages"
+msgstr "Sider"
 

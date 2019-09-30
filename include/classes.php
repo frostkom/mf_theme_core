@@ -783,7 +783,7 @@ class mf_theme_core
 
 			if(has_post_thumbnail($post->ID))
 			{
-				$post_image = get_the_post_thumbnail_url($post->ID, 'thumbnail');	
+				$post_image = get_the_post_thumbnail_url($post->ID, 'thumbnail');
 			}
 
 			else
@@ -4044,6 +4044,11 @@ class widget_theme_core_news extends WP_Widget
 					$widget_class .= " news_single";
 				}
 
+				if($instance['news_display_title'] == 'yes')
+				{
+					$widget_class .= " display_page_titles";
+				}
+
 				echo "<div class='".$widget_class."'".$widget_xtra.">";
 
 					if($rows > 1)
@@ -4114,7 +4119,6 @@ class widget_theme_core_news extends WP_Widget
 								$post_content = mf_get_post_content($page_id);
 
 								echo "<div class='news_expand_content'>";
-								//echo "<a href='".$page['url']."'>";
 
 									if($page['image'] != '')
 									{
@@ -4126,10 +4130,8 @@ class widget_theme_core_news extends WP_Widget
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
 									."<div class='excerpt'>".apply_filters('the_content', $page['excerpt'])."</div>"
 									."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
-									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>";
-
-								//echo "</a>";
-								echo "</div>";
+									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
+								</div>";
 							}
 
 							else
