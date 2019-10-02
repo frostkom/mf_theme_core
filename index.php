@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.7.22
+Version: 7.7.23
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -120,6 +120,8 @@ else
 		add_filter('the_content', array($obj_theme_core, 'the_content'));
 
 		add_filter('the_content_meta', array($obj_theme_core, 'the_content_meta'), 1, 2);
+
+		add_filter('widget_title', array($obj_theme_core, 'widget_title'));
 	}
 
 	add_filter('wp_default_scripts', array($obj_theme_core, 'wp_default_scripts'));

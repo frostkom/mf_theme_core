@@ -1016,6 +1016,25 @@ class mf_theme_core
 		return $html;
 	}
 
+	function widget_title($title)
+	{
+		if($title != '')
+		{
+			$first_name = "";
+
+			if(get_current_user_id() > 0)
+			{
+				$user_data = get_userdata(get_current_user_id());
+
+				$first_name = $user_data->first_name;
+			}
+
+			$title = str_replace("[name]", $first_name, $title);
+		}
+
+		return $title;
+	}
+
 	function wp_default_scripts(&$scripts)
 	{
 		$scripts->remove('jquery');
