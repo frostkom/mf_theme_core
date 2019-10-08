@@ -41,7 +41,7 @@ echo "@media all
 		max-width: 100%;
 	}
 
-		.size-full, img[class*='align'], img[class*='wp-image-']
+		.size-full, *:not(.is-resized) > img[class*='align'], *:not(.is-resized) > img[class*='wp-image-']
 		{
 			width: auto;
 		}
