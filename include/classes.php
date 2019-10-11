@@ -176,13 +176,13 @@ class mf_theme_core
 
 		if(IS_ADMIN)
 		{
-			$site_url = get_home_url();
+			$site_url = $icon = "";
 
 			if(get_option('setting_activate_maintenance') == 'yes')
 			{
 				$color = "color_red";
-
-				$title = __("Maintenance Mode Activated", 'lang_theme_core');
+				$icon = "fas fa-hard-hat";
+				$text = __("Maintenance Mode Activated", 'lang_theme_core');
 			}
 
 			else if(get_option('setting_no_public_pages') == 'yes')
@@ -190,28 +190,117 @@ class mf_theme_core
 				$wp_admin_bar->remove_menu('site-name');
 
 				$color = "color_red";
-
-				$title = __("No Public Pages", 'lang_theme_core');
+				$icon = "fas fa-eye-slash";
+				$text = __("No Public Pages", 'lang_theme_core');
 			}
 
 			else if(get_option('setting_theme_core_login') == 'yes')
 			{
-				$title = "<a href='".$site_url."' class='color_red'>".__("Requires Login", 'lang_theme_core')."</a>";
+				$site_url = get_home_url();
+				$color = "color_red";
+				$icon = "fas fa-user-lock";
+				$text = __("Requires Login", 'lang_theme_core');
 			}
 
 			else if(get_option('blog_public') == 0)
 			{
-				$title = "<a href='".$site_url."' class='color_yellow'>".__("No Index", 'lang_theme_core')."</a>";
+				$site_url = get_home_url();
+				$color = "color_yellow";
+				$icon = "fas fa-robot";
+				$text = __("No Index", 'lang_theme_core');
 			}
 
 			else
 			{
-				$title = "<a href='".$site_url."' class='color_green'>".__("Public", 'lang_theme_core')."</a>";
+				$site_url = get_home_url();
+				$color = "color_green";
+				$icon = "fas fa-eye";
+				$text = __("Public", 'lang_theme_core');
+			}
+
+			$blog_language = get_bloginfo('language');
+
+			switch($blog_language)
+			{
+				case 'da-DK':
+					$flag_icon = "dk";
+				break;
+
+				case 'nn-NO':
+				case 'nb-NO':
+					$flag_icon = "no";
+				break;
+
+				case 'sv-SE':
+					$flag_icon = "se";
+				break;
+
+				case 'en-UK':
+					$flag_icon = "uk";
+				break;
+
+				case 'en-US':
+					$flag_icon = "us";
+				break;
+
+				default:
+					do_log("Someone chose ".$blog_language." as the language. Please add the flag for this language");
+
+					$flag_icon = "";
+				break;
+			}
+
+			$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
+
+			$title = "";
+
+			if($site_url != '')
+			{
+				$title .= "<a href='".$site_url."' class='".$color."'>";
+			}
+
+			else
+			{
+				$title .= "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">";
+			}
+
+				if($flag_icon != '')
+				{
+					$title .= "<div class='flex_flow tight'>
+						<img src='".$plugin_url."images/flags/flag_".$flag_icon.".png'>&nbsp;
+						<span>";
+				}
+
+					// "#wpadminbar *" overrides style for FA icons
+					/*if($icon != '')
+					{
+						$title .= "<i class='".$icon."' title='".$text."'></i>";
+					}
+
+					else
+					{*/
+						$title .= $text;
+					//}
+
+				if($flag_icon != '')
+				{
+						$title .= "</span>
+					</div>";
+				}
+
+			if($site_url != '')
+			{
+				$title .= "</a>";
+			}
+
+			else
+			{
+				$title .= "</span>";
 			}
 
 			$wp_admin_bar->add_node(array(
 				'id' => 'live',
-				'title' => "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">".$title."</span>",
+				'title' => $title,
 			));
 		}
 	}

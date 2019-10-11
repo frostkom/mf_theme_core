@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-22 09:52+0100\n"
+"POT-Creation-Date: 2019-10-10 08:45+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -24,6 +24,9 @@ msgstr "Tema"
 msgid "Categories"
 msgstr "Kategorier"
 
+msgid "Time"
+msgstr "Tid"
+
 msgid "Category"
 msgstr "Kategori"
 
@@ -39,17 +42,68 @@ msgstr "Les mer"
 msgid "Search"
 msgstr "Søk"
 
-msgid "Password"
-msgstr "Passord"
+msgid "Color"
+msgstr "Farge"
 
-msgid "Choose Here"
-msgstr "Velg Her"
+msgid "Image"
+msgstr "Bilde"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Forms"
+msgstr "Former"
+
+msgid "Header"
+msgstr "Overskrift"
+
+msgid "Position"
+msgstr "Posisjon"
+
+msgid "Compressed"
+msgstr "Komprimert"
+
+msgid "Clear"
+msgstr "Visk ut"
+
+msgid "Menu"
+msgstr "Meny"
+
+msgid "Slide Menu"
+msgstr "Skyv-menyen"
+
+msgid "Pre Content"
+msgstr "Før innhold"
+
+msgid "After Header"
+msgstr "Under overskrift"
+
+msgid "Content"
+msgstr "Innhold"
+
+msgid "Text"
+msgstr "Tekst"
 
 msgid "Left"
 msgstr "Venstre"
 
 msgid "Right"
 msgstr "Høyre"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "Pre Footer"
+msgstr "Før bunnspalten"
+
+msgid "Footer"
+msgstr "Bunnspalte"
+
+msgid "Search for"
+msgstr "Søk etter"
+
+msgid "Choose Here"
+msgstr "Velg Her"
 
 msgid "None"
 msgstr "Ingen"
@@ -59,6 +113,15 @@ msgstr "Skjult"
 
 msgid "Theme Updates"
 msgstr "Tema-Oppdateringer"
+
+msgid "Date"
+msgstr "Dato"
+
+msgid "Download"
+msgstr "Last ned"
+
+msgid "Delete"
+msgstr "Slett"
 
 msgid "Name"
 msgstr "Navn"
@@ -72,8 +135,14 @@ msgstr "Standard"
 msgid "Title"
 msgstr "Tittel"
 
-msgid "Content"
-msgstr "Innhold"
+msgid "Amount"
+msgstr "Beløp"
+
+msgid "Time Limit"
+msgstr "Tidsrom"
+
+msgid "Button Text"
+msgstr "Knapp tekst"
 
 msgid "Page"
 msgstr "Side"
@@ -81,48 +150,6 @@ msgstr "Side"
 msgid "Pages"
 msgstr "Sider"
 
-msgid "Color"
-msgstr "Farge"
-
-msgid "Image"
-msgstr "Bilde"
-
-msgid "Mobile"
-msgstr "Mobil"
-
-msgid "Header"
-msgstr "Overskrift"
-
-msgid "Position"
-msgstr "Posisjon"
-
-msgid "Compressed"
-msgstr "Komprimert"
-
-msgid "Menu"
-msgstr "Meny"
-
-msgid "Pre Content"
-msgstr "Før innhold"
-
-msgid "After Header"
-msgstr "Under overskrift"
-
-msgid "Text"
-msgstr "Tekst"
-
 msgid "Advanced"
 msgstr "Avansert"
-
-msgid "Date"
-msgstr "Dato"
-
-msgid "Download"
-msgstr "Last ned"
-
-msgid "Delete"
-msgstr "Slett"
-
-msgid "Search for"
-msgstr "Søk etter"
 
