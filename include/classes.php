@@ -95,34 +95,6 @@ class mf_theme_core
 			}
 			#######################
 		}
-
-		/* Set default meta boxes */
-		#######################
-		/*$page = 'post';
-
-		$users = get_users(array('fields' => array('ID')));
-
-		foreach($users as $user)
-		{
-			$hidden_default = $hidden = get_user_option('metaboxhidden_'.$page, $user->ID);
-
-			if(is_array($hidden))
-			{
-				$hidden = array_diff($hidden, array('postexcerpt'));
-
-				if($hidden != $hidden_default)
-				{
-					update_user_option($user->ID, 'metaboxhidden_'.$page, $hidden, true);
-				}
-			}
-
-			else
-			{
-				$hidden = array('slugdiv', 'trackbacksdiv', 'postcustom', 'commentstatusdiv', 'commentsdiv', 'authordiv', 'revisionsdiv');
-				update_user_option($user->ID, 'metaboxhidden_'.$page, $hidden, true);
-			}
-		}*/
-		#######################
 	}
 
 	function init()
@@ -168,6 +140,72 @@ class mf_theme_core
 				die();
 			}
 		}*/
+	}
+
+	function get_flag_icon($id = 0)
+	{
+		global $wpdb;
+
+		$out = "";
+
+		if($id > 0)
+		{
+			switch_to_blog($id);
+
+			$blog_language = $wpdb->get_var($wpdb->prepare("SELECT option_value FROM ".$wpdb->options." WHERE option_name = %s", 'WPLANG'));
+
+			restore_current_blog();
+		}
+
+		else
+		{
+			$blog_language = get_bloginfo('language');
+		}
+
+		switch($blog_language)
+		{
+			case 'da-DK':
+			case 'da_DK':
+				$out = "dk";
+			break;
+
+			case 'nn-NO':
+			case 'nb-NO':
+			case 'nn_NO':
+			case 'nb_NO':
+				$out = "no";
+			break;
+
+			case 'sv-SE':
+			case 'sv_SE':
+				$out = "se";
+			break;
+
+			case 'en-UK':
+			case 'en_UK':
+				$out = "uk";
+			break;
+
+			case 'en-US':
+			case 'en_US':
+			case '':
+				$out = "us";
+			break;
+
+			default:
+				if($id > 0)
+				{
+					do_log("Someone chose '".$blog_language."' as the language for the site '".$id."'. Please add the flag for this language");
+				}
+
+				else
+				{
+					do_log("Someone chose '".$blog_language."' as the language. Please add the flag for this language");
+				}
+			break;
+		}
+
+		return $out;
 	}
 
 	function wp_before_admin_bar_render()
@@ -218,39 +256,7 @@ class mf_theme_core
 				$text = __("Public", 'lang_theme_core');
 			}
 
-			$blog_language = get_bloginfo('language');
-
-			switch($blog_language)
-			{
-				case 'da-DK':
-					$flag_icon = "dk";
-				break;
-
-				case 'nn-NO':
-				case 'nb-NO':
-					$flag_icon = "no";
-				break;
-
-				case 'sv-SE':
-					$flag_icon = "se";
-				break;
-
-				case 'en-UK':
-					$flag_icon = "uk";
-				break;
-
-				case 'en-US':
-					$flag_icon = "us";
-				break;
-
-				default:
-					do_log("Someone chose ".$blog_language." as the language. Please add the flag for this language");
-
-					$flag_icon = "";
-				break;
-			}
-
-			$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
+			$flag_icon = $this->get_flag_icon();
 
 			$title = "";
 
@@ -266,6 +272,8 @@ class mf_theme_core
 
 				if($flag_icon != '')
 				{
+					$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
+
 					$title .= "<div class='flex_flow tight'>
 						<img src='".$plugin_url."images/flags/flag_".$flag_icon.".png'>&nbsp;
 						<span>";
@@ -3646,6 +3654,43 @@ class mf_theme_core
 		if($this->has_comments() == false)
 		{
 			remove_menu_page("edit-comments.php");
+		}
+	}
+
+	function sites_column_header($cols)
+	{
+		unset($cols['registered']);
+		unset($cols['lastupdated']);
+
+		$cols['language'] = __("Language", 'lang_site_manager');
+		$cols['email'] = __("E-mail", 'lang_site_manager');
+
+		return $cols;
+	}
+
+	function sites_column_cell($col, $id)
+	{
+		switch($col)
+		{
+			case 'language':
+				$flag_icon = $this->get_flag_icon($id);
+
+				if($flag_icon != '')
+				{
+					$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
+
+					echo "<img src='".$plugin_url."images/flags/flag_".$flag_icon.".png' title='".$id."'>";
+				}
+			break;
+
+			case 'email':
+				$admin_email = get_blog_option($id, 'admin_email');
+
+				if($admin_email != '')
+				{
+					echo "<a href='mailto:".$admin_email."'>".$admin_email."</a>";
+				}
+			break;
 		}
 	}
 
