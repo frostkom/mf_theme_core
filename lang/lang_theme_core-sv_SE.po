@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-20 10:40+0100\n"
+"POT-Creation-Date: 2019-10-16 07:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -14,18 +14,6 @@ msgstr ""
 "X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_attr__;esc_attr_e;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
-
-msgid "XML Sitemap for %s"
-msgstr "Sidkarta för %s"
-
-msgid "XML Sitemap for %s | %s"
-msgstr "Sidkarta för %s | %s"
-
-msgid "Title"
-msgstr "Rubrik"
-
-msgid "Last Modified"
-msgstr "Senast ändrad"
 
 msgid "Maintenance Mode Activated"
 msgstr "Underhållsläge aktiverat"
@@ -651,6 +639,12 @@ msgstr "Ny backup"
 msgid "Save"
 msgstr "Spara"
 
+msgid "Language"
+msgstr "Språk"
+
+msgid "E-mail"
+msgstr "E-post"
+
 msgid "A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again."
 msgstr "En kaka sparas när besökaren godkänner användning av kakor på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
 
@@ -710,6 +704,9 @@ msgstr "Enkel"
 
 msgid "Compact"
 msgstr "Kompakt"
+
+msgid "Title"
+msgstr "Rubrik"
 
 msgid "Design"
 msgstr "Utseende"
@@ -797,4 +794,13 @@ msgstr "Hittades inte"
 
 msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
 msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
+
+msgid "XML Sitemap for %s"
+msgstr "Sidkarta för %s"
+
+msgid "XML Sitemap for %s | %s"
+msgstr "Sidkarta för %s | %s"
+
+msgid "Last Modified"
+msgstr "Senast ändrad"
 

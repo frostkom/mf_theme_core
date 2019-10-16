@@ -3662,8 +3662,8 @@ class mf_theme_core
 		unset($cols['registered']);
 		unset($cols['lastupdated']);
 
-		$cols['language'] = __("Language", 'lang_site_manager');
-		$cols['email'] = __("E-mail", 'lang_site_manager');
+		$cols['language'] = __("Language", 'lang_theme_core');
+		$cols['email'] = __("E-mail", 'lang_theme_core');
 
 		return $cols;
 	}
