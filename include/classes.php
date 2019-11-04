@@ -394,7 +394,9 @@ class mf_theme_core
 
 			$this->get_params();
 
-			if($this->options['style_source'] != '')
+			$style_source = get_option('setting_base_template_site', trim($this->options['style_source'], "/"));
+
+			if($style_source != '')
 			{
 				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 			}
@@ -1273,7 +1275,12 @@ class mf_theme_core
 		$theme_dir_name = $this->get_theme_dir_name();
 
 		$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
-			$options_params[] = array('type' => 'url', 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'));
+
+			if(get_option('setting_base_template_site') == '')
+			{
+				$options_params[] = array('type' => 'url', 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'));
+			}
+
 			$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'), 'default' => '#ffffff');
 				$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
@@ -3304,50 +3311,47 @@ class mf_theme_core
 
 		$this->get_params();
 
-		if(isset($this->options['style_source']) && $this->options['style_source'] != '')
+		$style_source = get_option('setting_base_template_site', trim($this->options['style_source'], "/"));
+
+		if($style_source != '' && $style_source != get_site_url())
 		{
-			$style_source = trim($this->options['style_source'], "/");
-
-			if($style_source != get_site_url())
+			if(filter_var($style_source, FILTER_VALIDATE_URL))
 			{
-				if(filter_var($style_source, FILTER_VALIDATE_URL))
+				list($content, $headers) = get_url_content(array('url' => $style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
+
+				if(isset($headers['http_code']) && $headers['http_code'] == 200)
 				{
-					list($content, $headers) = get_url_content(array('url' => $style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
+					$json = json_decode($content, true);
 
-					if(isset($headers['http_code']) && $headers['http_code'] == 200)
+					if(isset($json['success']) && $json['success'] == true)
 					{
-						$json = json_decode($content, true);
+						$style_changed = $json['response']['style_changed'];
+						$style_url = $json['response']['style_url'];
 
-						if(isset($json['success']) && $json['success'] == true)
-						{
-							$style_changed = $json['response']['style_changed'];
-							$style_url = $json['response']['style_url'];
+						update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
 
-							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
-
-							do_log("The feed from", 'trash');
-						}
-
-						else
-						{
-							do_log(sprintf("The feed from %s returned an error (%s)", $style_source, $content));
-						}
-
-						do_log("The response from", 'trash');
+						do_log("The feed from", 'trash');
 					}
 
 					else
 					{
-						do_log(sprintf("The response from %s had an error (%s)", $style_source, $headers['http_code']));
+						do_log(sprintf("The feed from %s returned an error (%s)", $style_source, $content));
 					}
 
-					do_log("I could not process the feed from", 'trash');
+					do_log("The response from", 'trash');
 				}
 
 				else
 				{
-					do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $style_source));
+					do_log(sprintf("The response from %s had an error (%s)", $style_source, $headers['http_code']));
 				}
+
+				do_log("I could not process the feed from", 'trash');
+			}
+
+			else
+			{
+				do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $style_source));
 			}
 		}
 	}
@@ -3535,9 +3539,11 @@ class mf_theme_core
 
 		else
 		{
-			if($obj_theme_core->options['style_source'] != '')
+			$style_source = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
+
+			if($style_source != '')
 			{
-				$style_source = remove_protocol(array('url' => $obj_theme_core->options['style_source'], 'clean' => true, 'trim' => true));
+				$style_source = remove_protocol(array('url' => $style_source, 'clean' => true, 'trim' => true));
 
 				$option_theme_source_style_url = get_option('option_theme_source_style_url');
 
@@ -3554,7 +3560,7 @@ class mf_theme_core
 
 			if($upload_path != '')
 			{
-				$style_source = trim($obj_theme_core->options['style_source'], "/");
+				$style_source = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
 				$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
 
 				$out .= "<div id='poststuff'>
