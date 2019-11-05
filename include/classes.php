@@ -99,7 +99,7 @@ class mf_theme_core
 
 	function init()
 	{
-		if(get_option('setting_activate_maintenance') == 'yes')
+		if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
 		{
 			if(IS_SUPER_ADMIN || $this->is_login_page())
 			{
@@ -216,7 +216,7 @@ class mf_theme_core
 		{
 			$site_url = $icon = "";
 
-			if(get_option('setting_activate_maintenance') == 'yes')
+			if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
 			{
 				$color = "color_red";
 				$icon = "fas fa-hard-hat";
@@ -394,9 +394,9 @@ class mf_theme_core
 
 			$this->get_params();
 
-			$style_source = get_option('setting_base_template_site', trim($this->options['style_source'], "/"));
+			$setting_base_template_site = get_option('setting_base_template_site', (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : ""));
 
-			if($style_source != '')
+			if($setting_base_template_site != '')
 			{
 				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
 			}
@@ -3311,13 +3311,13 @@ class mf_theme_core
 
 		$this->get_params();
 
-		$style_source = get_option('setting_base_template_site', trim($this->options['style_source'], "/"));
+		$setting_base_template_site = get_option('setting_base_template_site', (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : ""));
 
-		if($style_source != '' && $style_source != get_site_url())
+		if($setting_base_template_site != '' && $setting_base_template_site != get_site_url())
 		{
-			if(filter_var($style_source, FILTER_VALIDATE_URL))
+			if(filter_var($setting_base_template_site, FILTER_VALIDATE_URL))
 			{
-				list($content, $headers) = get_url_content(array('url' => $style_source."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
+				list($content, $headers) = get_url_content(array('url' => $setting_base_template_site."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
 
 				if(isset($headers['http_code']) && $headers['http_code'] == 200)
 				{
@@ -3335,7 +3335,7 @@ class mf_theme_core
 
 					else
 					{
-						do_log(sprintf("The feed from %s returned an error (%s)", $style_source, $content));
+						do_log(sprintf("The feed from %s returned an error (%s)", $setting_base_template_site, $content));
 					}
 
 					do_log("The response from", 'trash');
@@ -3343,7 +3343,7 @@ class mf_theme_core
 
 				else
 				{
-					do_log(sprintf("The response from %s had an error (%s)", $style_source, $headers['http_code']));
+					do_log(sprintf("The response from %s had an error (%s)", $setting_base_template_site, $headers['http_code']));
 				}
 
 				do_log("I could not process the feed from", 'trash');
@@ -3351,7 +3351,7 @@ class mf_theme_core
 
 			else
 			{
-				do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $style_source));
+				do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $setting_base_template_site));
 			}
 		}
 	}
@@ -3539,17 +3539,17 @@ class mf_theme_core
 
 		else
 		{
-			$style_source = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
+			$setting_base_template_site = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
 
-			if($style_source != '')
+			if($setting_base_template_site != '')
 			{
-				$style_source = remove_protocol(array('url' => $style_source, 'clean' => true, 'trim' => true));
+				$setting_base_template_site = remove_protocol(array('url' => $setting_base_template_site, 'clean' => true, 'trim' => true));
 
 				$option_theme_source_style_url = get_option('option_theme_source_style_url');
 
 				if($option_theme_source_style_url != '')
 				{
-					$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $style_source, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$option_theme_source_style_url)."'>", "</a>");
+					$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $setting_base_template_site, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$option_theme_source_style_url)."'>", "</a>");
 				}
 			}
 		}
@@ -3560,8 +3560,8 @@ class mf_theme_core
 
 			if($upload_path != '')
 			{
-				$style_source = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
-				$is_allowed_to_backup = $style_source == '' || $style_source == get_site_url();
+				$setting_base_template_site = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
+				$is_allowed_to_backup = $setting_base_template_site == '' || $setting_base_template_site == get_site_url();
 
 				$out .= "<div id='poststuff'>
 					<div id='post-body' class='columns-2'>
@@ -3587,7 +3587,7 @@ class mf_theme_core
 											$file_name = $arr_backups[$i]['name'];
 											$file_time = date("Y-m-d H:i:s", $arr_backups[$i]['time']);
 
-											$out .= "<tr".($style_source != get_site_url() && $file_time > $option_theme_saved ? " class='green'" : "").">
+											$out .= "<tr".($setting_base_template_site != get_site_url() && $file_time > $option_theme_saved ? " class='green'" : "").">
 												<td>"
 													.$arr_backups[$i]['name']
 													."<div class='row-actions'>
