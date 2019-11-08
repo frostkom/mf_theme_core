@@ -326,6 +326,11 @@ class mf_theme_core
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
+
+			if(get_option('setting_theme_core_login') == 'yes')
+			{
+				$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
+			}
 		}
 
 		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
@@ -443,6 +448,15 @@ class mf_theme_core
 		$option = get_option_or_default($setting_key, 'no');
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+	}
+
+	function setting_theme_core_display_lock_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key, array('administrator', 'editor', 'author', 'contributor'));
+		//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
+
+		echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option)); //
 	}
 
 	function setting_theme_core_title_format_callback()
@@ -976,11 +990,16 @@ class mf_theme_core
 
 		if(get_option('setting_theme_core_login') == 'yes')
 		{
-			if(get_current_user_id() > 0)
-			{
-				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+			$user_id = get_current_user_id();
 
-				$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
+			if($user_id > 0)
+			{
+				if(in_array(get_current_user_role($user_id), get_option('setting_theme_core_display_lock', array())))
+				{
+					mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+
+					$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
+				}
 			}
 
 			else if(apply_filters('is_public_page', true))

@@ -5,7 +5,7 @@ jQuery(function($)
 		var dom_obj = $("body"),
 			value = window.getComputedStyle(document.querySelector("body"), ':before').getPropertyValue('content').replace(/\"/g, '');
 
-		dom_obj.removeClass('is_size_palm is_size_lap is_size_desk is_mobile is_tablet is_desktop');
+		dom_obj.removeClass('is_size_palm is_size_lap is_size_desk is_mobile is_tablet is_desktop'); /* is_wrist is_wall */
 
 		if(typeof value !== 'undefined' && value != '')
 		{
