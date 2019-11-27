@@ -69,7 +69,7 @@ class mf_theme_core
 
 	function cron_base()
 	{
-		$this->unpublish_posts();
+		$this->publish_posts();
 
 		/* Optimize */
 		#########################
@@ -2746,35 +2746,95 @@ class mf_theme_core
 		return $hidden;
 	}
 
+	function check_if_correct_post_type($post_id)
+	{
+		if($post_id > 0)
+		{
+			return in_array(get_post_type($post_id), get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)));
+		}
+
+		else
+		{
+			return true;
+		}
+	}
+
+	function check_if_published($post_id)
+	{
+		$is_published = $is_not_published = true;
+
+		if($post_id > 0)
+		{
+			$post_status = get_post_status($post_id);
+
+			if($post_status == 'publish')
+			{
+				$is_not_published = false;
+			}
+
+			else
+			{
+				$is_published = false;
+			}
+		}
+
+		return array($is_published, $is_not_published);
+	}
+
 	function rwmb_meta_boxes($meta_boxes)
 	{
-		if($this->is_site_public() && IS_ADMIN)
+		if(IS_ADMIN)
 		{
-			$meta_boxes[] = array(
-				'id' => 'theme_core_publish',
-				'title' => __("Publish Settings", 'lang_theme_core'),
-				'post_types' => get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)),
-				'context' => 'side',
-				'priority' => 'low',
-				'fields' => array(
-					array(
-						'name' => __("Index", 'lang_theme_core'),
-						'id' => $this->meta_prefix.'page_index',
-						'type' => 'select',
-						'options' => array(
-							'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-							'noindex' => __("Do not Index", 'lang_theme_core'),
-							'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
-							'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
-						),
+			$post_id = check_var('post');
+
+			$arr_fields = array();
+
+			if($this->is_site_public() && $this->check_if_correct_post_type($post_id))
+			{
+				$arr_fields[] = array(
+					'name' => __("Index", 'lang_theme_core'),
+					'id' => $this->meta_prefix.'page_index',
+					'type' => 'select',
+					'options' => array(
+						'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
+						'noindex' => __("Do not Index", 'lang_theme_core'),
+						'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
+						'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
 					),
-					array(
-						'name' => __("Unpublish", 'lang_theme_core'),
-						'id' => $this->meta_prefix.'unpublish_date',
-						'type' => 'datetime',
-					),
-				)
-			);
+				);
+			}
+
+			list($is_published, $is_not_published) = $this->check_if_published($post_id);
+
+			if($is_not_published)
+			{
+				$arr_fields[] = array(
+					'name' => __("Publish", 'lang_theme_core'),
+					'id' => $this->meta_prefix.'publish_date',
+					'type' => 'datetime',
+				);
+			}
+
+			if($is_published)
+			{
+				$arr_fields[] = array(
+					'name' => __("Unpublish", 'lang_theme_core'),
+					'id' => $this->meta_prefix.'unpublish_date',
+					'type' => 'datetime',
+				);
+			}
+
+			if(count($arr_fields) > 0)
+			{
+				$meta_boxes[] = array(
+					'id' => 'theme_core_publish',
+					'title' => __("Publish Settings", 'lang_theme_core'),
+					'post_types' => get_post_types_for_metabox(), //array('public' => true, 'exclude_from_search' => false)
+					'context' => 'side',
+					'priority' => 'low',
+					'fields' => $arr_fields,
+				);
+			}
 		}
 
 		return $meta_boxes;
@@ -3295,30 +3355,51 @@ class mf_theme_core
 
 	// Cron
 	#################################
-	function unpublish_posts()
+	function publish_posts()
 	{
 		global $wpdb;
 
-		$result = $wpdb->get_results("SELECT ID, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."unpublish_date' WHERE post_status = 'publish' AND meta_value != ''");
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, meta_key, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE (meta_key = %s OR meta_key = %s) AND meta_value > %s", $this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date', DEFAULT_DATE)); //post_status = 'publish' AND 
 
 		if($wpdb->num_rows > 0)
 		{
 			foreach($result as $r)
 			{
 				$post_id = $r->ID;
-				$post_unpublish = $r->meta_value;
+				$post_meta_key = $r->meta_key;
+				$post_meta_value = $r->meta_value;
 
-				if($post_unpublish <= date("Y-m-d H:i:s"))
+				if($post_meta_value <= date("Y-m-d H:i:s"))
 				{
-					$post_data = array(
-						'ID' => $post_id,
-						'post_status' => 'draft',
-						'meta_input' => array(
-							$this->meta_prefix.'unpublish_date' => '',
-						),
-					);
+					switch($post_meta_key)
+					{
+						case $this->meta_prefix.'publish_date':
+							$post_status = 'publish';
+						break;
 
-					wp_update_post($post_data);
+						case $this->meta_prefix.'unpublish_date':
+							$post_status = 'draft';
+						break;
+
+						default:
+							$post_status = '';
+
+							do_log("publish_posts error: ".$wpdb->last_query);
+						break;
+					}
+
+					if($post_status != '')
+					{
+						$post_data = array(
+							'ID' => $post_id,
+							'post_status' => $post_status,
+							'meta_input' => array(
+								$post_meta_key => '',
+							),
+						);
+
+						wp_update_post($post_data);
+					}
 				}
 			}
 		}
