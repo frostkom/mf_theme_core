@@ -397,9 +397,9 @@ class mf_theme_core
 				delete_option('setting_send_email_on_draft');
 			}
 
-			$this->get_params();
+			//$this->get_params();
 
-			$setting_base_template_site = get_option('setting_base_template_site', (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : ""));
+			$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : "")
 
 			if($setting_base_template_site != '')
 			{
@@ -1295,10 +1295,10 @@ class mf_theme_core
 
 		$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
 
-			if(get_option('setting_base_template_site') == '')
+			/*if(get_option('setting_base_template_site') == '')
 			{
 				$options_params[] = array('type' => 'url', 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'));
-			}
+			}*/
 
 			$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'), 'default' => '#ffffff');
@@ -1867,6 +1867,12 @@ class mf_theme_core
 			'title' => "Playfair Display",
 			'style' => "'Playfair Display', serif",
 			'url' => "//fonts.googleapis.com/css?family=Playfair+Display"
+		);
+
+		$this->options_fonts['rancho'] = array(
+			'title' => "Rancho",
+			'style' => "'Rancho', cursive",
+			'url' => "//fonts.googleapis.com/css?family=Rancho"
 		);
 
 		$this->options_fonts['roboto'] = array(
@@ -3409,9 +3415,9 @@ class mf_theme_core
 	{
 		delete_option('option_theme_source_style_url');
 
-		$this->get_params();
+		//$this->get_params();
 
-		$setting_base_template_site = get_option('setting_base_template_site', (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : ""));
+		$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : "")
 
 		if($setting_base_template_site != '' && $setting_base_template_site != get_site_url())
 		{
@@ -3547,17 +3553,17 @@ class mf_theme_core
 
 		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-		$obj_theme_core = new mf_theme_core();
-		$obj_theme_core->get_params();
+		//$obj_theme_core = new mf_theme_core();
+		$this->get_params();
 
 		if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce_theme_backup'], 'theme_backup'))
 		{
-			if(count($obj_theme_core->options) > 0)
+			if(count($this->options) > 0)
 			{
 				$file_base = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")));
 				$file = prepare_file_name($file_base).".json";
 
-				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($obj_theme_core->options)));
+				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($this->options)));
 
 				if($success == true)
 				{
@@ -3639,7 +3645,7 @@ class mf_theme_core
 
 		else
 		{
-			$setting_base_template_site = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
+			$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($obj_theme_core->options['style_source']) ? trim($obj_theme_core->options['style_source'], "/") : "")
 
 			if($setting_base_template_site != '')
 			{
@@ -3660,7 +3666,7 @@ class mf_theme_core
 
 			if($upload_path != '')
 			{
-				$setting_base_template_site = get_option('setting_base_template_site', trim($obj_theme_core->options['style_source'], "/"));
+				$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($obj_theme_core->options['style_source']) ? trim($obj_theme_core->options['style_source'], "/") : "")
 				$is_allowed_to_backup = $setting_base_template_site == '' || $setting_base_template_site == get_site_url();
 
 				$out .= "<div id='poststuff'>
