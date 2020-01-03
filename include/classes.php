@@ -422,6 +422,7 @@ class mf_theme_core
 			}*/
 		}
 
+		$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", 'lang_theme_core');
 		$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -727,6 +728,14 @@ class mf_theme_core
 		}
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
+	}
+
+	function setting_theme_enable_wp_api_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key, 'no');
+
+		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 	}
 
 	function setting_theme_optimize_callback()
@@ -2756,7 +2765,9 @@ class mf_theme_core
 	{
 		if($post_id > 0)
 		{
-			return in_array(get_post_type($post_id), get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)));
+			$obj_base = new mf_base();
+
+			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)));
 		}
 
 		else
@@ -2832,10 +2843,12 @@ class mf_theme_core
 
 			if(count($arr_fields) > 0)
 			{
+				$obj_base = new mf_base();
+
 				$meta_boxes[] = array(
 					'id' => 'theme_core_publish',
 					'title' => __("Publish Settings", 'lang_theme_core'),
-					'post_types' => get_post_types_for_metabox(), //array('public' => true, 'exclude_from_search' => false)
+					'post_types' => $obj_base->get_post_types_for_metabox(),
 					'context' => 'side',
 					'priority' => 'low',
 					'fields' => $arr_fields,

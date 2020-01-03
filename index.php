@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.8.9
+Version: 7.8.13
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -90,11 +90,12 @@ else
 
 	add_filter('embed_oembed_html', array($obj_theme_core, 'embed_oembed_html'), 99, 4);
 
-	remove_action('wp_head', 'rest_output_link_wp_head');
+	remove_action('wp_head', 'rest_output_link_wp_head'); // Disable REST API link tag
+	remove_action('template_redirect', 'rest_output_link_header', 11, 0); // Disable REST API link in HTTP headers
 	remove_action('wp_head', 'wlwmanifest_link');
 	remove_action('wp_head', 'rsd_link');
 	remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-	remove_action('wp_head', 'wp_oembed_add_discovery_links');
+	remove_action('wp_head', 'wp_oembed_add_discovery_links'); // Disable oEmbed Discovery Links
 	remove_action('wp_head', 'wp_generator');
 	//remove_action('wp_head', 'rel_canonical');
 	remove_action('wp_head', 'feed_links', 2);
@@ -102,18 +103,19 @@ else
 
 	remove_action('wp_print_styles', 'print_emoji_styles');
 	remove_action('wp_head', 'print_emoji_detection_script', 7);
+	add_filter('emoji_svg_url', '__return_false');
 
-	//remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+	if(get_option('setting_theme_enable_wp_api') != 'yes')
+	{
+		add_filter('xmlrpc_enabled', '__return_false');
+	}
 
 	//Disable oEmbed
-	/*remove_action('wp_head', 'rest_output_link_wp_head', 10);
-	remove_action('template_redirect', 'rest_output_link_header', 11, 0);
-	remove_action('wp_head', 'wp_oembed_add_host_js');
+	/*remove_action('wp_head', 'wp_oembed_add_host_js');
 	remove_action('rest_api_init', 'wp_oembed_register_route');
 	remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
 
 	//Disable more oEmbed
-	remove_action('wp_head', 'wp_oembed_add_discovery_links');
 	add_filter('rewrite_rules_array', 'disable_embeds_rewrites');*/
 
 	if($obj_theme_core->is_theme_active())
@@ -164,6 +166,6 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed', 'option_uploads_done'),
+		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'setting_theme_enable_wp_api', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed', 'option_uploads_done'),
 	));
 }

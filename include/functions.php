@@ -122,23 +122,6 @@ function get_404_page()
 	</article>";
 }
 
-function get_post_types_for_metabox($data = array())
-{
-	if(!isset($data['public'])){		$data['public'] = true;}
-
-	$arr_data = array();
-
-	foreach(get_post_types($data, 'objects') as $post_type)
-	{
-		if(!in_array($post_type->name, array('attachment')))
-		{
-			$arr_data[] = $post_type->name;
-		}
-	}
-
-	return $arr_data;
-}
-
 // Temporary until MF Theme has been updated
 function get_search_theme_core()
 {
