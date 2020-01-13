@@ -73,7 +73,7 @@ class mf_theme_core
 
 		/* Optimize */
 		#########################
-		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
+		if(is_main_site() && get_site_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 		{
 			$this->do_optimize();
 		}
@@ -740,7 +740,7 @@ class mf_theme_core
 
 	function setting_theme_optimize_callback()
 	{
-		$option_database_optimized = get_option('option_database_optimized');
+		$option_database_optimized = get_site_option('option_database_optimized');
 
 		if($option_database_optimized > DEFAULT_DATE)
 		{
@@ -1029,6 +1029,20 @@ class mf_theme_core
 	{
 		return "<div class='embed_content'>".$cached_html."</div>";
 	}
+
+	/*function the_generator()
+	{
+		return '';
+	}
+
+	function loader_src($src)
+	{
+		global $wp_version;
+
+		$parts = explode('?', $src);
+
+		return ($parts[1] === 'ver='.$wp_version) ? $parts[0] : $src;
+	}*/
 
 	function wp_nav_menu_args($args)
 	{
@@ -3269,7 +3283,6 @@ class mf_theme_core
 	}
 	#################################
 
-	// This is a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
 	#################################
 	function copy_file()
 	{
@@ -3279,17 +3292,9 @@ class mf_theme_core
 			{
 				if(file_exists($this->file_dir_from) && is_file($this->file_dir_from))
 				{
-					//do_log(sprintf("The file %s already exists so %s can be deleted now", $this->file_dir_to, $this->file_dir_from));
-
-					/* Some files are still in use in the old hierarchy */
-					/*unlink($this->file_dir_from);
-					do_log("Removed File: ".$upload_path.$strFileName);*/
+					// Some files are still in use in the old hierarchy
+					//unlink($this->file_dir_from);
 				}
-
-				/*else
-				{
-					do_log("File has already been deleted: ".$this->file_dir_from);
-				}*/
 			}
 		}
 
@@ -3299,12 +3304,7 @@ class mf_theme_core
 			{
 				@mkdir(dirname($this->file_dir_to), 0755, true);
 
-				if(copy($this->file_dir_from, $this->file_dir_to))
-				{
-					//do_log("File was copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
-				}
-
-				else
+				if(!copy($this->file_dir_from, $this->file_dir_to))
 				{
 					do_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
 				}
@@ -3312,7 +3312,8 @@ class mf_theme_core
 		}
 	}
 
-	function do_fix()
+	// This was a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
+	/*function do_fix()
 	{
 		global $wpdb;
 
@@ -3353,13 +3354,13 @@ class mf_theme_core
 			}
 		}
 
-		/* Some files are still in use in the old hierarchy */
-		/*if(!(get_option('option_uploads_fixed') > DEFAULT_DATE))
+		// Some files are still in use in the old hierarchy
+		if(1 == 2 && !(get_option('option_uploads_fixed') > DEFAULT_DATE))
 		{
 			update_option('option_uploads_fixed', date("Y-m-d H:i:s"), 'no');
 		}
 
-		if(get_option('option_uploads_fixed') < date("Y-m-d", strtotime("-1 month")))
+		if(1 == 2 && get_option('option_uploads_fixed') < date("Y-m-d", strtotime("-1 month")))
 		{
 			if(file_exists($upload_path_from.date("Y")))
 			{
@@ -3368,8 +3369,8 @@ class mf_theme_core
 				update_option('option_uploads_done', date("Y-m-d H:i:s"), 'no');
 				delete_option('option_uploads_fixed');
 			}
-		}*/
-	}
+		}
+	}*/
 	#################################
 
 	// Cron
@@ -3939,12 +3940,12 @@ class mf_theme_core
 		list($upload_path, $upload_url) = get_uploads_folder();
 		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_folder')));
 
-		if(is_multisite() && !(get_option('option_uploads_done') > DEFAULT_DATE))
+		/*if(is_multisite() && !(get_option('option_uploads_done') > DEFAULT_DATE))
 		{
 			$this->do_fix();
-		}
+		}*/
 
-		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
+		update_site_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
 		return __("I have optimized the site for you", 'lang_theme_core');
 	}
