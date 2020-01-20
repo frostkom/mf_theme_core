@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.8.17
+Version: 7.8.18
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -112,7 +112,7 @@ else
 	remove_action('wp_head', 'print_emoji_detection_script', 7);
 	add_filter('emoji_svg_url', '__return_false');
 
-	if(get_option('setting_theme_enable_wp_api') != 'yes')
+	if(get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
 	{
 		add_filter('xmlrpc_enabled', '__return_false');
 	}

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 11:54+0100\n"
+"POT-Creation-Date: 2020-01-18 07:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -83,6 +83,9 @@ msgstr "Skicka e-post när utkast sparas"
 
 msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
+
+msgid "Enable XML-RPC"
+msgstr "Aktivera XML-RPC"
 
 msgid "Optimize"
 msgstr "Optimera"
@@ -510,9 +513,6 @@ msgstr "Sidan är inte publicerad eller indexerad"
 msgid "Well done! The page is SEO approved!"
 msgstr "Bra jobbat! Sidan är SEO-godkänd!"
 
-msgid "Publish Settings"
-msgstr "Inställningar för publicering"
-
 msgid "Index"
 msgstr "Indexering"
 
@@ -528,8 +528,14 @@ msgstr "Följ inte länkar"
 msgid "Do not Index and do not follow links"
 msgstr "Indexera inte och följ inte länkar"
 
+msgid "Publish"
+msgstr "Publicera"
+
 msgid "Unpublish"
 msgstr "Avpublicera"
+
+msgid "Publish Settings"
+msgstr "Inställningar för publicering"
 
 msgid "The draft (%s) has been saved"
 msgstr "Utkastet (%s) har sparats"

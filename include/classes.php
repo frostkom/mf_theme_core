@@ -73,7 +73,7 @@ class mf_theme_core
 
 		/* Optimize */
 		#########################
-		if(is_main_site() && get_site_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
+		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 		{
 			$this->do_optimize();
 		}
@@ -422,8 +422,11 @@ class mf_theme_core
 			}*/
 		}
 
-		$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", 'lang_theme_core');
-		$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
+		if(IS_SUPER_ADMIN)
+		{
+			$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", 'lang_theme_core');
+			$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
+		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
@@ -733,14 +736,15 @@ class mf_theme_core
 	function setting_theme_enable_wp_api_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key, 'no');
+		settings_save_site_wide($setting_key);
+		$option = get_site_option($setting_key, 'no');
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 	}
 
 	function setting_theme_optimize_callback()
 	{
-		$option_database_optimized = get_site_option('option_database_optimized');
+		$option_database_optimized = get_option('option_database_optimized');
 
 		if($option_database_optimized > DEFAULT_DATE)
 		{
@@ -3945,7 +3949,7 @@ class mf_theme_core
 			$this->do_fix();
 		}*/
 
-		update_site_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
+		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
 		return __("I have optimized the site for you", 'lang_theme_core');
 	}
