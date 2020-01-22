@@ -31,23 +31,9 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 					a
 					{
 						color: #000;
-					}";
-
-					/*echo "#intro {
-						background-color:#CFEBF7;
-						border:1px #2580B2 solid;
-						padding:5px 13px 5px 13px;
-						margin:10px;
 					}
 
-					#intro p {
-						line-height:	16.8667px;
-					}
-					#intro strong {
-						font-weight:normal;
-					}";*/
-
-					echo "table
+					table
 					{
 						border-spacing: 0;
 					}
@@ -68,44 +54,22 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 							{
 								font-size: 1.1em;
 								padding: .5em;
-							}";
-
-					/*echo "#footer {
-						padding:2px;
-						margin-top:10px;
-						font-size:8pt;
-						color:gray;
-					}
-
-					#footer a {
-						color:gray;
-					}";*/
-
-				echo "</style>
+							}
+				</style>
 			</head>
 			<body>
-				<xsl:apply-templates/>";
-
-				/*echo "<div id='footer'></div>";*/
-
-			echo "</body>
+				<xsl:apply-templates/>
+			</body>
 		</html>
 	</xsl:template>
 
 	<xsl:template match='sitemap:urlset'>
-		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>";
-
-		/*echo "<div id='intro'><p></p></div>";*/
-
-		echo "<table>
+		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>
+		<table>
 			<tr>
 				<th>".__("Title", 'lang_theme_core')."</th>
-				<th>".__("URL", 'lang_theme_core')."</th>";
-
-				/*echo "<th>Priority</th>
-				<th>Change frequency</th>";*/
-
-				echo "<th>".__("Last Modified", 'lang_theme_core')." (GMT)</th>
+				<th>".__("URL", 'lang_theme_core')."</th>
+				<th>".__("Last Modified", 'lang_theme_core')." (GMT)</th>
 			</tr>
 			<xsl:for-each select='./sitemap:url'>
 				<tr>
@@ -119,16 +83,8 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 						<a href='{\$itemURL}'>
 							<xsl:value-of select='sitemap:loc'/>
 						</a>
-					</td>";
-
-					/*echo "<td>
-						<xsl:value-of select='sitemap:priority'/>
 					</td>
 					<td>
-						<xsl:value-of select='sitemap:changefreq'/>
-					</td>";*/
-
-					echo "<td>
 						<xsl:value-of select='sitemap:lastmod'/>
 					</td>
 				</tr>
