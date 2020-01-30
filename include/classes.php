@@ -397,9 +397,7 @@ class mf_theme_core
 				delete_option('setting_send_email_on_draft');
 			}
 
-			//$this->get_params();
-
-			$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : "")
+			$setting_base_template_site = get_option('setting_base_template_site');
 
 			if($setting_base_template_site != '')
 			{
@@ -1229,7 +1227,6 @@ class mf_theme_core
 				get_post_children(array(
 					'post_type' => $post_type,
 					'where' => "post_password = ''",
-					//'debug' => true,
 				), $this->arr_post_types);
 			}
 		}
@@ -2383,9 +2380,6 @@ class mf_theme_core
 						<title>".htmlspecialchars($post_title)."</title>
 						<lastmod>".$post_modified."</lastmod>
 					</url>";
-
-					/*<changefreq>monthly</changefreq>
-					<priority>0.8</priority>*/
 				}
 
 			echo "</urlset>";
@@ -2508,10 +2502,10 @@ class mf_theme_core
 			'post_category' => $p->post_category,
 			'tags_input' => $p->tags_input,
 			'tax_input' => $p->tax_input,
-			'page_template' => $p->page_template
-			// 'post_date' => $p->post_date,				// default: current date
-			// 'post_date_gmt' => $p->post_date_gmt, 			// default: current gmt date
-			// 'post_status' => $p->post_status 				// default: draft
+			'page_template' => $p->page_template,
+			//'post_date' => $p->post_date, // default: current date
+			//'post_date_gmt' => $p->post_date_gmt, // default: current gmt date
+			//'post_status' => $p->post_status, // default: draft
 		);
 
 		$this->post_id_new = wp_insert_post($newpost);
@@ -3433,9 +3427,7 @@ class mf_theme_core
 	{
 		delete_option('option_theme_source_style_url');
 
-		//$this->get_params();
-
-		$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($this->options['style_source']) ? trim($this->options['style_source'], "/") : "")
+		$setting_base_template_site = get_option('setting_base_template_site');
 
 		if($setting_base_template_site != '' && $setting_base_template_site != get_site_url())
 		{
@@ -3571,7 +3563,6 @@ class mf_theme_core
 
 		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-		//$obj_theme_core = new mf_theme_core();
 		$this->get_params();
 
 		if(isset($_POST['btnThemeBackup']) && wp_verify_nonce($_POST['_wpnonce_theme_backup'], 'theme_backup'))
@@ -3656,14 +3647,13 @@ class mf_theme_core
 		else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce_theme_delete'], 'theme_delete_'.$strFileName))
 		{
 			unlink($upload_path.$strFileName);
-			//do_log("Removed Theme File: ".$upload_path.$strFileName);
 
 			$done_text = __("The file was deleted successfully", 'lang_theme_core');
 		}
 
 		else
 		{
-			$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($obj_theme_core->options['style_source']) ? trim($obj_theme_core->options['style_source'], "/") : "")
+			$setting_base_template_site = get_option('setting_base_template_site');
 
 			if($setting_base_template_site != '')
 			{
@@ -3684,7 +3674,7 @@ class mf_theme_core
 
 			if($upload_path != '')
 			{
-				$setting_base_template_site = get_option('setting_base_template_site'); //, (isset($obj_theme_core->options['style_source']) ? trim($obj_theme_core->options['style_source'], "/") : "")
+				$setting_base_template_site = get_option('setting_base_template_site');
 				$is_allowed_to_backup = $setting_base_template_site == '' || $setting_base_template_site == get_site_url();
 
 				$out .= "<div id='poststuff'>
@@ -3925,8 +3915,6 @@ class mf_theme_core
 
 		if($wpdb->num_rows > 0)
 		{
-			//do_log("Remove oEmbed caches: ".$wpdb->last_query);
-
 			$wpdb->get_results($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_key LIKE %s", "%_oembed_%"));
 		}
 
@@ -4633,26 +4621,23 @@ class widget_theme_core_info extends WP_Widget
 			.get_media_library(array('type' => 'image', 'name' => $this->get_field_name('info_image'), 'value' => $instance['info_image']))
 			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='info-title'"))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
-			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text'])); //, 'xtra' => " condition_type='hide_if_empty' condition_field='info_button_links'"
-			//echo "<div class='widgets-right .info_button_links'>";
+			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text']));
 
-				if($instance['info_button_text'] != '')
+			if($instance['info_button_text'] != '')
+			{
+				if($instance['info_link'] == '')
 				{
-					if($instance['info_link'] == '')
-					{
-						$arr_data = array();
-						get_post_children(array('add_choose_here' => true), $arr_data);
+					$arr_data = array();
+					get_post_children(array('add_choose_here' => true), $arr_data);
 
-						echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page'])); //, 'xtra' => " class='info_page' condition_type='show_if_empty' condition_field='widgets-right .info_link'"
-					}
-
-					if(!($instance['info_page'] > 0))
-					{
-						echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link'])); //, 'xtra' => " class='info_link' condition_type='show_if_empty' condition_field='widgets-right .info_page'"
-					}
+					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page']));
 				}
 
-			//echo "</div>";
+				if(!($instance['info_page'] > 0))
+				{
+					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link']));
+				}
+			}
 		echo "</div>";
 	}
 }
