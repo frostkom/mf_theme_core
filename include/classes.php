@@ -2261,11 +2261,44 @@ class mf_theme_core
 	{
 		if(isset($this->options['external_css']) && $this->options['external_css'] != '')
 		{
+			$arr_roles_check = array(
+				'is_super_admin' => IS_SUPER_ADMIN,
+				'is_admin' => IS_ADMIN,
+				'is_editor' => IS_EDITOR,
+				'is_author' => IS_AUTHOR,
+			);
+
 			$arr_external_css = explode("\n", $this->options['external_css']);
 
 			foreach($arr_external_css as $external_css)
 			{
-				mf_enqueue_style('style_'.md5($external_css), $external_css, $theme_version);
+				$is_allowed = true;
+
+				foreach($arr_roles_check as $key => $value)
+				{
+					if(substr($external_css, 0, 1) == "[")
+					{
+						if(substr($external_css, 0, (strlen($key) + 2)) == "[".$key."]")
+						{
+							if(is_user_logged_in() && $value == true)
+							{
+								$external_css = str_replace("[".$key."]", "", $external_css);
+							}
+
+							else
+							{
+								$is_allowed = false;
+							}
+
+							break;
+						}
+					}
+				}
+
+				if($is_allowed)
+				{
+					mf_enqueue_style('style_'.md5($external_css), $external_css, $theme_version);
+				}
 			}
 		}
 	}
@@ -2779,7 +2812,7 @@ class mf_theme_core
 		{
 			$obj_base = new mf_base();
 
-			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('public' => true, 'exclude_from_search' => false)));
+			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('exclude_from_search' => false))); //'public' => true, 
 		}
 
 		else
@@ -3784,12 +3817,15 @@ class mf_theme_core
 
 		$cols['language'] = __("Language", 'lang_theme_core');
 		$cols['email'] = __("E-mail", 'lang_theme_core');
+		$cols['last_updated'] = __("Updated", 'lang_theme_core');
 
 		return $cols;
 	}
 
 	function sites_column_cell($col, $id)
 	{
+		global $wpdb, $obj_base;
+
 		switch($col)
 		{
 			case 'language':
@@ -3808,8 +3844,51 @@ class mf_theme_core
 
 				if($admin_email != '')
 				{
-					echo "<a href='mailto:".$admin_email."'>".$admin_email."</a>";
+					list($prefix, $domain) = explode("@", $admin_email);
+
+					echo "<a href='mailto:".$admin_email."'>".$prefix."</a>
+					<div class='row-actions'>"
+						."@".$domain
+					."</div>";
 				}
+			break;
+
+			case 'last_updated':
+				switch_to_blog($id);
+
+				if(!isset($obj_base))
+				{
+					$obj_base = new mf_base();
+				}
+
+				$arr_post_types = $obj_base->get_post_types_for_metabox();
+				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
+
+				$last_updated_manual_posts = $wpdb->get_var("SELECT post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+				//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
+
+				if($last_updated_manual_posts > DEFAULT_DATE)
+				{
+					echo format_date($last_updated_manual_posts);
+
+					$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
+
+					$last_updated_automatic_posts = $wpdb->get_var("SELECT post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+
+					if($last_updated_automatic_posts > $last_updated_manual_posts)
+					{
+						echo "<div class='row-actions'>"
+							.__("Background", 'lang_theme_core').": ".format_date($last_updated_automatic_posts)
+						."</div>";
+					}
+				}
+
+				else
+				{
+					echo $wpdb->last_query;
+				}
+
+				restore_current_blog();
 			break;
 		}
 	}

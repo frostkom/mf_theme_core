@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-18 07:32+0100\n"
+"POT-Creation-Date: 2020-02-04 15:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -26,6 +26,33 @@ msgstr "Rubrik"
 
 msgid "Last Modified"
 msgstr "Senast ändrad"
+
+msgid "Choose Here"
+msgstr "Välj här"
+
+msgid "Regular"
+msgstr "Vanliga"
+
+msgid "Advanced"
+msgstr "Avancerat"
+
+msgid "Main"
+msgstr "Huvudmeny"
+
+msgid "Secondary"
+msgstr "Sekundär"
+
+msgid "Main and Secondary Menu"
+msgstr "Huvud- och sekundär meny"
+
+msgid "Slide in From Right"
+msgstr "Glid in från höger"
+
+msgid "Not Found"
+msgstr "Hittades inte"
+
+msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
+msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
 msgid "Maintenance Mode Activated"
 msgstr "Underhållsläge aktiverat"
@@ -282,9 +309,6 @@ msgstr "Knappfärg"
 msgid "Button Text Color"
 msgstr "Textfärg på knapp"
 
-msgid "Secondary"
-msgstr "Sekundär"
-
 msgid "Negative"
 msgstr "Negativ"
 
@@ -516,9 +540,6 @@ msgstr "Bra jobbat! Sidan är SEO-godkänd!"
 msgid "Index"
 msgstr "Indexering"
 
-msgid "Choose Here"
-msgstr "Välj här"
-
 msgid "Do not Index"
 msgstr "Indexera inte"
 
@@ -663,6 +684,9 @@ msgstr "Språk"
 msgid "E-mail"
 msgstr "E-post"
 
+msgid "Updated"
+msgstr "Uppdaterad"
+
 msgid "A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again."
 msgstr "En kaka sparas när besökaren godkänner användning av kakor på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
 
@@ -788,25 +812,4 @@ msgstr "Visa innehållsförteckning"
 
 msgid "Table of Contents"
 msgstr "Innehållsförteckning"
-
-msgid "Regular"
-msgstr "Vanliga"
-
-msgid "Advanced"
-msgstr "Avancerat"
-
-msgid "Main"
-msgstr "Huvudmeny"
-
-msgid "Main and Secondary Menu"
-msgstr "Huvud- och sekundär meny"
-
-msgid "Slide in From Right"
-msgstr "Glid in från höger"
-
-msgid "Not Found"
-msgstr "Hittades inte"
-
-msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
-msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
