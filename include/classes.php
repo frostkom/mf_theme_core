@@ -458,7 +458,7 @@ class mf_theme_core
 		$option = get_option($setting_key, array('administrator', 'editor', 'author', 'contributor'));
 		//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
 
-		echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option)); //
+		echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
 	}
 
 	function setting_theme_core_title_format_callback()
@@ -1031,20 +1031,6 @@ class mf_theme_core
 	{
 		return "<div class='embed_content'>".$cached_html."</div>";
 	}
-
-	/*function the_generator()
-	{
-		return '';
-	}
-
-	function loader_src($src)
-	{
-		global $wp_version;
-
-		$parts = explode('?', $src);
-
-		return ($parts[1] === 'ver='.$wp_version) ? $parts[0] : $src;
-	}*/
 
 	function wp_nav_menu_args($args)
 	{

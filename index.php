@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.8.24
+Version: 7.8.25
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -97,14 +97,8 @@ else
 	remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 	remove_action('wp_head', 'wp_oembed_add_discovery_links'); // Disable oEmbed Discovery Links
 
-	// Remove WP versions
-	remove_action('wp_head', 'wp_generator');
-	// Do we really wanna go this far to prevent someone to know the version, when they still can easily find out by checking which JS-files are used on the site that are part of a specific WP version?
-	/*add_filter('the_generator', array($obj_theme_core, 'the_generator'));
-	add_filter('script_loader_src', array($obj_theme_core, 'loader_src'));
-	add_filter('style_loader_src', array($obj_theme_core, 'loader_src'));*/
+	remove_action('wp_head', 'wp_generator'); // Remove WP versions
 
-	//remove_action('wp_head', 'rel_canonical');
 	remove_action('wp_head', 'feed_links', 2);
 	remove_action('wp_head', 'feed_links_extra', 3);
 
@@ -116,14 +110,6 @@ else
 	{
 		add_filter('xmlrpc_enabled', '__return_false');
 	}
-
-	//Disable oEmbed
-	/*remove_action('wp_head', 'wp_oembed_add_host_js');
-	remove_action('rest_api_init', 'wp_oembed_register_route');
-	remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-
-	//Disable more oEmbed
-	add_filter('rewrite_rules_array', 'disable_embeds_rewrites');*/
 
 	if($obj_theme_core->is_theme_active())
 	{
