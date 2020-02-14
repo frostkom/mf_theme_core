@@ -541,7 +541,9 @@ echo "@media all
 			{
 				position: absolute;
 				right: 1.5em;
-				top: 2em;
+				top: 50%;
+				-webkit-transform: translateY(-50%);
+				transform: translateY(-50%);
 			}
 
 				.theme_widget_area .widget.theme_info .form_button
