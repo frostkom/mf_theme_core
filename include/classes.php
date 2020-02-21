@@ -3701,7 +3701,7 @@ class mf_theme_core
 					<div id='post-body' class='columns-2'>
 						<div id='post-body-content'>";
 
-							$arr_backups = $obj_theme_core->get_previous_backups_list($upload_path);
+							$arr_backups = $this->get_previous_backups_list($upload_path);
 							$count_temp = count($arr_backups);
 
 							if($count_temp > 0)
