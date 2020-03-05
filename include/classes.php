@@ -327,10 +327,10 @@ class mf_theme_core
 		{
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
 
-			if(get_option('setting_theme_core_login') == 'yes')
-			{
+			/*if(get_option('setting_theme_core_login') == 'yes')
+			{*/
 				$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
-			}
+			//}
 		}
 
 		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
@@ -999,21 +999,21 @@ class mf_theme_core
 			</div>";
 		}*/
 
+		$user_id = get_current_user_id();
+
+		if($user_id > 0)
+		{
+			if(in_array(get_current_user_role($user_id), get_option('setting_theme_core_display_lock', array())))
+			{
+				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+
+				$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
+			}
+		}
+
 		if(get_option('setting_theme_core_login') == 'yes')
 		{
-			$user_id = get_current_user_id();
-
-			if($user_id > 0)
-			{
-				if(in_array(get_current_user_role($user_id), get_option('setting_theme_core_display_lock', array())))
-				{
-					mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
-
-					$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
-				}
-			}
-
-			else if(apply_filters('is_public_page', true))
+			if(!($user_id > 0) && apply_filters('is_public_page', true))
 			{
 				do_log("A visitor accessed the public page without being logged in!");
 			}
