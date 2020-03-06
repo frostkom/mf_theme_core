@@ -4093,7 +4093,7 @@ class widget_theme_core_area extends WP_Widget
 		$instance = $old_instance;
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
-		$instance['widget_area_id'] = sanitize_text_field($new_instance['widget_area_id']);
+		$instance['widget_area_id'] = strtolower(sanitize_text_field($new_instance['widget_area_id']));
 		$instance['widget_area_name'] = sanitize_text_field($new_instance['widget_area_name']);
 		$instance['widget_area_columns'] = sanitize_text_field($new_instance['widget_area_columns']);
 
