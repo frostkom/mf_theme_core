@@ -250,6 +250,33 @@ echo "@media all
 					flex: 1 0 50%;
 					min-width: 50%;
 				}";
+
+			$widget_area_widget = get_option('widget_theme-widget-area-widget');
+
+			if(is_array($widget_area_widget))
+			{
+				foreach($widget_area_widget as $widget)
+				{
+					if(isset($widget['widget_area_padding']) && $widget['widget_area_padding'] != '')
+					{
+						echo "#widget_area_".str_replace("-", "_", $widget['widget_area_id'])." .widget:nth-child(2n + 1)
+						{
+							padding-right: ".$widget['widget_area_padding'].";
+						}
+						
+						#widget_area_".str_replace("-", "_", $widget['widget_area_id'])." .widget:nth-child(2n)
+						{
+							padding-left: ".$widget['widget_area_padding'].";
+						}
+
+							.is_mobile #widget_area_".str_replace("-", "_", $widget['widget_area_id'])." .widget
+							{
+								padding-right: 0;
+								padding-left: 0;
+							}";
+					}
+				}
+			}
 	}
 
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-news-widget') > 0 || apply_filters('get_widget_search', 'theme-related-news-widget') > 0 || apply_filters('get_widget_search', 'theme-promo-widget') > 0)

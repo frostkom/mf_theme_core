@@ -4066,6 +4066,7 @@ class widget_theme_core_area extends WP_Widget
 			'widget_area_id' => '',
 			'widget_area_name' => '',
 			'widget_area_columns' => 1,
+			'widget_area_padding' => '',
 		);
 
 		parent::__construct('theme-widget-area-widget', __("Widget Area", 'lang_theme_core'), $widget_ops);
@@ -4079,7 +4080,7 @@ class widget_theme_core_area extends WP_Widget
 		if(is_active_sidebar('widget_area_'.$instance['widget_area_id']))
 		{
 			echo $before_widget
-				."<div class='widget_columns columns_".$instance['widget_area_columns']."'>";
+				."<div id='widget_area_".str_replace("-", "_", $instance['widget_area_id'])."' class='widget_columns columns_".$instance['widget_area_columns']."'>";
 
 					dynamic_sidebar('widget_area_'.$instance['widget_area_id']);
 
@@ -4096,6 +4097,7 @@ class widget_theme_core_area extends WP_Widget
 		$instance['widget_area_id'] = strtolower(sanitize_text_field($new_instance['widget_area_id']));
 		$instance['widget_area_name'] = sanitize_text_field($new_instance['widget_area_name']);
 		$instance['widget_area_columns'] = sanitize_text_field($new_instance['widget_area_columns']);
+		$instance['widget_area_padding'] = sanitize_text_field($new_instance['widget_area_padding']);
 
 		return $instance;
 	}
@@ -4107,8 +4109,14 @@ class widget_theme_core_area extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", 'lang_theme_core'), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
 			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", 'lang_theme_core'), 'value' => $instance['widget_area_name'], 'required' => true))
-			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"))
-		."</div>";
+			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
+
+			if($instance['widget_area_columns'] > 1)
+			{
+				echo show_textfield(array('name' => $this->get_field_name('widget_area_padding'), 'text' => __("Column Space", 'lang_theme_core'), 'value' => $instance['widget_area_padding'], 'placeholder' => ".5em"));
+			}
+
+		echo "</div>";
 	}
 }
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-04 15:26+0100\n"
+"POT-Creation-Date: 2020-03-25 15:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -14,45 +14,6 @@ msgstr ""
 "X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_attr__;esc_attr_e;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
-
-msgid "XML Sitemap for %s"
-msgstr "Sidkarta för %s"
-
-msgid "XML Sitemap for %s | %s"
-msgstr "Sidkarta för %s | %s"
-
-msgid "Title"
-msgstr "Rubrik"
-
-msgid "Last Modified"
-msgstr "Senast ändrad"
-
-msgid "Choose Here"
-msgstr "Välj här"
-
-msgid "Regular"
-msgstr "Vanliga"
-
-msgid "Advanced"
-msgstr "Avancerat"
-
-msgid "Main"
-msgstr "Huvudmeny"
-
-msgid "Secondary"
-msgstr "Sekundär"
-
-msgid "Main and Secondary Menu"
-msgstr "Huvud- och sekundär meny"
-
-msgid "Slide in From Right"
-msgstr "Glid in från höger"
-
-msgid "Not Found"
-msgstr "Hittades inte"
-
-msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
-msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
 
 msgid "Maintenance Mode Activated"
 msgstr "Underhållsläge aktiverat"
@@ -309,6 +270,9 @@ msgstr "Knappfärg"
 msgid "Button Text Color"
 msgstr "Textfärg på knapp"
 
+msgid "Secondary"
+msgstr "Sekundär"
+
 msgid "Negative"
 msgstr "Negativ"
 
@@ -540,6 +504,9 @@ msgstr "Bra jobbat! Sidan är SEO-godkänd!"
 msgid "Index"
 msgstr "Indexering"
 
+msgid "Choose Here"
+msgstr "Välj här"
+
 msgid "Do not Index"
 msgstr "Indexera inte"
 
@@ -708,6 +675,9 @@ msgstr "Namn"
 msgid "Columns"
 msgstr "Kolumner"
 
+msgid "Column Space"
+msgstr "Tomrum mellan kolumner"
+
 msgid "Display Logo"
 msgstr "Visa logga"
 
@@ -746,6 +716,9 @@ msgstr "Enkel"
 
 msgid "Compact"
 msgstr "Kompakt"
+
+msgid "Title"
+msgstr "Rubrik"
 
 msgid "Design"
 msgstr "Utseende"
@@ -812,4 +785,34 @@ msgstr "Visa innehållsförteckning"
 
 msgid "Table of Contents"
 msgstr "Innehållsförteckning"
+
+msgid "Regular"
+msgstr "Vanliga"
+
+msgid "Advanced"
+msgstr "Avancerat"
+
+msgid "Main"
+msgstr "Huvudmeny"
+
+msgid "Main and Secondary Menu"
+msgstr "Huvud- och sekundär meny"
+
+msgid "Slide in From Right"
+msgstr "Glid in från höger"
+
+msgid "Not Found"
+msgstr "Hittades inte"
+
+msgid "Apologies, but the page you requested could not be found. Perhaps searching will help"
+msgstr "Vi ber om ursäkt, men sidan som du letade efter gick inte att hitta. Kanske en sökning kan hjälpa"
+
+msgid "XML Sitemap for %s"
+msgstr "Sidkarta för %s"
+
+msgid "XML Sitemap for %s | %s"
+msgstr "Sidkarta för %s | %s"
+
+msgid "Last Modified"
+msgstr "Senast ändrad"
 
