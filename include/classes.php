@@ -1332,6 +1332,8 @@ class mf_theme_core
 					$options_params[] = array('type' => 'text', 'id' => 'mobile_aside_img_max_width', 'title' => __("Aside Image Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => "mobile_breakpoint");
 				}
 
+			$options_params[] = array('type' => 'text', 'id' => 'body_print_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Print", 'lang_theme_core').")");
+
 		$options_params[] = array('category_end' => "");
 
 		$options_params[] = array('category' => " - ".__("Forms", 'lang_theme_core'), 'id' => 'mf_theme_generic_forms');

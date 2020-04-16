@@ -617,11 +617,6 @@ echo "}
 		background: none;
 	}
 
-		body
-		{
-			font-size: .5em;
-		}
-
 		header, #mf-after-header, #mf-slide-nav, #mf-pre-content, #aside_left, #aside_right, #mf-pre-footer, footer, #window_side
 		{
 			display: none !important;
@@ -629,6 +624,7 @@ echo "}
 
 			#mf-content > div
 			{
+				display: block !important; /* Prevents flexbox */
 				width: auto;
 			}
 

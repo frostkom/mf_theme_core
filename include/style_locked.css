@@ -24,3 +24,11 @@
 			display: none;
 		}
 }
+
+@media print
+{
+	#site_locked
+	{
+		display: none;
+	}
+}

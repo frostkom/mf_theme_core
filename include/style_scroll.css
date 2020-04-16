@@ -20,3 +20,11 @@
 			opacity: .7;
 		}
 }
+
+@media print
+{
+	#scroll_to_top
+	{
+		display: none !important;
+	}
+}
