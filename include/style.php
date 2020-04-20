@@ -263,7 +263,7 @@ echo "@media all
 						{
 							padding-right: ".$widget['widget_area_padding'].";
 						}
-						
+
 						#widget_area_".str_replace("-", "_", $widget['widget_area_id'])." .widget:nth-child(2n)
 						{
 							padding-left: ".$widget['widget_area_padding'].";
@@ -564,7 +564,7 @@ echo "@media all
 						width: 100%;
 					}
 
-			.is_tablet .widget.theme_info .form_button, .is_desktop .widget.theme_info .form_button
+			.is_tablet .widget:not(.theme_widget_area) .widget.theme_info .form_button, .is_desktop .widget:not(.theme_widget_area) .widget.theme_info .form_button
 			{
 				position: absolute;
 				right: 1.5em;
