@@ -69,32 +69,40 @@ class mf_theme_core
 
 	function cron_base()
 	{
-		$this->publish_posts();
+		$obj_cron = new mf_cron();
+		$obj_cron->start(__CLASS__);
 
-		/* Optimize */
-		#########################
-		if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
+		if($obj_cron->is_running == false)
 		{
-			$this->do_optimize();
-		}
-		#########################
+			$this->publish_posts();
 
-		if($this->is_theme_active())
-		{
-			$this->check_style_source();
-
-			/* Delete old uploads */
-			#######################
-			$theme_dir_name = $this->get_theme_dir_name();
-
-			if($theme_dir_name != '')
+			/* Optimize */
+			#########################
+			if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 			{
-				list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
-
-				get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+				$this->do_optimize();
 			}
-			#######################
+			#########################
+
+			if($this->is_theme_active())
+			{
+				$this->check_style_source();
+
+				/* Delete old uploads */
+				#######################
+				$theme_dir_name = $this->get_theme_dir_name();
+
+				if($theme_dir_name != '')
+				{
+					list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+
+					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+				}
+				#######################
+			}
 		}
+
+		$obj_cron->end();
 	}
 
 	function init()
