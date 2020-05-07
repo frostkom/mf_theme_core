@@ -378,7 +378,7 @@ echo "@media all
 				bottom: 0;
 				color: #fff;
 				left: 0;
-				margin: 1.5em 1em 0;
+				margin: 1.5em 1em -.1em;
 				padding: 0 0 1.4em;
 				position: absolute;
 				right: 0;
