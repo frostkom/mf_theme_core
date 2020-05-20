@@ -4152,13 +4152,27 @@ class widget_theme_core_logo extends WP_Widget
 
 	function widget($args, $instance)
 	{
+		global $obj_theme_core;
+
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$obj_theme_core = new mf_theme_core();
+		$arr_data = array(
+			'display' => $instance['logo_display'],
+		);
+
+		if($instance['logo_url'] != ''){			$arr_data['url'] = $instance['logo_url'];}
+		if($instance['logo_title'] != ''){			$arr_data['title'] = $instance['logo_title'];}
+		if($instance['logo_image'] != ''){			$arr_data['image'] = $instance['logo_image'];}
+		if($instance['logo_description'] != ''){	$arr_data['description'] = $instance['logo_description'];}
+
+		if(!isset($obj_theme_core))
+		{
+			$obj_theme_core = new mf_theme_core();
+		}
 
 		echo $before_widget
-			.$obj_theme_core->get_logo(array('url' => $instance['logo_url'], 'display' => $instance['logo_display'], 'title' => $instance['logo_title'], 'image' => $instance['logo_image'], 'description' => $instance['logo_description']))
+			.$obj_theme_core->get_logo($arr_data)
 		.$after_widget;
 	}
 
