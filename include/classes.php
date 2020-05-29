@@ -150,11 +150,9 @@ class mf_theme_core
 		}*/
 	}
 
-	function get_flag_icon($id = 0)
+	function get_flag_image($id = 0)
 	{
-		global $wpdb;
-
-		$out = "";
+		global $wpdb, $obj_base;
 
 		if($id > 0)
 		{
@@ -170,50 +168,12 @@ class mf_theme_core
 			$blog_language = get_bloginfo('language');
 		}
 
-		switch($blog_language)
+		if(!isset($obj_base))
 		{
-			case 'da-DK':
-			case 'da_DK':
-				$out = "dk";
-			break;
-
-			case 'nn-NO':
-			case 'nb-NO':
-			case 'nn_NO':
-			case 'nb_NO':
-				$out = "no";
-			break;
-
-			case 'sv-SE':
-			case 'sv_SE':
-				$out = "se";
-			break;
-
-			case 'en-UK':
-			case 'en_UK':
-				$out = "uk";
-			break;
-
-			case 'en-US':
-			case 'en_US':
-			case '':
-				$out = "us";
-			break;
-
-			default:
-				if($id > 0)
-				{
-					do_log("Someone chose '".$blog_language."' as the language for the site '".$id."'. Please add the flag for this language");
-				}
-
-				else
-				{
-					do_log("Someone chose '".$blog_language."' as the language. Please add the flag for this language");
-				}
-			break;
+			$obj_base = new mf_base();
 		}
 
-		return $out;
+		return $obj_base->get_flag_image($blog_language);
 	}
 
 	function wp_before_admin_bar_render()
@@ -264,7 +224,7 @@ class mf_theme_core
 				$text = __("Public", 'lang_theme_core');
 			}
 
-			$flag_icon = $this->get_flag_icon();
+			$flag_image = $this->get_flag_image();
 
 			$title = "";
 
@@ -278,12 +238,10 @@ class mf_theme_core
 				$title .= "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">";
 			}
 
-				if($flag_icon != '')
+				if($flag_image != '')
 				{
-					$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
-
 					$title .= "<div class='flex_flow tight'>
-						<img src='".$plugin_url."images/flags/flag_".$flag_icon.".png'>&nbsp;
+						<img src='".$flag_image."'>&nbsp;
 						<span>";
 				}
 
@@ -298,7 +256,7 @@ class mf_theme_core
 						$title .= $text;
 					//}
 
-				if($flag_icon != '')
+				if($flag_image != '')
 				{
 						$title .= "</span>
 					</div>";
@@ -3823,16 +3781,19 @@ class mf_theme_core
 	{
 		global $wpdb, $obj_base;
 
+		if(!isset($obj_base))
+		{
+			$obj_base = new mf_base();
+		}
+
 		switch($col)
 		{
 			case 'language':
-				$flag_icon = $this->get_flag_icon($id);
+				$flag_image = $this->get_flag_image($id);
 
-				if($flag_icon != '')
+				if($flag_image != '')
 				{
-					$plugin_url = str_replace("/include", "", plugin_dir_url(__FILE__));
-
-					echo "<img src='".$plugin_url."images/flags/flag_".$flag_icon.".png' title='".$id."'>";
+					echo "<img src='".$flag_image."'>";
 				}
 			break;
 
@@ -3852,11 +3813,6 @@ class mf_theme_core
 
 			case 'last_updated':
 				switch_to_blog($id);
-
-				if(!isset($obj_base))
-				{
-					$obj_base = new mf_base();
-				}
 
 				$arr_post_types = $obj_base->get_post_types_for_metabox();
 				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
