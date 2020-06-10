@@ -1601,7 +1601,17 @@ class mf_theme_core
 			}
 
 			$options_params[] = array('type' => 'text', 'id' => 'section_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.6em");
-			$options_params[] = array('type' => 'text', 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
+
+			// Range does not display the value the user has chosen...
+			//$options_params[] = array('type' => 'text', 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
+			$options_params[] = array('type' => 'range', 'input_attrs' => array(
+				'min' => 1,
+				'max' => 5,
+				'step' => .1,
+				//'class' => 'test-class test',
+				//'style' => 'color: #0a0',
+			), 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
+
 			$options_params[] = array('type' => 'text', 'id' => 'section_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => "0 0 2em");
 
 			if($theme_dir_name == 'mf_parallax')
@@ -3021,6 +3031,7 @@ class mf_theme_core
 		$plugin_version = get_plugin_version(__FILE__);
 
 		mf_enqueue_style('style_theme_core_customizer', $plugin_include_url."style_customizer.css", $plugin_version);
+		mf_enqueue_script('script_theme_core_customizer', $plugin_include_url."script_customizer.js", $plugin_version);
 
 		$this->get_params();
 		$this->get_theme_fonts();
@@ -3037,6 +3048,8 @@ class mf_theme_core
 
 		foreach($this->options_params as $this->param)
 		{
+			if(!isset($this->param['input_attrs'])){		$this->param['input_attrs'] = array();}
+
 			if(isset($this->param['show_if']) && $this->param['show_if'] != '' && $this->options[$this->param['show_if']] == ''){}
 
 			else if(isset($this->param['hide_if']) && $this->param['hide_if'] != '' && $this->options[$this->param['hide_if']] != ''){}
@@ -3140,17 +3153,16 @@ class mf_theme_core
 						case 'email':
 						case 'hidden':
 						case 'number':
+						case 'range':
 						case 'text':
 						case 'textarea':
 						case 'url':
-							$wp_customize->add_control(
-								$this->param['id'],
-								array(
-									'label' => $this->param['title'],
-									'section' => $this->id_temp,
-									'type' => $this->param['type'],
-								)
-							);
+							$wp_customize->add_control($this->param['id'], array(
+								'label' => $this->param['title'],
+								'section' => $this->id_temp,
+								'type' => $this->param['type'],
+								'input_attrs' => $this->param['input_attrs'],
+							));
 						break;
 
 						case 'float':
@@ -3297,66 +3309,6 @@ class mf_theme_core
 			}
 		}
 	}
-
-	// This was a WP v4.9 fix for sites that have had files in uploads/{year}/{month} and are expected to have the files in uploads/sites/{id}/{year}/{month}
-	/*function do_fix()
-	{
-		global $wpdb;
-
-		$upload_path_from = WP_CONTENT_DIR."/uploads/";
-		$upload_url_from = WP_CONTENT_URL."/uploads/";
-
-		list($upload_path_to, $upload_url_to) = get_uploads_folder('', true);
-
-		if(!preg_match("/\/sites\//", $upload_path_to)){	$upload_path_to .= "sites/".$wpdb->blogid."/";}
-		if(!preg_match("/\/sites\//", $upload_url_to)){		$upload_url_to .= "sites/".$wpdb->blogid."/";}
-
-		$arr_sizes = array('thumbnail', 'medium', 'large');
-
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM ".$wpdb->posts." WHERE post_type = %s", 'attachment'));
-
-		foreach($result as $r)
-		{
-			$post_id = $r->ID;
-			$post_url = wp_get_attachment_url($post_id);
-
-			$this->file_dir_from = str_replace(array($upload_url_to, $upload_url_from), $upload_path_from, $post_url);
-			$this->file_dir_to = str_replace(array($upload_url_to, $upload_url_from), $upload_path_to, $post_url);
-
-			$this->copy_file();
-
-			if(wp_attachment_is_image($post_id))
-			{
-				foreach($arr_sizes as $size)
-				{
-					$arr_image = wp_get_attachment_image_src($post_id, $size);
-					$post_url = $arr_image[0];
-
-					$this->file_dir_from = str_replace(array($upload_url_to, $upload_url_from), $upload_path_from, $post_url);
-					$this->file_dir_to = str_replace(array($upload_url_to, $upload_url_from), $upload_path_to, $post_url);
-
-					$this->copy_file();
-				}
-			}
-		}
-
-		// Some files are still in use in the old hierarchy
-		if(1 == 2 && !(get_option('option_uploads_fixed') > DEFAULT_DATE))
-		{
-			update_option('option_uploads_fixed', date("Y-m-d H:i:s"), 'no');
-		}
-
-		if(1 == 2 && get_option('option_uploads_fixed') < date("Y-m-d", strtotime("-1 month")))
-		{
-			if(file_exists($upload_path_from.date("Y")))
-			{
-				do_log(sprintf("You can now safely remove all year folders in %s, but just to be on the safe side you can move them to a temporary folder or make a backup before you do this just in case", $upload_path_from));
-
-				update_option('option_uploads_done', date("Y-m-d H:i:s"), 'no');
-				delete_option('option_uploads_fixed');
-			}
-		}
-	}*/
 	#################################
 
 	// Cron
@@ -3963,11 +3915,6 @@ class mf_theme_core
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();
 		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_folder')));
-
-		/*if(is_multisite() && !(get_option('option_uploads_done') > DEFAULT_DATE))
-		{
-			$this->do_fix();
-		}*/
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
