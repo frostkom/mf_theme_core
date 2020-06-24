@@ -4484,7 +4484,7 @@ class widget_theme_core_news extends WP_Widget
 
 				if($instance['news_amount'] > 1 && $rows > 3 && $instance['news_type'] != 'compact')
 				{
-					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='0' max='4'"));
 				}
 
 			echo "</div>";
