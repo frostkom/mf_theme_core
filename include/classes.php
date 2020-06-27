@@ -2856,7 +2856,7 @@ class mf_theme_core
 				$obj_base = new mf_base();
 
 				$meta_boxes[] = array(
-					'id' => 'theme_core_publish',
+					'id' => $this->meta_prefix.'publish',
 					'title' => __("Publish Settings", 'lang_theme_core'),
 					'post_types' => $obj_base->get_post_types_for_metabox(),
 					'context' => 'side',
@@ -3970,7 +3970,7 @@ class widget_theme_core_area extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_widget_area',
 			'description' => __("Add Widget Area", 'lang_theme_core')
 		);
@@ -3982,7 +3982,7 @@ class widget_theme_core_area extends WP_Widget
 			'widget_area_padding' => '',
 		);
 
-		parent::__construct('theme-widget-area-widget', __("Widget Area", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4037,7 +4037,7 @@ class widget_theme_core_logo extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_logo',
 			'description' => __("Display Logo", 'lang_theme_core')
 		);
@@ -4050,7 +4050,7 @@ class widget_theme_core_logo extends WP_Widget
 			'logo_description' => '',
 		);
 
-		parent::__construct('theme-logo-widget', __("Logo", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4134,7 +4134,7 @@ class widget_theme_core_search extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_search',
 			'description' => __("Display Search Form", 'lang_theme_core')
 		);
@@ -4144,7 +4144,7 @@ class widget_theme_core_search extends WP_Widget
 			'search_animate' => 'yes',
 		);
 
-		parent::__construct('theme-search-widget', __("Search", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4183,7 +4183,7 @@ class widget_theme_core_news extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_news',
 			'description' => __("Display News/Posts", 'lang_theme_core')
 		);
@@ -4203,7 +4203,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_page' => 0,
 		);
 
-		parent::__construct('theme-news-widget', __("News", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -4533,7 +4533,7 @@ class widget_theme_core_info extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_info',
 			'description' => __("Display Info Module", 'lang_theme_core')
 		);
@@ -4545,9 +4545,96 @@ class widget_theme_core_info extends WP_Widget
 			'info_button_text' => '',
 			'info_page' => 0,
 			'info_link' => '',
+			'info_time_limit' => 0,
+			'info_visit_limit' => 0,
 		);
 
-		parent::__construct('theme-info-widget', __("Info Module", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", 'lang_theme_core'), $this->widget_ops);
+	}
+
+	function check_limit($instance)
+	{
+		if($instance['info_time_limit'] > 0)
+		{
+			$widget_md5 = md5(var_export($instance, true));
+
+			if(is_user_logged_in())
+			{
+				$meta_time_visit_limit = get_user_meta(get_current_user_id(), 'meta_time_visit_limit', true);
+
+				if($meta_time_visit_limit > DEFAULT_DATE && $meta_time_visit_limit < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
+				{
+					return false;
+				}
+
+				else
+				{
+					update_user_meta(get_current_user_id(), 'meta_time_visit_limit', date("Y-m-d"));
+				}
+			}
+
+			else
+			{
+				if(!session_id())
+				{
+					@session_start();
+				}
+
+				$ses_info_time_limit = check_var('ses_info_time_limit', 'int', true, '0');
+
+				if($ses_info_time_limit > DEFAULT_DATE && $ses_info_time_limit < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
+				{
+					return false;
+				}
+
+				else
+				{
+					$_SESSION['ses_info_time_limit'] = date("Y-m-d");
+				}
+			}
+		}
+
+		if($instance['info_visit_limit'] > 0)
+		{
+			$widget_md5 = md5(var_export($instance, true));
+
+			if(is_user_logged_in())
+			{
+				$meta_info_visit_limit = get_user_meta(get_current_user_id(), 'meta_info_visit_limit', true) + 1;
+
+				if($meta_info_visit_limit > $instance['info_visit_limit'])
+				{
+					return false;
+				}
+
+				else
+				{
+					update_user_meta(get_current_user_id(), 'meta_info_visit_limit', $meta_info_visit_limit);
+				}
+			}
+
+			else
+			{
+				if(!session_id())
+				{
+					@session_start();
+				}
+
+				$ses_info_visit_limit = check_var('ses_info_visit_limit', 'int', true, '0') + 1;
+
+				if($ses_info_visit_limit > $instance['info_visit_limit'])
+				{
+					return false;
+				}
+
+				else
+				{
+					$_SESSION['ses_info_visit_limit'] = $ses_info_visit_limit;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	function widget($args, $instance)
@@ -4559,44 +4646,47 @@ class widget_theme_core_info extends WP_Widget
 		else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
 		else{									$button_link = apply_filters('get_theme_core_info_button_link', "#");}
 
-		echo $before_widget
-			."<div class='section'>
-				<div>";
+		if($this->check_limit($instance))
+		{
+			echo $before_widget
+				."<div class='section'>
+					<div>";
 
-					if($instance['info_image'] != '')
-					{
-						echo "<div class='image'><a href='".$button_link."'>".render_image_tag(array('src' => $instance['info_image']))."</a></div>";
-					}
-
-					echo "<div class='content'>";
-
-						if($instance['info_title'] != '')
+						if($instance['info_image'] != '')
 						{
-							$instance['info_title'] = apply_filters('widget_title', $instance['info_title'], $instance, $this->id_base);
-
-							echo $before_title
-								.apply_filters('get_theme_core_info_title', $instance['info_title'])
-							.$after_title;
+							echo "<div class='image'><a href='".$button_link."'>".render_image_tag(array('src' => $instance['info_image']))."</a></div>";
 						}
 
-						if($instance['info_content'] != '')
-						{
-							echo apply_filters('the_content', apply_filters('get_theme_core_info_text', $instance['info_content']));
-						}
+						echo "<div class='content'>";
 
-						if($instance['info_button_text'] != '')
-						{
-							echo "<div class='form_button'>"
-								.apply_filters('the_content', "<a href='".$button_link."' class='button'>"
-									.$instance['info_button_text']
-								."</a>")
-							."</div>";
-						}
+							if($instance['info_title'] != '')
+							{
+								$instance['info_title'] = apply_filters('widget_title', $instance['info_title'], $instance, $this->id_base);
 
-					echo "</div>
-				</div>
-			</div>"
-		.$after_widget;
+								echo $before_title
+									.apply_filters('get_theme_core_info_title', $instance['info_title'])
+								.$after_title;
+							}
+
+							if($instance['info_content'] != '')
+							{
+								echo apply_filters('the_content', apply_filters('get_theme_core_info_text', $instance['info_content']));
+							}
+
+							if($instance['info_button_text'] != '')
+							{
+								echo "<div class='form_button'>"
+									.apply_filters('the_content', "<a href='".$button_link."' class='button'>"
+										.$instance['info_button_text']
+									."</a>")
+								."</div>";
+							}
+
+						echo "</div>
+					</div>
+				</div>"
+			.$after_widget;
+		}
 	}
 
 	function update($new_instance, $old_instance)
@@ -4610,6 +4700,8 @@ class widget_theme_core_info extends WP_Widget
 		$instance['info_button_text'] = sanitize_text_field($new_instance['info_button_text']);
 		$instance['info_page'] = sanitize_text_field($new_instance['info_page']);
 		$instance['info_link'] = esc_url_raw($new_instance['info_link']);
+		$instance['info_visit_limit'] = sanitize_text_field($new_instance['info_visit_limit']);
+		$instance['info_time_limit'] = sanitize_text_field($new_instance['info_time_limit']);
 
 		return $instance;
 	}
@@ -4639,6 +4731,17 @@ class widget_theme_core_info extends WP_Widget
 					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link']));
 				}
 			}
+
+			if(!($instance['info_visit_limit'] > 0))
+			{
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['info_time_limit'], 'suffix' => __("days", 'lang_theme_core')));
+			}
+
+			if(!($instance['info_time_limit'] > 0))
+			{
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_visit_limit'), 'text' => __("Visit Limit", 'lang_theme_core'), 'value' => $instance['info_visit_limit'], 'suffix' => __("times", 'lang_theme_core')));
+			}
+
 		echo "</div>";
 	}
 }
@@ -4647,7 +4750,7 @@ class widget_theme_core_related extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_news',
 			'description' => __("Display Related Posts", 'lang_theme_core')
 		);
@@ -4660,7 +4763,7 @@ class widget_theme_core_related extends WP_Widget
 			'news_columns' => 1,
 		);
 
-		parent::__construct('theme-related-news-widget', __("Related Posts", 'lang_theme_core'), $widget_ops);
+		parent::__construct('theme-related-news-widget', __("Related Posts", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -4821,7 +4924,7 @@ class widget_theme_core_promo extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_promo theme_news',
 			'description' => __("Promote Pages", 'lang_theme_core')
 		);
@@ -4832,7 +4935,7 @@ class widget_theme_core_promo extends WP_Widget
 			'promo_page_titles' => 'yes',
 		);
 
-		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $widget_ops);
+		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4971,7 +5074,7 @@ class widget_theme_core_page_index extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'theme_page_index',
 			'description' => __("Display Table of Contents", 'lang_theme_core')
 		);
@@ -4980,7 +5083,7 @@ class widget_theme_core_page_index extends WP_Widget
 			'widget_title' => "",
 		);
 
-		parent::__construct('theme-page-index-widget', __("Table of Contents", 'lang_theme_core'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", 'lang_theme_core'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
