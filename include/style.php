@@ -509,6 +509,32 @@ echo "@media all
 			text-align: center;
 		}
 
+		.widget.theme_info.postit .section > div
+		{
+			background: none;
+		}
+
+			.widget.theme_info.postit .content
+			{
+				background-color: #f4f39e;
+				border-color: #dee184;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+				display: block;
+				height: 18em;
+				margin: 1em;
+				padding: 1.5em 1em;
+				-webkit-tap-highlight-color: transparent;
+				-webkit-transform: rotate(1deg);
+				transform: rotate(1deg);
+				max-width: 20em;
+			}
+
+				.widget.theme_info.postit .content h3, .widget.theme_info.postit .content p
+				{
+					float: none;
+					width: 100%;
+				}
+
 		.theme_widget_area .widget.theme_info .section
 		{
 			height: 100%;

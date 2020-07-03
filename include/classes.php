@@ -4554,22 +4554,25 @@ class widget_theme_core_info extends WP_Widget
 
 	function check_limit($instance)
 	{
+		$widget_md5 = md5(var_export($instance, true));
+
 		if($instance['info_time_limit'] > 0)
 		{
-			$widget_md5 = md5(var_export($instance, true));
-
 			if(is_user_logged_in())
 			{
-				$meta_time_visit_limit = get_user_meta(get_current_user_id(), 'meta_time_visit_limit', true);
+				$arr_meta_time_visit_limit = get_user_meta(get_current_user_id(), 'meta_time_visit_limit', false);
+				$arr_meta_time_visit_limit = is_array($arr_meta_time_visit_limit) ? $arr_meta_time_visit_limit[0] : array();
 
-				if($meta_time_visit_limit > DEFAULT_DATE && $meta_time_visit_limit < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
+				if(!isset($arr_meta_time_visit_limit[$widget_md5]) || $arr_meta_time_visit_limit[$widget_md5] < DEFAULT_DATE)
 				{
-					return false;
+					$arr_meta_time_visit_limit[$widget_md5] = date("Y-m-d");
+
+					update_user_meta(get_current_user_id(), 'meta_time_visit_limit', $arr_meta_time_visit_limit);
 				}
 
-				else
+				else if($arr_meta_time_visit_limit[$widget_md5] < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
 				{
-					update_user_meta(get_current_user_id(), 'meta_time_visit_limit', date("Y-m-d"));
+					return false;
 				}
 			}
 
@@ -4580,36 +4583,47 @@ class widget_theme_core_info extends WP_Widget
 					@session_start();
 				}
 
-				$ses_info_time_limit = check_var('ses_info_time_limit', 'int', true, '0');
-
-				if($ses_info_time_limit > DEFAULT_DATE && $ses_info_time_limit < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
+				$arr_ses_info_time_limit = check_var('ses_info_time_limit', 'array', true, '0');
+				
+				if(!isset($arr_ses_info_time_limit[$widget_md5]) || $arr_ses_info_time_limit[$widget_md5] < DEFAULT_DATE)
 				{
-					return false;
+					$arr_ses_info_time_limit[$widget_md5] = date("Y-m-d");
+
+					$_SESSION['ses_info_time_limit'] = $arr_ses_info_time_limit;
 				}
 
-				else
+				else if($arr_ses_info_time_limit[$widget_md5] < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
 				{
-					$_SESSION['ses_info_time_limit'] = date("Y-m-d");
+					return false;
 				}
 			}
 		}
 
 		if($instance['info_visit_limit'] > 0)
 		{
-			$widget_md5 = md5(var_export($instance, true));
-
 			if(is_user_logged_in())
 			{
-				$meta_info_visit_limit = get_user_meta(get_current_user_id(), 'meta_info_visit_limit', true) + 1;
+				$arr_meta_info_visit_limit = get_user_meta(get_current_user_id(), 'meta_info_visit_limit', false);
+				$arr_meta_info_visit_limit = is_array($arr_meta_info_visit_limit) ? $arr_meta_info_visit_limit[0] : array();
 
-				if($meta_info_visit_limit > $instance['info_visit_limit'])
+				if(!isset($arr_meta_info_visit_limit[$widget_md5]))
+				{
+					$arr_meta_info_visit_limit[$widget_md5] = 1;
+				}
+
+				else
+				{
+					$arr_meta_info_visit_limit[$widget_md5] += 1;
+				}
+
+				if($arr_meta_info_visit_limit[$widget_md5] > $instance['info_visit_limit'])
 				{
 					return false;
 				}
 
 				else
 				{
-					update_user_meta(get_current_user_id(), 'meta_info_visit_limit', $meta_info_visit_limit);
+					update_user_meta(get_current_user_id(), 'meta_info_visit_limit', $arr_meta_info_visit_limit);
 				}
 			}
 
@@ -4620,16 +4634,26 @@ class widget_theme_core_info extends WP_Widget
 					@session_start();
 				}
 
-				$ses_info_visit_limit = check_var('ses_info_visit_limit', 'int', true, '0') + 1;
+				$arr_ses_info_visit_limit = check_var('ses_info_visit_limit', 'array', true, '0');
 
-				if($ses_info_visit_limit > $instance['info_visit_limit'])
+				if(!isset($arr_ses_info_visit_limit[$widget_md5]))
+				{
+					$arr_ses_info_visit_limit[$widget_md5] = 1;
+				}
+
+				else
+				{
+					$arr_ses_info_visit_limit[$widget_md5]++;
+				}
+
+				if($arr_ses_info_visit_limit[$widget_md5] > $instance['info_visit_limit'])
 				{
 					return false;
 				}
 
 				else
 				{
-					$_SESSION['ses_info_visit_limit'] = $ses_info_visit_limit;
+					$_SESSION['ses_info_visit_limit'] = $arr_ses_info_visit_limit;
 				}
 			}
 		}

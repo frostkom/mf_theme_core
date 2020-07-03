@@ -1289,7 +1289,7 @@ msgstr "dagar"
 
 #: ../include/classes.php:4742
 msgid "Visit Limit"
-msgstr "Besäksgräns"
+msgstr "Besöksgräns"
 
 #: ../include/classes.php:4742
 msgid "times"
