@@ -2954,6 +2954,47 @@ class mf_theme_core
 		add_action('wp_footer', 'wp_print_head_scripts', 5);
 	}
 
+	function recommend_config($data)
+	{
+		global $obj_base;
+
+		if(!isset($data['file'])){		$data['file'] = '';}
+
+		if(get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
+		{
+			if(!isset($obj_base))
+			{
+				$obj_base = new mf_base();
+			}
+
+			switch($obj_base->get_server_type())
+			{
+				default:
+				case 'apache':
+					$update_with = "<Files xmlrpc.php>\r\n"
+					."	Order deny,allow\r\n"
+					."	Deny from all\r\n"
+					."</Files>";
+				break;
+
+				case 'nginx':
+					$update_with = "location /xmlrpc.php {\r\n"
+					."	deny all;\r\n"
+					."}";
+				break;
+			}
+
+			$data['html'] .= $obj_base->update_config(array(
+				'plugin_name' => "MF Theme Core",
+				'file' => $data['file'],
+				'update_with' => $update_with,
+				'auto_update' => false, // This is not allowed on all servers so be careful
+			));
+		}
+
+		return $data;
+	}
+
 	function mf_unregister_widget($id)
 	{
 		/*$arr_exclude = array("WP_Widget_", "_");

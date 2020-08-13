@@ -16,7 +16,7 @@ jQuery(function($)
 			{
 				obj.selector.empty();
 
-				obj.button.addClass('is_disabled').attr('disabled', true);
+				obj.button.addClass('is_disabled'); /*.attr('disabled', true)*/
 
 				if(data.success)
 				{
