@@ -67,6 +67,40 @@ class mf_theme_core
 		return $arr_data;
 	}
 
+	function get_themes_for_select()
+	{
+		$arr_data = array(
+			'' => "-- ".__("Choose Here", 'lang_theme_core')." --",	
+		);
+
+		$arr_themes = wp_get_themes(array('errors' => false, 'allowed' => true));
+
+		foreach($arr_themes as $key => $value)
+		{
+			$arr_data[$key] = $value['Name'];
+		}
+
+		return $arr_data;
+	}
+
+	function get_meta_boxes_for_select()
+	{
+		return array(
+			'authordiv' => __("Author", 'lang_theme_core'),
+			'categorydiv' => __("Categories", 'lang_theme_core'),
+			'commentstatusdiv' => __("Discussion", 'lang_theme_core'),
+			'commentsdiv' => __("Comments", 'lang_theme_core'),
+			'pageparentdiv' => __("Page Attributes", 'lang_theme_core'),
+			'postcustom' => __("Custom Fields", 'lang_theme_core'),
+			'postexcerpt' => __("Excerpt", 'lang_theme_core'),
+			'postimagediv' => __("Featured Image", 'lang_theme_core'),
+			'revisionsdiv' => __("Revisions", 'lang_theme_core'),
+			'slugdiv' => __("Slug", 'lang_theme_core'),
+			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
+			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
+		); //'formatdiv', 'tagsdiv',
+	}
+
 	function cron_base()
 	{
 		$obj_cron = new mf_cron();
@@ -281,7 +315,7 @@ class mf_theme_core
 
 	function settings_theme_core()
 	{
-		$options_area = __FUNCTION__;
+		$options_area_orig = $options_area = __FUNCTION__;
 
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
@@ -292,54 +326,14 @@ class mf_theme_core
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
 			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-
-			/*if(get_option('setting_theme_core_login') == 'yes')
-			{*/
-				$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
-			//}
 		}
 
-		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
+		/*if(IS_SUPER_ADMIN)
+		{
+			$arr_settings['setting_theme_core_logged_in_theme'] = __("Theme For Administrators", 'lang_theme_core');
+		}*/
 
 		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", 'lang_theme_core');
-
-		if(get_option('setting_no_public_pages') != 'yes')
-		{
-			$arr_data = array();
-			get_post_children(array('post_type' => 'post'), $arr_data);
-
-			if(count($arr_data) > 0)
-			{
-				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
-				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
-			}
-
-			else
-			{
-				delete_option('setting_display_post_meta');
-			}
-
-			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
-
-			if(is_plugin_active("mf_analytics/index.php"))
-			{
-				$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
-			}
-
-			else
-			{
-				delete_option('setting_cookie_info');
-			}
-
-			$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
-		}
-
-		$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
-
-		if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
-		{
-			$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
-		}
 
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
@@ -393,6 +387,65 @@ class mf_theme_core
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+
+		// Public Site
+		############################
+		$options_area = $options_area_orig."_public";
+
+		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+
+		$arr_settings = array();
+
+		if(get_option('setting_no_public_pages') != 'yes')
+		{
+			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
+		}
+
+		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
+
+		if(get_option('setting_no_public_pages') != 'yes')
+		{
+			$arr_data = array();
+			get_post_children(array('post_type' => 'post'), $arr_data);
+
+			if(count($arr_data) > 0)
+			{
+				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
+			}
+
+			else
+			{
+				delete_option('setting_display_post_meta');
+			}
+
+			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
+
+			if(is_plugin_active("mf_analytics/index.php"))
+			{
+				$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
+			}
+
+			else
+			{
+				delete_option('setting_cookie_info');
+			}
+
+			if(get_option('setting_no_public_pages') != 'yes')
+			{
+				$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+			}
+
+			$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
+
+			if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
+			{
+				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
+			}
+		}
+
+		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+		############################
 	}
 
 	function settings_theme_core_callback()
@@ -402,360 +455,357 @@ class mf_theme_core
 		echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
 	}
 
-	function setting_no_public_pages_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 'no');
-
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_theme_core_login_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 'no');
-
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_theme_core_display_lock_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key, array('administrator', 'editor', 'author', 'contributor'));
-		//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
-
-		echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
-	}
-
-	function setting_theme_core_title_format_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => $this->title_format, 'description' => __("This will replace the default format", 'lang_theme_core')));
-	}
-
-	function get_meta_boxes_for_select()
-	{
-		return array(
-			'authordiv' => __("Author", 'lang_theme_core'),
-			'categorydiv' => __("Categories", 'lang_theme_core'),
-			'commentstatusdiv' => __("Discussion", 'lang_theme_core'),
-			'commentsdiv' => __("Comments", 'lang_theme_core'),
-			'pageparentdiv' => __("Page Attributes", 'lang_theme_core'),
-			'postcustom' => __("Custom Fields", 'lang_theme_core'),
-			'postexcerpt' => __("Excerpt", 'lang_theme_core'),
-			'postimagediv' => __("Featured Image", 'lang_theme_core'),
-			'revisionsdiv' => __("Revisions", 'lang_theme_core'),
-			'slugdiv' => __("Slug", 'lang_theme_core'),
-			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
-			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
-		); //'formatdiv', 'tagsdiv',
-	}
-
-	function setting_theme_core_hidden_meta_boxes_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key, array('authordiv', 'commentstatusdiv', 'commentsdiv', 'postcustom', 'revisionsdiv', 'slugdiv', 'trackbacksdiv'));
-
-		echo show_select(array('data' => $this->get_meta_boxes_for_select(), 'name' => $setting_key."[]", 'value' => $option));
-	}
-
-	function setting_display_post_meta_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, array('time'));
-
-		$arr_data = array(
-			'time' => __("Time", 'lang_theme_core'),
-			'author' => __("Author", 'lang_theme_core'),
-			'category' => __("Category", 'lang_theme_core'),
-		);
-
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
-	}
-
-	function get_comment_status_amount($status)
-	{
-		global $wpdb;
-
-		$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = 'post' AND comment_status = %s LIMIT 0, 1", $status));
-
-		return $wpdb->num_rows;
-	}
-
-	function get_comment_status_for_select($option)
-	{
-		$arr_data = array();
-		$arr_data['open'] = __("Yes", 'lang_theme_core');
-
-		if($this->get_comment_status_amount('closed') > 0)
+		function setting_no_public_pages_callback()
 		{
-			$arr_data['open_all'] = __("Yes", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'no');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
-		$arr_data['closed'] = __("No", 'lang_theme_core');
-
-		if($this->get_comment_status_amount('open') > 0)
+		function setting_theme_core_login_callback()
 		{
-			$arr_data['closed_all'] = __("No", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'no');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
-		return $arr_data;
-	}
-
-	function default_comment_status_callback()
-	{
-		global $wpdb;
-
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		if(in_array($option, array('open_all', 'closed_all')))
+		/*function setting_theme_core_logged_in_theme_callback()
 		{
-			$option = str_replace('_all', '', $option);
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
 
-			$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE post_type = 'post' AND comment_status != %s", $option, $option));
+			echo show_select(array('data' => $this->get_themes_for_select(), 'name' => $setting_key, 'value' => $option));
+		}*/
 
-			update_option($setting_key, $option, 'no');
+		function setting_theme_core_hidden_meta_boxes_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key, array('authordiv', 'commentstatusdiv', 'commentsdiv', 'postcustom', 'revisionsdiv', 'slugdiv', 'trackbacksdiv'));
+
+			echo show_select(array('data' => $this->get_meta_boxes_for_select(), 'name' => $setting_key."[]", 'value' => $option));
 		}
 
-		echo show_select(array('data' => $this->get_comment_status_for_select($option), 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_scroll_to_top_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 'yes');
-
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_cookie_info_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		$arr_data = array();
-		get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
-
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
-	}
-
-	function setting_404_page_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		$arr_data = array();
-		get_post_children(array('add_choose_here' => true), $arr_data);
-
-		$post_title = "404";
-		$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
-
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
-	}
-
-	function setting_maintenance_page_callback()
-	{
-		global $done_text, $error_text;
-
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-		$option_temp = get_option($setting_key.'_temp');
-
-		$arr_data = array();
-		get_post_children(array('add_choose_here' => true), $arr_data);
-
-		$post_title = __("Temporary Maintenance", 'lang_theme_core');
-		$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
-
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
-
-		if($option > 0 && $option != $option_temp)
+		function setting_send_email_on_draft_callback()
 		{
-			$maintenance_file = ABSPATH."wp-content/maintenance.php";
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'no');
 
-			if(!file_exists($maintenance_file) || is_writeable($maintenance_file))
+			$editors = "";
+
+			$users = get_users(array(
+				'fields' => array('display_name'),
+				'role__in' => array('editor'),
+			));
+
+			foreach($users as $user)
 			{
-				list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
-				$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
+				$editors .= ($editors != '' ? "" : "").$user->display_name;
+			}
 
-				$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
+		}
 
-				if(is_multisite())
-				{
-					$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
+		function setting_theme_enable_wp_api_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			settings_save_site_wide($setting_key);
+			$option = get_site_option($setting_key, 'no');
 
-					$result = get_sites(array('deleted' => 0, 'order' => 'DESC'));
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+		}
 
-					foreach($result as $r)
-					{
-						$blog_id = $r->blog_id;
+		function setting_theme_optimize_callback()
+		{
+			$option_database_optimized = get_option('option_database_optimized');
 
-						switch_to_blog($blog_id);
+			if($option_database_optimized > DEFAULT_DATE)
+			{
+				$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +7 day")));
 
-						$loop_template_temp = $loop_template;
-
-						$option_ms = get_option('setting_maintenance_page');
-
-						if($option_ms > 0)
-						{
-							$site_url = get_site_url();
-							$site_url_clean = remove_protocol(array('url' => $site_url));
-							$post_url_clean = remove_protocol(array('url' => get_permalink($option_ms), 'clean' => true));
-							$post_title = get_the_title($option_ms);
-							$post_content = mf_get_post_content($option_ms);
-
-							if($post_url_clean != '' && $post_content != '')
-							{
-								$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
-								$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
-								$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
-								$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-
-								$recommend_maintenance .= "\n".$loop_template_temp;
-							}
-						}
-
-						restore_current_blog();
-					}
-				}
-
-				else
-				{
-					$site_url = get_site_url();
-					$site_url_clean = remove_protocol(array('url' => $site_url));
-					$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
-					$post_title = get_the_title($option);
-					$post_content = mf_get_post_content($option);
-
-					if($post_url_clean != '' && $post_content != '')
-					{
-						$recommend_maintenance = str_replace("[site_url]", $site_url_clean, $recommend_maintenance);
-						$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
-						$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
-						$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
-					}
-				}
-
-				if(strlen($recommend_maintenance) > 0)
-				{
-					$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
-
-					if($success == true)
-					{
-						update_option($setting_key.'_temp', $option, 'no');
-					}
-
-					else
-					{
-						$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
-					}
-				}
-
-				else
-				{
-					$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
-				}
+				$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
 			}
 
 			else
 			{
-				$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
+				$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 			}
 
-			echo get_notification();
+			echo "<div>"
+				.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
+				."<p class='italic'>".$description."</p>"
+			."</div>
+			<div id='optimize_debug'></div>";
 		}
-	}
 
-	function setting_activate_maintenance_callback()
+		function setting_theme_ignore_style_on_restore_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			if(!is_array($option))
+			{
+				$option = array_map('trim', explode(",", $option));
+			}
+
+			echo show_select(array('data' => $this->get_params_for_select(), 'name' => $setting_key."[]", 'value' => $option));
+		}
+
+		/*function setting_theme_css_hero_callback()
+		{
+			$css_hero_key = 'wpcss_quick_config_settings_'.$this->get_theme_slug();
+
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, get_option($css_hero_key));
+
+			if($option != '')
+			{
+				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
+			}
+
+			update_option($css_hero_key, $option);
+		}*/
+
+	function settings_theme_core_public_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 'no');
 
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
+		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Public", 'lang_theme_core'));
 	}
 
-	function setting_send_email_on_draft_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 'no');
-
-		$editors = "";
-
-		$users = get_users(array(
-			'fields' => array('display_name'),
-			'role__in' => array('editor'),
-		));
-
-		foreach($users as $user)
+		function setting_theme_core_display_lock_callback()
 		{
-			$editors .= ($editors != '' ? "" : "").$user->display_name;
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key, array('administrator', 'editor', 'author', 'contributor'));
+			//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
+
+			echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
 		}
 
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
-	}
-
-	function setting_theme_enable_wp_api_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		settings_save_site_wide($setting_key);
-		$option = get_site_option($setting_key, 'no');
-
-		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_theme_optimize_callback()
-	{
-		$option_database_optimized = get_option('option_database_optimized');
-
-		if($option_database_optimized > DEFAULT_DATE)
+		function setting_theme_core_title_format_callback()
 		{
-			$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +7 day")));
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
 
-			$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
+			echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => $this->title_format, 'description' => __("This will replace the default format", 'lang_theme_core')));
 		}
 
-		else
+		function setting_display_post_meta_callback()
 		{
-			$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, array('time'));
+
+			$arr_data = array(
+				'time' => __("Time", 'lang_theme_core'),
+				'author' => __("Author", 'lang_theme_core'),
+				'category' => __("Category", 'lang_theme_core'),
+			);
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
 		}
 
-		echo "<div>"
-			.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
-			."<p class='italic'>".$description."</p>"
-		."</div>
-		<div id='optimize_debug'></div>";
-	}
-
-	function setting_theme_ignore_style_on_restore_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		if(!is_array($option))
+		function get_comment_status_amount($status)
 		{
-			$option = array_map('trim', explode(",", $option));
+			global $wpdb;
+
+			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = 'post' AND comment_status = %s LIMIT 0, 1", $status));
+
+			return $wpdb->num_rows;
 		}
 
-		echo show_select(array('data' => $this->get_params_for_select(), 'name' => $setting_key."[]", 'value' => $option));
-	}
-
-	/*function setting_theme_css_hero_callback()
-	{
-		$css_hero_key = 'wpcss_quick_config_settings_'.$this->get_theme_slug();
-
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, get_option($css_hero_key));
-
-		if($option != '')
+		function get_comment_status_for_select($option)
 		{
-			echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
+			$arr_data = array();
+			$arr_data['open'] = __("Yes", 'lang_theme_core');
+
+			if($this->get_comment_status_amount('closed') > 0)
+			{
+				$arr_data['open_all'] = __("Yes", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+			}
+
+			$arr_data['closed'] = __("No", 'lang_theme_core');
+
+			if($this->get_comment_status_amount('open') > 0)
+			{
+				$arr_data['closed_all'] = __("No", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+			}
+
+			return $arr_data;
 		}
 
-		update_option($css_hero_key, $option);
-	}*/
+		function default_comment_status_callback()
+		{
+			global $wpdb;
+
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			if(in_array($option, array('open_all', 'closed_all')))
+			{
+				$option = str_replace('_all', '', $option);
+
+				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE post_type = 'post' AND comment_status != %s", $option, $option));
+
+				update_option($setting_key, $option, 'no');
+			}
+
+			echo show_select(array('data' => $this->get_comment_status_for_select($option), 'name' => $setting_key, 'value' => $option));
+		}
+
+		function setting_scroll_to_top_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'yes');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+		}
+
+		function setting_cookie_info_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			$arr_data = array();
+			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+		}
+
+		function setting_404_page_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			$arr_data = array();
+			get_post_children(array('add_choose_here' => true), $arr_data);
+
+			$post_title = "404";
+			$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+		}
+
+		function setting_maintenance_page_callback()
+		{
+			global $done_text, $error_text;
+
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+			$option_temp = get_option($setting_key.'_temp');
+
+			$arr_data = array();
+			get_post_children(array('add_choose_here' => true), $arr_data);
+
+			$post_title = __("Temporary Maintenance", 'lang_theme_core');
+			$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
+
+			if($option > 0 && $option != $option_temp)
+			{
+				$maintenance_file = ABSPATH."wp-content/maintenance.php";
+
+				if(!file_exists($maintenance_file) || is_writeable($maintenance_file))
+				{
+					list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
+					$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
+
+					$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
+
+					if(is_multisite())
+					{
+						$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
+
+						$result = get_sites(array('deleted' => 0, 'order' => 'DESC'));
+
+						foreach($result as $r)
+						{
+							$blog_id = $r->blog_id;
+
+							switch_to_blog($blog_id);
+
+							$loop_template_temp = $loop_template;
+
+							$option_ms = get_option('setting_maintenance_page');
+
+							if($option_ms > 0)
+							{
+								$site_url = get_site_url();
+								$site_url_clean = remove_protocol(array('url' => $site_url));
+								$post_url_clean = remove_protocol(array('url' => get_permalink($option_ms), 'clean' => true));
+								$post_title = get_the_title($option_ms);
+								$post_content = mf_get_post_content($option_ms);
+
+								if($post_url_clean != '' && $post_content != '')
+								{
+									$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
+									$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
+									$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
+									$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
+
+									$recommend_maintenance .= "\n".$loop_template_temp;
+								}
+							}
+
+							restore_current_blog();
+						}
+					}
+
+					else
+					{
+						$site_url = get_site_url();
+						$site_url_clean = remove_protocol(array('url' => $site_url));
+						$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
+						$post_title = get_the_title($option);
+						$post_content = mf_get_post_content($option);
+
+						if($post_url_clean != '' && $post_content != '')
+						{
+							$recommend_maintenance = str_replace("[site_url]", $site_url_clean, $recommend_maintenance);
+							$recommend_maintenance = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $recommend_maintenance);
+							$recommend_maintenance = str_replace("[post_title]", $post_title, $recommend_maintenance);
+							$recommend_maintenance = str_replace("[post_content]", apply_filters('the_content', $post_content), $recommend_maintenance);
+						}
+					}
+
+					if(strlen($recommend_maintenance) > 0)
+					{
+						$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
+
+						if($success == true)
+						{
+							update_option($setting_key.'_temp', $option, 'no');
+						}
+
+						else
+						{
+							$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
+						}
+					}
+
+					else
+					{
+						$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
+					}
+				}
+
+				else
+				{
+					$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
+				}
+
+				echo get_notification();
+			}
+		}
+
+		function setting_activate_maintenance_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'no');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
+		}
 
 	function admin_init()
 	{
@@ -3989,6 +4039,46 @@ class mf_theme_core
 	}
 	#################################
 
+	/*function pre_option_template($option_template)
+	{
+		$is_allowed = false;
+
+		if(is_admin())
+		{
+			global $pagenow;
+
+			if($pagenow == 'customize.php' || $pagenow == 'widgets.php')
+			{
+				$is_allowed = true;
+			}
+		}
+
+		else
+		{
+			$is_allowed = true;
+		}
+
+		if($_SERVER['REMOTE_ADDR'] == "") // This will break the current theme and revert to the default theme
+		{
+			if($is_allowed)
+			{
+				$setting_theme_core_logged_in_theme = get_option('setting_theme_core_logged_in_theme');
+
+				if($setting_theme_core_logged_in_theme != '')
+				{
+					$arr_themes = wp_get_themes(array('allowed' => true));
+
+					if(isset($arr_themes[$setting_theme_core_logged_in_theme]))
+					{
+						$option_template = $arr_themes[$setting_theme_core_logged_in_theme];
+					}
+				}
+			}
+		}
+
+		return $option_template;
+	}*/
+
 	function shortcode_redirect($atts)
 	{
 		extract(shortcode_atts(array(
@@ -4153,7 +4243,7 @@ class widget_theme_core_logo extends WP_Widget
 			{
 				if($instance['logo_image'] == '')
 				{
-					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title'], 'xtra' => " id='logo-title'"));
+					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"));
 				}
 
 				if($instance['logo_title'] == '')
@@ -4517,7 +4607,7 @@ class widget_theme_core_news extends WP_Widget
 		get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
@@ -4777,7 +4867,7 @@ class widget_theme_core_info extends WP_Widget
 
 		echo "<div class='mf_form'>"
 			.get_media_library(array('type' => 'image', 'name' => $this->get_field_name('info_image'), 'value' => $instance['info_image']))
-			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='info-title'"))
+			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
 			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text']));
 
@@ -4969,7 +5059,7 @@ class widget_theme_core_related extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='news-title'"))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
 			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
@@ -5128,7 +5218,7 @@ class widget_theme_core_promo extends WP_Widget
 		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='promo-title'"))
+			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
 			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", 'lang_theme_core'), 'value' => $instance['promo_page_titles']))
 		."</div>";
@@ -5201,7 +5291,7 @@ class widget_theme_core_page_index extends WP_Widget
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['widget_title'], 'xtra' => " id='widget-title'"))
+			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['widget_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 		."</div>";
 	}
 }

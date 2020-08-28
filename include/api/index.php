@@ -18,9 +18,9 @@ $type = check_var('type', 'char');
 switch($type)
 {
 	case 'get_style_source':
-		$theme = wp_get_theme();
+		$arr_theme_data = wp_get_theme();
 
-		if($theme->exists())
+		if($arr_theme_data->exists())
 		{
 			$obj_theme_core = new mf_theme_core();
 
@@ -47,7 +47,7 @@ switch($type)
 
 			$json_output['success'] = ($style_changed >= DEFAULT_DATE);
 			$json_output['response'] = array(
-				'theme_version' => $theme->get('Version'), //Deprecated
+				'theme_version' => $arr_theme_data->get('Version'), //Deprecated
 				'style_changed' => $style_changed,
 				'style_url' => $style_url,
 			);

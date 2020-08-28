@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 7.9.7
+Version: 7.9.9
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -144,6 +144,8 @@ if($obj_theme_core->is_theme_active())
 	add_action('customize_save', array($obj_theme_core, 'customize_save'));
 }
 
+//add_filter('pre_option_stylesheet', array($obj_theme_core, 'pre_option_template'));
+
 add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'optimize_theme'));
 
 add_shortcode('redirect', array($obj_theme_core, 'shortcode_redirect'));
@@ -161,7 +163,7 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'setting_theme_enable_wp_api', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
+		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'setting_theme_enable_wp_api', 'setting_theme_core_logged_in_theme', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
 		'meta' => array('meta_info_time_limit', 'meta_info_visit_limit'),
 	));
 }
