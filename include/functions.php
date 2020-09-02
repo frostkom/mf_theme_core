@@ -123,8 +123,8 @@ function get_404_page()
 }
 
 // Temporary until MF Theme has been updated
-function get_search_theme_core()
+/*function get_search_theme_core()
 {
 	$obj_theme_core = new mf_theme_core();
 	$obj_theme_core->get_search_theme_core();
-}
+}*/

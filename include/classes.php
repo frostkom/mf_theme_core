@@ -4273,6 +4273,7 @@ class widget_theme_core_search extends WP_Widget
 		$this->arr_default = array(
 			'search_placeholder' => "",
 			'search_animate' => 'yes',
+			'search_listen_to_keystroke' => 'yes',
 		);
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);
@@ -4280,10 +4281,23 @@ class widget_theme_core_search extends WP_Widget
 
 	function widget($args, $instance)
 	{
+		global $obj_theme_core;
+
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
+		
+		if($instance['search_listen_to_keystroke'] == 'yes')
+		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+			$plugin_version = get_plugin_version(__FILE__);
 
-		$obj_theme_core = new mf_theme_core();
+			mf_enqueue_script('script_theme_core_search', $plugin_include_url."script_search.js", $plugin_version);
+		}
+
+		if(!isset($obj_theme_core))
+		{
+			$obj_theme_core = new mf_theme_core();
+		}
 
 		echo $obj_theme_core->get_search_theme_core(array('placeholder' => $instance['search_placeholder'], 'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : 'yes')));
 	}
@@ -4295,6 +4309,7 @@ class widget_theme_core_search extends WP_Widget
 
 		$instance['search_placeholder'] = sanitize_text_field($new_instance['search_placeholder']);
 		$instance['search_animate'] = sanitize_text_field($new_instance['search_animate']);
+		$instance['search_listen_to_keystroke'] = sanitize_text_field($new_instance['search_listen_to_keystroke']);
 
 		return $instance;
 	}
@@ -4306,6 +4321,7 @@ class widget_theme_core_search extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
 			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", 'lang_theme_core'), 'value' => $instance['search_listen_to_keystroke']))
 		."</div>";
 	}
 }
