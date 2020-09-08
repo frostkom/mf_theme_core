@@ -93,7 +93,7 @@ echo "@media all
 			font-weight: bold;
 		}
 
-		article .meta > a:first-of-type:before
+		/*article .meta > a:first-of-type:before
 		{
 			content: '(';
 		}
@@ -101,7 +101,7 @@ echo "@media all
 		article .meta > a:last-of-type:after
 		{
 			content: ')';
-		}
+		}*/
 
 	.embed_content
 	{

@@ -609,7 +609,7 @@ class mf_theme_core
 		{
 			global $wpdb;
 
-			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = 'post' AND comment_status = %s LIMIT 0, 1", $status));
+			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE comment_status = %s LIMIT 0, 1", $status)); //post_type = 'post' AND 
 
 			return $wpdb->num_rows;
 		}
@@ -645,7 +645,7 @@ class mf_theme_core
 			{
 				$option = str_replace('_all', '', $option);
 
-				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE post_type = 'post' AND comment_status != %s", $option, $option));
+				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE comment_status != %s", $option, $option)); //post_type = 'post' AND 
 
 				update_option($setting_key, $option, 'no');
 			}
