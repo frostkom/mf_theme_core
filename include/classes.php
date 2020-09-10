@@ -421,6 +421,11 @@ class mf_theme_core
 
 			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
+			if(get_option('setting_scroll_to_top') == 'yes')
+			{
+				$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", 'lang_theme_core');
+			}
+
 			if(is_plugin_active("mf_analytics/index.php"))
 			{
 				$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
@@ -661,6 +666,14 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
+		function setting_scroll_to_top_text_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			echo show_textfield(array('name' => $setting_key, 'value' => $option));
+		}
+
 		function setting_cookie_info_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
@@ -886,7 +899,7 @@ class mf_theme_core
 		if(get_option('setting_scroll_to_top') == 'yes')
 		{
 			mf_enqueue_style('style_theme_scroll', $plugin_include_url."style_scroll.css", $plugin_version);
-			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", $plugin_version);
+			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", array('scroll_to_top_text' => get_option('setting_scroll_to_top_text')), $plugin_version);
 		}
 
 		if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
@@ -3519,7 +3532,7 @@ class mf_theme_core
 	{
 		global $wpdb;
 
-		$wpdb->get_results("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') LIMIT 0, 1");
+		$wpdb->get_results($wpdb->prepare("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') AND comment_type = %s LIMIT 0, 1", 'comment'));
 
 		return ($wpdb->num_rows > 0);
 	}
@@ -3805,6 +3818,11 @@ class mf_theme_core
 		if($this->has_comments() == false)
 		{
 			remove_menu_page("edit-comments.php");
+
+			if(get_option('default_comment_status') == 'closed')
+			{
+				remove_submenu_page("options-general.php", "options-discussion.php");
+			}
 		}
 	}
 

@@ -19,6 +19,11 @@
 		{
 			opacity: .7;
 		}
+
+		#scroll_to_top span
+		{
+			margin-left: .5em;
+		}
 }
 
 @media print
