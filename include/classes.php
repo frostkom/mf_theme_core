@@ -390,21 +390,16 @@ class mf_theme_core
 
 		// Public Site
 		############################
-		$options_area = $options_area_orig."_public";
-
-		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
-
-		$arr_settings = array();
-
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
+			$options_area = $options_area_orig."_public";
+
+			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+
+			$arr_settings = array();
 			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
-		}
+			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
-		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
-
-		if(get_option('setting_no_public_pages') != 'yes')
-		{
 			$arr_data = array();
 			get_post_children(array('post_type' => 'post'), $arr_data);
 
@@ -447,9 +442,9 @@ class mf_theme_core
 			{
 				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
 			}
-		}
 
-		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+		}
 		############################
 	}
 
@@ -823,6 +818,11 @@ class mf_theme_core
 	function admin_init()
 	{
 		global $pagenow;
+
+		if(!is_plugin_active("mf_base/index.php"))
+		{
+			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
+		}
 
 		if($pagenow == 'options-general.php' && check_var('page') == 'settings_mf_base')
 		{
