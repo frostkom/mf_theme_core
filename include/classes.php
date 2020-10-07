@@ -1032,7 +1032,9 @@ class mf_theme_core
 
 		if($user_id > 0)
 		{
-			if(in_array(get_current_user_role($user_id), get_option('setting_theme_core_display_lock', array())))
+			$setting_theme_core_display_lock = get_option('setting_theme_core_display_lock');
+
+			if(is_array($setting_theme_core_display_lock) && in_array(get_current_user_role($user_id), $setting_theme_core_display_lock))
 			{
 				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
