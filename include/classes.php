@@ -2056,7 +2056,7 @@ class mf_theme_core
 					$obj_base = new mf_base();
 				}
 
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary']); //." !important" // Can't be important because it will override .webshop_events .calendar_header button
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
 			}
 
 			else if(isset($this->options['nav_color_hover']) && $this->options['nav_color_hover'] != '')
@@ -2066,7 +2066,7 @@ class mf_theme_core
 					$obj_base = new mf_base();
 				}
 
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary']); //." !important" // Can't be important because it will override .webshop_events .calendar_header button
+				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
 			}
 
 		$out .= "}
@@ -3036,10 +3036,10 @@ class mf_theme_core
 			{
 				default:
 				case 'apache':
-					$update_with = "<Files xmlrpc.php>\r\n"
-					."	Order deny,allow\r\n"
-					."	Deny from all\r\n"
-					."</Files>";
+					$update_with = "<IfModule mod_rewrite.c>\r\n"
+					."	RewriteCond %{REQUEST_URI} ^/?(xmlrpc\.php)$\r\n"
+					."	RewriteRule .* /404/ [L,NC]\r\n"
+					."</IfModule>";
 				break;
 
 				case 'nginx':
@@ -3053,7 +3053,7 @@ class mf_theme_core
 				'plugin_name' => "MF Theme Core",
 				'file' => $data['file'],
 				'update_with' => $update_with,
-				'auto_update' => false, // This is not allowed on all servers so be careful
+				'auto_update' => true,
 			));
 		}
 
