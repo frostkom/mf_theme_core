@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 8.0.9
+Version: 8.0.10
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -172,6 +172,6 @@ function uninstall_theme_core()
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
 		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_scroll_to_top_text', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'setting_theme_enable_wp_api', 'setting_theme_core_logged_in_theme', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
-		'meta' => array('meta_info_time_limit', 'meta_info_visit_limit'),
+		'meta' => array('meta_info_time_limit', 'meta_info_visit_limit', 'meta_time_visit_limit'),
 	));
 }

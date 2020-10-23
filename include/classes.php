@@ -4728,7 +4728,26 @@ class widget_theme_core_info extends WP_Widget
 			if(is_user_logged_in())
 			{
 				$arr_meta_time_visit_limit = get_user_meta(get_current_user_id(), 'meta_time_visit_limit', false);
-				$arr_meta_time_visit_limit = is_array($arr_meta_time_visit_limit) ? $arr_meta_time_visit_limit[0] : array();
+
+				if(is_array($arr_meta_time_visit_limit))
+				{
+					if(isset($arr_meta_time_visit_limit[0]))
+					{
+						$arr_meta_time_visit_limit = $arr_meta_time_visit_limit[0];
+					}
+
+					else
+					{
+						do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
+
+						$arr_meta_time_visit_limit = array();
+					}
+				}
+
+				else
+				{
+					$arr_meta_time_visit_limit = array();
+				}
 
 				if(!isset($arr_meta_time_visit_limit[$widget_md5]) || $arr_meta_time_visit_limit[$widget_md5] < DEFAULT_DATE)
 				{
