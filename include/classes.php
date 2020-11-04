@@ -70,7 +70,7 @@ class mf_theme_core
 	function get_themes_for_select()
 	{
 		$arr_data = array(
-			'' => "-- ".__("Choose Here", 'lang_theme_core')." --",	
+			'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 		);
 
 		$arr_themes = wp_get_themes(array('errors' => false, 'allowed' => true));
@@ -4305,7 +4305,7 @@ class widget_theme_core_search extends WP_Widget
 
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
-		
+
 		if($instance['search_listen_to_keystroke'] == 'yes')
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
@@ -4770,7 +4770,7 @@ class widget_theme_core_info extends WP_Widget
 				}
 
 				$arr_ses_info_time_limit = check_var('ses_info_time_limit', 'array', true, '0');
-				
+
 				if(!isset($arr_ses_info_time_limit[$widget_md5]) || $arr_ses_info_time_limit[$widget_md5] < DEFAULT_DATE)
 				{
 					$arr_ses_info_time_limit[$widget_md5] = date("Y-m-d");

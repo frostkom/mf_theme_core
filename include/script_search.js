@@ -1,7 +1,7 @@
 jQuery(function($)
 {
 	var dom_search_obj = $(".searchform input"),
-		dom_heading_obj = $("article h2");
+		dom_heading_obj = $("article h2, #main h2");
 
 	$(document).on('keydown', function(e)
 	{
