@@ -209,6 +209,86 @@ class mf_theme_core
 
 		return $obj_base->get_flag_image($blog_language);
 	}
+	
+	function get_site_status()
+	{
+		if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
+		{
+			return 'maintenance_mode';
+		}
+
+		else if(get_option('setting_no_public_pages') == 'yes')
+		{
+			return 'not_public';
+		}
+
+		else if(get_option('setting_theme_core_login') == 'yes')
+		{
+			return 'requires_login';
+		}
+
+		else if(get_option('blog_public') == 0)
+		{
+			return 'no_index';
+		}
+
+		else
+		{
+			return 'public';
+		}
+	}
+
+	function get_site_status_data($data = array())
+	{
+		switch($this->get_site_status())
+		{
+			case 'maintenance_mode':
+				$color = "color_red";
+				$icon = "fas fa-hard-hat";
+				$text = __("Maintenance Mode Activated", 'lang_theme_core');
+			break;
+
+			case 'not_public':
+				if($data['type'] == 'admin_bar')
+				{
+					global $wp_admin_bar;
+
+					$wp_admin_bar->remove_menu('site-name');
+				}
+
+				$color = "color_red";
+				$icon = "fas fa-eye-slash";
+				$text = __("No Public Pages", 'lang_theme_core');
+			break;
+
+			case 'requires_login':
+				$site_url = get_home_url();
+
+				$color = "color_red";
+				$icon = "fas fa-user-lock";
+				$text = __("Requires Login", 'lang_theme_core');
+			break;
+
+			case 'no_index':
+				$site_url = get_home_url();
+
+				$color = "color_yellow";
+				$icon = "fas fa-robot";
+				$text = __("No Index", 'lang_theme_core');
+			break;
+
+			default:
+			case 'public':
+				$site_url = get_home_url();
+
+				$color = "color_green";
+				$icon = "fas fa-eye";
+				$text = __("Public", 'lang_theme_core');
+			break;
+		}
+
+		return array($color, $icon, $text);
+	}
 
 	function wp_before_admin_bar_render()
 	{
@@ -218,45 +298,7 @@ class mf_theme_core
 		{
 			$site_url = $icon = "";
 
-			if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
-			{
-				$color = "color_red";
-				$icon = "fas fa-hard-hat";
-				$text = __("Maintenance Mode Activated", 'lang_theme_core');
-			}
-
-			else if(get_option('setting_no_public_pages') == 'yes')
-			{
-				$wp_admin_bar->remove_menu('site-name');
-
-				$color = "color_red";
-				$icon = "fas fa-eye-slash";
-				$text = __("No Public Pages", 'lang_theme_core');
-			}
-
-			else if(get_option('setting_theme_core_login') == 'yes')
-			{
-				$site_url = get_home_url();
-				$color = "color_red";
-				$icon = "fas fa-user-lock";
-				$text = __("Requires Login", 'lang_theme_core');
-			}
-
-			else if(get_option('blog_public') == 0)
-			{
-				$site_url = get_home_url();
-				$color = "color_yellow";
-				$icon = "fas fa-robot";
-				$text = __("No Index", 'lang_theme_core');
-			}
-
-			else
-			{
-				$site_url = get_home_url();
-				$color = "color_green";
-				$icon = "fas fa-eye";
-				$text = __("Public", 'lang_theme_core');
-			}
+			list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'admin_bar'));
 
 			$flag_image = $this->get_flag_image();
 
@@ -1233,36 +1275,48 @@ class mf_theme_core
 		return $page_index != '' && in_array($page_index, array('noindex', 'none'));
 	}
 
-	function get_public_post_types()
+	function get_public_post_types($data = array())
 	{
+		if(!isset($data['allow_password_protected'])){	$data['allow_password_protected'] = false;}
+
 		$this->arr_post_types = array();
 
 		foreach(get_post_types(array('public' => true, 'exclude_from_search' => false), 'names') as $post_type)
 		{
 			if($post_type != 'attachment')
 			{
-				get_post_children(array(
+				$data_temp = array(
 					'post_type' => $post_type,
-					'where' => "post_password = ''",
-				), $this->arr_post_types);
+				);
+
+				if($data['allow_password_protected'] == false)
+				{
+					$data_temp['where'] = "post_password = ''";
+				}
+
+				get_post_children($data_temp, $this->arr_post_types);
 			}
 		}
 	}
 
 	function get_public_posts($data = array())
 	{
-		if(!isset($data['allow_noindex'])){		$data['allow_noindex'] = false;}
+		if(!isset($data['allow_noindex'])){				$data['allow_noindex'] = false;}
+		if(!isset($data['allow_password_protected'])){	$data['allow_password_protected'] = false;}
 
 		$this->arr_public_posts = array();
 
 		if(!isset($this->arr_post_types) || count($this->arr_post_types) == 0)
 		{
-			$this->get_public_post_types();
+			$this->get_public_post_types(array('allow_password_protected' => $data['allow_password_protected']));
 		}
 
 		foreach($this->arr_post_types as $post_id => $post_title)
 		{
-			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || post_password_required($post_id)){}
+			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || $data['allow_password_protected'] == false && post_password_required($post_id))
+			{
+				// Do nothing
+			}
 
 			else
 			{
@@ -2413,16 +2467,17 @@ class mf_theme_core
 			}
 		}
 	}
-	function do_robots()
+
+	/*function do_robots()
 	{
 		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
-	}
+	}*/
 
 	function do_sitemap()
 	{
 		global $wp_query;
 
-		if(isset($wp_query->query['name']) && $wp_query->query['name'] == 'sitemap.xml')
+		if(isset($wp_query->query['name']) && in_array($wp_query->query['name'], array('sitemap.xml', 'wp-sitemap.xml')))
 		{
 			header("Content-type: text/xml; charset=".get_option('blog_charset'));
 
@@ -2440,7 +2495,7 @@ class mf_theme_core
 
 					echo "<url>
 						<loc>".$post_url."</loc>
-						<title>".htmlspecialchars($post_title)."</title>
+						<title>".htmlspecialchars($post_title)." Test...</title>
 						<lastmod>".$post_modified."</lastmod>
 					</url>";
 				}
@@ -2449,6 +2504,40 @@ class mf_theme_core
 			exit;
 		}
 	}
+
+	function wp_sitemaps_add_provider($provider, $name)
+	{
+		if('users' === $name)
+		{
+			return false;
+		}
+
+		return $provider;
+	}
+
+	function wp_sitemaps_posts_query_args($args, $post_type)
+	{
+		if(!isset($args['post__not_in'])){	$args['post__not_in'] = array();}
+
+		$this->get_public_posts(array('allow_noindex' => true, 'allow_password_protected' => true));
+
+		foreach($this->arr_public_posts as $post_id => $post_title)
+		{
+			if($this->has_noindex($post_id) || post_password_required($post_id))
+			{
+				$args['post__not_in'][] = $post_id;
+			}
+		}
+
+		return $args;
+	}
+
+	function wp_sitemaps_taxonomies($taxonomies)
+	{
+		unset($taxonomies['category']);
+
+        return $taxonomies;
+    }
 
 	function get_logo($data = array())
 	{
@@ -3833,7 +3922,7 @@ class mf_theme_core
 		unset($cols['registered']);
 		unset($cols['lastupdated']);
 
-		$cols['language'] = __("Language", 'lang_theme_core');
+		$cols['site_status'] = __("Status", 'lang_theme_core');
 		$cols['email'] = __("E-mail", 'lang_theme_core');
 		$cols['last_updated'] = __("Updated", 'lang_theme_core');
 
@@ -3848,20 +3937,27 @@ class mf_theme_core
 		{
 			$obj_base = new mf_base();
 		}
+		
+		switch_to_blog($id);
 
 		switch($col)
 		{
-			case 'language':
+			case 'site_status':
 				$flag_image = $this->get_flag_image($id);
 
 				if($flag_image != '')
 				{
-					echo "<img src='".$flag_image."'>";
+					echo "<img src='".$flag_image."' class='alignleft'>&nbsp;";
 				}
+
+				list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'sites_column'));
+
+				echo "<i class='".$icon." fa-2x ".$color."' title='".$text."'></i>";
 			break;
 
 			case 'email':
-				$admin_email = get_blog_option($id, 'admin_email');
+				//$admin_email = get_blog_option($id, 'admin_email');
+				$admin_email = get_option('admin_email');
 
 				if($admin_email != '')
 				{
@@ -3875,8 +3971,6 @@ class mf_theme_core
 			break;
 
 			case 'last_updated':
-				switch_to_blog($id);
-
 				$arr_post_types = $obj_base->get_post_types_for_metabox();
 				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
 
@@ -3903,10 +3997,10 @@ class mf_theme_core
 				{
 					echo $wpdb->last_query;
 				}
-
-				restore_current_blog();
 			break;
 		}
+		
+		restore_current_blog();
 	}
 
 	function add_policy($content)
