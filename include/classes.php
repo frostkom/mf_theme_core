@@ -209,7 +209,7 @@ class mf_theme_core
 
 		return $obj_base->get_flag_image($blog_language);
 	}
-	
+
 	function get_site_status()
 	{
 		if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
@@ -262,7 +262,7 @@ class mf_theme_core
 			break;
 
 			case 'requires_login':
-				$site_url = get_home_url();
+				$this->site_url = get_home_url();
 
 				$color = "color_red";
 				$icon = "fas fa-user-lock";
@@ -270,7 +270,7 @@ class mf_theme_core
 			break;
 
 			case 'no_index':
-				$site_url = get_home_url();
+				$this->site_url = get_home_url();
 
 				$color = "color_yellow";
 				$icon = "fas fa-robot";
@@ -279,7 +279,7 @@ class mf_theme_core
 
 			default:
 			case 'public':
-				$site_url = get_home_url();
+				$this->site_url = get_home_url();
 
 				$color = "color_green";
 				$icon = "fas fa-eye";
@@ -296,7 +296,7 @@ class mf_theme_core
 
 		if(IS_ADMIN)
 		{
-			$site_url = $icon = "";
+			$this->site_url = $icon = "";
 
 			list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'admin_bar'));
 
@@ -304,9 +304,9 @@ class mf_theme_core
 
 			$title = "";
 
-			if($site_url != '')
+			if($this->site_url != '')
 			{
-				$title .= "<a href='".$site_url."' class='".$color."'>";
+				$title .= "<a href='".$this->site_url."' class='".$color."'>";
 			}
 
 			else
@@ -338,7 +338,7 @@ class mf_theme_core
 					</div>";
 				}
 
-			if($site_url != '')
+			if($this->site_url != '')
 			{
 				$title .= "</a>";
 			}
@@ -955,7 +955,7 @@ class mf_theme_core
 		<meta name='author' content='frostkom.se'>
 		<title>".$this->get_wp_title()."</title>";
 
-		if(!(get_current_user_id() > 0))
+		if(!is_user_logged_in())
 		{
 			wp_deregister_style('dashicons');
 		}
@@ -1224,7 +1224,7 @@ class mf_theme_core
 		{
 			$first_name = "";
 
-			if(get_current_user_id() > 0)
+			if(is_user_logged_in())
 			{
 				$user_data = get_userdata(get_current_user_id());
 
@@ -3937,7 +3937,7 @@ class mf_theme_core
 		{
 			$obj_base = new mf_base();
 		}
-		
+
 		switch_to_blog($id);
 
 		switch($col)
@@ -3999,7 +3999,7 @@ class mf_theme_core
 				}
 			break;
 		}
-		
+
 		restore_current_blog();
 	}
 
@@ -4832,7 +4832,7 @@ class widget_theme_core_info extends WP_Widget
 
 					else
 					{
-						do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
+						//do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
 
 						$arr_meta_time_visit_limit = array();
 					}
