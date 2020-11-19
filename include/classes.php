@@ -3974,28 +3974,49 @@ class mf_theme_core
 				$arr_post_types = $obj_base->get_post_types_for_metabox();
 				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
 
-				$last_updated_manual_posts = $wpdb->get_var("SELECT post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+				$result = $wpdb->get_results("SELECT ID, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
 				//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
 
-				if($last_updated_manual_posts > DEFAULT_DATE)
+				foreach($result as $r)
 				{
-					echo format_date($last_updated_manual_posts);
+					$post_id_manual = $r->ID;
+					$post_modified_manual = $r->post_modified;
 
-					$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
-
-					$last_updated_automatic_posts = $wpdb->get_var("SELECT post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
-
-					if($last_updated_automatic_posts > $last_updated_manual_posts)
+					if($post_modified_manual > DEFAULT_DATE)
 					{
-						echo "<div class='row-actions'>"
-							.__("Background", 'lang_theme_core').": ".format_date($last_updated_automatic_posts)
-						."</div>";
-					}
-				}
+						$row_actions = "";
 
-				else
-				{
-					echo $wpdb->last_query;
+						echo format_date($post_modified_manual);
+
+						$row_actions .= "<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".get_post_title($post_id_manual)."</a>";
+
+						$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
+
+						$result_auto = $wpdb->get_results("SELECT ID, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+
+						foreach($result_auto as $r)
+						{
+							$post_id_auto = $r->ID;
+							$post_modified_auto = $r->post_modified;
+
+							if($post_modified_auto > $post_modified_manual)
+							{
+								$row_actions .= __("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".get_post_title($post_id_auto)."</a>)";
+							}
+
+							if($row_actions != '')
+							{
+								echo "<div class='row-actions'>"
+									.$row_actions
+								."</div>";
+							}
+						}
+					}
+
+					/*else
+					{
+						do_log("last_updated: ".$wpdb->last_query);
+					}*/
 				}
 			break;
 		}
@@ -4827,13 +4848,13 @@ class widget_theme_core_info extends WP_Widget
 				{
 					if(isset($arr_meta_time_visit_limit[0]))
 					{
+						do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
+
 						$arr_meta_time_visit_limit = $arr_meta_time_visit_limit[0];
 					}
 
 					else
 					{
-						//do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
-
 						$arr_meta_time_visit_limit = array();
 					}
 				}
