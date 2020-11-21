@@ -3925,6 +3925,7 @@ class mf_theme_core
 		unset($cols['lastupdated']);
 
 		$cols['site_status'] = __("Status", 'lang_theme_core');
+		$cols['theme'] = __("Theme", 'lang_theme_core');
 		$cols['email'] = __("E-mail", 'lang_theme_core');
 		$cols['last_updated'] = __("Updated", 'lang_theme_core');
 
@@ -3957,6 +3958,72 @@ class mf_theme_core
 				echo "<i class='".$icon." fa-2x ".$color."' title='".$text."'></i>";
 			break;
 
+			case 'theme':
+				if(get_blog_status($id, 'deleted') == 0)
+				{
+					/* Get last parent update */
+					$restore_notice = $restore_url = "";
+
+					if(in_array(get_blog_option($id, 'template'), array('mf_parallax', 'mf_theme')))
+					{
+						$style_source = get_blog_option($id, 'setting_base_template_site');
+
+						if($style_source != '')
+						{
+							if($style_source == get_site_url($id))
+							{
+								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", 'lang_theme_core')."'></i>";
+							}
+
+							else
+							{
+								$option_theme_source_style_url = get_blog_option($id, 'option_theme_source_style_url');
+
+								if($option_theme_source_style_url != '')
+								{
+									$restore_notice = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
+										<span>1</span>
+									</span>";
+									$restore_url = " | <a href='".get_admin_url($id, "themes.php?page=theme_options")."'>".__("Update", 'lang_theme_core')."</a>";
+								}
+
+								else
+								{
+									$option_theme_saved = get_blog_option($id, 'option_theme_saved');
+
+									$restore_notice .= "&nbsp;<i class='fa fa-check fa-lg ".($option_theme_saved > date("Y-m-d H:i:s", strtotime("-1 month")) ? "green" : "grey")."' title='".__("The theme design is up to date", 'lang_theme_core')."'></i>";
+								}
+							}
+						}
+
+						else
+						{
+							$option_sync_sites = get_option('option_sync_sites', array());
+
+							if(count($option_sync_sites) > 0)
+							{
+								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", 'lang_theme_core')."'></i>";
+							}
+						}
+
+						/*else
+						{
+							$restore_notice = "&nbsp;<span class='fa-stack'>
+								<i class='fa fa-recycle fa-stack-1x'></i>
+								<i class='fa fa-ban fa-stack-2x red'></i>
+							</span>";
+						}*/
+					}
+
+					echo get_blog_option($id, 'stylesheet')
+					.$restore_notice
+					."<div class='row-actions'>"
+						."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", 'lang_theme_core')."</a>"
+						.$restore_url
+					."</div>";
+				}
+			break;
+
 			case 'email':
 				//$admin_email = get_blog_option($id, 'admin_email');
 				$admin_email = get_option('admin_email');
@@ -3976,12 +4043,13 @@ class mf_theme_core
 				$arr_post_types = $obj_base->get_post_types_for_metabox();
 				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
 
-				$result = $wpdb->get_results("SELECT ID, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+				$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
 				//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
 
 				foreach($result as $r)
 				{
 					$post_id_manual = $r->ID;
+					$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
 					$post_modified_manual = $r->post_modified;
 
 					if($post_modified_manual > DEFAULT_DATE)
@@ -3990,20 +4058,21 @@ class mf_theme_core
 
 						echo format_date($post_modified_manual);
 
-						$row_actions .= "<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".get_post_title($post_id_manual)."</a>";
+						$row_actions .= ($row_actions != '' ? " | " : "")."<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".shorten_text(array('string' => get_post_title($post_id_manual), 'limit' => 10))."</a>";
 
 						$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
 
-						$result_auto = $wpdb->get_results("SELECT ID, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+						$result_auto = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
 
 						foreach($result_auto as $r)
 						{
 							$post_id_auto = $r->ID;
+							$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
 							$post_modified_auto = $r->post_modified;
 
 							if($post_modified_auto > $post_modified_manual)
 							{
-								$row_actions .= __("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".get_post_title($post_id_auto)."</a>)";
+								$row_actions .= ($row_actions != '' ? " | " : "").__("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".shorten_text(array('string' => $post_title, 'limit' => 10))."</a>)";
 							}
 
 							if($row_actions != '')
