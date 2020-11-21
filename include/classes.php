@@ -1569,6 +1569,8 @@ class mf_theme_core
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_color');
 					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")");
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg', 'title' => __("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core'));
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
 
 			$options_params[] = array('category_end' => "");
 		}
@@ -4846,9 +4848,9 @@ class widget_theme_core_info extends WP_Widget
 
 				if(is_array($arr_meta_time_visit_limit))
 				{
-					if(isset($arr_meta_time_visit_limit[0]))
+					if(isset($arr_meta_time_visit_limit[0]) && is_array($arr_meta_time_visit_limit[0]))
 					{
-						do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
+						//do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
 
 						$arr_meta_time_visit_limit = $arr_meta_time_visit_limit[0];
 					}
