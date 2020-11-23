@@ -411,7 +411,7 @@ class mf_theme_core
 				delete_option('setting_theme_ignore_style_on_restore');
 			}
 
-			/*if(is_plugin_active('css-hero-ce/css-hero-main.php'))
+			/*if(is_plugin_active("css-hero-ce/css-hero-main.php"))
 			{
 				$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
 			}
@@ -950,10 +950,10 @@ class mf_theme_core
 			mf_enqueue_script('script_theme_page_index', $plugin_include_url."script_page_index.js", $plugin_version);
 		}
 
-		echo "<meta charset='".get_bloginfo('charset')."'>
-		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
-		<meta name='author' content='frostkom.se'>
-		<title>".$this->get_wp_title()."</title>";
+		echo "<meta charset='".get_bloginfo('charset')."'>"
+		."<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
+		//."<meta name='author' content='frostkom.se'>"
+		."<title>".$this->get_wp_title()."</title>";
 
 		if(!is_user_logged_in())
 		{
@@ -1426,7 +1426,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")");
 
-			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active('mf_webshop/index.php') ? "1.3em" : ''));
+			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_webshop/index.php") ? "1.3em" : ''));
 
 			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => "#000000");
 				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", 'lang_theme_core'), 'default' => "#ffffff");

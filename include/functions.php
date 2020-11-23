@@ -7,7 +7,7 @@ function get_image_fallback()
 
 /*function add_css_selectors($array = array())
 {
-	if(is_plugin_active('css-hero-ce/css-hero-main.php'))
+	if(is_plugin_active("css-hero-ce/css-hero-main.php"))
 	{
 		$setting_theme_css_hero = get_option('setting_theme_css_hero');
 		$arr_setting_theme_css_hero = explode("\n", $setting_theme_css_hero);
