@@ -15,8 +15,12 @@ jQuery(function($)
 				/* Backspace or Delete */
 				/*if(e.keyCode == 8 || e.keyCode == 46){}*/
 
+				/* Shift / Ctrl / Alt */
+				/*if(e.keyCode >= 16 && e.keyCode <= 18){}*/
+				if(e.ctrlKey || e.shiftKey || e.altKey){}
+
 				/* 0-9, A-Z or Numpad */
-				if(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 96 && e.keyCode <= 105)
+				else if(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 96 && e.keyCode <= 105)
 				{
 					dom_search_obj.focus();
 				}
