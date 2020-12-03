@@ -2475,11 +2475,18 @@ class mf_theme_core
 		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
 	}*/
 
-	function do_sitemap()
+	function template_redirect()
 	{
+		if(is_author())
+		{
+			wp_redirect(get_option('home'), 301);
+			exit; 
+		}
+
+		/* Does not work after WP 5.5 has been released */
 		global $wp_query;
 
-		if(isset($wp_query->query['name']) && in_array($wp_query->query['name'], array('sitemap.xml', 'wp-sitemap.xml')))
+		if(1 == 2 && isset($wp_query->query['name']) && in_array($wp_query->query['name'], array('sitemap.xml', 'wp-sitemap.xml')))
 		{
 			header("Content-type: text/xml; charset=".get_option('blog_charset'));
 
@@ -3116,6 +3123,30 @@ class mf_theme_core
 
 		if(!isset($data['file'])){		$data['file'] = '';}
 
+		$update_with = "";
+
+		/* Use instead of template_redirect -> is_author()? */
+		/*if(1 == 1)
+		{
+			switch($obj_base->get_server_type())
+			{
+				default:
+				case 'apache':
+					$update_with .= "<IfModule mod_rewrite.c>\r\n"
+					."	RewriteCond %{QUERY_STRING} ^author= [NC]\r\n"
+					."	RewriteRule .* /404/? [L,R=301]\r\n"
+					."	RewriteRule ^author/ /404/? [L,R=301]\r\n"
+					."</IfModule>";
+				break;
+
+				case 'nginx':
+					$update_with .= "location /author= {\r\n"
+					."	deny all;\r\n"
+					."}";
+				break;
+			}
+		}*/
+
 		if(get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
 		{
 			if(!isset($obj_base))
@@ -3127,19 +3158,22 @@ class mf_theme_core
 			{
 				default:
 				case 'apache':
-					$update_with = "<IfModule mod_rewrite.c>\r\n"
+					$update_with .= "<IfModule mod_rewrite.c>\r\n"
 					."	RewriteCond %{REQUEST_URI} ^/?(xmlrpc\.php)$\r\n"
 					."	RewriteRule .* /404/ [L,NC]\r\n"
 					."</IfModule>";
 				break;
 
 				case 'nginx':
-					$update_with = "location /xmlrpc.php {\r\n"
+					$update_with .= "location /xmlrpc.php {\r\n"
 					."	deny all;\r\n"
 					."}";
 				break;
 			}
+		}
 
+		if($update_with != '')
+		{
 			$data['html'] .= $obj_base->update_config(array(
 				'plugin_name' => "MF Theme Core",
 				'file' => $data['file'],
