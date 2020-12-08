@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 8.1.11
+Version: 8.1.12
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -79,7 +79,7 @@ else
 {
 	/* Not needed after WP 5.5 has been released */
 	//add_action('do_robots', array($obj_theme_core, 'do_robots'), 100, 0);
-	
+
 	add_filter('template_redirect', array($obj_theme_core, 'template_redirect'), 1, 0);
 
 	add_filter('wp_sitemaps_add_provider', array($obj_theme_core, 'wp_sitemaps_add_provider'), 10, 2);
@@ -157,8 +157,6 @@ if($obj_theme_core->is_theme_active())
 	add_action('customize_register', array($obj_theme_core, 'customize_register'), 11);
 	add_action('customize_save', array($obj_theme_core, 'customize_save'));
 }
-
-//add_filter('pre_option_stylesheet', array($obj_theme_core, 'pre_option_template'));
 
 add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'optimize_theme'));
 

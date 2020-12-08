@@ -1453,13 +1453,13 @@ class mf_theme_core
 			$options_params[] = array('type' => 'overflow', 'id' => 'header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
 		$options_params[] = array('category_end' => "");
 
-		if($theme_dir_name == 'mf_theme')
-		{
+		/*if($theme_dir_name == 'mf_theme')
+		{*/
 			$options_params[] = array('category' => " - ".__("Search", 'lang_theme_core'), 'id' => 'mf_theme_header_search');
 				$options_params[] = array('type' => 'color', 'id' => 'search_color', 'title' => __("Color", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'search_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.4em");
 			$options_params[] = array('category_end' => "");
-		}
+		//}
 
 		$options_params[] = array('category' => " - ".__("Logo", 'lang_theme_core'), 'id' => 'mf_theme_logo');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => '.4em 0'
@@ -2192,6 +2192,12 @@ class mf_theme_core
 				.$this->render_css(array('property' => 'color', 'value' => 'body_color'))
 			."}
 
+				header > div, #mf-after-header > div, #mf-pre-content > div, #mf-content > div, #mf-pre-footer > div, footer > div, .full_width > div > .widget .section, .full_width > div > .widget > div
+				{"
+					.$this->render_css(array('property' => 'padding', 'value' => 'main_padding'))
+					."position: relative;
+				}
+
 				#wrapper
 				{"
 					.$this->render_css(array('property' => 'background', 'value' => 'body_bg'))
@@ -2199,7 +2205,209 @@ class mf_theme_core
 					.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'))
 					//."min-height: 100vh;" /* This will override footer background below footer */
 					."overflow: hidden;"
-				."}";
+				."}
+
+					header
+					{"
+						.$this->render_css(array('property' => 'background', 'value' => 'header_bg'))
+						.$this->render_css(array('property' => 'background-color', 'value' => 'header_bg_color'))
+						.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'header_bg_image', 'suffix' => '); background-size: cover'))
+						.$this->render_css(array('property' => 'overflow', 'value' => 'header_overflow'))
+						.$this->render_css(array('property' => 'position', 'value' => 'header_fixed'))
+					."}
+
+						header > div
+						{"
+							.$this->render_css(array('property' => 'padding', 'value' => 'header_padding'))
+						."}
+				
+					.searchform
+					{"
+						.$this->render_css(array('property' => 'color', 'value' => 'search_color'))
+						.$this->render_css(array('property' => 'font-size', 'value' => 'search_size'))
+						."padding: .3em;
+						position: relative;
+					}
+
+						.searchform .form_textfield
+						{
+							display: inline-block;
+							position: relative;
+							z-index: 1;
+						}
+
+							.searchform .form_textfield input
+							{
+								background: none;"
+								.$this->render_css(array('property' => 'color', 'value' => 'search_color'))
+								."display: inline-block;
+								float: right;
+								margin: 0;
+								padding-right: 2.2em !important;
+							}
+
+								.searchform.search_animate .form_textfield input
+								{
+									border-color: transparent;
+									transition: all .4s ease;
+									width: 0;
+								}
+
+									.searchform.search_animate .form_textfield input:focus
+									{
+										border-color: #e1e1e1;
+										width: 100%;
+									}
+
+						.searchform .fa
+						{
+							position: absolute;
+							right: 1em;
+							top: 1.1em;
+						}
+
+					header .searchform
+					{
+						float: right;
+					}";
+
+					if(is_active_widget_area('widget_slide'))
+					{
+						$out .= "#mf-slide-nav
+						{
+							background: rgba(0, 0, 0, .7);
+							bottom: 0;
+							display: none;
+							left: 0;
+							position: absolute;
+							position: fixed;
+							right: 0;
+							top: 0;
+							z-index: 1003;
+						}
+						
+							#mf-slide-nav > div
+							{"
+								.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg'))
+								."bottom: 0;"
+								.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
+								.$this->render_css(array('property' => 'font-family', 'value' => 'nav_font'))
+								."overflow: hidden;
+								padding: 3.5em 0 1em;
+								position: absolute;
+								top: 0;
+								width: 90%;
+								max-width: 300px;
+							}
+
+								#mf-slide-nav .searchform
+								{
+									background: #000;
+									padding-left: 1.5em;
+								}
+
+									#mf-slide-nav .searchform #s
+									{
+										border: 0;
+										color: #fff;
+										padding-bottom: .1em;
+										transition: all .4s ease;
+									}
+
+										#mf-slide-nav .searchform:hover #s
+										{
+											text-indent: .3em;
+										}
+
+									#mf-slide-nav .searchform .fa
+									{
+										right: .8em;
+										top: .8em;
+									}
+							
+								#mf-slide-nav .fa-times
+								{
+									font-size: 2em;
+									margin: 3% 4% 0 0;
+									position: absolute;
+									right: 0;
+									top: 0;
+								}
+
+								#mf-slide-nav ul, #mf-slide-nav p
+								{
+									margin-bottom: 1em;
+								}
+								
+								#mf-slide-nav ul
+								{
+									list-style: none;
+								}
+
+									#mf-slide-nav .theme_nav
+									{"
+										.$this->render_css(array('property' => 'font-size', 'value' => 'nav_size'))
+									."}
+								
+										#mf-slide-nav .theme_nav ul a
+										{"
+											.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
+											."display: block;
+											letter-spacing: .2em;
+											overflow: hidden;"
+											.$this->render_css(array('property' => 'padding', 'value' => 'slide_nav_link_padding'))
+											."text-overflow: ellipsis;
+											transition: all .4s ease;
+											white-space: nowrap;
+										}
+										
+											#mf-slide-nav .theme_nav ul a:hover
+											{"
+												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
+												.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color_hover'))
+												."text-indent: .3em;
+											}
+
+											#mf-slide-nav .theme_nav li.current_page_item > a
+											{"
+												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
+												.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color_current'))
+											."}
+
+										#mf-slide-nav .theme_nav li ul
+										{
+											margin-bottom: 0;
+										}
+										
+										/* Hide children until hover or current page */
+										#mf-slide-nav .theme_nav .sub-menu
+										{
+											display: block;
+										}
+
+										#mf-slide-nav .theme_nav.is_large .sub-menu
+										{
+											display: none;
+										}
+
+											#mf-slide-nav .theme_nav.is_large li:hover > .sub-menu, #mf-slide-nav .theme_nav.is_large li.current-menu-item > .sub-menu, #mf-slide-nav .theme_nav.is_large li.current-menu-ancestor > .sub-menu
+											{
+												display: block;
+											}
+										/* */
+
+										#mf-slide-nav .theme_nav li ul a
+										{"
+											.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg'))
+											."text-indent: 1.4em;
+										}
+
+											#mf-slide-nav .theme_nav li ul a:hover
+											{"
+												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg_hover'))
+												."text-indent: 2em;
+											}";
+					}
 
 		return $out;
 	}
@@ -4278,46 +4486,6 @@ class mf_theme_core
 		die();
 	}
 	#################################
-
-	/*function pre_option_template($option_template)
-	{
-		$is_allowed = false;
-
-		if(is_admin())
-		{
-			global $pagenow;
-
-			if($pagenow == 'customize.php' || $pagenow == 'widgets.php')
-			{
-				$is_allowed = true;
-			}
-		}
-
-		else
-		{
-			$is_allowed = true;
-		}
-
-		if($_SERVER['REMOTE_ADDR'] == "") // This will break the current theme and revert to the default theme
-		{
-			if($is_allowed)
-			{
-				$setting_theme_core_logged_in_theme = get_option('setting_theme_core_logged_in_theme');
-
-				if($setting_theme_core_logged_in_theme != '')
-				{
-					$arr_themes = wp_get_themes(array('allowed' => true));
-
-					if(isset($arr_themes[$setting_theme_core_logged_in_theme]))
-					{
-						$option_template = $arr_themes[$setting_theme_core_logged_in_theme];
-					}
-				}
-			}
-		}
-
-		return $option_template;
-	}*/
 
 	function shortcode_redirect($atts)
 	{
