@@ -2220,7 +2220,7 @@ class mf_theme_core
 						{"
 							.$this->render_css(array('property' => 'padding', 'value' => 'header_padding'))
 						."}
-				
+
 					.searchform
 					{"
 						.$this->render_css(array('property' => 'color', 'value' => 'search_color'))
@@ -2243,7 +2243,7 @@ class mf_theme_core
 								."display: inline-block;
 								float: right;
 								margin: 0;
-								padding-right: 2.2em !important;
+								padding: .5em 2.2em .5em .5em;
 							}
 
 								.searchform.search_animate .form_textfield input
@@ -2263,7 +2263,7 @@ class mf_theme_core
 						{
 							position: absolute;
 							right: 1em;
-							top: 1.1em;
+							top: 1em;
 						}
 
 					header .searchform
@@ -2285,7 +2285,7 @@ class mf_theme_core
 							top: 0;
 							z-index: 1003;
 						}
-						
+
 							#mf-slide-nav > div
 							{"
 								.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg'))
@@ -2324,7 +2324,7 @@ class mf_theme_core
 										right: .8em;
 										top: .8em;
 									}
-							
+
 								#mf-slide-nav .fa-times
 								{
 									font-size: 2em;
@@ -2338,7 +2338,7 @@ class mf_theme_core
 								{
 									margin-bottom: 1em;
 								}
-								
+
 								#mf-slide-nav ul
 								{
 									list-style: none;
@@ -2348,7 +2348,7 @@ class mf_theme_core
 									{"
 										.$this->render_css(array('property' => 'font-size', 'value' => 'nav_size'))
 									."}
-								
+
 										#mf-slide-nav .theme_nav ul a
 										{"
 											.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
@@ -2360,7 +2360,7 @@ class mf_theme_core
 											transition: all .4s ease;
 											white-space: nowrap;
 										}
-										
+
 											#mf-slide-nav .theme_nav ul a:hover
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
@@ -2378,7 +2378,7 @@ class mf_theme_core
 										{
 											margin-bottom: 0;
 										}
-										
+
 										/* Hide children until hover or current page */
 										#mf-slide-nav .theme_nav .sub-menu
 										{
