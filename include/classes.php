@@ -3917,13 +3917,18 @@ class mf_theme_core
 
 	function get_previous_backups_list($upload_path)
 	{
-		global $globals;
+		global $globals, $obj_base;
+
+		if(!isset($obj_base))
+		{
+			$obj_base = new mf_base();
+		}
 
 		$globals['mf_theme_files'] = array();
 
 		get_file_info(array('path' => $upload_path, 'callback' => array($this, 'get_previous_backups')));
 
-		$globals['mf_theme_files'] = array_sort(array('array' => $globals['mf_theme_files'], 'on' => 'time', 'order' => 'desc'));
+		$globals['mf_theme_files'] = $obj_base->array_sort(array('array' => $globals['mf_theme_files'], 'on' => 'time', 'order' => 'desc'));
 
 		return $globals['mf_theme_files'];
 	}
@@ -4085,7 +4090,7 @@ class mf_theme_core
 													.$arr_backups[$i]['name']
 													."<div class='row-actions'>
 														<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
-														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'>".__("Restore", 'lang_theme_core')."</a>";
+														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."' rel='confirm'>".__("Restore", 'lang_theme_core')."</a>";
 
 														if($is_allowed_to_backup)
 														{
@@ -4178,31 +4183,31 @@ class mf_theme_core
 	{
 		global $wpdb, $obj_base;
 
-		if(!isset($obj_base))
+		if(get_blog_status($id, 'deleted') == 0)
 		{
-			$obj_base = new mf_base();
-		}
+			if(!isset($obj_base))
+			{
+				$obj_base = new mf_base();
+			}
 
-		switch_to_blog($id);
+			switch_to_blog($id);
 
-		switch($col)
-		{
-			case 'site_status':
-				$flag_image = $this->get_flag_image($id);
+			switch($col)
+			{
+				case 'site_status':
+					$flag_image = $this->get_flag_image($id);
 
-				if($flag_image != '')
-				{
-					echo "<img src='".$flag_image."' class='alignleft'>&nbsp;";
-				}
+					if($flag_image != '')
+					{
+						echo "<img src='".$flag_image."' class='alignleft'>&nbsp;";
+					}
 
-				list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'sites_column'));
+					list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'sites_column'));
 
-				echo "<i class='".$icon." fa-2x ".$color."' title='".$text."'></i>";
-			break;
+					echo "<i class='".$icon." fa-2x ".$color."' title='".$text."'></i>";
+				break;
 
-			case 'theme':
-				if(get_blog_status($id, 'deleted') == 0)
-				{
+				case 'theme':
 					/* Get last parent update */
 					$restore_notice = $restore_url = "";
 
@@ -4263,78 +4268,78 @@ class mf_theme_core
 						."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", 'lang_theme_core')."</a>"
 						.$restore_url
 					."</div>";
-				}
-			break;
+				break;
 
-			case 'email':
-				//$admin_email = get_blog_option($id, 'admin_email');
-				$admin_email = get_option('admin_email');
+				case 'email':
+					//$admin_email = get_blog_option($id, 'admin_email');
+					$admin_email = get_option('admin_email');
 
-				if($admin_email != '')
-				{
-					list($prefix, $domain) = explode("@", $admin_email);
-
-					echo "<a href='mailto:".$admin_email."'>".$prefix."</a>
-					<div class='row-actions'>"
-						."@".$domain
-					."</div>";
-				}
-			break;
-
-			case 'last_updated':
-				$arr_post_types = $obj_base->get_post_types_for_metabox();
-				$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
-
-				$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
-				//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
-
-				foreach($result as $r)
-				{
-					$post_id_manual = $r->ID;
-					$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
-					$post_modified_manual = $r->post_modified;
-
-					if($post_modified_manual > DEFAULT_DATE)
+					if($admin_email != '')
 					{
-						$row_actions = "";
+						list($prefix, $domain) = explode("@", $admin_email);
 
-						echo format_date($post_modified_manual);
+						echo "<a href='mailto:".$admin_email."'>".$prefix."</a>
+						<div class='row-actions'>"
+							."@".$domain
+						."</div>";
+					}
+				break;
 
-						$row_actions .= ($row_actions != '' ? " | " : "")."<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".shorten_text(array('string' => get_post_title($post_id_manual), 'limit' => 10))."</a>";
+				case 'last_updated':
+					$arr_post_types = $obj_base->get_post_types_for_metabox();
+					$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
 
-						$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
+					$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+					//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
 
-						$result_auto = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+					foreach($result as $r)
+					{
+						$post_id_manual = $r->ID;
+						$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
+						$post_modified_manual = $r->post_modified;
 
-						foreach($result_auto as $r)
+						if($post_modified_manual > DEFAULT_DATE)
 						{
-							$post_id_auto = $r->ID;
-							$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
-							$post_modified_auto = $r->post_modified;
+							$row_actions = "";
 
-							if($post_modified_auto > $post_modified_manual)
-							{
-								$row_actions .= ($row_actions != '' ? " | " : "").__("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".shorten_text(array('string' => $post_title, 'limit' => 10))."</a>)";
-							}
+							echo format_date($post_modified_manual);
 
-							if($row_actions != '')
+							$row_actions .= ($row_actions != '' ? " | " : "")."<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".shorten_text(array('string' => get_post_title($post_id_manual), 'limit' => 10))."</a>";
+
+							$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
+
+							$result_auto = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+
+							foreach($result_auto as $r)
 							{
-								echo "<div class='row-actions'>"
-									.$row_actions
-								."</div>";
+								$post_id_auto = $r->ID;
+								$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
+								$post_modified_auto = $r->post_modified;
+
+								if($post_modified_auto > $post_modified_manual)
+								{
+									$row_actions .= ($row_actions != '' ? " | " : "").__("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".shorten_text(array('string' => $post_title, 'limit' => 10))."</a>)";
+								}
+
+								if($row_actions != '')
+								{
+									echo "<div class='row-actions'>"
+										.$row_actions
+									."</div>";
+								}
 							}
 						}
+
+						/*else
+						{
+							do_log("last_updated: ".$wpdb->last_query);
+						}*/
 					}
+				break;
+			}
 
-					/*else
-					{
-						do_log("last_updated: ".$wpdb->last_query);
-					}*/
-				}
-			break;
+			restore_current_blog();
 		}
-
-		restore_current_blog();
 	}
 
 	function add_policy($content)
