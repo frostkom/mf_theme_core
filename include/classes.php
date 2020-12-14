@@ -40,16 +40,31 @@ class mf_theme_core
 		$options_params = $this->get_params_theme_core();
 		$arr_theme_mods = get_theme_mods();
 
+		$last_category = '';
+
 		foreach($options_params as $param_key => $param)
 		{
 			if(isset($param['category']))
 			{
 				$arr_data['opt_start_'.$param['id']] = $param['category'];
+
+				$last_category = $param['id'];
+				$has_children = false;
 			}
 
 			else if(isset($param['category_end']))
 			{
-				$arr_data['opt_end'] = "";
+				if($has_children == true)
+				{
+					$arr_data['opt_end'] = "";
+				}
+
+				else if($last_category != '')
+				{
+					unset($arr_data['opt_start_'.$last_category]);
+
+					$last_category = '';
+				}
 			}
 
 			else
@@ -60,6 +75,8 @@ class mf_theme_core
 				if(isset($arr_theme_mods[$id]) && $arr_theme_mods[$id] != '')
 				{
 					$arr_data[$id] = $title;
+
+					$has_children = true;
 				}
 			}
 		}
