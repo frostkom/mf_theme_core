@@ -308,6 +308,7 @@ echo "@media all
 
 				.widget.theme_news li
 				{
+					margin-bottom: .8em;
 					overflow: hidden;
 					padding: 0 .5%;
 					position: relative;
