@@ -1097,7 +1097,15 @@ class mf_theme_core
 			{
 				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
-				$this->footer_output .= "<a href='".admin_url()."' id='site_locked'><i class='fa fa-lock'></i></a>";
+				$this->footer_output .= "<div id='site_locked'>
+					<a href='".admin_url()."'><i class='fa fa-lock'></i></a>";
+
+					if(isset($post->ID))
+					{
+						$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench'></i></a>";
+					}
+
+				$this->footer_output .= "</div>";
 			}
 		}
 

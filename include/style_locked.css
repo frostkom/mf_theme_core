@@ -23,6 +23,22 @@
 		{
 			display: none;
 		}
+
+			#site_locked a
+			{
+				display: block;
+			}
+
+				#site_locked a + a
+				{
+					display: none;
+					margin-top: 1em;
+				}
+
+					#site_locked:hover a + a
+					{
+						display: block;
+					}
 }
 
 @media print
