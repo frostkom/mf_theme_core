@@ -3380,7 +3380,7 @@ class mf_theme_core
 			}
 		}*/
 
-		if(get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
+		if((!is_multisite() || is_main_site()) && get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
 		{
 			if(!isset($obj_base))
 			{
