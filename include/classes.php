@@ -1751,8 +1751,8 @@ class mf_theme_core
 				'min' => 1,
 				'max' => 5,
 				'step' => .1,
-				//'class' => 'test-class test',
-				//'style' => 'color: #0a0',
+				//'class' => '',
+				//'style' => 'color: #',
 			), 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
 
 			$options_params[] = array('type' => 'text', 'id' => 'section_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => "0 0 2em");
@@ -2868,40 +2868,54 @@ class mf_theme_core
 
 	/* Admin */
 	#################################
-	function clone_single_post()
+	function clone_single_post($data = array())
 	{
-		$p = get_post($this->post_id_old);
+		if(!isset($data['go_deeper'])){				$data['go_deeper'] = true;}
+		if(!isset($data['include_title_copy'])){	$data['include_title_copy'] = true;}
+		if(!isset($data['include_status'])){		$data['include_status'] = false;}
 
-		if($p == null)
+		$post = get_post($this->post_id_old);
+
+		if($post == null)
 		{
 			return false;
 		}
 
-		$newpost = array(
-			'post_name' => $p->post_name,
-			'post_type' => $p->post_type,
-			'ping_status' => $p->ping_status,
-			'post_parent' => $p->post_parent,
-			'menu_order' => $p->menu_order,
-			'post_password' => $p->post_password,
-			'post_excerpt' => $p->post_excerpt,
-			'comment_status' => $p->comment_status,
-			'post_title' => $p->post_title." (".__("copy", 'lang_theme_core').")",
-			'post_content' => $p->post_content,
-			'post_author' => $p->post_author,
-			'to_ping' => $p->to_ping,
-			'pinged' => $p->pinged,
-			'post_content_filtered' => $p->post_content_filtered,
-			'post_category' => $p->post_category,
-			'tags_input' => $p->tags_input,
-			'tax_input' => $p->tax_input,
-			'page_template' => $p->page_template,
-			//'post_date' => $p->post_date, // default: current date
-			//'post_date_gmt' => $p->post_date_gmt, // default: current gmt date
-			//'post_status' => $p->post_status, // default: draft
+		if($data['include_title_copy'])
+		{
+			$post->post_title .= " (".__("copy", 'lang_theme_core').")";
+		}
+
+		$new_post = array(
+			'post_name' => $post->post_name,
+			'post_type' => $post->post_type,
+			'ping_status' => $post->ping_status,
+			'post_parent' => $post->post_parent,
+			'menu_order' => $post->menu_order,
+			'post_password' => $post->post_password,
+			'post_excerpt' => $post->post_excerpt,
+			'comment_status' => $post->comment_status,
+			'post_title' => $post->post_title,
+			'post_content' => $post->post_content,
+			'post_author' => $post->post_author,
+			'to_ping' => $post->to_ping,
+			'pinged' => $post->pinged,
+			'post_content_filtered' => $post->post_content_filtered,
+			'post_category' => $post->post_category,
+			'tags_input' => $post->tags_input,
+			'tax_input' => $post->tax_input,
+			'page_template' => $post->page_template,
+			//'post_date' => $post->post_date, // default: current date
+			//'post_date_gmt' => $post->post_date_gmt, // default: current gmt date
+			//'post_status' => $post->post_status, // default: draft
 		);
 
-		$this->post_id_new = wp_insert_post($newpost);
+		if($data['include_status'])
+		{
+			$new_post['post_status'] = $post->post_status;
+		}
+
+		$this->post_id_new = wp_insert_post($new_post);
 
 		$format = get_post_format($this->post_id_old);
 		set_post_format($this->post_id_new, $format);
@@ -2924,7 +2938,10 @@ class mf_theme_core
 			}
 		}
 
-		do_action('clone_page', $this->post_id_old, $this->post_id_new);
+		if($data['go_deeper'])
+		{
+			do_action('clone_page', $this->post_id_old, $this->post_id_new);
+		}
 
 		return true;
 	}
@@ -3208,6 +3225,9 @@ class mf_theme_core
 		if(IS_ADMIN)
 		{
 			$post_id = check_var('post');
+			/*$post_id = get_rwmb_post_id(array(
+				'meta_key' => 'meta_theme_core_',
+			));*/
 
 			$arr_fields = array();
 
