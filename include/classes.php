@@ -3855,43 +3855,55 @@ class mf_theme_core
 
 		if($setting_base_template_site != '' && $setting_base_template_site != get_site_url())
 		{
+			$log_message_1 = sprintf("I could not process the feed from %s since the URL was not a valid one", $setting_base_template_site);
+
 			if(filter_var($setting_base_template_site, FILTER_VALIDATE_URL))
 			{
-				list($content, $headers) = get_url_content(array('url' => $setting_base_template_site."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source", 'catch_head' => true));
+				$url = $setting_base_template_site."/wp-content/plugins/mf_theme_core/include/api/?type=get_style_source";
 
-				if(isset($headers['http_code']) && $headers['http_code'] == 200)
+				list($content, $headers) = get_url_content(array(
+					'url' => $url,
+					'catch_head' => true,
+				));
+
+				$log_message_2 = sprintf("The response from %s had an error", $url);
+
+				switch($headers['http_code'])
 				{
-					$json = json_decode($content, true);
+					case 200:
+						$json = json_decode($content, true);
 
-					if(isset($json['success']) && $json['success'] == true)
-					{
-						$style_changed = $json['response']['style_changed'];
-						$style_url = $json['response']['style_url'];
+						$log_message_3 = sprintf("The feed from %s returned an error (%s)", $url, $content);
 
-						update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
+						if(isset($json['success']) && $json['success'] == true)
+						{
+							$style_changed = $json['response']['style_changed'];
+							$style_url = $json['response']['style_url'];
 
-						do_log("The feed from", 'trash');
-					}
+							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
 
-					else
-					{
-						do_log(sprintf("The feed from %s returned an error (%s)", $setting_base_template_site, $content));
-					}
+							do_log($log_message_3, 'trash');
+						}
 
-					do_log("The response from", 'trash');
+						else
+						{
+							do_log($log_message_3);
+						}
+
+						do_log($log_message_2, 'trash');
+					break;
+
+					default:
+						do_log($log_message_2." (".$headers['http_code'].")");
+					break;
 				}
 
-				else
-				{
-					do_log(sprintf("The response from %s had an error (%s)", $setting_base_template_site, $headers['http_code']));
-				}
-
-				do_log("I could not process the feed from", 'trash');
+				do_log($log_message_1, 'trash');
 			}
 
 			else
 			{
-				do_log(sprintf("I could not process the feed from %s since the URL was not a valid one", $setting_base_template_site));
+				do_log($log_message_1);
 			}
 		}
 	}
@@ -4730,7 +4742,7 @@ class widget_theme_core_search extends WP_Widget
 
 		$this->arr_default = array(
 			'search_placeholder' => "",
-			'hide_on_mobile' => 'no',
+			'search_hide_on_mobile' => 'no',
 			'search_animate' => 'yes',
 			'search_listen_to_keystroke' => 'yes',
 		);
