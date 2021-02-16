@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description: 
-Version: 8.2.4
+Version: 8.2.5
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -18,6 +18,8 @@ define('DISALLOW_FILE_EDIT', true);
 
 include_once("include/classes.php");
 include_once("include/functions.php");
+
+load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__))."/lang/");
 
 $obj_theme_core = new mf_theme_core();
 
@@ -77,9 +79,6 @@ if(is_admin())
 
 else
 {
-	/* Not needed after WP 5.5 has been released */
-	//add_action('do_robots', array($obj_theme_core, 'do_robots'), 100, 0);
-
 	add_filter('template_redirect', array($obj_theme_core, 'template_redirect'), 1, 0);
 
 	add_filter('wp_sitemaps_add_provider', array($obj_theme_core, 'wp_sitemaps_add_provider'), 10, 2);
@@ -162,8 +161,6 @@ add_action('wp_ajax_optimize_theme', array($obj_theme_core, 'optimize_theme'));
 
 add_shortcode('redirect', array($obj_theme_core, 'shortcode_redirect'));
 
-load_plugin_textdomain('lang_theme_core', false, dirname(plugin_basename(__FILE__))."/lang/");
-
 function activate_theme_core()
 {
 	mf_uninstall_plugin(array(
@@ -175,7 +172,7 @@ function uninstall_theme_core()
 {
 	mf_uninstall_plugin(array(
 		'uploads' => 'mf_theme_core',
-		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_hidden_meta_boxes', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_scroll_to_top_text', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'setting_send_email_on_draft', 'setting_theme_enable_wp_api', 'setting_theme_core_logged_in_theme', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
+		'options' => array('setting_no_public_pages', 'setting_theme_core_login', 'setting_theme_core_logged_in_theme', 'setting_theme_core_hidden_meta_boxes', 'setting_send_email_on_draft', 'setting_theme_ignore_style_on_restore', 'setting_theme_css_hero', 'setting_theme_enable_wp_api', 'setting_theme_core_display_author_pages', 'setting_theme_core_display_lock', 'setting_theme_core_title_format', 'setting_display_post_meta', 'setting_scroll_to_top', 'setting_scroll_to_top_text', 'setting_cookie_info', 'setting_404_page', 'setting_maintenance_page', 'setting_maintenance_page_temp', 'setting_activate_maintenance', 'option_theme_saved', 'option_theme_version', 'theme_source_version', 'option_theme_source_style_url', 'option_database_optimized', 'option_uploads_fixed'),
 		'meta' => array('meta_info_time_limit', 'meta_info_visit_limit', 'meta_time_visit_limit'),
 	));
 }

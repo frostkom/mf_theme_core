@@ -7,6 +7,8 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
+$obj_theme_core = new mf_theme_core();
+
 $site_name = get_bloginfo('name');
 $site_description = get_bloginfo('description');
 
@@ -18,7 +20,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	<xsl:template match='/'>
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 			<head>
-				<title>".sprintf(__("XML Sitemap for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."</title>
+				<title>".sprintf(__("XML Sitemap for %s", $obj_theme_core->lang_key), $site_name.($site_description != '' ? " | ".$site_description : ''))."</title>
 				<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 				<meta name='robots' content='noindex,follow' />
 				<style>
@@ -64,12 +66,12 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	</xsl:template>
 
 	<xsl:template match='sitemap:urlset'>
-		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>
+		<h1>".sprintf(__("XML Sitemap for %s | %s", $obj_theme_core->lang_key), $site_name, $site_description)."</h1>
 		<table>
 			<tr>
-				<th>".__("Title", 'lang_theme_core')."</th>
-				<th>".__("URL", 'lang_theme_core')."</th>
-				<th>".__("Last Modified", 'lang_theme_core')." (GMT)</th>
+				<th>".__("Title", $obj_theme_core->lang_key)."</th>
+				<th>".__("URL", $obj_theme_core->lang_key)."</th>
+				<th>".__("Last Modified", $obj_theme_core->lang_key)." (GMT)</th>
 			</tr>
 			<xsl:for-each select='./sitemap:url'>
 				<tr>

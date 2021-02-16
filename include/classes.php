@@ -5,6 +5,7 @@ class mf_theme_core
 	function __construct()
 	{
 		$this->meta_prefix = 'mf_theme_core_';
+		$this->lang_key = 'lang_theme_core';
 
 		$this->options_params = $this->options = $this->options_fonts = array();
 
@@ -87,7 +88,7 @@ class mf_theme_core
 	function get_themes_for_select()
 	{
 		$arr_data = array(
-			'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
+			'' => "-- ".__("Choose Here", $this->lang_key)." --",
 		);
 
 		$arr_themes = wp_get_themes(array('errors' => false, 'allowed' => true));
@@ -103,18 +104,18 @@ class mf_theme_core
 	function get_meta_boxes_for_select()
 	{
 		return array(
-			'authordiv' => __("Author", 'lang_theme_core'),
-			'categorydiv' => __("Categories", 'lang_theme_core'),
-			'commentstatusdiv' => __("Discussion", 'lang_theme_core'),
-			'commentsdiv' => __("Comments", 'lang_theme_core'),
-			'pageparentdiv' => __("Page Attributes", 'lang_theme_core'),
-			'postcustom' => __("Custom Fields", 'lang_theme_core'),
-			'postexcerpt' => __("Excerpt", 'lang_theme_core'),
-			'postimagediv' => __("Featured Image", 'lang_theme_core'),
-			'revisionsdiv' => __("Revisions", 'lang_theme_core'),
-			'slugdiv' => __("Slug", 'lang_theme_core'),
-			'tagsdiv-post_tag' => __("Tags", 'lang_theme_core'),
-			'trackbacksdiv' => __("Trackbacks", 'lang_theme_core'),
+			'authordiv' => __("Author", $this->lang_key),
+			'categorydiv' => __("Categories", $this->lang_key),
+			'commentstatusdiv' => __("Discussion", $this->lang_key),
+			'commentsdiv' => __("Comments", $this->lang_key),
+			'pageparentdiv' => __("Page Attributes", $this->lang_key),
+			'postcustom' => __("Custom Fields", $this->lang_key),
+			'postexcerpt' => __("Excerpt", $this->lang_key),
+			'postimagediv' => __("Featured Image", $this->lang_key),
+			'revisionsdiv' => __("Revisions", $this->lang_key),
+			'slugdiv' => __("Slug", $this->lang_key),
+			'tagsdiv-post_tag' => __("Tags", $this->lang_key),
+			'trackbacksdiv' => __("Trackbacks", $this->lang_key),
 		); //'formatdiv', 'tagsdiv',
 	}
 
@@ -262,7 +263,7 @@ class mf_theme_core
 			case 'maintenance_mode':
 				$color = "color_red";
 				$icon = "fas fa-hard-hat";
-				$text = __("Maintenance Mode Activated", 'lang_theme_core');
+				$text = __("Maintenance Mode Activated", $this->lang_key);
 			break;
 
 			case 'not_public':
@@ -275,7 +276,7 @@ class mf_theme_core
 
 				$color = "color_red";
 				$icon = "fas fa-eye-slash";
-				$text = __("No Public Pages", 'lang_theme_core');
+				$text = __("No Public Pages", $this->lang_key);
 			break;
 
 			case 'requires_login':
@@ -283,7 +284,7 @@ class mf_theme_core
 
 				$color = "color_red";
 				$icon = "fas fa-user-lock";
-				$text = __("Requires Login", 'lang_theme_core');
+				$text = __("Requires Login", $this->lang_key);
 			break;
 
 			case 'no_index':
@@ -291,7 +292,7 @@ class mf_theme_core
 
 				$color = "color_yellow";
 				$icon = "fas fa-robot";
-				$text = __("No Index", 'lang_theme_core');
+				$text = __("No Index", $this->lang_key);
 			break;
 
 			default:
@@ -300,7 +301,7 @@ class mf_theme_core
 
 				$color = "color_green";
 				$icon = "fas fa-eye";
-				$text = __("Public", 'lang_theme_core');
+				$text = __("Public", $this->lang_key);
 			break;
 		}
 
@@ -380,19 +381,22 @@ class mf_theme_core
 
 		$arr_settings = array();
 
-		$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
-
-		if(get_option('setting_no_public_pages') != 'yes')
+		if(get_option('blog_public') == 0 || get_option('setting_no_public_pages') == 'yes' || get_option('setting_theme_core_login') == 'yes')
 		{
-			$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
+			$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", $this->lang_key);
+
+			if(get_option('setting_no_public_pages') != 'yes')
+			{
+				$arr_settings['setting_theme_core_login'] = __("Require login for public site", $this->lang_key);
+			}
 		}
 
 		/*if(IS_SUPER_ADMIN)
 		{
-			$arr_settings['setting_theme_core_logged_in_theme'] = __("Theme For Administrators", 'lang_theme_core');
+			$arr_settings['setting_theme_core_logged_in_theme'] = __("Theme For Administrators", $this->lang_key);
 		}*/
 
-		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", 'lang_theme_core');
+		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", $this->lang_key);
 
 		if(get_option('setting_no_public_pages') != 'yes')
 		{
@@ -408,7 +412,7 @@ class mf_theme_core
 
 			if(count($users_editors) > 0 && count($users_authors) > 0)
 			{
-				$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", 'lang_theme_core');
+				$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", $this->lang_key);
 			}
 
 			else
@@ -420,7 +424,7 @@ class mf_theme_core
 
 			if($setting_base_template_site != '')
 			{
-				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
+				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", $this->lang_key);
 			}
 
 			else
@@ -430,7 +434,7 @@ class mf_theme_core
 
 			/*if(is_plugin_active("css-hero-ce/css-hero-main.php"))
 			{
-				$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
+				$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", $this->lang_key);
 			}
 
 			else
@@ -441,8 +445,8 @@ class mf_theme_core
 
 		if(IS_SUPER_ADMIN)
 		{
-			$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", 'lang_theme_core');
-			$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
+			$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", $this->lang_key);
+			$arr_settings['setting_theme_optimize'] = __("Optimize", $this->lang_key);
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -456,16 +460,17 @@ class mf_theme_core
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 			$arr_settings = array();
-			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
-			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
+			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", $this->lang_key);
+			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", $this->lang_key);
+			$arr_settings['setting_theme_core_title_format'] = __("Title Format", $this->lang_key);
 
 			$arr_data = array();
 			get_post_children(array('post_type' => 'post'), $arr_data);
 
 			if(count($arr_data) > 0)
 			{
-				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
-				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
+				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", $this->lang_key);
+				$arr_settings['default_comment_status'] = __("Allow Comments", $this->lang_key);
 			}
 
 			else
@@ -473,16 +478,16 @@ class mf_theme_core
 				delete_option('setting_display_post_meta');
 			}
 
-			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
+			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", $this->lang_key);
 
 			if(get_option('setting_scroll_to_top') == 'yes')
 			{
-				$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", 'lang_theme_core');
+				$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", $this->lang_key);
 			}
 
 			if(is_plugin_active("mf_analytics/index.php"))
 			{
-				$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
+				$arr_settings['setting_cookie_info'] = __("Cookie information", $this->lang_key);
 			}
 
 			else
@@ -492,14 +497,14 @@ class mf_theme_core
 
 			if(get_option('setting_no_public_pages') != 'yes')
 			{
-				$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+				$arr_settings['setting_404_page'] = __("404 Page", $this->lang_key);
 			}
 
-			$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
+			$arr_settings['setting_maintenance_page'] = __("Maintenance Page", $this->lang_key);
 
 			if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
 			{
-				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
+				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", $this->lang_key);
 			}
 
 			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -511,7 +516,7 @@ class mf_theme_core
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
+		echo settings_header($setting_key, __("Theme", $this->lang_key));
 	}
 
 		function setting_no_public_pages_callback()
@@ -563,7 +568,7 @@ class mf_theme_core
 				$editors .= ($editors != '' ? "" : "").$user->display_name;
 			}
 
-			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", $this->lang_key), $editors)));
 		}
 
 		function setting_theme_enable_wp_api_callback()
@@ -583,16 +588,16 @@ class mf_theme_core
 			{
 				$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +7 day")));
 
-				$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
+				$description = sprintf(__("The optimization was last run %s and will be run again %s", $this->lang_key), format_date($option_database_optimized), $populate_next);
 			}
 
 			else
 			{
-				$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
+				$description = sprintf(__("The optimization has not been run yet but will be %s", $this->lang_key), get_next_cron());
 			}
 
 			echo "<div>"
-				.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
+				.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", $this->lang_key), 'class' => 'button-secondary'))
 				."<p class='italic'>".$description."</p>"
 			."</div>
 			<div id='optimize_debug'></div>";
@@ -620,7 +625,7 @@ class mf_theme_core
 
 			if($option != '')
 			{
-				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
+				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", $this->lang_key), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
 			}
 
 			update_option($css_hero_key, $option);
@@ -630,13 +635,21 @@ class mf_theme_core
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Public", 'lang_theme_core'));
+		echo settings_header($setting_key, __("Theme", $this->lang_key)." - ".__("Public", $this->lang_key));
 	}
+
+		function setting_theme_core_display_author_pages_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'yes');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+		}
 
 		function setting_theme_core_display_lock_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option($setting_key, array('administrator', 'editor', 'author', 'contributor'));
+			$option = get_option($setting_key, ($this->is_theme_active() ? array('administrator', 'editor', 'author', 'contributor') : array()));
 			//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
 
 			echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
@@ -647,7 +660,7 @@ class mf_theme_core
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option($setting_key);
 
-			echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => $this->title_format, 'description' => __("This will replace the default format", 'lang_theme_core')));
+			echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => $this->title_format)); //, 'description' => __("This will replace the default format", $this->lang_key)
 		}
 
 		function setting_display_post_meta_callback()
@@ -656,9 +669,9 @@ class mf_theme_core
 			$option = get_option_or_default($setting_key, array('time'));
 
 			$arr_data = array(
-				'time' => __("Time", 'lang_theme_core'),
-				'author' => __("Author", 'lang_theme_core'),
-				'category' => __("Category", 'lang_theme_core'),
+				'time' => __("Time", $this->lang_key),
+				'author' => __("Author", $this->lang_key),
+				'category' => __("Category", $this->lang_key),
 			);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
@@ -676,18 +689,18 @@ class mf_theme_core
 		function get_comment_status_for_select($option)
 		{
 			$arr_data = array();
-			$arr_data['open'] = __("Yes", 'lang_theme_core');
+			$arr_data['open'] = __("Yes", $this->lang_key);
 
 			if($this->get_comment_status_amount('closed') > 0)
 			{
-				$arr_data['open_all'] = __("Yes", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+				$arr_data['open_all'] = __("Yes", $this->lang_key)." (".__("And Change Setting on All Posts", $this->lang_key).")";
 			}
 
-			$arr_data['closed'] = __("No", 'lang_theme_core');
+			$arr_data['closed'] = __("No", $this->lang_key);
 
 			if($this->get_comment_status_amount('open') > 0)
 			{
-				$arr_data['closed_all'] = __("No", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
+				$arr_data['closed_all'] = __("No", $this->lang_key)." (".__("And Change Setting on All Posts", $this->lang_key).")";
 			}
 
 			return $arr_data;
@@ -715,7 +728,7 @@ class mf_theme_core
 		function setting_scroll_to_top_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option_or_default($setting_key, 'yes');
+			$option = get_option_or_default($setting_key, ($this->is_theme_active() ? 'yes' : 'no'));
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
@@ -736,7 +749,7 @@ class mf_theme_core
 			$arr_data = array();
 			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
 
-			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", $this->lang_key)));
 		}
 
 		function setting_404_page_callback()
@@ -748,9 +761,9 @@ class mf_theme_core
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			$post_title = "404";
-			$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
+			$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", $this->lang_key);
 
-			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", $this->lang_key)));
 		}
 
 		function setting_maintenance_page_callback()
@@ -764,10 +777,10 @@ class mf_theme_core
 			$arr_data = array();
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
-			$post_title = __("Temporary Maintenance", 'lang_theme_core');
-			$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", 'lang_theme_core');
+			$post_title = __("Temporary Maintenance", $this->lang_key);
+			$post_content = __("This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual.", $this->lang_key);
 
-			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", 'lang_theme_core')));
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed when the website is updating", $this->lang_key)));
 
 			if($option > 0 && $option != $option_temp)
 			{
@@ -847,19 +860,19 @@ class mf_theme_core
 
 						else
 						{
-							$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
+							$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", $this->lang_key), $maintenance_file);
 						}
 					}
 
 					else
 					{
-						$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
+						$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", $this->lang_key), $maintenance_file, $maintenance_template);
 					}
 				}
 
 				else
 				{
-					$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
+					$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", $this->lang_key), $maintenance_file);
 				}
 
 				echo get_notification();
@@ -871,7 +884,7 @@ class mf_theme_core
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option_or_default($setting_key, 'no');
 
-			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", $this->lang_key)));
 		}
 
 	function admin_init()
@@ -931,7 +944,7 @@ class mf_theme_core
 
 		if($paged >= 2 || $page >= 2)
 		{
-			$title_format = str_replace("[page_number]", $separator_full.sprintf( __("Page %s", 'lang_theme_core'), max($paged, $page)), $title_format);
+			$title_format = str_replace("[page_number]", $separator_full.sprintf( __("Page %s", $this->lang_key), max($paged, $page)), $title_format);
 		}
 
 		$title_format = str_replace(array("[page_title]", "[site_title]", "[site_description]", "[page_number]", $separator_full.$separator_full), "", $title_format);
@@ -1048,7 +1061,7 @@ class mf_theme_core
 						<div>
 							<i class='fa fa-gavel red fa-2x'></i>";
 
-							$buttons = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+							$buttons = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", $this->lang_key)."</a>";
 
 							if($post_excerpt != '')
 							{
@@ -1058,7 +1071,7 @@ class mf_theme_core
 
 								if($post_content != '' && $post_content != $post_excerpt)
 								{
-									$buttons .= " <a href='".get_permalink($post_id)."' class='button' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
+									$buttons .= " <a href='".get_permalink($post_id)."' class='button' rel='external'>".__("Read More", $this->lang_key)."</a>";
 								}
 
 								$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
@@ -1145,9 +1158,9 @@ class mf_theme_core
 	function get_search_form($html)
 	{
 		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
-			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
+			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", $this->lang_key), 'xtra' => " autocomplete='off'"))
 			."<div class='form_button'>"
-				.show_button(array('text' => __("Search", 'lang_theme_core')))
+				.show_button(array('text' => __("Search", $this->lang_key)))
 			."</div>
 		</form>";
 	}
@@ -1159,10 +1172,10 @@ class mf_theme_core
 			$this->displayed_password_form = true;
 
 			return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
-				<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
+				<p>".__("To view this protected post, enter the password below", $this->lang_key)."</p>"
 				.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password"), 'maxlength' => 20))
 				."<div class='form_button'>"
-					.show_button(array('text' => __("Submit", 'lang_theme_core')))
+					.show_button(array('text' => __("Submit", $this->lang_key)))
 				."</div>
 			</form>";
 		}
@@ -1221,7 +1234,7 @@ class mf_theme_core
 
 			if(in_array('author', $setting_display_post_meta))
 			{
-				$html .= "<span>".sprintf(__("by %s", 'lang_theme_core'), get_user_info(array('id' => $post->post_author)))."</span>";
+				$html .= "<span>".sprintf(__("by %s", $this->lang_key), get_user_info(array('id' => $post->post_author)))."</span>";
 			}
 
 			if(in_array('category', $setting_display_post_meta))
@@ -1413,186 +1426,186 @@ class mf_theme_core
 
 		$theme_dir_name = $this->get_theme_dir_name();
 
-		$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
+		$options_params[] = array('category' => __("Generic", $this->lang_key), 'id' => 'mf_theme_body');
 
 			/*if(get_option('setting_base_template_site') == '')
 			{
-				$options_params[] = array('type' => 'url', 'id' => 'style_source', 'title' => __("Get Updates From", 'lang_theme_core'));
+				$options_params[] = array('type' => 'url', 'id' => 'style_source', 'title' => __("Get Updates From", $this->lang_key));
 			}*/
 
-			$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'));
-				$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'), 'default' => '#ffffff');
-				$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-			$options_params[] = array('type' => 'text', 'id' => 'main_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "1em 2em");
-			$options_params[] = array('type' => 'font', 'id' => 'body_font', 'title' => __("Font", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", $this->lang_key));
+				$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", $this->lang_key), 'default' => '#ffffff');
+				$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+			$options_params[] = array('type' => 'text', 'id' => 'main_padding', 'title' => __("Padding", $this->lang_key), 'default' => "1em 2em");
+			$options_params[] = array('type' => 'font', 'id' => 'body_font', 'title' => __("Font", $this->lang_key));
 
-			$options_params[] = array('type' => 'color', 'id' => 'body_color', 'title' => __("Text Color", 'lang_theme_core'));
-				$options_params[] = array('type' => 'color', 'id' => 'body_link_color', 'title' => " - ".__("Link Color", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text_decoration', 'id' => 'body_link_underline', 'title' => " - ".__("Link Underline", 'lang_theme_core'), 'default' => 'underline');
+			$options_params[] = array('type' => 'color', 'id' => 'body_color', 'title' => __("Text Color", $this->lang_key));
+				$options_params[] = array('type' => 'color', 'id' => 'body_link_color', 'title' => " - ".__("Link Color", $this->lang_key));
+				$options_params[] = array('type' => 'text_decoration', 'id' => 'body_link_underline', 'title' => " - ".__("Link Underline", $this->lang_key), 'default' => 'underline');
 
-			$options_params[] = array('type' => 'number', 'id' => 'website_max_width', 'title' => __("Breakpoint", 'lang_theme_core')." (".__("Tablet", 'lang_theme_core').")", 'default' => "1100");
-			$options_params[] = array('type' => 'text', 'id' => 'body_desktop_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => ".625em");
-			$options_params[] = array('type' => 'number', 'id' => 'mobile_breakpoint', 'title' => __("Breakpoint", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "600");
-			$options_params[] = array('type' => 'text', 'id' => 'body_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "2.4vw", 'show_if' => 'mobile_breakpoint');
+			$options_params[] = array('type' => 'number', 'id' => 'website_max_width', 'title' => __("Breakpoint", $this->lang_key)." (".__("Tablet", $this->lang_key).")", 'default' => "1100");
+			$options_params[] = array('type' => 'text', 'id' => 'body_desktop_font_size', 'title' => __("Font Size", $this->lang_key), 'default' => ".625em");
+			$options_params[] = array('type' => 'number', 'id' => 'mobile_breakpoint', 'title' => __("Breakpoint", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => "600");
+			$options_params[] = array('type' => 'text', 'id' => 'body_font_size', 'title' => __("Font Size", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => "2.4vw", 'show_if' => 'mobile_breakpoint');
 
-			$options_params[] = array('type' => 'overflow', 'id' => 'body_scroll', 'title' => __("Scroll Bar", 'lang_theme_core'), 'default' => 'scroll');
+			$options_params[] = array('type' => 'overflow', 'id' => 'body_scroll', 'title' => __("Scroll Bar", $this->lang_key), 'default' => 'scroll');
 
 				if($theme_dir_name == 'mf_parallax')
 				{
-					$options_params[] = array('type' => 'text', 'id' => 'mobile_aside_img_max_width', 'title' => __("Aside Image Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => "mobile_breakpoint");
+					$options_params[] = array('type' => 'text', 'id' => 'mobile_aside_img_max_width', 'title' => __("Aside Image Width", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'show_if' => "mobile_breakpoint");
 				}
 
-			$options_params[] = array('type' => 'text', 'id' => 'body_print_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Print", 'lang_theme_core').")");
+			$options_params[] = array('type' => 'text', 'id' => 'body_print_font_size', 'title' => __("Font Size", $this->lang_key)." (".__("Print", $this->lang_key).")");
 
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => " - ".__("Forms", 'lang_theme_core'), 'id' => 'mf_theme_generic_forms');
-			$options_params[] = array('type' => 'text', 'id' => 'form_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Fields", 'lang_theme_core').")", 'default' => ".3em");
-			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
-			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")");
+		$options_params[] = array('category' => " - ".__("Forms", $this->lang_key), 'id' => 'mf_theme_generic_forms');
+			$options_params[] = array('type' => 'text', 'id' => 'form_border_radius', 'title' => __("Border Radius", $this->lang_key)." (".__("Fields", $this->lang_key).")", 'default' => ".3em");
+			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", $this->lang_key)." (".__("Buttons", $this->lang_key).")", 'default' => ".3em");
+			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", $this->lang_key)." (".__("Buttons", $this->lang_key).")");
 
-			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_webshop/index.php") ? "1.3em" : ''));
+			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", $this->lang_key), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_webshop/index.php") ? "1.3em" : ''));
 
-			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => "#000000");
-				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", 'lang_theme_core'), 'default' => "#ffffff");
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Button Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => "#c78e91");
-				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color_secondary', 'title' => " - ".__("Button Text Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => "#ffffff");
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => get_option('setting_color_button_negative', "#e47676"));
-				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color_negative', 'title' => " - ".__("Button Text Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#ffffff");
-				//$options_params[] = array('type' => 'color', 'id' => 'button_color_hover', 'title' => " - ".__("Button Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'button_color');
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#e47676");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", $this->lang_key), 'default' => "#000000");
+				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color', 'title' => " - ".__("Button Text Color", $this->lang_key), 'default' => "#ffffff");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Button Color", $this->lang_key)." (".__("Secondary", $this->lang_key).")", 'default' => "#c78e91");
+				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color_secondary', 'title' => " - ".__("Button Text Color", $this->lang_key)." (".__("Secondary", $this->lang_key).")", 'default' => "#ffffff");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", $this->lang_key)." (".__("Negative", $this->lang_key).")", 'default' => get_option('setting_color_button_negative', "#e47676"));
+				//$options_params[] = array('type' => 'color', 'id' => 'button_text_color_negative', 'title' => " - ".__("Button Text Color", $this->lang_key)." (".__("Negative", $this->lang_key).")", 'default' => "#ffffff");
+				//$options_params[] = array('type' => 'color', 'id' => 'button_color_hover', 'title' => " - ".__("Button Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'button_color');
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", $this->lang_key)." (".__("Negative", $this->lang_key).")", 'default' => "#e47676");
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => __("Header", 'lang_theme_core'), 'id' => 'mf_theme_header');
-			$options_params[] = array('type' => 'position', 'id' => 'header_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'relative');
-			$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'));
-				$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
-				$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+		$options_params[] = array('category' => __("Header", $this->lang_key), 'id' => 'mf_theme_header');
+			$options_params[] = array('type' => 'position', 'id' => 'header_fixed', 'title' => __("Position", $this->lang_key), 'default' => 'relative');
+			$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", $this->lang_key));
+				$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", $this->lang_key)); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
+				$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", $this->lang_key));
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'checkbox', 'id' => 'header_override_bg_with_page_bg', 'title' => __("Override background with page background", 'lang_theme_core'), 'default' => 2);
+				$options_params[] = array('type' => 'checkbox', 'id' => 'header_override_bg_with_page_bg', 'title' => __("Override background with page background", $this->lang_key), 'default' => 2);
 			}
 
-			$options_params[] = array('type' => 'text', 'id' => 'header_padding', 'title' => __("Padding", 'lang_theme_core'));
-			$options_params[] = array('type' => 'overflow', 'id' => 'header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'header_padding', 'title' => __("Padding", $this->lang_key));
+			$options_params[] = array('type' => 'overflow', 'id' => 'header_overflow', 'title' => __("Overflow", $this->lang_key));
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => " - ".__("Search", 'lang_theme_core'), 'id' => 'mf_theme_header_search');
-			$options_params[] = array('type' => 'color', 'id' => 'search_color', 'title' => __("Color", 'lang_theme_core'));
-			$options_params[] = array('type' => 'text', 'id' => 'search_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.4em");
+		$options_params[] = array('category' => " - ".__("Search", $this->lang_key), 'id' => 'mf_theme_header_search');
+			$options_params[] = array('type' => 'color', 'id' => 'search_color', 'title' => __("Color", $this->lang_key));
+			$options_params[] = array('type' => 'text', 'id' => 'search_size', 'title' => __("Font Size", $this->lang_key), 'default' => "1.4em");
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => " - ".__("Logo", 'lang_theme_core'), 'id' => 'mf_theme_logo');
-			$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => '.4em 0'
-			$options_params[] = array('type' => 'image', 'id' => 'header_logo', 'title' => __("Image", 'lang_theme_core'));
-			$options_params[] = array('type' => 'float', 'id' => 'logo_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => 'left');
-			$options_params[] = array('type' => 'text', 'id' => 'logo_width', 'title' => __("Width", 'lang_theme_core'), 'default' => '14em');
-			$options_params[] = array('type' => 'image', 'id' => 'header_mobile_logo', 'title' => __("Image", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'mobile_breakpoint');
-			$options_params[] = array('type' => 'text', 'id' => 'logo_width_mobile', 'title' => __("Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => '20em');
-			$options_params[] = array('type' => 'font', 'id' => 'logo_font', 'title' => __("Font", 'lang_theme_core'), 'hide_if' => 'header_logo');
-			$options_params[] = array('type' => 'text', 'id' => 'logo_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "3rem");
-				$options_params[] = array('type' => 'text', 'id' => 'slogan_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Tagline", 'lang_theme_core').")", 'default' => ".4em");
-			$options_params[] = array('type' => 'color', 'id' => 'logo_color', 'title' => __("Color", 'lang_theme_core'));
+		$options_params[] = array('category' => " - ".__("Logo", $this->lang_key), 'id' => 'mf_theme_logo');
+			$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", $this->lang_key)); //, 'default' => '.4em 0'
+			$options_params[] = array('type' => 'image', 'id' => 'header_logo', 'title' => __("Image", $this->lang_key));
+			$options_params[] = array('type' => 'float', 'id' => 'logo_float', 'title' => __("Alignment", $this->lang_key), 'default' => 'left');
+			$options_params[] = array('type' => 'text', 'id' => 'logo_width', 'title' => __("Width", $this->lang_key), 'default' => '14em');
+			$options_params[] = array('type' => 'image', 'id' => 'header_mobile_logo', 'title' => __("Image", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'show_if' => 'mobile_breakpoint');
+			$options_params[] = array('type' => 'text', 'id' => 'logo_width_mobile', 'title' => __("Width", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => '20em');
+			$options_params[] = array('type' => 'font', 'id' => 'logo_font', 'title' => __("Font", $this->lang_key), 'hide_if' => 'header_logo');
+			$options_params[] = array('type' => 'text', 'id' => 'logo_font_size', 'title' => __("Font Size", $this->lang_key), 'default' => "3rem");
+				$options_params[] = array('type' => 'text', 'id' => 'slogan_font_size', 'title' => __("Font Size", $this->lang_key)." (".__("Tagline", $this->lang_key).")", 'default' => ".4em");
+			$options_params[] = array('type' => 'color', 'id' => 'logo_color', 'title' => __("Color", $this->lang_key));
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => __("Navigation", 'lang_theme_core'), 'id' => 'mf_theme_navigation');
+		$options_params[] = array('category' => __("Navigation", $this->lang_key), 'id' => 'mf_theme_navigation');
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'checkbox', 'id' => 'nav_mobile', 'title' => __("Compressed", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => 2);
-					$options_params[] = array('type' => 'checkbox', 'id' => 'nav_click2expand', 'title' => __("Click to expand", 'lang_theme_core'), 'default' => 1);
-				$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "0 1em");
-					$options_params[] = array('type' => 'text', 'id' => 'nav_padding_mobile', 'title' => __("Padding", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'nav_padding');
-				$options_params[] = array('type' => 'float', 'id' => 'nav_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
-					$options_params[] = array('type' => 'float', 'id' => 'nav_float_mobile', 'title' => __("Alignment", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "none", 'show_if' => 'nav_float');
+				$options_params[] = array('type' => 'checkbox', 'id' => 'nav_mobile', 'title' => __("Compressed", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => 2);
+					$options_params[] = array('type' => 'checkbox', 'id' => 'nav_click2expand', 'title' => __("Click to expand", $this->lang_key), 'default' => 1);
+				$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", $this->lang_key), 'default' => "0 1em");
+					$options_params[] = array('type' => 'text', 'id' => 'nav_padding_mobile', 'title' => __("Padding", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'show_if' => 'nav_padding');
+				$options_params[] = array('type' => 'float', 'id' => 'nav_float', 'title' => __("Alignment", $this->lang_key), 'default' => "right");
+					$options_params[] = array('type' => 'float', 'id' => 'nav_float_mobile', 'title' => __("Alignment", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => "none", 'show_if' => 'nav_float');
 			}
 
-			$options_params[] = array('type' => 'checkbox', 'id' => 'nav_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-			$options_params[] = array('type' => 'align', 'id' => 'nav_align', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
-			$options_params[] = array('type' => 'text', 'id' => 'nav_bg', 'title' => __("Background", 'lang_theme_core'));
-				$options_params[] = array('type' => 'color', 'id' => 'nav_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-				$options_params[] = array('type' => 'image', 'id' => 'nav_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-			$options_params[] = array('type' => 'clear', 'id' => 'nav_clear', 'title' => __("Clear", 'lang_theme_core'), 'default' => "right");
-			$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", 'lang_theme_core'));
-			$options_params[] = array('type' => 'font', 'id' => 'nav_font', 'title' => __("Font", 'lang_theme_core'));
-			$options_params[] = array('type' => 'text', 'id' => 'nav_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "2em");
-			$options_params[] = array('type' => 'color', 'id' => 'nav_color', 'title' => __("Text Color", 'lang_theme_core'));
-				$options_params[] = array('type' => 'color', 'id' => 'nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
-			$options_params[] = array('type' => 'text', 'id' => 'nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1em");
+			$options_params[] = array('type' => 'checkbox', 'id' => 'nav_full_width', 'title' => __("Full Width", $this->lang_key), 'default' => 1);
+			$options_params[] = array('type' => 'align', 'id' => 'nav_align', 'title' => __("Alignment", $this->lang_key), 'default' => "right");
+			$options_params[] = array('type' => 'text', 'id' => 'nav_bg', 'title' => __("Background", $this->lang_key));
+				$options_params[] = array('type' => 'color', 'id' => 'nav_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+				$options_params[] = array('type' => 'image', 'id' => 'nav_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+			$options_params[] = array('type' => 'clear', 'id' => 'nav_clear', 'title' => __("Clear", $this->lang_key), 'default' => "right");
+			$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", $this->lang_key));
+			$options_params[] = array('type' => 'font', 'id' => 'nav_font', 'title' => __("Font", $this->lang_key));
+			$options_params[] = array('type' => 'text', 'id' => 'nav_size', 'title' => __("Font Size", $this->lang_key), 'default' => "2em");
+			$options_params[] = array('type' => 'color', 'id' => 'nav_color', 'title' => __("Text Color", $this->lang_key));
+				$options_params[] = array('type' => 'color', 'id' => 'nav_color_hover', 'title' => __("Text Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'nav_color');
+			$options_params[] = array('type' => 'text', 'id' => 'nav_link_padding', 'title' => __("Link Padding", $this->lang_key), 'default' => "1em");
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'color', 'id' => 'nav_underline_color_hover', 'title' => " - ".__("Underline Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
-				$options_params[] = array('type' => 'color', 'id' => 'nav_bg_current', 'title' => __("Background", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
-				$options_params[] = array('type' => 'color', 'id' => 'nav_color_current', 'title' => __("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'nav_underline_color_hover', 'title' => " - ".__("Underline Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'nav_bg_current', 'title' => __("Background", $this->lang_key)." (".__("Current", $this->lang_key).")", 'show_if' => 'nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'nav_color_current', 'title' => __("Text Color", $this->lang_key)." (".__("Current", $this->lang_key).")", 'show_if' => 'nav_color');
 			}
 
 		$options_params[] = array('category_end' => "");
 
 		if($theme_dir_name == 'mf_theme')
 		{
-			$options_params[] = array('category' => " - ".__("Submenu", 'lang_theme_core'), 'id' => 'mf_theme_navigation_sub');
-				$options_params[] = array('type' => 'direction', 'id' => 'sub_nav_direction', 'title' => __("Direction", 'lang_theme_core'), 'default' => 'horizontal');
-				$options_params[] = array('type' => 'checkbox', 'id' => 'sub_nav_arrow', 'title' => __("Show Up Arrow", 'lang_theme_core'), 'default' => 2);
-				$options_params[] = array('type' => 'color', 'id' => 'sub_nav_bg', 'title' => __("Background", 'lang_theme_core'), 'default' => "#ccc");
-					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_bg_hover', 'title' => " - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'sub_nav_bg');
-				$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color', 'title' => __("Text Color", 'lang_theme_core'), 'default' => "#333");
-					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'sub_nav_color');
+			$options_params[] = array('category' => " - ".__("Submenu", $this->lang_key), 'id' => 'mf_theme_navigation_sub');
+				$options_params[] = array('type' => 'direction', 'id' => 'sub_nav_direction', 'title' => __("Direction", $this->lang_key), 'default' => 'horizontal');
+				$options_params[] = array('type' => 'checkbox', 'id' => 'sub_nav_arrow', 'title' => __("Show Up Arrow", $this->lang_key), 'default' => 2);
+				$options_params[] = array('type' => 'color', 'id' => 'sub_nav_bg', 'title' => __("Background", $this->lang_key), 'default' => "#ccc");
+					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_bg_hover', 'title' => " - ".__("Background", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'sub_nav_bg');
+				$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color', 'title' => __("Text Color", $this->lang_key), 'default' => "#333");
+					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color_hover', 'title' => " - ".__("Text Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'sub_nav_color');
 			$options_params[] = array('category_end' => "");
 		}
 
-		$options_params[] = array('category' => " - ".__("Mobile Menu", 'lang_theme_core'), 'id' => 'mf_theme_navigation_hamburger');
+		$options_params[] = array('category' => " - ".__("Mobile Menu", $this->lang_key), 'id' => 'mf_theme_navigation_hamburger');
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
-				$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Menu", 'lang_theme_core').")");
+				$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", $this->lang_key), 'default' => 1);
+				$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", $this->lang_key)." (".__("Menu", $this->lang_key).")");
 			}
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'float', 'id' => 'hamburger_position', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
-				$options_params[] = array('type' => 'position', 'id' => 'hamburger_fixed', 'title' => __("Position", 'lang_theme_core'));
+				$options_params[] = array('type' => 'float', 'id' => 'hamburger_position', 'title' => __("Alignment", $this->lang_key), 'default' => "right");
+				$options_params[] = array('type' => 'position', 'id' => 'hamburger_fixed', 'title' => __("Position", $this->lang_key));
 			}
 
-			$options_params[] = array('type' => 'text', 'id' => 'hamburger_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
-			$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Padding", 'lang_theme_core'), 'default' => ".8em");
+			$options_params[] = array('type' => 'text', 'id' => 'hamburger_font_size', 'title' => __("Font Size", $this->lang_key), 'default' => "1.5em");
+			$options_params[] = array('type' => 'text', 'id' => 'hamburger_margin', 'title' => __("Padding", $this->lang_key), 'default' => ".8em");
 
 		$options_params[] = array('category_end' => "");
 
 		if($theme_dir_name == 'mf_theme')
 		{
-			$options_params[] = array('category' => " - ".__("Secondary", 'lang_theme_core'), 'id' => 'mf_theme_navigation_secondary');
-				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_bg', 'title' => __("Background", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_link_padding', 'title' => __("Link Padding", 'lang_theme_core'));
-				$options_params[] = array('type' => 'clear', 'id' => 'nav_secondary_clear', 'title' => __("Clear", 'lang_theme_core'), 'default' => "none");
-				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.4em");
-				$options_params[] = array('type' => 'align', 'id' => 'nav_secondary_align', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
-				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color', 'title' => __("Text Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")");
-				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_bg_current', 'title' => __("Background", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
-				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color_current', 'title' => __("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
+			$options_params[] = array('category' => " - ".__("Secondary", $this->lang_key), 'id' => 'mf_theme_navigation_secondary');
+				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_bg', 'title' => __("Background", $this->lang_key));
+				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_link_padding', 'title' => __("Link Padding", $this->lang_key));
+				$options_params[] = array('type' => 'clear', 'id' => 'nav_secondary_clear', 'title' => __("Clear", $this->lang_key), 'default' => "none");
+				$options_params[] = array('type' => 'text', 'id' => 'nav_secondary_size', 'title' => __("Font Size", $this->lang_key), 'default' => "1.4em");
+				$options_params[] = array('type' => 'align', 'id' => 'nav_secondary_align', 'title' => __("Alignment", $this->lang_key), 'default' => "right");
+				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color', 'title' => __("Text Color", $this->lang_key));
+					$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color_hover', 'title' => " - ".__("Text Color", $this->lang_key)." (".__("Hover", $this->lang_key).")");
+				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_bg_current', 'title' => __("Background", $this->lang_key)." (".__("Current", $this->lang_key).")", 'show_if' => 'nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'nav_secondary_color_current', 'title' => __("Text Color", $this->lang_key)." (".__("Current", $this->lang_key).")", 'show_if' => 'nav_color');
 			$options_params[] = array('category_end' => "");
 		}
 
 		if(is_active_widget_area('widget_slide'))
 		{
-			$options_params[] = array('category' => " - ".__("Slide Menu", 'lang_theme_core'), 'id' => 'mf_theme_navigation_slide');
+			$options_params[] = array('category' => " - ".__("Slide Menu", $this->lang_key), 'id' => 'mf_theme_navigation_slide');
 
 				if($theme_dir_name == 'mf_parallax')
 				{
-					$options_params[] = array('type' => 'float', 'id' => 'slide_nav_position', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
+					$options_params[] = array('type' => 'float', 'id' => 'slide_nav_position', 'title' => __("Alignment", $this->lang_key), 'default' => "right");
 				}
 
-				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1.5em 1em 1em");
-				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background", 'lang_theme_core'), 'default' => "#fff");
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg_hover', 'title' => " - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
-				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_color');
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")");
-				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg', 'title' => __("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_link_padding', 'title' => __("Link Padding", $this->lang_key), 'default' => "1.5em 1em 1em");
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background", $this->lang_key), 'default' => "#fff");
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg_hover', 'title' => " - ".__("Background", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'slide_nav_bg');
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", $this->lang_key));
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => " - ".__("Text Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'slide_nav_color');
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => " - ".__("Text Color", $this->lang_key)." (".__("Current", $this->lang_key).")");
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg', 'title' => __("Submenu", $this->lang_key)." - ".__("Background", $this->lang_key));
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Submenu", $this->lang_key)." - ".__("Background", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'slide_nav_bg');
 
 			$options_params[] = array('category_end' => "");
 		}
@@ -1601,12 +1614,12 @@ class mf_theme_core
 		{
 			if(is_active_widget_area('widget_pre_content'))
 			{
-				$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_parallax_pre_content');
-					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_content_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-					$options_params[] = array('type' => 'text', 'id' => 'pre_content_bg', 'title' => __("Background", 'lang_theme_core'));
-						$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-						$options_params[] = array('type' => 'image', 'id' => 'pre_content_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'pre_content_padding', 'title' => __("Padding", 'lang_theme_core'));
+				$options_params[] = array('category' => __("Pre Content", $this->lang_key), 'id' => 'mf_parallax_pre_content');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_content_full_width', 'title' => __("Full Width", $this->lang_key), 'default' => 1);
+					$options_params[] = array('type' => 'text', 'id' => 'pre_content_bg', 'title' => __("Background", $this->lang_key));
+						$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+						$options_params[] = array('type' => 'image', 'id' => 'pre_content_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_content_padding', 'title' => __("Padding", $this->lang_key));
 				$options_params[] = array('category_end' => "");
 			}
 		}
@@ -1615,166 +1628,166 @@ class mf_theme_core
 		{
 			if(is_active_widget_area('widget_after_header'))
 			{
-				$options_params[] = array('category' => __("After Header", 'lang_theme_core'), 'id' => 'mf_theme_after_header');
-					$options_params[] = array('type' => 'checkbox', 'id' => 'after_header_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-					$options_params[] = array('type' => 'text', 'id' => 'after_header_bg', 'title' => __("Background", 'lang_theme_core'));
-						$options_params[] = array('type' => 'color', 'id' => 'after_header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-						$options_params[] = array('type' => 'image', 'id' => 'after_header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", 'lang_theme_core'));
-						$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
-					$options_params[] = array('type' => 'color', 'id' => 'after_header_color', 'title' => __("Text Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'overflow', 'id' => 'after_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
-					/*$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", 'lang_theme_core'));
-						$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");*/
+				$options_params[] = array('category' => __("After Header", $this->lang_key), 'id' => 'mf_theme_after_header');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'after_header_full_width', 'title' => __("Full Width", $this->lang_key), 'default' => 1);
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_bg', 'title' => __("Background", $this->lang_key));
+						$options_params[] = array('type' => 'color', 'id' => 'after_header_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+						$options_params[] = array('type' => 'image', 'id' => 'after_header_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", $this->lang_key));
+						$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", $this->lang_key), 'default' => "0 0 .5em");
+					$options_params[] = array('type' => 'color', 'id' => 'after_header_color', 'title' => __("Text Color", $this->lang_key));
+					$options_params[] = array('type' => 'overflow', 'id' => 'after_header_overflow', 'title' => __("Overflow", $this->lang_key));
+					/*$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_font_size', 'title' => __("Font Size", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'after_header_padding', 'title' => __("Padding", $this->lang_key));
+						$options_params[] = array('type' => 'text', 'id' => 'after_header_widget_padding', 'title' => " - ".__("Widget Padding", $this->lang_key), 'default' => "0 0 .5em");*/
 				$options_params[] = array('category_end' => "");
 			}
 
 			/* This does not work together with Hero */
 			/*if(is_active_widget_area('widget_front'))
 			{*/
-				$options_params[] = array('category' => __("Pre Content", 'lang_theme_core'), 'id' => 'mf_theme_pre_content');
-					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_content_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-					$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", 'lang_theme_core'));
-						$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-						$options_params[] = array('type' => 'image', 'id' => 'pre_content_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-					//$options_params[] = array('type' => 'text', 'id' => 'pre_content_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'front_padding', 'title' => __("Padding", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'front_color', 'title' => __("Text Color", 'lang_theme_core'));
+				$options_params[] = array('category' => __("Pre Content", $this->lang_key), 'id' => 'mf_theme_pre_content');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_content_full_width', 'title' => __("Full Width", $this->lang_key), 'default' => 1);
+					$options_params[] = array('type' => 'text', 'id' => 'front_bg', 'title' => __("Background", $this->lang_key));
+						$options_params[] = array('type' => 'color', 'id' => 'pre_content_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+						$options_params[] = array('type' => 'image', 'id' => 'pre_content_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+					//$options_params[] = array('type' => 'text', 'id' => 'pre_content_widget_font_size', 'title' => __("Font Size", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'front_padding', 'title' => __("Padding", $this->lang_key));
+					$options_params[] = array('type' => 'color', 'id' => 'front_color', 'title' => __("Text Color", $this->lang_key));
 				$options_params[] = array('category_end' => "");
 			//}
 		}
 
-		$options_params[] = array('category' => __("Content", 'lang_theme_core'), 'id' => 'mf_theme_content');
+		$options_params[] = array('category' => __("Content", $this->lang_key), 'id' => 'mf_theme_content');
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'checkbox', 'id' => 'content_stretch_height', 'title' => __("Match Height with Window Size", 'lang_theme_core'), 'default' => 2);
-				$options_params[] = array('type' => 'float', 'id' => 'content_main_position', 'title' => __("Main Column Alignment", 'lang_theme_core'), 'default' => "right");
-				$options_params[] = array('type' => 'number', 'id' => 'content_main_width', 'title' => __("Main Column Width", 'lang_theme_core')." (%)", 'default' => "60");
+				$options_params[] = array('type' => 'checkbox', 'id' => 'content_stretch_height', 'title' => __("Match Height with Window Size", $this->lang_key), 'default' => 2);
+				$options_params[] = array('type' => 'float', 'id' => 'content_main_position', 'title' => __("Main Column Alignment", $this->lang_key), 'default' => "right");
+				$options_params[] = array('type' => 'number', 'id' => 'content_main_width', 'title' => __("Main Column Width", $this->lang_key)." (%)", 'default' => "60");
 			}
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'content_bg', 'title' => __("Background", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'content_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'image', 'id' => 'content_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'content_bg', 'title' => __("Background", $this->lang_key));
+					$options_params[] = array('type' => 'color', 'id' => 'content_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+					$options_params[] = array('type' => 'image', 'id' => 'content_bg_image', 'title' => " - ".__("Image", $this->lang_key));
 			}
 
-			$options_params[] = array('type' => 'text', 'id' => 'content_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => "30px 0 20px"
+			$options_params[] = array('type' => 'text', 'id' => 'content_padding', 'title' => __("Padding", $this->lang_key)); //, 'default' => "30px 0 20px"
 
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => " - ".__("Headings", 'lang_theme_core'), 'id' => 'mf_theme_content_heading');
+		$options_params[] = array('category' => " - ".__("Headings", $this->lang_key), 'id' => 'mf_theme_content_heading');
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'heading_bg', 'title' => __("Background", 'lang_theme_core')." (H1)");
-				$options_params[] = array('type' => 'text', 'id' => 'heading_border_bottom', 'title' => __("Border Bottom", 'lang_theme_core')." (H1)");
-				$options_params[] = array('type' => 'font', 'id' => 'heading_font', 'title' => __("Font", 'lang_theme_core')." (H1)");
-				$options_params[] = array('type' => 'text', 'id' => 'heading_size', 'title' => __("Font Size", 'lang_theme_core')." (H1)", 'default' => "2.4em");
-				$options_params[] = array('type' => 'weight', 'id' => 'heading_weight', 'title' => __("Weight", 'lang_theme_core')." (H1)");
-				$options_params[] = array('type' => 'text', 'id' => 'heading_margin', 'title' => __("Margin", 'lang_theme_core')." (H1)");
-				$options_params[] = array('type' => 'text', 'id' => 'heading_padding', 'title' => __("Padding", 'lang_theme_core')." (H1)", 'default' => ".3em 0 .5em");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_bg', 'title' => __("Background", $this->lang_key)." (H1)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_border_bottom', 'title' => __("Border Bottom", $this->lang_key)." (H1)");
+				$options_params[] = array('type' => 'font', 'id' => 'heading_font', 'title' => __("Font", $this->lang_key)." (H1)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_size', 'title' => __("Font Size", $this->lang_key)." (H1)", 'default' => "2.4em");
+				$options_params[] = array('type' => 'weight', 'id' => 'heading_weight', 'title' => __("Weight", $this->lang_key)." (H1)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_margin', 'title' => __("Margin", $this->lang_key)." (H1)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_padding', 'title' => __("Padding", $this->lang_key)." (H1)", 'default' => ".3em 0 .5em");
 			}
 
 			/* H2 */
 			##################
-			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h2', 'title' => __("Margin", 'lang_theme_core')." (H2)", 'default' => "0 0 .5em");
-			$options_params[] = array('type' => 'font', 'id' => 'heading_font_h2', 'title' => __("Font", 'lang_theme_core')." (H2)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h2', 'title' => __("Margin", $this->lang_key)." (H2)", 'default' => "0 0 .5em");
+			$options_params[] = array('type' => 'font', 'id' => 'heading_font_h2', 'title' => __("Font", $this->lang_key)." (H2)");
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'heading_size_h2', 'title' => __("Font Size", 'lang_theme_core')." (H2)", 'default' => "1.4em");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_size_h2', 'title' => __("Font Size", $this->lang_key)." (H2)", 'default' => "1.4em");
 			}
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h2', 'title' => __("Font Size", 'lang_theme_core')." (H2)", 'default' => "2em");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h2', 'title' => __("Font Size", $this->lang_key)." (H2)", 'default' => "2em");
 			}
 
-			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h2', 'title' => __("Weight", 'lang_theme_core')." (H2)");
+			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h2', 'title' => __("Weight", $this->lang_key)." (H2)");
 			##################
 
 			/* H3 */
 			##################
-			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h3', 'title' => __("Margin", 'lang_theme_core')." (H3)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h3', 'title' => __("Margin", $this->lang_key)." (H3)");
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'font', 'id' => 'heading_font_h3', 'title' => __("Font", 'lang_theme_core')." (H3)");
-				$options_params[] = array('type' => 'text', 'id' => 'heading_size_h3', 'title' => __("Font Size", 'lang_theme_core')." (H3)", 'default' => "1.2em");
+				$options_params[] = array('type' => 'font', 'id' => 'heading_font_h3', 'title' => __("Font", $this->lang_key)." (H3)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_size_h3', 'title' => __("Font Size", $this->lang_key)." (H3)", 'default' => "1.2em");
 			}
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h3', 'title' => __("Font Size", 'lang_theme_core')." (H3)");
+				$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h3', 'title' => __("Font Size", $this->lang_key)." (H3)");
 			}
 
-			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h3', 'title' => __("Weight", 'lang_theme_core')." (H3)");
+			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h3', 'title' => __("Weight", $this->lang_key)." (H3)");
 			##################
 
 			/* H4 */
 			##################
-			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h4', 'title' => __("Margin", 'lang_theme_core')." (H4)", 'default' => ".5em 0");
-			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h4', 'title' => __("Font Size", 'lang_theme_core')." (H4)");
-			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h4', 'title' => __("Weight", 'lang_theme_core')." (H4)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h4', 'title' => __("Margin", $this->lang_key)." (H4)", 'default' => ".5em 0");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h4', 'title' => __("Font Size", $this->lang_key)." (H4)");
+			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h4', 'title' => __("Weight", $this->lang_key)." (H4)");
 			##################
 
 			/* H5 */
 			##################
-			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h5', 'title' => __("Margin", 'lang_theme_core')." (H5)");
-			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h5', 'title' => __("Font Size", 'lang_theme_core')." (H5)");
-			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h5', 'title' => __("Weight", 'lang_theme_core')." (H5)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_margin_h5', 'title' => __("Margin", $this->lang_key)." (H5)");
+			$options_params[] = array('type' => 'text', 'id' => 'heading_font_size_h5', 'title' => __("Font Size", $this->lang_key)." (H5)");
+			$options_params[] = array('type' => 'weight', 'id' => 'heading_weight_h5', 'title' => __("Weight", $this->lang_key)." (H5)");
 			##################
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'section_heading_alignment_mobile', 'title' => __("Heading Alignment", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => "center");
+				$options_params[] = array('type' => 'text', 'id' => 'section_heading_alignment_mobile', 'title' => __("Heading Alignment", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'default' => "center");
 			}
 
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => " - ".__("Text", 'lang_theme_core'), 'id' => 'mf_theme_content_text');
+		$options_params[] = array('category' => " - ".__("Text", $this->lang_key), 'id' => 'mf_theme_content_text');
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'section_bg', 'title' => __("Background", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'section_bg', 'title' => __("Background", $this->lang_key));
 			}
 
-			$options_params[] = array('type' => 'text', 'id' => 'section_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.6em");
+			$options_params[] = array('type' => 'text', 'id' => 'section_size', 'title' => __("Font Size", $this->lang_key), 'default' => "1.6em");
 
 			// Range does not display the value the user has chosen...
-			//$options_params[] = array('type' => 'text', 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
+			//$options_params[] = array('type' => 'text', 'id' => 'section_line_height', 'title' => __("Line Height", $this->lang_key), 'default' => "1.5");
 			$options_params[] = array('type' => 'range', 'input_attrs' => array(
 				'min' => 1,
 				'max' => 5,
 				'step' => .1,
 				//'class' => '',
 				//'style' => 'color: #',
-			), 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
+			), 'id' => 'section_line_height', 'title' => __("Line Height", $this->lang_key), 'default' => "1.5");
 
-			$options_params[] = array('type' => 'text', 'id' => 'section_margin', 'title' => __("Margin", 'lang_theme_core'), 'default' => "0 0 2em");
+			$options_params[] = array('type' => 'text', 'id' => 'section_margin', 'title' => __("Margin", $this->lang_key), 'default' => "0 0 2em");
 
 			if($theme_dir_name == 'mf_parallax')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'quote_size', 'title' => __("Quote Size", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'quote_size', 'title' => __("Quote Size", $this->lang_key));
 			}
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'text', 'id' => 'section_padding', 'title' => __("Padding", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => 'section_margin_between', 'title' => __("Margin between Content", 'lang_theme_core'), 'default' => "1em");
-				$options_params[] = array('type' => 'color', 'id' => 'article_url_color', 'title' => __("Link Color", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'section_padding', 'title' => __("Padding", $this->lang_key));
+				$options_params[] = array('type' => 'text', 'id' => 'section_margin_between', 'title' => __("Margin between Content", $this->lang_key), 'default' => "1em");
+				$options_params[] = array('type' => 'color', 'id' => 'article_url_color', 'title' => __("Link Color", $this->lang_key));
 			}
 
 		$options_params[] = array('category_end' => "");
 
 		if($theme_dir_name == 'mf_parallax')
 		{
-			$options_params[] = array('category' => __("Aside", 'lang_theme_core'), 'id' => 'mf_parallax_aside');
-				$options_params[] = array('type' => 'text', 'id' => 'aside_p', 'title' => __("Paragraph Size", 'lang_theme_core'));
+			$options_params[] = array('category' => __("Aside", $this->lang_key), 'id' => 'mf_parallax_aside');
+				$options_params[] = array('type' => 'text', 'id' => 'aside_p', 'title' => __("Paragraph Size", $this->lang_key));
 			$options_params[] = array('category_end' => "");
 		}
 
@@ -1782,90 +1795,90 @@ class mf_theme_core
 		{
 			if(is_active_widget_area('widget_after_heading') || is_active_widget_area('widget_sidebar_left') || is_active_widget_area('widget_after_content') || is_active_widget_area('widget_sidebar') || is_active_widget_area('widget_below_content'))
 			{
-				$options_params[] = array('category' => __("Aside", 'lang_theme_core'), 'id' => 'mf_theme_aside');
-					$options_params[] = array('type' => 'text', 'id' => 'aside_sticky_position', 'title' => __("Sticky Position", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'aside_left_width', 'title' => __("Width", 'lang_theme_core')." (".__("Left", 'lang_theme_core').")", 'default' => "28%");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_width', 'title' => __("Width", 'lang_theme_core')." (".__("Right", 'lang_theme_core').")", 'default' => "28%");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_container_margin', 'title' => __("Margin", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'aside_container_padding', 'title' => __("Padding", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_background', 'title' => __("Widget Background", 'lang_theme_core')); //, 'default' => "#f8f8f8"
-					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_border', 'title' => __("Widget Border", 'lang_theme_core')); //, 'default' => "1px solid #d8d8d8"
-					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_bg', 'title' => __("Background", 'lang_theme_core')." (H3)");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_border_bottom', 'title' => __("Border Bottom", 'lang_theme_core')." (H3)");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_size', 'title' => __("Size", 'lang_theme_core')." (H3)");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_padding', 'title' => __("Padding", 'lang_theme_core')." (H3)", 'default' => ".5em");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_size', 'title' => __("Size", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_line_height', 'title' => __("Line Height", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Content", 'lang_theme_core').")", 'default' => ".5em");
-					$options_params[] = array('type' => 'text', 'id' => 'aside_margin_between', 'title' => __("Margin between Content", 'lang_theme_core'));
+				$options_params[] = array('category' => __("Aside", $this->lang_key), 'id' => 'mf_theme_aside');
+					$options_params[] = array('type' => 'text', 'id' => 'aside_sticky_position', 'title' => __("Sticky Position", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'aside_left_width', 'title' => __("Width", $this->lang_key)." (".__("Left", $this->lang_key).")", 'default' => "28%");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_width', 'title' => __("Width", $this->lang_key)." (".__("Right", $this->lang_key).")", 'default' => "28%");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_container_margin', 'title' => __("Margin", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'aside_container_padding', 'title' => __("Padding", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_background', 'title' => __("Widget Background", $this->lang_key)); //, 'default' => "#f8f8f8"
+					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_border', 'title' => __("Widget Border", $this->lang_key)); //, 'default' => "1px solid #d8d8d8"
+					$options_params[] = array('type' => 'text', 'id' => 'aside_widget_font_size', 'title' => __("Font Size", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_bg', 'title' => __("Background", $this->lang_key)." (H3)");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_border_bottom', 'title' => __("Border Bottom", $this->lang_key)." (H3)");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_size', 'title' => __("Size", $this->lang_key)." (H3)");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_heading_padding', 'title' => __("Padding", $this->lang_key)." (H3)", 'default' => ".5em");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_size', 'title' => __("Size", $this->lang_key)." (".__("Content", $this->lang_key).")");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_line_height', 'title' => __("Line Height", $this->lang_key)." (".__("Content", $this->lang_key).")");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_padding', 'title' => __("Padding", $this->lang_key)." (".__("Content", $this->lang_key).")", 'default' => ".5em");
+					$options_params[] = array('type' => 'text', 'id' => 'aside_margin_between', 'title' => __("Margin between Content", $this->lang_key));
 				$options_params[] = array('category_end' => "");
 			}
 
 			if(is_active_widget_area('widget_pre_footer'))
 			{
-				$options_params[] = array('category' => __("Pre Footer", 'lang_theme_core'), 'id' => 'mf_theme_pre_footer');
-					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_footer_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
-					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", 'lang_theme_core'));
-						$options_params[] = array('type' => 'color', 'id' => 'pre_footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-						$options_params[] = array('type' => 'image', 'id' => 'pre_footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", 'lang_theme_core'));
-						$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'), 'default' => "0 0 .5em");
+				$options_params[] = array('category' => __("Pre Footer", $this->lang_key), 'id' => 'mf_theme_pre_footer');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_footer_full_width', 'title' => __("Full Width", $this->lang_key), 'default' => 1);
+					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_bg', 'title' => __("Background", $this->lang_key));
+						$options_params[] = array('type' => 'color', 'id' => 'pre_footer_bg_color', 'title' => " - ".__("Color", $this->lang_key));
+						$options_params[] = array('type' => 'image', 'id' => 'pre_footer_bg_image', 'title' => " - ".__("Image", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_font_size', 'title' => __("Font Size", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_footer_padding', 'title' => __("Padding", $this->lang_key));
+						$options_params[] = array('type' => 'text', 'id' => 'pre_footer_widget_padding', 'title' => " - ".__("Widget Padding", $this->lang_key), 'default' => "0 0 .5em");
 				$options_params[] = array('category_end' => "");
 			}
 		}
 
-		$options_params[] = array('category' => __("Footer", 'lang_theme_core'), 'id' => 'mf_theme_footer');
-			$options_params[] = array('type' => 'position', 'id' => 'footer_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'relative');
-			$options_params[] = array('type' => 'text', 'id' => 'footer_bg', 'title' => __("Background", 'lang_theme_core')); //This is used as the default background on body to make the background go all the way down below the footer if present
-				$options_params[] = array('type' => 'color', 'id' => 'footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
-				$options_params[] = array('type' => 'image', 'id' => 'footer_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+		$options_params[] = array('category' => __("Footer", $this->lang_key), 'id' => 'mf_theme_footer');
+			$options_params[] = array('type' => 'position', 'id' => 'footer_fixed', 'title' => __("Position", $this->lang_key), 'default' => 'relative');
+			$options_params[] = array('type' => 'text', 'id' => 'footer_bg', 'title' => __("Background", $this->lang_key)); //This is used as the default background on body to make the background go all the way down below the footer if present
+				$options_params[] = array('type' => 'color', 'id' => 'footer_bg_color', 'title' => " - ".__("Color", $this->lang_key)); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
+				$options_params[] = array('type' => 'image', 'id' => 'footer_bg_image', 'title' => " - ".__("Image", $this->lang_key));
 
 			if(is_active_widget_area('widget_footer'))
 			{
-				$options_params[] = array('type' => 'font', 'id' => 'footer_font', 'title' => __("Font", 'lang_theme_core'));
-				$options_params[] = array('type' => 'text', 'id' => 'footer_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.5em");
-				$options_params[] = array('type' => 'color', 'id' => 'footer_color', 'title' => __("Text Color", 'lang_theme_core'));
+				$options_params[] = array('type' => 'font', 'id' => 'footer_font', 'title' => __("Font", $this->lang_key));
+				$options_params[] = array('type' => 'text', 'id' => 'footer_font_size', 'title' => __("Font Size", $this->lang_key), 'default' => "1.5em");
+				$options_params[] = array('type' => 'color', 'id' => 'footer_color', 'title' => __("Text Color", $this->lang_key));
 
 					if($theme_dir_name == 'mf_theme')
 					{
-						$options_params[] = array('type' => 'color', 'id' => 'footer_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'footer_color');
+						$options_params[] = array('type' => 'color', 'id' => 'footer_color_hover', 'title' => " - ".__("Text Color", $this->lang_key)." (".__("Hover", $this->lang_key).")", 'show_if' => 'footer_color');
 					}
 
 				if($theme_dir_name == 'mf_parallax')
 				{
-					$options_params[] = array('type' => 'align', 'id' => 'footer_align', 'title' => __("Alignment", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'footer_margin', 'title' => __("Margin", 'lang_theme_core'));
+					$options_params[] = array('type' => 'align', 'id' => 'footer_align', 'title' => __("Alignment", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'footer_margin', 'title' => __("Margin", $this->lang_key));
 				}
 
-				$options_params[] = array('type' => 'text', 'id' => 'footer_padding', 'title' => __("Padding", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'footer_padding', 'title' => __("Padding", $this->lang_key));
 
 				if($theme_dir_name == 'mf_theme')
 				{
-					$options_params[] = array('type' => 'checkbox', 'id' => 'footer_widget_flex', 'title' => __("Widget Flex", 'lang_theme_core'), 'default' => 2);
-					$options_params[] = array('type' => 'overflow', 'id' => 'footer_widget_overflow', 'title' => __("Widget Overflow", 'lang_theme_core'), 'default' => 'hidden');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'footer_widget_flex', 'title' => __("Widget Flex", $this->lang_key), 'default' => 2);
+					$options_params[] = array('type' => 'overflow', 'id' => 'footer_widget_overflow', 'title' => __("Widget Overflow", $this->lang_key), 'default' => 'hidden');
 				}
 
-				$options_params[] = array('type' => 'text', 'id' => 'footer_widget_padding', 'title' => __("Widget Padding", 'lang_theme_core'), 'default' => ".2em");
+				$options_params[] = array('type' => 'text', 'id' => 'footer_widget_padding', 'title' => __("Widget Padding", $this->lang_key), 'default' => ".2em");
 
 				if($theme_dir_name == 'mf_theme')
 				{
-					$options_params[] = array('type' => 'text', 'id' => 'footer_widget_heading_margin', 'title' => __("Widget Heading Margin", 'lang_theme_core'), 'default' => "0 0 .5em");
-					$options_params[] = array('type' => 'text_transform', 'id' => 'footer_widget_heading_text_transform', 'title' => __("Widget Heading Text Transform", 'lang_theme_core'), 'default' => "uppercase");
-					$options_params[] = array('type' => 'text', 'id' => 'footer_p_margin', 'title' => __("Paragraph/List Margin", 'lang_theme_core'), 'default' => "0 0 .5em");
-					$options_params[] = array('type' => 'text', 'id' => 'footer_a_bg', 'title' => __("Link Background", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'footer_a_margin', 'title' => __("Link Margin", 'lang_theme_core'));
-					$options_params[] = array('type' => 'text', 'id' => 'footer_a_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => ".4em .6em");
+					$options_params[] = array('type' => 'text', 'id' => 'footer_widget_heading_margin', 'title' => __("Widget Heading Margin", $this->lang_key), 'default' => "0 0 .5em");
+					$options_params[] = array('type' => 'text_transform', 'id' => 'footer_widget_heading_text_transform', 'title' => __("Widget Heading Text Transform", $this->lang_key), 'default' => "uppercase");
+					$options_params[] = array('type' => 'text', 'id' => 'footer_p_margin', 'title' => __("Paragraph/List Margin", $this->lang_key), 'default' => "0 0 .5em");
+					$options_params[] = array('type' => 'text', 'id' => 'footer_a_bg', 'title' => __("Link Background", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'footer_a_margin', 'title' => __("Link Margin", $this->lang_key));
+					$options_params[] = array('type' => 'text', 'id' => 'footer_a_padding', 'title' => __("Link Padding", $this->lang_key), 'default' => ".4em .6em");
 				}
 			}
 
 		$options_params[] = array('category_end' => "");
 
-		$options_params[] = array('category' => __("Custom", 'lang_theme_core'), 'id' => 'mf_theme_generic');
-			$options_params[] = array('type' => 'textarea', 'id' => 'external_css', 'title' => __("External CSS", 'lang_theme_core'));
-			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_all', 'title' => __("Custom CSS", 'lang_theme_core'));
-			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_mobile', 'title' => __("Custom CSS", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'mobile_breakpoint');
+		$options_params[] = array('category' => __("Custom", $this->lang_key), 'id' => 'mf_theme_generic');
+			$options_params[] = array('type' => 'textarea', 'id' => 'external_css', 'title' => __("External CSS", $this->lang_key));
+			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_all', 'title' => __("Custom CSS", $this->lang_key));
+			$options_params[] = array('type' => 'textarea', 'id' => 'custom_css_mobile', 'title' => __("Custom CSS", $this->lang_key)." (".__("Mobile", $this->lang_key).")", 'show_if' => 'mobile_breakpoint');
 		$options_params[] = array('category_end' => "");
 
 		$options_params = apply_filters('filter_options_params', $options_params);
@@ -2702,47 +2715,12 @@ class mf_theme_core
 		}
 	}
 
-	/*function do_robots()
-	{
-		echo "\nSitemap: ".get_site_url()."/sitemap.xml\n";
-	}*/
-
 	function template_redirect()
 	{
-		if(is_author())
+		if(is_author() && get_option('setting_theme_core_display_author_pages') == 'no')
 		{
 			wp_redirect(get_option('home'), 301);
 			exit; 
-		}
-
-		/* Does not work after WP 5.5 has been released */
-		global $wp_query;
-
-		if(1 == 2 && isset($wp_query->query['name']) && in_array($wp_query->query['name'], array('sitemap.xml', 'wp-sitemap.xml')))
-		{
-			header("Content-type: text/xml; charset=".get_option('blog_charset'));
-
-			echo "<?xml version='1.0' encoding='UTF-8'?>
-			<?xml-stylesheet type='text/xsl' href='".plugin_dir_url(__FILE__)."/sitemap-xsl.php'?>
-			<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
-
-				$this->get_public_posts();
-
-				foreach($this->arr_public_posts as $post_id => $post_title)
-				{
-					$post_modified = get_post_modified_time("Y-m-d H:i:s", true, $post_id);
-
-					$post_url = get_permalink($post_id);
-
-					echo "<url>
-						<loc>".$post_url."</loc>
-						<title>".htmlspecialchars($post_title)." Test...</title>
-						<lastmod>".$post_modified."</lastmod>
-					</url>";
-				}
-
-			echo "</urlset>";
-			exit;
 		}
 	}
 
@@ -2806,19 +2784,19 @@ class mf_theme_core
 
 					if($data['image'] != '')
 					{
-						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", $this->lang_key), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 					}
 
 					else
 					{
 						if($header_logo != '')
 						{
-							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", $this->lang_key), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 
 						if($header_mobile_logo != '')
 						{
-							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", $this->lang_key), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 					}
 				}
@@ -2856,7 +2834,7 @@ class mf_theme_core
 
 	function get_search_theme_core($data = array())
 	{
-		if(!isset($data['placeholder']) || $data['placeholder'] == ''){			$data['placeholder'] = __("Search for", 'lang_theme_core');}
+		if(!isset($data['placeholder']) || $data['placeholder'] == ''){			$data['placeholder'] = __("Search for", $this->lang_key);}
 		if(!isset($data['hide_on_mobile'])){									$data['hide_on_mobile'] = 'no';}
 		if(!isset($data['animate']) || $data['animate'] == ''){					$data['animate'] = 'yes';}
 
@@ -2884,7 +2862,7 @@ class mf_theme_core
 
 		if($data['include_title_copy'])
 		{
-			$post->post_title .= " (".__("copy", 'lang_theme_core').")";
+			$post->post_title .= " (".__("copy", $this->lang_key).")";
 		}
 
 		$new_post = array(
@@ -2965,7 +2943,7 @@ class mf_theme_core
 
 				else
 				{
-					wp_die(__("Error cloning post", 'lang_theme_core'));
+					wp_die(__("Error cloning post", $this->lang_key));
 				}
 			}
 		}
@@ -2975,7 +2953,7 @@ class mf_theme_core
 	{
 		if(IS_EDITOR && $post->post_status == 'publish')
 		{
-			$actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", 'lang_theme_core')."</a>";
+			$actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", $this->lang_key)."</a>";
 		}
 
 		return $actions;
@@ -2987,7 +2965,7 @@ class mf_theme_core
 
 		if($this->is_site_public())
 		{
-			$cols['seo'] = __("SEO", 'lang_theme_core');
+			$cols['seo'] = __("SEO", $this->lang_key);
 		}
 
 		return $cols;
@@ -3113,59 +3091,59 @@ class mf_theme_core
 						echo "<i class='fa fa-times fa-lg red'></i>
 						<div class='row-actions'>
 							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", $this->lang_key), get_post_title($post_id_duplicate))
 							."</a>
 						</div>";
 					break;
 
 					case 'no_title':
-						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set a title for this page", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set a title for this page", $this->lang_key)."'></i>";
 					break;
 
 					case 'duplicate_excerpt':
 						echo "<i class='fa fa-times fa-lg red'></i>
 						<div class='row-actions'>
 							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								.sprintf(__("The page %s have the exact same excerpt", $this->lang_key), get_post_title($post_id_duplicate))
 							."</a>
 						</div>";
 					break;
 
 					case 'no_excerpt':
-						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set an excerpt for this page", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-times fa-lg red' title='".__("You have not set an excerpt for this page", $this->lang_key)."'></i>";
 					break;
 
 					case 'inconsistent_url':
-						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The URL is not correlated to the title", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The URL is not correlated to the title", $this->lang_key)."'></i>";
 					break;
 
 					case 'long_title':
-						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The title might be too long to show in search engines", 'lang_theme_core')." (".strlen($site_title)." > ".$title_limit.")'></i>";
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The title might be too long to show in search engines", $this->lang_key)." (".strlen($site_title)." > ".$title_limit.")'></i>";
 					break;
 
 					case 'long_excerpt':
-						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The excerpt (meta description) might be too long to show in search engines", 'lang_theme_core')." (".strlen($post->post_excerpt)." > ".$excerpt_limit.")'></i>";
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The excerpt (meta description) might be too long to show in search engines", $this->lang_key)." (".strlen($post->post_excerpt)." > ".$excerpt_limit.")'></i>";
 					break;
 
 					case 'short_content':
-						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The content should be longer", 'lang_theme_core')." (".strlen($post->post_content)." > ".$content_limit.")'></i>";
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("The content should be longer", $this->lang_key)." (".strlen($post->post_content)." > ".$content_limit.")'></i>";
 					break;
 
 					case 'no_sub_heading':
-						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("There should be an H2 in the content", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-exclamation-triangle fa-lg yellow' title='".__("There should be an H2 in the content", $this->lang_key)."'></i>";
 					break;
 
 					case 'password_protected':
-						echo "<i class='fa fa-lock fa-lg grey' title='".__("The page is password protected", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-lock fa-lg grey' title='".__("The page is password protected", $this->lang_key)."'></i>";
 					break;
 
 					case 'not_published':
 					case 'not_indexed':
-						echo "<i class='fa fa-eye-slash fa-lg grey' title='".__("The page is not published or indexed", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-eye-slash fa-lg grey' title='".__("The page is not published or indexed", $this->lang_key)."'></i>";
 					break;
 
 					default:
-						echo "<i class='fa fa-check fa-lg green' title='".__("Well done! The page is SEO approved!", 'lang_theme_core')."'></i>";
+						echo "<i class='fa fa-check fa-lg green' title='".__("Well done! The page is SEO approved!", $this->lang_key)."'></i>";
 					break;
 				}
 			break;
@@ -3235,14 +3213,14 @@ class mf_theme_core
 			if($this->is_site_public() && $this->check_if_correct_post_type($post_id))
 			{
 				$arr_fields[] = array(
-					'name' => __("Index", 'lang_theme_core'),
+					'name' => __("Index", $this->lang_key),
 					'id' => $this->meta_prefix.'page_index',
 					'type' => 'select',
 					'options' => array(
-						'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-						'noindex' => __("Do not Index", 'lang_theme_core'),
-						'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
-						'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
+						'' => "-- ".__("Choose Here", $this->lang_key)." --",
+						'noindex' => __("Do not Index", $this->lang_key),
+						'nofollow' => __("Do not Follow Links", $this->lang_key),
+						'none' => __("Do not Index and do not follow links", $this->lang_key),
 					),
 				);
 			}
@@ -3252,7 +3230,7 @@ class mf_theme_core
 			if($is_not_published)
 			{
 				$arr_fields[] = array(
-					'name' => __("Publish", 'lang_theme_core'),
+					'name' => __("Publish", $this->lang_key),
 					'id' => $this->meta_prefix.'publish_date',
 					'type' => 'datetime',
 				);
@@ -3261,7 +3239,7 @@ class mf_theme_core
 			if($is_published)
 			{
 				$arr_fields[] = array(
-					'name' => __("Unpublish", 'lang_theme_core'),
+					'name' => __("Unpublish", $this->lang_key),
 					'id' => $this->meta_prefix.'unpublish_date',
 					'type' => 'datetime',
 				);
@@ -3273,7 +3251,7 @@ class mf_theme_core
 
 				$meta_boxes[] = array(
 					'id' => $this->meta_prefix.'publish',
-					'title' => __("Publish Settings", 'lang_theme_core'),
+					'title' => __("Publish Settings", $this->lang_key),
 					'post_types' => $obj_base->get_post_types_for_metabox(),
 					'context' => 'side',
 					'priority' => 'low',
@@ -3301,8 +3279,8 @@ class mf_theme_core
 			$post_title = get_the_title($post);
 			$post_url = get_permalink($post);
 
-			$mail_subject = sprintf(__("The draft (%s) has been saved", 'lang_theme_core'), $post_title);
-			$mail_content = sprintf(__("The draft (%s) has been saved and might be ready for publishing", 'lang_theme_core'), "<a href='".$post_url."'>".$post_title."</a>");
+			$mail_subject = sprintf(__("The draft (%s) has been saved", $this->lang_key), $post_title);
+			$mail_content = sprintf(__("The draft (%s) has been saved and might be ready for publishing", $this->lang_key), "<a href='".$post_url."'>".$post_title."</a>");
 
 			$users = get_users(array(
 				'fields' => array('user_email'),
@@ -3332,11 +3310,11 @@ class mf_theme_core
 	function get_shortcode_output($out)
 	{
 		$arr_data = array(
-			'' => __("No", 'lang_theme_core'),
-			'yes' => __("Yes", 'lang_theme_core')
+			'' => __("No", $this->lang_key),
+			'yes' => __("Yes", $this->lang_key)
 		);
 
-		$out .= "<h3>".__("Redirect", 'lang_theme_core')."</h3>"
+		$out .= "<h3>".__("Redirect", $this->lang_key)."</h3>"
 		.show_select(array('data' => $arr_data, 'xtra' => "rel='redirect url=https://domain.com sec=5'"));
 
 		return $out;
@@ -3580,10 +3558,10 @@ class mf_theme_core
 					{
 						case 'align':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'left' => __("Left", 'lang_theme_core'),
-								'center' => __("Center", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'left' => __("Left", $this->lang_key),
+								'center' => __("Center", $this->lang_key),
+								'right' => __("Right", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3605,8 +3583,8 @@ class mf_theme_core
 
 						case 'checkbox':
 							$arr_data = array(
-								2 => __("Yes", 'lang_theme_core'),
-								1 => __("No", 'lang_theme_core'),
+								2 => __("Yes", $this->lang_key),
+								1 => __("No", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3614,11 +3592,11 @@ class mf_theme_core
 
 						case 'clear':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'left' => __("Left", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-								'both' => __("Both", 'lang_theme_core'),
-								'none' => __("None", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'left' => __("Left", $this->lang_key),
+								'right' => __("Right", $this->lang_key),
+								'both' => __("Both", $this->lang_key),
+								'none' => __("None", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3626,8 +3604,8 @@ class mf_theme_core
 
 						case 'direction':
 							$arr_data = array(
-								'horizontal' => __("Horizontal", 'lang_theme_core'),
-								'vertical' => __("Vertical", 'lang_theme_core'),
+								'horizontal' => __("Horizontal", $this->lang_key),
+								'vertical' => __("Vertical", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3651,13 +3629,13 @@ class mf_theme_core
 
 						case 'float':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'none' => __("None", 'lang_theme_core'),
-								'left' => __("Left", 'lang_theme_core'),
-								'center' => __("Center", 'lang_theme_core'),
-								'right' => __("Right", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'none' => __("None", $this->lang_key),
+								'left' => __("Left", $this->lang_key),
+								'center' => __("Center", $this->lang_key),
+								'right' => __("Right", $this->lang_key),
+								'initial' => __("Initial", $this->lang_key),
+								'inherit' => __("Inherit", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3665,7 +3643,7 @@ class mf_theme_core
 
 						case 'font':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --"
+								'' => "-- ".__("Choose Here", $this->lang_key)." --"
 							);
 
 							if(count($this->options_fonts) > 0)
@@ -3695,13 +3673,13 @@ class mf_theme_core
 
 						case 'overflow':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'visible' => __("Visible", 'lang_theme_core'),
-								'hidden' => __("Hidden", 'lang_theme_core'),
-								'scroll' => __("Scroll", 'lang_theme_core'),
-								'auto' => __("Auto", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'visible' => __("Visible", $this->lang_key),
+								'hidden' => __("Hidden", $this->lang_key),
+								'scroll' => __("Scroll", $this->lang_key),
+								'auto' => __("Auto", $this->lang_key),
+								'initial' => __("Initial", $this->lang_key),
+								'inherit' => __("Inherit", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3709,11 +3687,11 @@ class mf_theme_core
 
 						case 'position':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'absolute' => __("Absolute", 'lang_theme_core'),
-								'fixed' => __("Fixed", 'lang_theme_core'),
-								'relative' => __("Relative", 'lang_theme_core'),
-								'sticky' => __("Sticky", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'absolute' => __("Absolute", $this->lang_key),
+								'fixed' => __("Fixed", $this->lang_key),
+								'relative' => __("Relative", $this->lang_key),
+								'sticky' => __("Sticky", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3721,9 +3699,9 @@ class mf_theme_core
 
 						case 'text_decoration':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'none' => __("None", 'lang_theme_core'),
-								'underline' => __("Underline", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'none' => __("None", $this->lang_key),
+								'underline' => __("Underline", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3731,9 +3709,9 @@ class mf_theme_core
 
 						case 'text_transform':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'uppercase' => __("Uppercase", 'lang_theme_core'),
-								'lowercase' => __("Lowercase", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'uppercase' => __("Uppercase", $this->lang_key),
+								'lowercase' => __("Lowercase", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3741,13 +3719,13 @@ class mf_theme_core
 
 						case 'weight':
 							$arr_data = array(
-								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'lighter' => __("Lighter", 'lang_theme_core'),
-								'normal' => __("Normal", 'lang_theme_core'),
-								'bold' => __("Bold", 'lang_theme_core'),
-								'bolder' => __("Bolder", 'lang_theme_core'),
-								'initial' => __("Initial", 'lang_theme_core'),
-								'inherit' => __("Inherit", 'lang_theme_core'),
+								'' => "-- ".__("Choose Here", $this->lang_key)." --",
+								'lighter' => __("Lighter", $this->lang_key),
+								'normal' => __("Normal", $this->lang_key),
+								'bold' => __("Bold", $this->lang_key),
+								'bolder' => __("Bolder", $this->lang_key),
+								'initial' => __("Initial", $this->lang_key),
+								'inherit' => __("Inherit", $this->lang_key),
 							);
 
 							$this->add_select(array('choices' => $arr_data));
@@ -3940,7 +3918,7 @@ class mf_theme_core
 
 		if($rows > 0)
 		{
-			$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
+			$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", $this->lang_key)."'>
 				<span>".$rows."</span>
 			</span>";
 
@@ -4017,18 +3995,18 @@ class mf_theme_core
 
 				if($success == true)
 				{
-					$done_text = __("The theme settings were backed up", 'lang_theme_core');
+					$done_text = __("The theme settings were backed up", $this->lang_key);
 				}
 
 				else
 				{
-					$error_text = __("It was not possible to backup the theme settings", 'lang_theme_core');
+					$error_text = __("It was not possible to backup the theme settings", $this->lang_key);
 				}
 			}
 
 			else
 			{
-				$error_text = __("There were no theme settings to save", 'lang_theme_core');
+				$error_text = __("There were no theme settings to save", $this->lang_key);
 			}
 		}
 
@@ -4070,7 +4048,7 @@ class mf_theme_core
 						}
 					}
 
-					$done_text = __("I restored the theme backup for you", 'lang_theme_core');
+					$done_text = __("I restored the theme backup for you", $this->lang_key);
 
 					update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
 					delete_option('option_theme_source_style_url');
@@ -4080,7 +4058,7 @@ class mf_theme_core
 
 				else
 				{
-					$error_text = __("There is something wrong with the source to restore", 'lang_theme_core')." (".htmlspecialchars($strFileContent)." -> ".var_export($json, true).")";
+					$error_text = __("There is something wrong with the source to restore", $this->lang_key)." (".htmlspecialchars($strFileContent)." -> ".var_export($json, true).")";
 				}
 			}
 		}
@@ -4089,7 +4067,7 @@ class mf_theme_core
 		{
 			unlink($upload_path.$strFileName);
 
-			$done_text = __("The file was deleted successfully", 'lang_theme_core');
+			$done_text = __("The file was deleted successfully", $this->lang_key);
 		}
 
 		else
@@ -4104,13 +4082,13 @@ class mf_theme_core
 
 				if($option_theme_source_style_url != '')
 				{
-					$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", 'lang_theme_core'), $setting_base_template_site, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$option_theme_source_style_url)."'>", "</a>");
+					$error_text = sprintf(__("The theme at %s has got a newer version of saved style which can be %srestored here%s", $this->lang_key), $setting_base_template_site, "<a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileUrl=".$option_theme_source_style_url)."'>", "</a>");
 				}
 			}
 		}
 
 		$out .= "<div class='wrap'>
-			<h2>".__("Theme Backup", 'lang_theme_core')."</h2>"
+			<h2>".__("Theme Backup", $this->lang_key)."</h2>"
 			.get_notification();
 
 			if($upload_path != '')
@@ -4131,8 +4109,8 @@ class mf_theme_core
 
 								$out .= "<table class='widefat striped'>";
 
-									$arr_header[] = __("Existing", 'lang_theme_core');
-									$arr_header[] = __("Date", 'lang_theme_core');
+									$arr_header[] = __("Existing", $this->lang_key);
+									$arr_header[] = __("Date", $this->lang_key);
 
 									$out .= show_table_header($arr_header)
 									."<tbody>";
@@ -4146,12 +4124,12 @@ class mf_theme_core
 												<td>"
 													.$arr_backups[$i]['name']
 													."<div class='row-actions'>
-														<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
-														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."' rel='confirm'>".__("Restore", 'lang_theme_core')."</a>";
+														<a href='".$upload_url.$file_name."'>".__("Download", $this->lang_key)."</a>
+														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."' rel='confirm'>".__("Restore", $this->lang_key)."</a>";
 
 														if($is_allowed_to_backup)
 														{
-															$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name, '_wpnonce_theme_delete')."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
+															$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name, '_wpnonce_theme_delete')."' rel='confirm'>".__("Delete", $this->lang_key)."</a>";
 														}
 
 													$out .= "</div>
@@ -4166,12 +4144,12 @@ class mf_theme_core
 							}
 
 							$out .= "<div class='postbox'>
-								<h3 class='hndle'><span>".__("External Backup", 'lang_theme_core')."</span></h3>
+								<h3 class='hndle'><span>".__("External Backup", $this->lang_key)."</span></h3>
 								<div class='inside'>
 									<form method='post' action='' class='mf_form'>
 										<div>"
 											.show_textarea(array('name' => 'strFileContent', 'value' => stripslashes($strFileContent)))
-											.show_button(array('name' => 'btnThemeRestore', 'text' => __("Restore", 'lang_theme_core')))
+											.show_button(array('name' => 'btnThemeRestore', 'text' => __("Restore", $this->lang_key)))
 										."</div>
 									</form>
 								</div>
@@ -4182,10 +4160,10 @@ class mf_theme_core
 						{
 							$out .= "<div id='postbox-container-1'>
 								<div class='postbox'>
-									<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
+									<h3 class='hndle'><span>".__("New Backup", $this->lang_key)."</span></h3>
 									<div class='inside'>
 										<form method='post' action='' class='mf_form'>"
-											.show_button(array('name' => 'btnThemeBackup', 'text' => __("Save", 'lang_theme_core')))
+											.show_button(array('name' => 'btnThemeBackup', 'text' => __("Save", $this->lang_key)))
 											.wp_nonce_field('theme_backup', '_wpnonce_theme_backup', true, false)
 										."</form>
 									</div>
@@ -4209,7 +4187,7 @@ class mf_theme_core
 
 	function admin_menu()
 	{
-		$menu_title = __("Theme Backup", 'lang_theme_core');
+		$menu_title = __("Theme Backup", $this->lang_key);
 		add_theme_page($menu_title, $menu_title.$this->get_theme_updates_message(), 'edit_theme_options', 'theme_options', array($this, 'get_options_page'));
 
 		if($this->has_comments() == false)
@@ -4228,10 +4206,10 @@ class mf_theme_core
 		unset($cols['registered']);
 		unset($cols['lastupdated']);
 
-		$cols['site_status'] = __("Status", 'lang_theme_core');
-		$cols['theme'] = __("Theme", 'lang_theme_core');
-		$cols['email'] = __("E-mail", 'lang_theme_core');
-		$cols['last_updated'] = __("Updated", 'lang_theme_core');
+		$cols['site_status'] = __("Status", $this->lang_key);
+		$cols['theme'] = __("Theme", $this->lang_key);
+		$cols['email'] = __("E-mail", $this->lang_key);
+		$cols['last_updated'] = __("Updated", $this->lang_key);
 
 		return $cols;
 	}
@@ -4276,7 +4254,7 @@ class mf_theme_core
 						{
 							if($style_source == get_site_url($id))
 							{
-								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", 'lang_theme_core')."'></i>";
+								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", $this->lang_key)."'></i>";
 							}
 
 							else
@@ -4285,17 +4263,17 @@ class mf_theme_core
 
 								if($option_theme_source_style_url != '')
 								{
-									$restore_notice = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
+									$restore_notice = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", $this->lang_key)."'>
 										<span>1</span>
 									</span>";
-									$restore_url = " | <a href='".get_admin_url($id, "themes.php?page=theme_options")."'>".__("Update", 'lang_theme_core')."</a>";
+									$restore_url = " | <a href='".get_admin_url($id, "themes.php?page=theme_options")."'>".__("Update", $this->lang_key)."</a>";
 								}
 
 								else
 								{
 									$option_theme_saved = get_blog_option($id, 'option_theme_saved');
 
-									$restore_notice .= "&nbsp;<i class='fa fa-check fa-lg ".($option_theme_saved > date("Y-m-d H:i:s", strtotime("-1 month")) ? "green" : "grey")."' title='".__("The theme design is up to date", 'lang_theme_core')."'></i>";
+									$restore_notice .= "&nbsp;<i class='fa fa-check fa-lg ".($option_theme_saved > date("Y-m-d H:i:s", strtotime("-1 month")) ? "green" : "grey")."' title='".__("The theme design is up to date", $this->lang_key)."'></i>";
 								}
 							}
 						}
@@ -4306,7 +4284,7 @@ class mf_theme_core
 
 							if(count($option_sync_sites) > 0)
 							{
-								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", 'lang_theme_core')."'></i>";
+								$restore_notice .= "&nbsp;<i class='fas fa-star fa-lg yellow' title='".__("This is the template theme design", $this->lang_key)."'></i>";
 							}
 						}
 
@@ -4322,7 +4300,7 @@ class mf_theme_core
 					echo get_blog_option($id, 'stylesheet')
 					.$restore_notice
 					."<div class='row-actions'>"
-						."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", 'lang_theme_core')."</a>"
+						."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", $this->lang_key)."</a>"
 						.$restore_url
 					."</div>";
 				break;
@@ -4352,7 +4330,7 @@ class mf_theme_core
 					foreach($result as $r)
 					{
 						$post_id_manual = $r->ID;
-						$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
+						$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", $this->lang_key).")");
 						$post_modified_manual = $r->post_modified;
 
 						if($post_modified_manual > DEFAULT_DATE)
@@ -4370,12 +4348,12 @@ class mf_theme_core
 							foreach($result_auto as $r)
 							{
 								$post_id_auto = $r->ID;
-								$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", 'lang_theme_core').")");
+								$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", $this->lang_key).")");
 								$post_modified_auto = $r->post_modified;
 
 								if($post_modified_auto > $post_modified_manual)
 								{
-									$row_actions .= ($row_actions != '' ? " | " : "").__("Background", 'lang_theme_core').": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".shorten_text(array('string' => $post_title, 'limit' => 10))."</a>)";
+									$row_actions .= ($row_actions != '' ? " | " : "").__("Background", $this->lang_key).": ".format_date($post_modified_auto)." (<a href='".admin_url("post.php?action=edit&post=".$post_id_auto)."'>".shorten_text(array('string' => $post_title, 'limit' => 10))."</a>)";
 								}
 
 								if($row_actions != '')
@@ -4403,9 +4381,9 @@ class mf_theme_core
 	{
 		if(get_option('setting_cookie_info') > 0)
 		{
-			$content .= "<h3>".__("Theme", 'lang_theme_core')."</h3>
+			$content .= "<h3>".__("Theme", $this->lang_key)."</h3>
 			<p>"
-				.__("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core')
+				.__("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", $this->lang_key)
 			."</p>";
 		}
 
@@ -4519,7 +4497,7 @@ class mf_theme_core
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
-		return __("I have optimized the site for you", 'lang_theme_core');
+		return __("I have optimized the site for you", $this->lang_key);
 	}
 
 	function optimize_theme()
@@ -4571,9 +4549,11 @@ class widget_theme_core_area extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_widget_area',
-			'description' => __("Add Widget Area", 'lang_theme_core')
+			'description' => __("Add Widget Area", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4583,7 +4563,7 @@ class widget_theme_core_area extends WP_Widget
 			'widget_area_padding' => '',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4618,16 +4598,18 @@ class widget_theme_core_area extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", 'lang_theme_core'), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
-			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", 'lang_theme_core'), 'value' => $instance['widget_area_name'], 'required' => true))
-			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
+			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", $obj_theme_core->lang_key), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
+			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", $obj_theme_core->lang_key), 'value' => $instance['widget_area_name'], 'required' => true))
+			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
 
 			if($instance['widget_area_columns'] > 1)
 			{
-				echo show_textfield(array('name' => $this->get_field_name('widget_area_padding'), 'text' => __("Column Space", 'lang_theme_core'), 'value' => $instance['widget_area_padding'], 'placeholder' => ".5em"));
+				echo show_textfield(array('name' => $this->get_field_name('widget_area_padding'), 'text' => __("Column Space", $obj_theme_core->lang_key), 'value' => $instance['widget_area_padding'], 'placeholder' => ".5em"));
 			}
 
 		echo "</div>";
@@ -4638,9 +4620,11 @@ class widget_theme_core_logo extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_logo',
-			'description' => __("Display Logo", 'lang_theme_core')
+			'description' => __("Display Logo", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4651,7 +4635,7 @@ class widget_theme_core_logo extends WP_Widget
 			'logo_description' => '',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4696,24 +4680,26 @@ class widget_theme_core_logo extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$arr_data = array(
-			'all' => __("Logo and Tagline", 'lang_theme_core'),
-			'title' => __("Logo", 'lang_theme_core'),
-			'tagline' => __("Tagline", 'lang_theme_core'),
+			'all' => __("Logo and Tagline", $obj_theme_core->lang_key),
+			'title' => __("Logo", $obj_theme_core->lang_key),
+			'tagline' => __("Tagline", $obj_theme_core->lang_key),
 		);
 
 		echo "<div class='mf_form'>
-			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", 'lang_theme_core')."</p>"
-			.show_textfield(array('type' => 'url', 'name' => $this->get_field_name('logo_url'), 'text' => __("URL", 'lang_theme_core'), 'value' => $instance['logo_url'], 'placeholder' => get_site_url()))
-			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", 'lang_theme_core'), 'value' => $instance['logo_display']));
+			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", $obj_theme_core->lang_key)."</p>"
+			.show_textfield(array('type' => 'url', 'name' => $this->get_field_name('logo_url'), 'text' => __("URL", $obj_theme_core->lang_key), 'value' => $instance['logo_url'], 'placeholder' => get_site_url()))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", $obj_theme_core->lang_key), 'value' => $instance['logo_display']));
 
 			if($instance['logo_display'] != 'tagline')
 			{
 				if($instance['logo_image'] == '')
 				{
-					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", 'lang_theme_core'), 'value' => $instance['logo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"));
+					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", $obj_theme_core->lang_key), 'value' => $instance['logo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"));
 				}
 
 				if($instance['logo_title'] == '')
@@ -4724,7 +4710,7 @@ class widget_theme_core_logo extends WP_Widget
 
 			if($instance['logo_display'] != 'title')
 			{
-				echo show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", 'lang_theme_core'), 'value' => $instance['logo_description']));
+				echo show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", $obj_theme_core->lang_key), 'value' => $instance['logo_description']));
 			}
 
 		echo "</div>";
@@ -4735,9 +4721,11 @@ class widget_theme_core_search extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_search',
-			'description' => __("Display Search Form", 'lang_theme_core')
+			'description' => __("Display Search Form", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4747,7 +4735,7 @@ class widget_theme_core_search extends WP_Widget
 			'search_listen_to_keystroke' => 'yes',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4792,14 +4780,16 @@ class widget_theme_core_search extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
+			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", $obj_theme_core->lang_key), 'value' => $instance['search_placeholder']))
 			."<div class='flex_flow'>"
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_hide_on_mobile'), 'text' => __("Hide on Mobile", 'lang_theme_core'), 'value' => $instance['search_hide_on_mobile']))
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", 'lang_theme_core'), 'value' => $instance['search_listen_to_keystroke']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_hide_on_mobile'), 'text' => __("Hide on Mobile", $obj_theme_core->lang_key), 'value' => $instance['search_hide_on_mobile']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", $obj_theme_core->lang_key), 'value' => $instance['search_animate']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", $obj_theme_core->lang_key), 'value' => $instance['search_listen_to_keystroke']))
 			."</div>"
 		."</div>";
 	}
@@ -4809,9 +4799,11 @@ class widget_theme_core_news extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display News/Posts", 'lang_theme_core')
+			'description' => __("Display News/Posts", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4829,7 +4821,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_page' => 0,
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -5004,7 +4996,7 @@ class widget_theme_core_news extends WP_Widget
 
 						if($instance['news_page'] > 0)
 						{
-							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", 'lang_theme_core')."</a></p>";
+							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", $obj_theme_core->lang_key)."</a></p>";
 						}
 					}
 
@@ -5027,7 +5019,7 @@ class widget_theme_core_news extends WP_Widget
 										.$page['title']
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
 									."<div class='excerpt'>".apply_filters('the_content', $page['excerpt'])."</div>"
-									."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
+									."<p class='read_more'><a href='#'>".__("Read More", $obj_theme_core->lang_key)."</a></p>"
 									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
 								</div>";
 							}
@@ -5045,7 +5037,7 @@ class widget_theme_core_news extends WP_Widget
 										.$page['title']
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
 									.apply_filters('the_content', $page['excerpt'])
-									."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
+									."<p class='read_more'>".__("Read More", $obj_theme_core->lang_key)."</p>"
 								."</a>";
 							}
 						}
@@ -5079,16 +5071,20 @@ class widget_theme_core_news extends WP_Widget
 
 	function get_news_type_for_select()
 	{
+		global $obj_theme_core;
+
 		return array(
-			'original' => __("Default", 'lang_theme_core'),
-			'postit' => __("Post It", 'lang_theme_core'),
-			'simple' => __("Simple", 'lang_theme_core'),
-			'compact' => __("Compact", 'lang_theme_core'),
+			'original' => __("Default", $obj_theme_core->lang_key),
+			'postit' => __("Post It", $obj_theme_core->lang_key),
+			'simple' => __("Simple", $obj_theme_core->lang_key),
+			'compact' => __("Compact", $obj_theme_core->lang_key),
 		);
 	}
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$instance_temp = $instance;
@@ -5102,32 +5098,32 @@ class widget_theme_core_news extends WP_Widget
 		get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
-			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", $obj_theme_core->lang_key), 'value' => $instance['news_type']))
+			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $obj_theme_core->lang_key), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
 
 				if($instance['news_amount'] > 1 && $rows > 3 && $instance['news_type'] != 'compact')
 				{
-					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='0' max='4'"));
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='0' max='4'"));
 				}
 
 			echo "</div>";
 
 			if($instance['news_amount'] == 1)
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", $obj_theme_core->lang_key), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", $obj_theme_core->lang_key)));
 			}
 
 			if($instance['news_type'] == 'postit')
 			{
 				echo "<div class='flex_flow'>"
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", $obj_theme_core->lang_key), 'value' => $instance['news_display_arrows']));
 
 					if($instance['news_display_arrows'] == 'yes')
 					{
-						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", 'lang_theme_core'), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", $obj_theme_core->lang_key), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
 					}
 
 				echo "</div>";
@@ -5136,19 +5132,19 @@ class widget_theme_core_news extends WP_Widget
 			if($instance['news_type'] != 'compact')
 			{
 				echo "<div class='flex_flow'>"
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", 'lang_theme_core'), 'value' => $instance['news_display_title']))
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", $obj_theme_core->lang_key), 'value' => $instance['news_display_title']))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", $obj_theme_core->lang_key), 'value' => $instance['news_display_excerpt']))
 				."</div>";
 			}
 
 			if($instance['news_amount'] == 1)
 			{
-				echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_expand_content'), 'text' => __("Expand Content on Current Page", 'lang_theme_core'), 'value' => $instance['news_expand_content']));
+				echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_expand_content'), 'text' => __("Expand Content on Current Page", $obj_theme_core->lang_key), 'value' => $instance['news_expand_content']));
 			}
 
 			if($rows > 1 && $instance['news_amount'] > 1)
 			{
-				echo show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", 'lang_theme_core'), 'value' => $instance['news_page']));
+				echo show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", $obj_theme_core->lang_key), 'value' => $instance['news_page']));
 			}
 
 		echo "</div>";
@@ -5159,9 +5155,11 @@ class widget_theme_core_info extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_info',
-			'description' => __("Display Info Module", 'lang_theme_core')
+			'description' => __("Display Info Module", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5175,7 +5173,7 @@ class widget_theme_core_info extends WP_Widget
 			'info_visit_limit' => 0,
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function check_limit($instance)
@@ -5377,13 +5375,15 @@ class widget_theme_core_info extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
 			.get_media_library(array('type' => 'image', 'name' => $this->get_field_name('info_image'), 'value' => $instance['info_image']))
-			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['info_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", 'lang_theme_core'), 'value' => $instance['info_content']))
-			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", 'lang_theme_core'), 'value' => $instance['info_button_text']));
+			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['info_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", $obj_theme_core->lang_key), 'value' => $instance['info_content']))
+			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", $obj_theme_core->lang_key), 'value' => $instance['info_button_text']));
 
 			if($instance['info_button_text'] != '')
 			{
@@ -5392,23 +5392,23 @@ class widget_theme_core_info extends WP_Widget
 					$arr_data = array();
 					get_post_children(array('add_choose_here' => true), $arr_data);
 
-					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page']));
+					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", $obj_theme_core->lang_key), 'value' => $instance['info_page']));
 				}
 
 				if(!($instance['info_page'] > 0))
 				{
-					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", 'lang_theme_core'), 'value' => $instance['info_link']));
+					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", $obj_theme_core->lang_key), 'value' => $instance['info_link']));
 				}
 			}
 
 			if(!($instance['info_visit_limit'] > 0))
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['info_time_limit'], 'suffix' => __("days", 'lang_theme_core')));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_time_limit'), 'text' => __("Time Limit", $obj_theme_core->lang_key), 'value' => $instance['info_time_limit'], 'suffix' => __("days", $obj_theme_core->lang_key)));
 			}
 
 			if(!($instance['info_time_limit'] > 0))
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_visit_limit'), 'text' => __("Visit Limit", 'lang_theme_core'), 'value' => $instance['info_visit_limit'], 'suffix' => __("times", 'lang_theme_core')));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_visit_limit'), 'text' => __("Visit Limit", $obj_theme_core->lang_key), 'value' => $instance['info_visit_limit'], 'suffix' => __("times", $obj_theme_core->lang_key)));
 			}
 
 		echo "</div>";
@@ -5419,9 +5419,11 @@ class widget_theme_core_related extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display Related Posts", 'lang_theme_core')
+			'description' => __("Display Related Posts", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5432,7 +5434,7 @@ class widget_theme_core_related extends WP_Widget
 			'news_columns' => 1,
 		);
 
-		parent::__construct('theme-related-news-widget', __("Related Posts", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct('theme-related-news-widget', __("Related Posts", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -5570,18 +5572,20 @@ class widget_theme_core_related extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
-			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
+			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $obj_theme_core->lang_key), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
 
 				if($instance['news_amount'] > 1)
 				{
-					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
 				}
 
 			echo "</div>
@@ -5593,9 +5597,11 @@ class widget_theme_core_promo extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_promo theme_news',
-			'description' => __("Promote Pages", 'lang_theme_core')
+			'description' => __("Promote Pages", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5604,7 +5610,7 @@ class widget_theme_core_promo extends WP_Widget
 			'promo_page_titles' => 'yes',
 		);
 
-		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct('theme-promo-widget', __("Promotion", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -5726,15 +5732,17 @@ class widget_theme_core_promo extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$arr_data = array();
 		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['promo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", 'lang_theme_core'), 'value' => $instance['promo_include']))
-			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", 'lang_theme_core'), 'value' => $instance['promo_page_titles']))
+			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['promo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", $obj_theme_core->lang_key), 'value' => $instance['promo_include']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", $obj_theme_core->lang_key), 'value' => $instance['promo_page_titles']))
 		."</div>";
 	}
 }
@@ -5743,16 +5751,18 @@ class widget_theme_core_page_index extends WP_Widget
 {
 	function __construct()
 	{
+		global $obj_theme_core;
+
 		$this->widget_ops = array(
 			'classname' => 'theme_page_index',
-			'description' => __("Display Table of Contents", 'lang_theme_core')
+			'description' => __("Display Table of Contents", $obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
 			'widget_title' => "",
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", 'lang_theme_core'), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", $obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -5802,10 +5812,12 @@ class widget_theme_core_page_index extends WP_Widget
 
 	function form($instance)
 	{
+		global $obj_theme_core;
+
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['widget_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['widget_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 		."</div>";
 	}
 }
