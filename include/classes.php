@@ -19,7 +19,7 @@ class mf_theme_core
 
 	function is_login_page()
 	{
-		return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+		return in_array($GLOBALS['pagenow'], array('wp-login.php')); //, 'wp-register.php'
 	}
 
 	function get_theme_dir_name()
@@ -4880,6 +4880,8 @@ class widget_theme_core_news extends WP_Widget
 
 	function widget($args, $instance)
 	{
+		global $obj_theme_core;
+
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
