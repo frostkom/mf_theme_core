@@ -4549,11 +4549,11 @@ class widget_theme_core_area extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_widget_area',
-			'description' => __("Add Widget Area", $obj_theme_core->lang_key)
+			'description' => __("Add Widget Area", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4563,7 +4563,7 @@ class widget_theme_core_area extends WP_Widget
 			'widget_area_padding' => '',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -4598,18 +4598,16 @@ class widget_theme_core_area extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", $obj_theme_core->lang_key), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
-			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", $obj_theme_core->lang_key), 'value' => $instance['widget_area_name'], 'required' => true))
-			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
+			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", $this->obj_theme_core->lang_key), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
+			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", $this->obj_theme_core->lang_key), 'value' => $instance['widget_area_name'], 'required' => true))
+			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", $this->obj_theme_core->lang_key), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
 
 			if($instance['widget_area_columns'] > 1)
 			{
-				echo show_textfield(array('name' => $this->get_field_name('widget_area_padding'), 'text' => __("Column Space", $obj_theme_core->lang_key), 'value' => $instance['widget_area_padding'], 'placeholder' => ".5em"));
+				echo show_textfield(array('name' => $this->get_field_name('widget_area_padding'), 'text' => __("Column Space", $this->obj_theme_core->lang_key), 'value' => $instance['widget_area_padding'], 'placeholder' => ".5em"));
 			}
 
 		echo "</div>";
@@ -4620,11 +4618,11 @@ class widget_theme_core_logo extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_logo',
-			'description' => __("Display Logo", $obj_theme_core->lang_key)
+			'description' => __("Display Logo", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4635,13 +4633,11 @@ class widget_theme_core_logo extends WP_Widget
 			'logo_description' => '',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
-		global $obj_theme_core;
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4660,7 +4656,7 @@ class widget_theme_core_logo extends WP_Widget
 		}
 
 		echo $before_widget
-			.$obj_theme_core->get_logo($arr_data)
+			.$this->obj_theme_core->get_logo($arr_data)
 		.$after_widget;
 	}
 
@@ -4680,26 +4676,24 @@ class widget_theme_core_logo extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$arr_data = array(
-			'all' => __("Logo and Tagline", $obj_theme_core->lang_key),
-			'title' => __("Logo", $obj_theme_core->lang_key),
-			'tagline' => __("Tagline", $obj_theme_core->lang_key),
+			'all' => __("Logo and Tagline", $this->obj_theme_core->lang_key),
+			'title' => __("Logo", $this->obj_theme_core->lang_key),
+			'tagline' => __("Tagline", $this->obj_theme_core->lang_key),
 		);
 
 		echo "<div class='mf_form'>
-			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", $obj_theme_core->lang_key)."</p>"
-			.show_textfield(array('type' => 'url', 'name' => $this->get_field_name('logo_url'), 'text' => __("URL", $obj_theme_core->lang_key), 'value' => $instance['logo_url'], 'placeholder' => get_site_url()))
-			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", $obj_theme_core->lang_key), 'value' => $instance['logo_display']));
+			<p>".__("If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead.", $this->obj_theme_core->lang_key)."</p>"
+			.show_textfield(array('type' => 'url', 'name' => $this->get_field_name('logo_url'), 'text' => __("URL", $this->obj_theme_core->lang_key), 'value' => $instance['logo_url'], 'placeholder' => get_site_url()))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('logo_display'), 'text' => __("What to Display", $this->obj_theme_core->lang_key), 'value' => $instance['logo_display']));
 
 			if($instance['logo_display'] != 'tagline')
 			{
 				if($instance['logo_image'] == '')
 				{
-					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", $obj_theme_core->lang_key), 'value' => $instance['logo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"));
+					echo show_textfield(array('name' => $this->get_field_name('logo_title'), 'text' => __("Logo", $this->obj_theme_core->lang_key), 'value' => $instance['logo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"));
 				}
 
 				if($instance['logo_title'] == '')
@@ -4710,7 +4704,7 @@ class widget_theme_core_logo extends WP_Widget
 
 			if($instance['logo_display'] != 'title')
 			{
-				echo show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", $obj_theme_core->lang_key), 'value' => $instance['logo_description']));
+				echo show_textfield(array('name' => $this->get_field_name('logo_description'), 'text' => __("Tagline", $this->obj_theme_core->lang_key), 'value' => $instance['logo_description']));
 			}
 
 		echo "</div>";
@@ -4721,11 +4715,11 @@ class widget_theme_core_search extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_search',
-			'description' => __("Display Search Form", $obj_theme_core->lang_key)
+			'description' => __("Display Search Form", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4735,18 +4729,11 @@ class widget_theme_core_search extends WP_Widget
 			'search_listen_to_keystroke' => 'yes',
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
-		global $obj_theme_core;
-
-		if(!isset($obj_theme_core))
-		{
-			$obj_theme_core = new mf_theme_core();
-		}
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4758,7 +4745,7 @@ class widget_theme_core_search extends WP_Widget
 			mf_enqueue_script('script_theme_core_search', $plugin_include_url."script_search.js", $plugin_version);
 		}
 
-		echo $obj_theme_core->get_search_theme_core(array(
+		echo $this->obj_theme_core->get_search_theme_core(array(
 			'placeholder' => $instance['search_placeholder'],
 			'hide_on_mobile' => (isset($instance['search_hide_on_mobile']) ? $instance['search_hide_on_mobile'] : ''),
 			'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : ''),
@@ -4780,16 +4767,14 @@ class widget_theme_core_search extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", $obj_theme_core->lang_key), 'value' => $instance['search_placeholder']))
+			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", $this->obj_theme_core->lang_key), 'value' => $instance['search_placeholder']))
 			."<div class='flex_flow'>"
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_hide_on_mobile'), 'text' => __("Hide on Mobile", $obj_theme_core->lang_key), 'value' => $instance['search_hide_on_mobile']))
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", $obj_theme_core->lang_key), 'value' => $instance['search_animate']))
-				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", $obj_theme_core->lang_key), 'value' => $instance['search_listen_to_keystroke']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_hide_on_mobile'), 'text' => __("Hide on Mobile", $this->obj_theme_core->lang_key), 'value' => $instance['search_hide_on_mobile']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", $this->obj_theme_core->lang_key), 'value' => $instance['search_animate']))
+				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", $this->obj_theme_core->lang_key), 'value' => $instance['search_listen_to_keystroke']))
 			."</div>"
 		."</div>";
 	}
@@ -4799,11 +4784,11 @@ class widget_theme_core_news extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display News/Posts", $obj_theme_core->lang_key)
+			'description' => __("Display News/Posts", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -4821,7 +4806,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_page' => 0,
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -4880,8 +4865,6 @@ class widget_theme_core_news extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		global $obj_theme_core;
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4998,7 +4981,7 @@ class widget_theme_core_news extends WP_Widget
 
 						if($instance['news_page'] > 0)
 						{
-							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", $obj_theme_core->lang_key)."</a></p>";
+							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", $this->obj_theme_core->lang_key)."</a></p>";
 						}
 					}
 
@@ -5021,7 +5004,7 @@ class widget_theme_core_news extends WP_Widget
 										.$page['title']
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
 									."<div class='excerpt'>".apply_filters('the_content', $page['excerpt'])."</div>"
-									."<p class='read_more'><a href='#'>".__("Read More", $obj_theme_core->lang_key)."</a></p>"
+									."<p class='read_more'><a href='#'>".__("Read More", $this->obj_theme_core->lang_key)."</a></p>"
 									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
 								</div>";
 							}
@@ -5039,7 +5022,7 @@ class widget_theme_core_news extends WP_Widget
 										.$page['title']
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
 									.apply_filters('the_content', $page['excerpt'])
-									."<p class='read_more'>".__("Read More", $obj_theme_core->lang_key)."</p>"
+									."<p class='read_more'>".__("Read More", $this->obj_theme_core->lang_key)."</p>"
 								."</a>";
 							}
 						}
@@ -5073,20 +5056,16 @@ class widget_theme_core_news extends WP_Widget
 
 	function get_news_type_for_select()
 	{
-		global $obj_theme_core;
-
 		return array(
-			'original' => __("Default", $obj_theme_core->lang_key),
-			'postit' => __("Post It", $obj_theme_core->lang_key),
-			'simple' => __("Simple", $obj_theme_core->lang_key),
-			'compact' => __("Compact", $obj_theme_core->lang_key),
+			'original' => __("Default", $this->obj_theme_core->lang_key),
+			'postit' => __("Post It", $this->obj_theme_core->lang_key),
+			'simple' => __("Simple", $this->obj_theme_core->lang_key),
+			'compact' => __("Compact", $this->obj_theme_core->lang_key),
 		);
 	}
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$instance_temp = $instance;
@@ -5100,32 +5079,32 @@ class widget_theme_core_news extends WP_Widget
 		get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", $obj_theme_core->lang_key), 'value' => $instance['news_type']))
-			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $obj_theme_core->lang_key), 'value' => $instance['news_categories']))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $this->obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", $this->obj_theme_core->lang_key), 'value' => $instance['news_type']))
+			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $this->obj_theme_core->lang_key), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $this->obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
 
 				if($instance['news_amount'] > 1 && $rows > 3 && $instance['news_type'] != 'compact')
 				{
-					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='0' max='4'"));
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $this->obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='0' max='4'"));
 				}
 
 			echo "</div>";
 
 			if($instance['news_amount'] == 1)
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", $obj_theme_core->lang_key), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", $obj_theme_core->lang_key)));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", $this->obj_theme_core->lang_key), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", $this->obj_theme_core->lang_key)));
 			}
 
 			if($instance['news_type'] == 'postit')
 			{
 				echo "<div class='flex_flow'>"
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", $obj_theme_core->lang_key), 'value' => $instance['news_display_arrows']));
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", $this->obj_theme_core->lang_key), 'value' => $instance['news_display_arrows']));
 
 					if($instance['news_display_arrows'] == 'yes')
 					{
-						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", $obj_theme_core->lang_key), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
+						echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_autoscroll_time'), 'text' => __("Autoscroll", $this->obj_theme_core->lang_key), 'value' => $instance['news_autoscroll_time'], 'xtra' => " min='0' max='60'"));
 					}
 
 				echo "</div>";
@@ -5134,19 +5113,19 @@ class widget_theme_core_news extends WP_Widget
 			if($instance['news_type'] != 'compact')
 			{
 				echo "<div class='flex_flow'>"
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", $obj_theme_core->lang_key), 'value' => $instance['news_display_title']))
-					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", $obj_theme_core->lang_key), 'value' => $instance['news_display_excerpt']))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", $this->obj_theme_core->lang_key), 'value' => $instance['news_display_title']))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", $this->obj_theme_core->lang_key), 'value' => $instance['news_display_excerpt']))
 				."</div>";
 			}
 
 			if($instance['news_amount'] == 1)
 			{
-				echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_expand_content'), 'text' => __("Expand Content on Current Page", $obj_theme_core->lang_key), 'value' => $instance['news_expand_content']));
+				echo show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_expand_content'), 'text' => __("Expand Content on Current Page", $this->obj_theme_core->lang_key), 'value' => $instance['news_expand_content']));
 			}
 
 			if($rows > 1 && $instance['news_amount'] > 1)
 			{
-				echo show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", $obj_theme_core->lang_key), 'value' => $instance['news_page']));
+				echo show_select(array('data' => $arr_data_pages, 'name' => $this->get_field_name('news_page'), 'text' => __("Read More", $this->obj_theme_core->lang_key), 'value' => $instance['news_page']));
 			}
 
 		echo "</div>";
@@ -5157,11 +5136,11 @@ class widget_theme_core_info extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_info',
-			'description' => __("Display Info Module", $obj_theme_core->lang_key)
+			'description' => __("Display Info Module", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5175,7 +5154,7 @@ class widget_theme_core_info extends WP_Widget
 			'info_visit_limit' => 0,
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function check_limit($instance)
@@ -5377,15 +5356,13 @@ class widget_theme_core_info extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
 			.get_media_library(array('type' => 'image', 'name' => $this->get_field_name('info_image'), 'value' => $instance['info_image']))
-			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['info_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", $obj_theme_core->lang_key), 'value' => $instance['info_content']))
-			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", $obj_theme_core->lang_key), 'value' => $instance['info_button_text']));
+			.show_textfield(array('name' => $this->get_field_name('info_title'), 'text' => __("Title", $this->obj_theme_core->lang_key), 'value' => $instance['info_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textarea(array('name' => $this->get_field_name('info_content'), 'text' => __("Content", $this->obj_theme_core->lang_key), 'value' => $instance['info_content']))
+			.show_textfield(array('name' => $this->get_field_name('info_button_text'), 'text' => __("Button Text", $this->obj_theme_core->lang_key), 'value' => $instance['info_button_text']));
 
 			if($instance['info_button_text'] != '')
 			{
@@ -5394,23 +5371,23 @@ class widget_theme_core_info extends WP_Widget
 					$arr_data = array();
 					get_post_children(array('add_choose_here' => true), $arr_data);
 
-					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", $obj_theme_core->lang_key), 'value' => $instance['info_page']));
+					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", $this->obj_theme_core->lang_key), 'value' => $instance['info_page']));
 				}
 
 				if(!($instance['info_page'] > 0))
 				{
-					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", $obj_theme_core->lang_key), 'value' => $instance['info_link']));
+					echo show_textfield(array('type' => 'url', 'name' => $this->get_field_name('info_link'), 'text' => __("Link", $this->obj_theme_core->lang_key), 'value' => $instance['info_link']));
 				}
 			}
 
 			if(!($instance['info_visit_limit'] > 0))
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_time_limit'), 'text' => __("Time Limit", $obj_theme_core->lang_key), 'value' => $instance['info_time_limit'], 'suffix' => __("days", $obj_theme_core->lang_key)));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_time_limit'), 'text' => __("Time Limit", $this->obj_theme_core->lang_key), 'value' => $instance['info_time_limit'], 'suffix' => __("days", $this->obj_theme_core->lang_key)));
 			}
 
 			if(!($instance['info_time_limit'] > 0))
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_visit_limit'), 'text' => __("Visit Limit", $obj_theme_core->lang_key), 'value' => $instance['info_visit_limit'], 'suffix' => __("times", $obj_theme_core->lang_key)));
+				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('info_visit_limit'), 'text' => __("Visit Limit", $this->obj_theme_core->lang_key), 'value' => $instance['info_visit_limit'], 'suffix' => __("times", $this->obj_theme_core->lang_key)));
 			}
 
 		echo "</div>";
@@ -5421,11 +5398,11 @@ class widget_theme_core_related extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display Related Posts", $obj_theme_core->lang_key)
+			'description' => __("Display Related Posts", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5436,7 +5413,7 @@ class widget_theme_core_related extends WP_Widget
 			'news_columns' => 1,
 		);
 
-		parent::__construct('theme-related-news-widget', __("Related Posts", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct('theme-related-news-widget', __("Related Posts", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function get_posts($instance)
@@ -5574,20 +5551,18 @@ class widget_theme_core_related extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", $this->obj_theme_core->lang_key), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
-			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $obj_theme_core->lang_key), 'value' => $instance['news_categories']))
+			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", $this->obj_theme_core->lang_key), 'value' => $instance['news_categories']))
 			."<div class='flex_flow'>"
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", $this->obj_theme_core->lang_key), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
 
 				if($instance['news_amount'] > 1)
 				{
-					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
+					echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_columns'), 'text' => __("Columns", $this->obj_theme_core->lang_key), 'value' => $instance['news_columns'], 'xtra' => " min='1' max='4'"));
 				}
 
 			echo "</div>
@@ -5599,11 +5574,11 @@ class widget_theme_core_promo extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_promo theme_news',
-			'description' => __("Promote Pages", $obj_theme_core->lang_key)
+			'description' => __("Promote Pages", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
@@ -5612,7 +5587,7 @@ class widget_theme_core_promo extends WP_Widget
 			'promo_page_titles' => 'yes',
 		);
 
-		parent::__construct('theme-promo-widget', __("Promotion", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct('theme-promo-widget', __("Promotion", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -5734,17 +5709,15 @@ class widget_theme_core_promo extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		$arr_data = array();
 		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['promo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", $obj_theme_core->lang_key), 'value' => $instance['promo_include']))
-			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", $obj_theme_core->lang_key), 'value' => $instance['promo_page_titles']))
+			.show_textfield(array('name' => $this->get_field_name('promo_title'), 'text' => __("Title", $this->obj_theme_core->lang_key), 'value' => $instance['promo_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('promo_include')."[]", 'text' => __("Pages", $this->obj_theme_core->lang_key), 'value' => $instance['promo_include']))
+			.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('promo_page_titles'), 'text' => __("Display Titles", $this->obj_theme_core->lang_key), 'value' => $instance['promo_page_titles']))
 		."</div>";
 	}
 }
@@ -5753,18 +5726,18 @@ class widget_theme_core_page_index extends WP_Widget
 {
 	function __construct()
 	{
-		global $obj_theme_core;
+		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_page_index',
-			'description' => __("Display Table of Contents", $obj_theme_core->lang_key)
+			'description' => __("Display Table of Contents", $this->obj_theme_core->lang_key)
 		);
 
 		$this->arr_default = array(
 			'widget_title' => "",
 		);
 
-		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", $obj_theme_core->lang_key), $this->widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", $this->obj_theme_core->lang_key), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -5814,12 +5787,10 @@ class widget_theme_core_page_index extends WP_Widget
 
 	function form($instance)
 	{
-		global $obj_theme_core;
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", $obj_theme_core->lang_key), 'value' => $instance['widget_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textfield(array('name' => $this->get_field_name('widget_title'), 'text' => __("Title", $this->obj_theme_core->lang_key), 'value' => $instance['widget_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 		."</div>";
 	}
 }
