@@ -903,6 +903,16 @@ class mf_theme_core
 
 			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('plugin_url' => $plugin_include_url, 'ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
 		}
+
+		if(function_exists('wp_add_privacy_policy_content'))
+		{
+			if(get_option('setting_cookie_info') > 0)
+			{
+				$content = __("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", $this->lang_key);
+
+				wp_add_privacy_policy_content(__("Theme", $this->lang_key), $content);
+			}
+		}
 	}
 
 	function upload_mimes($existing_mimes = array())
@@ -4377,7 +4387,7 @@ class mf_theme_core
 		}
 	}
 
-	function add_policy($content)
+	/*function add_policy($content)
 	{
 		if(get_option('setting_cookie_info') > 0)
 		{
@@ -4388,7 +4398,7 @@ class mf_theme_core
 		}
 
 		return $content;
-	}
+	}*/
 
 	function delete_folder($data)
 	{
