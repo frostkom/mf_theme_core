@@ -891,11 +891,6 @@ class mf_theme_core
 	{
 		global $pagenow;
 
-		if(!is_plugin_active("mf_base/index.php"))
-		{
-			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
-		}
-
 		if($pagenow == 'options-general.php' && check_var('page') == 'settings_mf_base')
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
@@ -2973,7 +2968,7 @@ class mf_theme_core
 	{
 		unset($cols['comments']);
 
-		if($this->is_site_public())
+		if($this->is_site_public() && check_var('post_status') != 'trash')
 		{
 			$cols['seo'] = __("SEO", $this->lang_key);
 		}
@@ -3497,6 +3492,23 @@ class mf_theme_core
 		);
 	}
 
+	function get_fonts_for_select()
+	{
+		$arr_data = array(
+			'' => "-- ".__("Choose Here", $this->lang_key)." --",
+		);
+
+		if(count($this->options_fonts) > 0)
+		{
+			foreach($this->options_fonts as $key => $value)
+			{
+				$arr_data[$key] = $value['title'];
+			}
+		}
+
+		return $arr_data;
+	}
+
 	function customize_register($wp_customize)
 	{
 		$plugin_include_url = plugin_dir_url(__FILE__);
@@ -3652,19 +3664,7 @@ class mf_theme_core
 						break;
 
 						case 'font':
-							$arr_data = array(
-								'' => "-- ".__("Choose Here", $this->lang_key)." --"
-							);
-
-							if(count($this->options_fonts) > 0)
-							{
-								foreach($this->options_fonts as $key => $value)
-								{
-									$arr_data[$key] = $value['title'];
-								}
-							}
-
-							$this->add_select(array('choices' => $arr_data));
+							$this->add_select(array('choices' => $this->get_fonts_for_select()));
 						break;
 
 						case 'image':
