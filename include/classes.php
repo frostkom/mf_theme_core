@@ -4362,7 +4362,7 @@ class mf_theme_core
 					$arr_post_types = $obj_base->get_post_types_for_metabox();
 					$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
 
-					$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
+					$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') AND post_status != 'auto-draft' ORDER BY post_modified DESC LIMIT 0, 1");
 					//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
 
 					foreach($result as $r)
