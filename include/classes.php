@@ -391,10 +391,10 @@ class mf_theme_core
 			}
 		}
 
-		/*if(IS_SUPER_ADMIN)
+		if($this->is_theme_active())
 		{
-			$arr_settings['setting_theme_core_logged_in_theme'] = __("Theme For Administrators", $this->lang_key);
-		}*/
+			$arr_settings['setting_theme_core_templates'] = __("Templates", $this->lang_key);
+		}
 
 		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", $this->lang_key);
 
@@ -535,13 +535,16 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
-		/*function setting_theme_core_logged_in_theme_callback()
+		function setting_theme_core_templates_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option($setting_key);
 
-			echo show_select(array('data' => $this->get_themes_for_select(), 'name' => $setting_key, 'value' => $option));
-		}*/
+			$arr_data = array();
+			get_post_children(array('add_choose_here' => true), $arr_data);
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
+		}
 
 		function setting_theme_core_hidden_meta_boxes_callback()
 		{
@@ -4207,6 +4210,31 @@ class mf_theme_core
 			if(get_option('default_comment_status') == 'closed')
 			{
 				remove_submenu_page("options-general.php", "options-discussion.php");
+			}
+		}
+
+		$setting_theme_core_templates = get_option('setting_theme_core_templates');
+
+		if(is_array($setting_theme_core_templates) && count($setting_theme_core_templates) > 0)
+		{
+			foreach($setting_theme_core_templates as $post_id)
+			{
+				$post_title = get_post_title($post_id);
+				$post_content = mf_get_post_content($post_id);
+
+				if($post_title != '' || $post_content != '')
+				{
+					$menu_capability = 'edit_posts';
+					$menu_slug = "post-new.php?post_type=page&post_title=".$post_title;
+
+					if($post_content != '')
+					{
+						$menu_slug .= "&content=".$post_content;
+					}
+
+					$menu_title = sprintf(__("New '%s'", $this->lang_key), shorten_text(array('string' => $post_title, 'limit' => 15)));
+					add_submenu_page("edit.php?post_type=page", $menu_title, " - ".$menu_title, $menu_capability, $menu_slug);
+				}
 			}
 		}
 	}
