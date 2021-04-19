@@ -4368,7 +4368,7 @@ class mf_theme_core
 					foreach($result as $r)
 					{
 						$post_id_manual = $r->ID;
-						$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", $this->lang_key).")");
+						$post_title = ($r->post_title != '' ? $r->post_title : "(".__("unknown", $this->lang_key).")");
 						$post_modified_manual = $r->post_modified;
 
 						if($post_modified_manual > DEFAULT_DATE)
@@ -4386,7 +4386,7 @@ class mf_theme_core
 							foreach($result_auto as $r)
 							{
 								$post_id_auto = $r->ID;
-								$post_title = ($r->post_title != '' ? $r->post_title : "(".__("Unknown", $this->lang_key).")");
+								$post_title = ($r->post_title != '' ? $r->post_title : "(".__("unknown", $this->lang_key).")");
 								$post_modified_auto = $r->post_modified;
 
 								if($post_modified_auto > $post_modified_manual)
