@@ -497,6 +497,7 @@ class mf_theme_core
 
 			if(get_option('setting_no_public_pages') != 'yes')
 			{
+				$arr_settings['setting_theme_core_search_redirect_single_result'] = __("Redirect Single Result in Search", $this->lang_key);
 				$arr_settings['setting_404_page'] = __("404 Page", $this->lang_key);
 			}
 
@@ -753,6 +754,14 @@ class mf_theme_core
 			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", $this->lang_key)));
+		}
+
+		function setting_theme_core_search_redirect_single_result_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'no');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
 		function setting_404_page_callback()
