@@ -2463,6 +2463,11 @@ class mf_theme_core
 											}";
 					}
 
+			$out .= ".aside ul a:hover, .aside ol a:hover
+			{"
+				.$this->render_css(array('property' => 'color', 'value' => 'body_link_color'))
+			."}";
+
 		return $out;
 	}
 
