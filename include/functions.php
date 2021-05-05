@@ -38,14 +38,14 @@ function get_menu_type_for_select()
 	global $obj_theme_core;
 
 	$arr_data = array(
-		'' => "-- ".__("Choose Here", $obj_theme_core->lang_key)." --",
+		'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
 	);
 
 	$arr_menus = wp_get_nav_menus();
 
 	if(count($arr_menus) > 0)
 	{
-		$arr_data['opt_start_menu'] = __("Regular", $obj_theme_core->lang_key);
+		$arr_data['opt_start_menu'] = __("Regular", 'lang_theme_core');
 
 			foreach($arr_menus as $menu)
 			{
@@ -58,20 +58,20 @@ function get_menu_type_for_select()
 		$arr_data['opt_end_menu'] = "";
 	}
 
-	$arr_data['opt_start_advanced'] = __("Advanced", $obj_theme_core->lang_key);
+	$arr_data['opt_start_advanced'] = __("Advanced", 'lang_theme_core');
 
 		if(!isset($arr_data['main-menu']))
 		{
-			$arr_data['main'] = __("Main", $obj_theme_core->lang_key);
+			$arr_data['main'] = __("Main", 'lang_theme_core');
 		}
 
 		if(!isset($arr_data['secondary-menu']))
 		{
-			$arr_data['secondary'] = __("Secondary", $obj_theme_core->lang_key);
+			$arr_data['secondary'] = __("Secondary", 'lang_theme_core');
 		}
 
-		$arr_data['both'] = __("Main and Secondary Menu", $obj_theme_core->lang_key);
-		$arr_data['slide'] = __("Slide in From Right", $obj_theme_core->lang_key);
+		$arr_data['both'] = __("Main and Secondary Menu", 'lang_theme_core');
+		$arr_data['slide'] = __("Slide in From Right", 'lang_theme_core');
 
 	$arr_data['opt_end_advanced'] = "";
 
@@ -101,9 +101,9 @@ function get_404_page()
 
 	$setting_404_page = get_option('setting_404_page');
 
-	$post_title = __("Not Found", $obj_theme_core->lang_key);
+	$post_title = __("Not Found", 'lang_theme_core');
 	$post_content = "<p>"
-		.__("Apologies, but the page you requested could not be found. Perhaps searching will help", $obj_theme_core->lang_key)
+		.__("Apologies, but the page you requested could not be found. Perhaps searching will help", 'lang_theme_core')
 		.get_search_form(false)
 	."</p>";
 
