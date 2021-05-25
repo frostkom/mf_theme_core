@@ -376,6 +376,8 @@ class mf_theme_core
 	{
 		$options_area_orig = $options_area = __FUNCTION__;
 
+		// Generic
+		############################
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 		$arr_settings = array();
@@ -449,6 +451,7 @@ class mf_theme_core
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+		############################
 
 		// Public Site
 		############################
@@ -463,10 +466,11 @@ class mf_theme_core
 			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
-			$arr_data = array();
+			/*$arr_data = array();
 			get_post_children(array('post_type' => 'post'), $arr_data);
 
-			if(count($arr_data) > 0)
+			if(count($arr_data) > 0)*/
+			if(does_post_exists(array('post_type' => 'post')))
 			{
 				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
 				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
@@ -4262,7 +4266,7 @@ class mf_theme_core
 	{
 		global $wpdb, $obj_base;
 
-		if(get_blog_status($id, 'deleted') == 0)
+		if(get_blog_status($id, 'deleted') == 0 && get_blog_status($id, 'archived') == 0)
 		{
 			if(!isset($obj_base))
 			{
