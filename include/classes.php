@@ -21,6 +21,44 @@ class mf_theme_core
 		return in_array($GLOBALS['pagenow'], array('wp-login.php')); //, 'wp-register.php'
 	}
 
+	function is_post_password_protected($post_id = 0)
+	{
+		$out = false;
+
+		if(is_user_logged_in() == false)
+		{
+			if($out == false)
+			{
+				if($post_id > 0)
+				{
+					$out = post_password_required($post_id);
+				}
+
+				else
+				{
+					$out = post_password_required();
+				}
+			}
+
+			if($out == false)
+			{
+				if($post_id == 0)
+				{
+					global $post;
+
+					if(isset($post->ID))
+					{
+						$post_id = $post->ID;
+					}
+				}
+
+				$out = apply_filters('filter_is_password_protected', $out, array('post_id' => $post_id, 'check_login' => true));
+			}
+		}
+
+		return $out;
+	}
+
 	function get_theme_dir_name()
 	{
 		return str_replace(get_theme_root()."/", "", get_template_directory());
@@ -1005,7 +1043,7 @@ class mf_theme_core
 		//."<meta name='author' content='frostkom.se'>"
 		."<title>".$this->get_wp_title()."</title>";
 
-		if(!is_user_logged_in())
+		if(is_user_logged_in() == false)
 		{
 			wp_deregister_style('dashicons');
 		}
@@ -1210,7 +1248,7 @@ class mf_theme_core
 	{
 		global $post;
 
-		if(post_password_required())
+		if(post_password_required()) // $this->is_post_password_protected($post->ID)
 		{
 			if(!isset($post->post_password))
 			{
@@ -1371,7 +1409,7 @@ class mf_theme_core
 
 		foreach($this->arr_post_types as $post_id => $post_title)
 		{
-			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || $data['allow_password_protected'] == false && post_password_required($post_id))
+			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || $data['allow_password_protected'] == false && $this->is_post_password_protected($post_id))
 			{
 				// Do nothing
 			}
@@ -2760,7 +2798,7 @@ class mf_theme_core
 
 		foreach($this->arr_public_posts as $post_id => $post_title)
 		{
-			if($this->has_noindex($post_id) || post_password_required($post_id))
+			if($this->has_noindex($post_id) || $this->is_post_password_protected($post_id))
 			{
 				$args['post__not_in'][] = $post_id;
 			}
@@ -3002,12 +3040,11 @@ class mf_theme_core
 
 				$seo_type = '';
 
-				if($seo_type == '')
+				$seo_type = apply_filters('filter_theme_core_seo_type', $seo_type);
+
+				if($seo_type == '' && $post->post_status != 'publish')
 				{
-					if($post->post_status != 'publish')
-					{
-						$seo_type = 'not_published';
-					}
+					$seo_type = 'not_published';
 				}
 
 				if($seo_type == '')
@@ -3020,12 +3057,9 @@ class mf_theme_core
 					}
 				}
 
-				if($seo_type == '')
+				if($seo_type == '' && $this->is_post_password_protected($id))
 				{
-					if(post_password_required($id))
-					{
-						$seo_type = 'password_protected';
-					}
+					$seo_type = 'password_protected';
 				}
 
 				if($seo_type == '')
@@ -3069,15 +3103,9 @@ class mf_theme_core
 					}
 				}
 
-				if($seo_type == '')
+				if($seo_type == '' && $post->post_name != '' && sanitize_title_with_dashes(sanitize_title($post->post_title)) != $post->post_name)
 				{
-					if($post->post_name != '')
-					{
-						if(sanitize_title_with_dashes(sanitize_title($post->post_title)) != $post->post_name)
-						{
-							$seo_type = 'inconsistent_url';
-						}
-					}
+					$seo_type = 'inconsistent_url';
 				}
 
 				if($seo_type == '')
@@ -3345,7 +3373,7 @@ class mf_theme_core
 			mf_redirect(get_site_url()."/wp-admin/");
 		}
 
-		else if(get_option('setting_theme_core_login') == 'yes' && !is_user_logged_in())
+		else if(get_option('setting_theme_core_login') == 'yes' && is_user_logged_in() == false)
 		{
 			if(apply_filters('is_public_page', true))
 			{
@@ -4354,7 +4382,6 @@ class mf_theme_core
 				break;
 
 				case 'email':
-					//$admin_email = get_blog_option($id, 'admin_email');
 					$admin_email = get_option('admin_email');
 
 					if($admin_email != '')
@@ -4370,7 +4397,7 @@ class mf_theme_core
 
 				case 'last_updated':
 					$arr_post_types = $obj_base->get_post_types_for_metabox();
-					$last_updated_manual_post_types = array_diff($arr_post_types, array('mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_social_feed', 'mf_social_feed_post', 'mf_calendar', 'mf_calendar_event'));
+					$last_updated_manual_post_types = array_diff($arr_post_types, apply_filters('filter_last_updated_post_types', array(), 'manual'));
 
 					$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') AND post_status != 'auto-draft' ORDER BY post_modified DESC LIMIT 0, 1");
 					//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
@@ -4389,7 +4416,7 @@ class mf_theme_core
 
 							$row_actions .= ($row_actions != '' ? " | " : "")."<a href='".admin_url("post.php?action=edit&post=".$post_id_manual)."'>".shorten_text(array('string' => get_post_title($post_id_manual), 'limit' => 10))."</a>";
 
-							$last_updated_automatic_post_types = array_diff($arr_post_types, array('post', 'page', 'mf_custom_dashboard', 'int_page', 'mf_media_allowed', 'mf_form', 'mf_custom_lists', 'mf_custom_item'));
+							$last_updated_automatic_post_types = array_diff($arr_post_types, apply_filters('filter_last_updated_post_types', array('post', 'page'), 'auto'));
 
 							$result_auto = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_automatic_post_types)."') ORDER BY post_modified DESC LIMIT 0, 1");
 
@@ -4424,19 +4451,6 @@ class mf_theme_core
 			restore_current_blog();
 		}
 	}
-
-	/*function add_policy($content)
-	{
-		if(get_option('setting_cookie_info') > 0)
-		{
-			$content .= "<h3>".__("Theme", 'lang_theme_core')."</h3>
-			<p>"
-				.__("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core')
-			."</p>";
-		}
-
-		return $content;
-	}*/
 
 	function delete_folder($data)
 	{
