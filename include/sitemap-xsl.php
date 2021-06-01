@@ -9,7 +9,7 @@ if(!defined('ABSPATH'))
 
 $obj_theme_core = new mf_theme_core();
 
-$site_name = get_bloginfo('name');
+$site_title = get_bloginfo('name');
 $site_description = get_bloginfo('description');
 
 header("Content-type: text/xsl; charset=".get_option('blog_charset'));
@@ -20,7 +20,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	<xsl:template match='/'>
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 			<head>
-				<title>".sprintf(__("XML Sitemap for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."</title>
+				<title>".sprintf(__("XML Sitemap for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."</title>
 				<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 				<meta name='robots' content='noindex,follow' />
 				<style>
@@ -66,7 +66,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	</xsl:template>
 
 	<xsl:template match='sitemap:urlset'>
-		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_name, $site_description)."</h1>
+		<h1>".sprintf(__("XML Sitemap for %s | %s", 'lang_theme_core'), $site_title, $site_description)."</h1>
 		<table>
 			<tr>
 				<th>".__("Title", 'lang_theme_core')."</th>

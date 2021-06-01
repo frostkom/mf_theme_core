@@ -2835,24 +2835,24 @@ class mf_theme_core
 			{
 				if($data['display'] != 'tagline')
 				{
-					$site_name = get_bloginfo('name');
+					$site_title = get_bloginfo('name');
 					$site_description = get_bloginfo('description');
 
 					if($data['image'] != '')
 					{
-						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+						$out .= "<img src='".$data['image']."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
 					}
 
 					else
 					{
 						if($header_logo != '')
 						{
-							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 
 						if($header_mobile_logo != '')
 						{
-							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_name.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
 						}
 					}
 				}
