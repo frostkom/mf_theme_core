@@ -1193,6 +1193,11 @@ class mf_theme_core
 	{
 		$classes[] = "is_site";
 
+		if(is_user_logged_in())
+		{
+			$classes[] = "is_logged_in";
+		}
+
 		return $classes;
 	}
 
