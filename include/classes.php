@@ -4457,7 +4457,7 @@ class mf_theme_core
 		}
 	}
 
-	function delete_folder($data)
+	function delete_empty_folder($data)
 	{
 		$folder = $data['path']."/".$data['child'];
 
@@ -4560,7 +4560,7 @@ class mf_theme_core
 
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();
-		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_folder')));
+		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder')));
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
