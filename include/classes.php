@@ -1106,7 +1106,7 @@ class mf_theme_core
 				mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
 				mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
 
-				$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_cookie_info));
+				$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = %s AND post_status = %s", $setting_cookie_info, 'page', 'publish'));
 
 				foreach($result as $r)
 				{
@@ -3071,7 +3071,7 @@ class mf_theme_core
 				{
 					if($post->post_excerpt != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, $post->post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, 'publish', $post->post_type, $id));
 
 						if($post_id_duplicate > 0)
 						{
@@ -3094,7 +3094,7 @@ class mf_theme_core
 				{
 					if($post->post_title != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = 'publish' AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, $post->post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, 'publish', $post->post_type, $id));
 
 						if($post_id_duplicate > 0)
 						{
