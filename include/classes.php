@@ -3391,12 +3391,15 @@ class mf_theme_core
 	{
 		add_post_type_support('page', 'excerpt');
 
-		remove_action('wp_head', 'wp_print_scripts');
-		remove_action('wp_head', 'wp_print_head_scripts', 9);
-		remove_action('wp_head', 'wp_enqueue_scripts', 1);
-		add_action('wp_footer', 'wp_print_scripts', 5);
-		add_action('wp_footer', 'wp_enqueue_scripts', 5);
-		add_action('wp_footer', 'wp_print_head_scripts', 5);
+		if(apply_filters('filter_move_scripts_to_footer', true) == true)
+		{
+			remove_action('wp_head', 'wp_print_scripts');
+			remove_action('wp_head', 'wp_print_head_scripts', 9);
+			remove_action('wp_head', 'wp_enqueue_scripts', 1);
+			add_action('wp_footer', 'wp_print_scripts', 5);
+			add_action('wp_footer', 'wp_enqueue_scripts', 5);
+			add_action('wp_footer', 'wp_print_head_scripts', 5);
+		}
 	}
 
 	function recommend_config($data)
@@ -5070,7 +5073,7 @@ class widget_theme_core_news extends WP_Widget
 									echo ($instance['news_title'] == '' ? $before_title : "<h4>")
 										.$page['title']
 									.($instance['news_title'] == '' ? $after_title : "</h4>")
-									."<div class='excerpt'>".apply_filters('the_content', $page['excerpt'])."</div>"
+									."<div class='excerpt'>".apply_filters('the_content', stripslashes($page['excerpt']))."</div>"
 									."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
 									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
 								</div>";
