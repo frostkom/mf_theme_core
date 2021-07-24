@@ -1883,6 +1883,7 @@ class mf_theme_core
 		}
 
 		$options_params[] = array('category' => __("Footer", 'lang_theme_core'), 'id' => 'mf_theme_footer');
+			$options_params[] = array('type' => 'checkbox', 'id' => 'footer_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
 			$options_params[] = array('type' => 'position', 'id' => 'footer_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'relative');
 			$options_params[] = array('type' => 'text', 'id' => 'footer_bg', 'title' => __("Background", 'lang_theme_core')); //This is used as the default background on body to make the background go all the way down below the footer if present
 				$options_params[] = array('type' => 'color', 'id' => 'footer_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
@@ -2096,6 +2097,12 @@ class mf_theme_core
 			'title' => "Roboto Mono",
 			'style' => "'Roboto Mono', sans-serif",
 			'url' => "//fonts.googleapis.com/css?family=Roboto+Mono"
+		);
+
+		$this->options_fonts['roboto_slab'] = array(
+			'title' => "Roboto Slab",
+			'style' => "'Roboto Slab', sans-serif",
+			'url' => "//fonts.googleapis.com/css?family=Roboto+Slab"
 		);
 
 		$this->options_fonts['rouge_script'] = array(
@@ -4074,6 +4081,15 @@ class mf_theme_core
 			if($strFileUrl != '')
 			{
 				list($strFileContent, $headers) = get_url_content(array('url' => $strFileUrl, 'catch_head' => true));
+
+				switch($headers['http_code'])
+				{
+					case 503:
+						$strFileContent = "";
+
+						$error_text = __("The file does not exist anymore. It might be out of date.", 'lang_theme_core');
+					break;
+				}
 			}
 
 			else if($strFileName != '')
@@ -4673,7 +4689,7 @@ class widget_theme_core_area extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", 'lang_theme_core'), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
 			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", 'lang_theme_core'), 'value' => $instance['widget_area_name'], 'required' => true))
-			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='4'"));
+			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='6'"));
 
 			if($instance['widget_area_columns'] > 1)
 			{
@@ -4796,7 +4812,7 @@ class widget_theme_core_search extends WP_Widget
 			'search_placeholder' => "",
 			'search_hide_on_mobile' => 'no',
 			'search_animate' => 'yes',
-			'search_listen_to_keystroke' => 'yes',
+			'search_listen_to_keystroke' => 'no',
 		);
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);

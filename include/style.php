@@ -196,6 +196,8 @@ echo "@media all
 				min-width: 50%;
 			}";
 
+	//do_log("Test 2 (".is_plugin_active("mf_widget_logic_select/index.php")." || ".apply_filters('get_widget_search', 'theme-widget-area-widget').")");
+
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-widget-area-widget') > 0)
 	{
 		echo ".widget.theme_widget_area .widget_columns
@@ -213,43 +215,33 @@ echo "@media all
 			.is_mobile .widget.theme_widget_area .widget_columns
 			{
 				display: block;
-			}
+			}";
 
-			.widget.theme_widget_area .columns_2 .widget
+			for($i = 2; $i <= 6; $i++)
 			{
-				-webkit-box-flex: 1 0 50%;
-				-webkit-flex: 1 0 50%;
-				-ms-flex: 1 0 50%;
-				flex: 1 0 50%;
-				min-width: 50%;
-			}
+				$width = (100 / $i);
 
-			.widget.theme_widget_area .columns_3 .widget
-			{
-				-webkit-box-flex: 1 0 33%;
-				-webkit-flex: 1 0 33%;
-				-ms-flex: 1 0 33%;
-				flex: 1 0 33%;
-				min-width: 33%;
-			}
-
-			.widget.theme_widget_area .columns_4 .widget
-			{
-				-webkit-box-flex: 1 0 25%;
-				-webkit-flex: 1 0 25%;
-				-ms-flex: 1 0 25%;
-				flex: 1 0 25%;
-				min-width: 25%;
-			}
-
-				.is_tablet .widget.theme_widget_area .columns_4 .widget
+				echo ".widget.theme_widget_area .columns_".$i." .widget
 				{
-					-webkit-box-flex: 1 0 50%;
-					-webkit-flex: 1 0 50%;
-					-ms-flex: 1 0 50%;
-					flex: 1 0 50%;
-					min-width: 50%;
+					-webkit-box-flex: 1 0 ".$width."%;
+					-webkit-flex: 1 0 ".$width."%;
+					-ms-flex: 1 0 ".$width."%;
+					flex: 1 0 ".$width."%;
+					min-width: ".$width."%;
 				}";
+
+				if($i >= 4)
+				{
+					echo ".is_tablet .widget.theme_widget_area .columns_".$i." .widget
+					{
+						-webkit-box-flex: 1 0 50%;
+						-webkit-flex: 1 0 50%;
+						-ms-flex: 1 0 50%;
+						flex: 1 0 50%;
+						min-width: 50%;
+					}";
+				}
+			}
 
 			$widget_area_widget = get_option('widget_theme-widget-area-widget');
 
