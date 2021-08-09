@@ -215,7 +215,12 @@ echo "@media all
 			.is_mobile .widget.theme_widget_area .widget_columns
 			{
 				display: block;
-			}";
+			}
+			
+				.is_mobile .widget.theme_widget_area .widget_columns .widget + .widget
+				{
+					margin-top: 1em;
+				}";
 
 			for($i = 2; $i <= 6; $i++)
 			{
