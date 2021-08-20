@@ -670,7 +670,7 @@ class mf_theme_core
 
 			if($option != '')
 			{
-				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf(__("By going to %sthe site%s you can edit any styling to your liking", 'lang_theme_core'), "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
+				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf("...", "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
 			}
 
 			update_option($css_hero_key, $option);
