@@ -279,7 +279,41 @@ echo "@media all
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-news-widget') > 0 || apply_filters('get_widget_search', 'theme-related-news-widget') > 0 || apply_filters('get_widget_search', 'theme-promo-widget') > 0)
 	{
 		/* If > 1 */
-		echo ".aside.after_content .widget.theme_news .section
+		echo "#mf-pre-header .widget.theme_news
+		{
+			text-align: center;
+			max-width: 100%;
+		}
+
+			#mf-pre-header .widget.theme_news h3
+			{
+				display: inline-block;
+				font-size: 1.2em;
+			}
+
+			#mf-pre-header .widget.theme_news .section.news_single
+			{
+				display: inline-block;
+				overflow: unset;
+				white-space: nowrap;
+			}
+
+				#mf-pre-header .widget.theme_news .section.news_single h4
+				{
+					display: inline-block;
+					float: none;
+					font-size: 1.2em;
+					width: auto;
+				}
+
+				#mf-pre-header .widget.theme_news .section.news_single .read_more
+				{
+					display: inline-block;
+					float: none;
+					font-size: 1.2em;
+				}
+		
+		.aside.after_content .widget.theme_news .section
 		{
 			padding-left: 0;
 			padding-right: 0;

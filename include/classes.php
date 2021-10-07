@@ -1529,6 +1529,24 @@ class mf_theme_core
 			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#e47676");
 		$options_params[] = array('category_end' => "");
 
+		if($theme_dir_name == 'mf_theme')
+		{
+			if(is_active_widget_area('widget_pre_header'))
+			{
+				$options_params[] = array('category' => __("Before Header", 'lang_theme_core'), 'id' => 'mf_theme_pre_header');
+					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_header_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
+					$options_params[] = array('type' => 'text', 'id' => 'pre_header_bg', 'title' => __("Background", 'lang_theme_core'));
+						$options_params[] = array('type' => 'color', 'id' => 'pre_header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
+						//$options_params[] = array('type' => 'image', 'id' => 'pre_header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
+					$options_params[] = array('type' => 'text', 'id' => 'pre_header_padding', 'title' => __("Padding", 'lang_theme_core'));
+						//$options_params[] = array('type' => 'text', 'id' => 'pre_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'));
+					$options_params[] = array('type' => 'color', 'id' => 'pre_header_color', 'title' => __("Text Color", 'lang_theme_core'));
+					//$options_params[] = array('type' => 'overflow', 'id' => 'pre_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
+				$options_params[] = array('category_end' => "");
+			}
+		}
+
 		$options_params[] = array('category' => __("Header", 'lang_theme_core'), 'id' => 'mf_theme_header');
 			$options_params[] = array('type' => 'position', 'id' => 'header_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'relative');
 			$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'));
@@ -2292,7 +2310,7 @@ class mf_theme_core
 				.$this->render_css(array('property' => 'color', 'value' => 'body_color'))
 			."}
 
-				header > div, #mf-after-header > div, #mf-pre-content > div, #mf-content > div, #mf-pre-footer > div, footer > div, .full_width > div > .widget .section, .full_width > div > .widget > div
+				#mf-pre-header > div, header > div, #mf-after-header > div, #mf-pre-content > div, #mf-content > div, #mf-pre-footer > div, footer > div, .full_width > div > .widget .section, .full_width > div > .widget > div
 				{"
 					.$this->render_css(array('property' => 'padding', 'value' => 'main_padding'))
 					."position: relative;
@@ -2302,10 +2320,15 @@ class mf_theme_core
 				{"
 					.$this->render_css(array('property' => 'background', 'value' => 'body_bg'))
 					.$this->render_css(array('property' => 'background-color', 'value' => 'body_bg_color'))
-					.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'))
+					.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'));
 					//."min-height: 100vh;" /* This will override footer background below footer */
-					."overflow: hidden;"
-				."}
+
+					if(!isset($this->options['header_fixed']) || $this->options['header_fixed'] != 'sticky')
+					{
+						$out .= "overflow: hidden;";
+					}
+
+				$out .= "}
 
 					header
 					{"
