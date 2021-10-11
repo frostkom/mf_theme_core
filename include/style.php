@@ -134,7 +134,6 @@ echo "@media all
 		position: relative;
 		right: 50%;
 		width: 100vw;
-		max-width: none;
 	}
 
 		.full_width > div > .widget.widget_media_image
@@ -282,7 +281,7 @@ echo "@media all
 		echo "#mf-pre-header .widget.theme_news
 		{
 			text-align: center;
-			max-width: 100%;
+			/*max-width: 100%;*/
 		}
 
 			#mf-pre-header .widget.theme_news h3
