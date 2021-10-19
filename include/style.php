@@ -213,7 +213,8 @@ echo "@media all
 
 			.is_mobile .widget.theme_widget_area .widget_columns
 			{
-				display: block;
+				/*display: block;*/
+				flex-direction: column;
 			}
 			
 				.is_mobile .widget.theme_widget_area .widget_columns .widget + .widget

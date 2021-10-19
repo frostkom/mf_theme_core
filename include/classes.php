@@ -1112,34 +1112,32 @@ class mf_theme_core
 				{
 					$post_id = $r->ID;
 					$post_title = $r->post_title;
-					$post_excerpt = $r->post_excerpt;
+					$post_excerpt = apply_filters('the_content', $r->post_excerpt);
 					$post_content = apply_filters('the_content', $r->post_content);
 
 					$this->footer_output .= "<div id='accept_cookies'>
-						<div>
-							<i class='fa fa-gavel red fa-2x'></i>";
+						<div>";
 
-							$buttons = "<a href='#accept_cookie' class='button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
+							//$this->footer_output .= "<i class='fa fa-gavel red fa-2x'></i>";
+
+							$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 
 							if($post_excerpt != '')
 							{
-								$this->footer_output .= "<p>"
-									.$post_excerpt
-								."</p>";
+								$this->footer_output .= $post_excerpt;
 
 								if($post_content != '' && $post_content != $post_excerpt)
 								{
-									$buttons .= " <a href='".get_permalink($post_id)."' class='button' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
+									$buttons .= " <a href='".get_permalink($post_id)."' class='button color_button_border' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
 								}
-
-								$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
 							}
 
 							else
 							{
-								$this->footer_output .= $post_content
-								."<div class='form_button'>".$buttons."</div>";
+								$this->footer_output .= $post_content;
 							}
+							
+							$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
 
 						$this->footer_output .= "</div>
 					</div>";
@@ -1542,7 +1540,7 @@ class mf_theme_core
 					$options_params[] = array('type' => 'text', 'id' => 'pre_header_padding', 'title' => __("Padding", 'lang_theme_core'));
 						//$options_params[] = array('type' => 'text', 'id' => 'pre_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'pre_header_color', 'title' => __("Text Color", 'lang_theme_core'));
-					//$options_params[] = array('type' => 'overflow', 'id' => 'pre_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
+					$options_params[] = array('type' => 'overflow', 'id' => 'pre_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
 				$options_params[] = array('category_end' => "");
 			}
 		}
@@ -2048,7 +2046,7 @@ class mf_theme_core
 		$this->options_fonts['inter'] = array(
 			'title' => "Inter",
 			'style' => "'Inter', sans-serif",
-			'url' => "//fonts.googleapis.com/css2?family=Inter"
+			'url' => "//fonts.googleapis.com/css2?family=Inter:wght@100..900"
 		);
 
 		$this->options_fonts['lato'] = array(
@@ -2246,6 +2244,14 @@ class mf_theme_core
 			}
 
 		$out .= "}
+
+		.form_button .color_button_border
+		{"
+			.$this->render_css(array('property' => 'border-color', 'value' => array('button_color', 'nav_color_hover')))
+			."border-style: solid;
+			border-width: .1em;"
+			.$this->render_css(array('property' => 'color', 'value' => array('button_color', 'nav_color_hover')))
+		."}
 
 			.color_text
 			{"
@@ -3809,10 +3815,17 @@ class mf_theme_core
 						case 'weight':
 							$arr_data = array(
 								'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-								'lighter' => __("Lighter", 'lang_theme_core'),
-								'normal' => __("Normal", 'lang_theme_core'),
-								'bold' => __("Bold", 'lang_theme_core'),
-								'bolder' => __("Bolder", 'lang_theme_core'),
+								'lighter' => __("Lighter than parent element", 'lang_theme_core'),
+								'100' => "100",
+								'200' => "200",
+								'300' => "300",
+								'normal' => __("Regular", 'lang_theme_core')." (400)",
+								'500' => "500",
+								'600' => "600",
+								'bold' => __("Bold", 'lang_theme_core')." (700)",
+								'800' => "800",
+								'900' => "900",
+								'bolder' => __("Bolder than parent element", 'lang_theme_core'),
 								'initial' => __("Initial", 'lang_theme_core'),
 								'inherit' => __("Inherit", 'lang_theme_core'),
 							);

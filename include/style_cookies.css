@@ -8,44 +8,45 @@
 		font-size: 1.4em;
 		left: 0;
 		line-height: 1.5;
-		padding: 1em 1em .5em;
+		padding: 1.5em;
 		position: fixed;
 		right: 0;
-		text-align: center;
+		/*text-align: center;*/
 		z-index: 1002;
 	}
 
 		#accept_cookies div
 		{
-			text-align: left;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			/*text-align: left;*/
 		}
 
-			#accept_cookies > div > i
+			/*#accept_cookies > div > i
 			{
 				float: left;
 				line-height: 1.7;
 				margin-right: .5em;
-			}
+			}*/
 
-			/*#accept_cookies p
+			#accept_cookies p
 			{
-				display: inline;
+				-webkit-box-flex: 1 0 auto;
+				-webkit-flex: 1 0 auto;
+				-ms-flex: 1 0 auto;
+				flex: 1 0 auto;
 			}
 
-			#accept_cookies a
-			{
-				margin-left: .3em;
-			}
-
-				#accept_cookies .button
-				{
-					font-weight: bold;
-					text-decoration: underline;
-				}*/
-
-			#accept_cookies .form_button
+			/*#accept_cookies .form_button
 			{
 				clear: both;
 				margin-top: .5em;
-			}
+			}*/
+
+				#accept_cookies .form_button .button
+				{
+					margin-bottom: 0;
+				}
 }
