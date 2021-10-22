@@ -109,7 +109,7 @@ function get_404_page()
 
 	if($setting_404_page > 0)
 	{
-		$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = 'page' AND post_status = 'publish'", $setting_404_page));
+		$result = $wpdb->get_results($wpdb->prepare("SELECT post_title, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = %s AND post_status = %s", $setting_404_page, 'page', 'publish'));
 
 		foreach($result as $r)
 		{

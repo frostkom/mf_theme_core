@@ -311,6 +311,7 @@ echo "@media all
 					display: inline-block;
 					float: none;
 					font-size: 1.2em;
+					margin-top: .5em;
 				}
 		
 		.aside.after_content .widget.theme_news .section

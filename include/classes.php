@@ -4952,7 +4952,7 @@ class widget_theme_core_news extends WP_Widget
 			$query_where .= " AND post_date > DATE_SUB(NOW(), INTERVAL ".esc_sql($instance['news_time_limit'])." HOUR)";
 		}
 
-		$result = $wpdb->get_results("SELECT ID, post_title, post_excerpt, post_date FROM ".$wpdb->posts.$query_join." WHERE post_type = 'post' AND post_status = 'publish'".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount']);
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_date FROM ".$wpdb->posts.$query_join." WHERE post_type = %s AND post_status = %s".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], 'post', 'publish'));
 
 		if($wpdb->num_rows > 0)
 		{
@@ -4996,6 +4996,7 @@ class widget_theme_core_news extends WP_Widget
 
 		if($rows > 0)
 		{
+			$display_hide_news = ($rows == 1);
 			$display_news_scroll = ($rows > 3 && $instance['news_display_arrows'] == 'yes');
 
 			if($display_news_scroll)
@@ -5007,151 +5008,168 @@ class widget_theme_core_news extends WP_Widget
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
 			}
 
-			echo $before_widget;
+			if($display_hide_news == false || !isset($_COOKIE['hide_news_'.$this->number]))
+			{
+				echo $before_widget;
 
-				if($instance['news_title'] != '')
-				{
-					$instance['news_title'] = apply_filters('widget_title', $instance['news_title'], $instance, $this->id_base);
-
-					echo $before_title
-						.$instance['news_title']
-					.$after_title;
-				}
-
-				$widget_class = "section ".$instance['news_type'];
-				$widget_xtra = "";
-
-				if($rows > 1)
-				{
-					$widget_class .= " news_multiple";
-
-					if($display_news_scroll)
+					if($instance['news_title'] != '')
 					{
-						$widget_class .= " news_scroll";
+						$instance['news_title'] = apply_filters('widget_title', $instance['news_title'], $instance, $this->id_base);
+
+						echo $before_title
+							.$instance['news_title']
+						.$after_title;
 					}
 
-					if($instance['news_autoscroll_time'] > 0)
-					{
-						$widget_xtra .= " data-autoscroll='".$instance['news_autoscroll_time']."'";
-					}
-				}
-
-				else
-				{
-					$widget_class .= " news_single";
-				}
-
-				if($instance['news_display_title'] == 'yes')
-				{
-					$widget_class .= " display_page_titles";
-				}
-
-				echo "<div class='".$widget_class."'".$widget_xtra.">";
+					$widget_class = "section ".$instance['news_type'];
+					$widget_xtra = "";
 
 					if($rows > 1)
 					{
-						if(!($instance['news_columns'] > 0))
+						$widget_class .= " news_multiple";
+
+						if($display_news_scroll)
 						{
-							$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? 3 : 2;
+							$widget_class .= " news_scroll";
 						}
 
-						echo "<ul class='text_columns columns_".$instance['news_columns']."' data-columns='".$instance['news_columns']."'>";
-
-							foreach($this->arr_news as $page)
-							{
-								if($instance['news_type'] == 'postit')
-								{
-									$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
-								}
-
-								echo "<li>
-									<a href='".$page['url']."'>";
-
-										switch($instance['news_type'])
-										{
-											case 'original':
-											case 'simple':
-												echo "<div class='image'>".$page['image']."</div>";
-											break;
-
-											case 'compact':
-												echo "<span>".format_date($page['date'])."</span>";
-											break;
-										}
-
-										if($instance['news_display_title'] == 'yes')
-										{
-											echo "<h4>".$page['title']."</h4>";
-										}
-
-										switch($instance['news_type'])
-										{
-											case 'postit':
-											case 'simple':
-												if($instance['news_display_excerpt'] == 'yes')
-												{
-													echo apply_filters('the_content', $page['excerpt']);
-												}
-											break;
-										}
-
-									echo "</a>
-								</li>";
-							}
-
-						echo "</ul>";
-
-						if($instance['news_page'] > 0)
+						if($instance['news_autoscroll_time'] > 0)
 						{
-							echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", 'lang_theme_core')."</a></p>";
+							$widget_xtra .= " data-autoscroll='".$instance['news_autoscroll_time']."'";
 						}
 					}
 
 					else
 					{
-						foreach($this->arr_news as $page_id => $page)
-						{
-							if($instance['news_expand_content'] == 'yes')
-							{
-								$post_content = mf_get_post_content($page_id);
+						$widget_class .= " news_single";
 
-								echo "<div class='news_expand_content'>";
-
-									if($page['image'] != '')
-									{
-										echo "<div class='image'>".$page['image']."</div>";
-									}
-
-									echo ($instance['news_title'] == '' ? $before_title : "<h4>")
-										.$page['title']
-									.($instance['news_title'] == '' ? $after_title : "</h4>")
-									."<div class='excerpt'>".apply_filters('the_content', stripslashes($page['excerpt']))."</div>"
-									."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
-									."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
-								</div>";
-							}
-
-							else
-							{
-								echo "<a href='".$page['url']."'>";
-
-									if($page['image'] != '')
-									{
-										echo "<div class='image'>".$page['image']."</div>";
-									}
-
-									echo ($instance['news_title'] == '' ? $before_title : "<h4>")
-										.$page['title']
-									.($instance['news_title'] == '' ? $after_title : "</h4>")
-									.apply_filters('the_content', $page['excerpt'])
-									."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
-								."</a>";
-							}
-						}
+						//do_log("theme_news: ".var_export($this, true));
 					}
 
-				echo "</div>"
-			.$after_widget;
+					if($instance['news_display_title'] == 'yes')
+					{
+						$widget_class .= " display_page_titles";
+					}
+
+					echo "<div class='".$widget_class."'".$widget_xtra.">";
+
+						if($rows > 1)
+						{
+							if(!($instance['news_columns'] > 0))
+							{
+								$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? 3 : 2;
+							}
+
+							echo "<ul class='text_columns columns_".$instance['news_columns']."' data-columns='".$instance['news_columns']."'>";
+
+								foreach($this->arr_news as $page)
+								{
+									if($instance['news_type'] == 'postit')
+									{
+										$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
+									}
+
+									echo "<li>
+										<a href='".$page['url']."'>";
+
+											switch($instance['news_type'])
+											{
+												case 'original':
+												case 'simple':
+													echo "<div class='image'>".$page['image']."</div>";
+												break;
+
+												case 'compact':
+													echo "<span>".format_date($page['date'])."</span>";
+												break;
+											}
+
+											if($instance['news_display_title'] == 'yes')
+											{
+												echo "<h4>".$page['title']."</h4>";
+											}
+
+											switch($instance['news_type'])
+											{
+												case 'postit':
+												case 'simple':
+													if($instance['news_display_excerpt'] == 'yes')
+													{
+														echo apply_filters('the_content', $page['excerpt']);
+													}
+												break;
+											}
+
+										echo "</a>
+									</li>";
+								}
+
+							echo "</ul>";
+
+							if($instance['news_page'] > 0)
+							{
+								echo "<p class='read_more'><a href='".get_permalink($instance['news_page'])."'>".__("Read More", 'lang_theme_core')."</a></p>";
+							}
+						}
+
+						else
+						{
+							foreach($this->arr_news as $page_id => $page)
+							{
+								if($instance['news_expand_content'] == 'yes')
+								{
+									$post_content = mf_get_post_content($page_id);
+
+									echo "<div class='news_expand_content'>";
+
+										if($page['image'] != '')
+										{
+											echo "<div class='image'>".$page['image']."</div>";
+										}
+
+										echo ($instance['news_title'] == '' ? $before_title : "<h4>")
+											.$page['title']
+										.($instance['news_title'] == '' ? $after_title : "</h4>")
+										."<div class='excerpt'>".apply_filters('the_content', stripslashes($page['excerpt']))."</div>"
+										."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
+										."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
+									</div>";
+								}
+
+								else
+								{
+									echo "<a href='".$page['url']."'>";
+
+										if($page['image'] != '')
+										{
+											echo "<div class='image'>".$page['image']."</div>";
+										}
+
+										echo ($instance['news_title'] == '' ? $before_title : "<h4>")
+											.$page['title']
+										.($instance['news_title'] == '' ? $after_title : "</h4>")
+										.apply_filters('the_content', $page['excerpt'])
+										."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
+									."</a>";
+								}
+							}
+						}
+
+					echo "</div>";
+
+					if($display_hide_news)
+					{
+						$plugin_include_url = plugin_dir_url(__FILE__);
+						$plugin_version = get_plugin_version(__FILE__);
+
+						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css", $plugin_version); //Should be set in wp_head instead
+						mf_enqueue_script('script_theme_hide_news', $plugin_include_url."script_hide_news.js", $plugin_version);
+
+						echo "<i class='fa fa-times hide_news' data-hide_id='".$this->number."'></i>";
+					}
+
+				echo $after_widget;
+			}
 		}
 	}
 
@@ -5723,7 +5741,7 @@ class widget_theme_core_promo extends WP_Widget
 		{
 			$arr_pages = array();
 
-			$result = $wpdb->get_results("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = 'page' AND post_status = 'publish' AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY menu_order ASC");
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY menu_order ASC", 'page', 'publish'));
 
 			if($wpdb->num_rows > 0)
 			{
