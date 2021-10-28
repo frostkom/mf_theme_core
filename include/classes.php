@@ -4918,6 +4918,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_type' => 'original',
 			'news_categories' => array(),
 			'news_amount' => 1,
+			'news_hide_button' => 'no',
 			'news_columns' => 0,
 			'news_time_limit' => 0,
 			'news_expand_content' => 'no',
@@ -4996,7 +4997,8 @@ class widget_theme_core_news extends WP_Widget
 
 		if($rows > 0)
 		{
-			$display_hide_news = ($rows == 1);
+			$display_hide_news = ($rows == 1 && $instance['news_hide_button'] == 'yes');
+			$hide_id = (function_exists('array_key_first') ? array_key_first($this->arr_news) : $this->number);
 			$display_news_scroll = ($rows > 3 && $instance['news_display_arrows'] == 'yes');
 
 			if($display_news_scroll)
@@ -5008,7 +5010,7 @@ class widget_theme_core_news extends WP_Widget
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
 			}
 
-			if($display_hide_news == false || !isset($_COOKIE['hide_news_'.$this->number]))
+			if($display_hide_news == false || !isset($_COOKIE['hide_news_'.$hide_id]))
 			{
 				echo $before_widget;
 
@@ -5057,7 +5059,7 @@ class widget_theme_core_news extends WP_Widget
 						{
 							if(!($instance['news_columns'] > 0))
 							{
-								$instance['news_columns'] = $rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? 3 : 2;
+								$instance['news_columns'] = ($rows % 3 == 0 || $rows > 4 || $instance['news_type'] == 'postit' ? 3 : 2);
 							}
 
 							echo "<ul class='text_columns columns_".$instance['news_columns']."' data-columns='".$instance['news_columns']."'>";
@@ -5165,7 +5167,7 @@ class widget_theme_core_news extends WP_Widget
 						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css", $plugin_version); //Should be set in wp_head instead
 						mf_enqueue_script('script_theme_hide_news', $plugin_include_url."script_hide_news.js", $plugin_version);
 
-						echo "<i class='fa fa-times hide_news' data-hide_id='".$this->number."'></i>";
+						echo "<i class='fa fa-times hide_news' data-hide_id='".$hide_id."'></i>";
 					}
 
 				echo $after_widget;
@@ -5182,6 +5184,7 @@ class widget_theme_core_news extends WP_Widget
 		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
 		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
+		$instance['news_hide_button'] = sanitize_text_field($new_instance['news_hide_button']);
 		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
 		$instance['news_time_limit'] = sanitize_text_field($new_instance['news_time_limit']);
 		$instance['news_expand_content'] = sanitize_text_field($new_instance['news_expand_content']);
@@ -5234,7 +5237,10 @@ class widget_theme_core_news extends WP_Widget
 
 			if($instance['news_amount'] == 1)
 			{
-				echo show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')));
+				echo "<div class='flex_flow'>"
+					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')))
+					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_hide_button'), 'text' => __("Button to Hide", 'lang_theme_core'), 'value' => $instance['news_hide_button']))
+				."</div>";
 			}
 
 			if($instance['news_type'] == 'postit')
