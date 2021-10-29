@@ -535,10 +535,10 @@ echo "@media all
 					padding-left: 0;
 				}
 
-					.is_mobile .widget.theme_news .section.news_single > a > *, .aside.right .widget.theme_news .section.news_single > a > *, .aside.left .widget.theme_news .section.news_single > a > *
+					.aside.right .widget.theme_news .section.news_single > a > *, .aside.left .widget.theme_news .section.news_single > a > *
 					{
 						width: 100%;
-					}";
+					}"; // .is_mobile .widget.theme_news .section.news_single > a > *, // This does not work with single news with .hide_news in #mf-pre-header
 	}
 
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-info-widget') > 0)
