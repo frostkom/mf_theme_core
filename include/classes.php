@@ -4298,8 +4298,11 @@ class mf_theme_core
 
 	function admin_menu()
 	{
-		$menu_title = __("Theme Backup", 'lang_theme_core');
-		add_theme_page($menu_title, $menu_title.$this->get_theme_updates_message(), 'edit_theme_options', 'theme_options', array($this, 'get_options_page'));
+		if($this->is_theme_active())
+		{
+			$menu_title = __("Theme Backup", 'lang_theme_core');
+			add_theme_page($menu_title, $menu_title.$this->get_theme_updates_message(), 'edit_theme_options', 'theme_options', array($this, 'get_options_page'));
+		}
 
 		if($this->has_comments() == false)
 		{
@@ -4311,27 +4314,30 @@ class mf_theme_core
 			}
 		}
 
-		$setting_theme_core_templates = get_option('setting_theme_core_templates');
-
-		if(is_array($setting_theme_core_templates) && count($setting_theme_core_templates) > 0)
+		if($this->is_theme_active())
 		{
-			foreach($setting_theme_core_templates as $post_id)
+			$setting_theme_core_templates = get_option('setting_theme_core_templates');
+
+			if(is_array($setting_theme_core_templates) && count($setting_theme_core_templates) > 0)
 			{
-				$post_title = get_post_title($post_id);
-				$post_content = mf_get_post_content($post_id);
-
-				if($post_title != '' || $post_content != '')
+				foreach($setting_theme_core_templates as $post_id)
 				{
-					$menu_capability = 'edit_posts';
-					$menu_slug = "post-new.php?post_type=page&post_title=".$post_title;
+					$post_title = get_post_title($post_id);
+					$post_content = mf_get_post_content($post_id);
 
-					if($post_content != '')
+					if($post_title != '' || $post_content != '')
 					{
-						$menu_slug .= "&content=".$post_content;
-					}
+						$menu_capability = 'edit_posts';
+						$menu_slug = "post-new.php?post_type=page&post_title=".$post_title;
 
-					$menu_title = sprintf(__("New '%s'", 'lang_theme_core'), shorten_text(array('string' => $post_title, 'limit' => 15)));
-					add_submenu_page("edit.php?post_type=page", $menu_title, " - ".$menu_title, $menu_capability, $menu_slug);
+						if($post_content != '')
+						{
+							$menu_slug .= "&content=".$post_content;
+						}
+
+						$menu_title = sprintf(__("New '%s'", 'lang_theme_core'), shorten_text(array('string' => $post_title, 'limit' => 15)));
+						add_submenu_page("edit.php?post_type=page", $menu_title, " - ".$menu_title, $menu_capability, $menu_slug);
+					}
 				}
 			}
 		}
