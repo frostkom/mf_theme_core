@@ -795,6 +795,33 @@ class mf_theme_core
 			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
+
+			if(isset($_COOKIE) && count($_COOKIE) > 0)
+			{
+				echo "<h4>".__("Cookies on this site", 'lang_theme_core')."</h4>
+				<ul>";
+
+					foreach($_COOKIE as $cookie_key => $cookie_value)
+					{
+						// wordpress_[hash] = authentication details
+						// wordpress_sec_[hash] = 
+						// wordpress_logged_in_[hash] = indicates when you’re logged in
+						// wp-settings-{time}-[UID] = customize your view of admin interface
+						// wordpres_test_cookie = Test if it is possible to set cookies
+						// wp-postpass_[hash] = Used to maintain session if a post is password protected
+						// comment_author_... = Used to tracked comment author name
+
+						// cookie_accepted = Used to see if visitor accepts cookies on the site
+						// hide_news_[id] = Used to see if a visitor has hidden the header news post
+
+						echo "<li>
+							<strong>".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => true))."</strong>: "
+							.shorten_text(array('string' => $cookie_value, 'limit' => 10, 'add_title' => true))
+						."</li>";
+					}
+
+				echo "</ul>";
+			}
 		}
 
 		function setting_theme_core_search_redirect_single_result_callback()
@@ -1097,8 +1124,8 @@ class mf_theme_core
 
 		$this->footer_output = '';
 
-		if(!isset($_COOKIE['cookie_accepted']))
-		{
+		/*if(!isset($_COOKIE['cookie_accepted'])) // Hidden via script_cookies.js instead
+		{*/
 			$setting_cookie_info = get_option('setting_cookie_info');
 
 			if($setting_cookie_info > 0)
@@ -1136,14 +1163,14 @@ class mf_theme_core
 							{
 								$this->footer_output .= $post_content;
 							}
-							
+
 							$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
 
 						$this->footer_output .= "</div>
 					</div>";
 				}
 			}
-		}
+		//}
 
 		/*if(get_option('setting_splash_screen') == 'yes')
 		{
@@ -3480,6 +3507,7 @@ class mf_theme_core
 				default:
 				case 'apache':
 					$update_with .= "<IfModule mod_rewrite.c>\r\n"
+					."	RewriteEngine On\r\n"
 					."	RewriteCond %{REQUEST_URI} ^/?(xmlrpc\.php)$\r\n"
 					."	RewriteRule .* /404/ [L,NC]\r\n"
 					."</IfModule>";
@@ -5004,7 +5032,7 @@ class widget_theme_core_news extends WP_Widget
 		if($rows > 0)
 		{
 			$display_hide_news = ($rows == 1 && $instance['news_hide_button'] == 'yes');
-			$hide_id = (function_exists('array_key_first') ? array_key_first($this->arr_news) : $this->number);
+			$news_id = (function_exists('array_key_first') ? array_key_first($this->arr_news) : $this->number);
 			$display_news_scroll = ($rows > 3 && $instance['news_display_arrows'] == 'yes');
 
 			if($display_news_scroll)
@@ -5016,7 +5044,7 @@ class widget_theme_core_news extends WP_Widget
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
 			}
 
-			if($display_hide_news == false || !isset($_COOKIE['hide_news_'.$hide_id]))
+			if($display_hide_news == false) // || !isset($_COOKIE['hide_news_'.$news_id]) // Hidden via script_hide_news.js instead
 			{
 				echo $before_widget;
 
@@ -5173,7 +5201,7 @@ class widget_theme_core_news extends WP_Widget
 						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css", $plugin_version); //Should be set in wp_head instead
 						mf_enqueue_script('script_theme_hide_news', $plugin_include_url."script_hide_news.js", $plugin_version);
 
-						echo "<i class='fa fa-times hide_news' data-hide_id='".$hide_id."'></i>";
+						echo "<i class='fa fa-times hide_news' data-news_id='".$news_id."'></i>";
 					}
 
 				echo $after_widget;
@@ -5372,6 +5400,8 @@ class widget_theme_core_info extends WP_Widget
 				{
 					return false;
 				}
+
+				session_write_close();
 			}
 		}
 
@@ -5431,6 +5461,8 @@ class widget_theme_core_info extends WP_Widget
 				{
 					$_SESSION['ses_info_visit_limit'] = $arr_ses_info_visit_limit;
 				}
+
+				session_write_close();
 			}
 		}
 

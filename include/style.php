@@ -216,7 +216,7 @@ echo "@media all
 				/*display: block;*/
 				flex-direction: column;
 			}
-			
+
 				.is_mobile .widget.theme_widget_area .widget_columns .widget + .widget
 				{
 					margin-top: 1em;
@@ -313,7 +313,7 @@ echo "@media all
 					font-size: 1.2em;
 					margin-top: .5em;
 				}
-		
+
 		.aside.after_content .widget.theme_news .section
 		{
 			padding-left: 0;

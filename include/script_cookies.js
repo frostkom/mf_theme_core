@@ -1,5 +1,10 @@
 jQuery(function($)
 {
+	if(document.cookie.indexOf("cookie_accepted=") !== -1)
+	{
+		$('#accept_cookies').addClass('hide');
+	}
+
 	$(document).on('click', "#accept_cookies .button:first-of-type", function()
 	{
 		var d = new Date();
