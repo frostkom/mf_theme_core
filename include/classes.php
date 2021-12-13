@@ -504,10 +504,6 @@ class mf_theme_core
 			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
-			/*$arr_data = array();
-			get_post_children(array('post_type' => 'post'), $arr_data);
-
-			if(count($arr_data) > 0)*/
 			if(does_post_exists(array('post_type' => 'post')))
 			{
 				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
@@ -526,16 +522,6 @@ class mf_theme_core
 				$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", 'lang_theme_core');
 			}
 
-			if(is_plugin_active("mf_analytics/index.php"))
-			{
-				$arr_settings['setting_cookie_info'] = __("Cookie information", 'lang_theme_core');
-			}
-
-			else
-			{
-				delete_option('setting_cookie_info');
-			}
-
 			if(get_option('setting_no_public_pages') != 'yes')
 			{
 				$arr_settings['setting_theme_core_search_redirect_single_result'] = __("Redirect Single Result in Search", 'lang_theme_core');
@@ -548,6 +534,22 @@ class mf_theme_core
 			{
 				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
 			}
+
+			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+		}
+		############################
+
+		// Cookies
+		############################
+		if(get_option('setting_no_public_pages') != 'yes')
+		{
+			$options_area = $options_area_orig."_cookies";
+
+			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+
+			$arr_settings = array();
+			$arr_settings['setting_cookie_exists'] = __("Cookies on This Site", 'lang_theme_core');
+			$arr_settings['setting_cookie_info'] = __("Information Page", 'lang_theme_core');
 
 			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 		}
@@ -786,44 +788,6 @@ class mf_theme_core
 			echo show_textfield(array('name' => $setting_key, 'value' => $option));
 		}
 
-		function setting_cookie_info_callback()
-		{
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option($setting_key);
-
-			$arr_data = array();
-			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
-
-			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => __("The content from this page will be displayed on top of the page until the visitor clicks to accept the use of cookies", 'lang_theme_core')));
-
-			if(isset($_COOKIE) && count($_COOKIE) > 0)
-			{
-				echo "<h4>".__("Cookies on this site", 'lang_theme_core')."</h4>
-				<ul>";
-
-					foreach($_COOKIE as $cookie_key => $cookie_value)
-					{
-						// wordpress_[hash] = authentication details
-						// wordpress_sec_[hash] = 
-						// wordpress_logged_in_[hash] = indicates when you’re logged in
-						// wp-settings-{time}-[UID] = customize your view of admin interface
-						// wordpres_test_cookie = Test if it is possible to set cookies
-						// wp-postpass_[hash] = Used to maintain session if a post is password protected
-						// comment_author_... = Used to tracked comment author name
-
-						// cookie_accepted = Used to see if visitor accepts cookies on the site
-						// hide_news_[id] = Used to see if a visitor has hidden the header news post
-
-						echo "<li>
-							<strong>".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => true))."</strong>: "
-							.shorten_text(array('string' => $cookie_value, 'limit' => 10, 'add_title' => true))
-						."</li>";
-					}
-
-				echo "</ul>";
-			}
-		}
-
 		function setting_theme_core_search_redirect_single_result_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
@@ -965,6 +929,212 @@ class mf_theme_core
 			$option = get_option_or_default($setting_key, 'no');
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
+		}
+
+	function settings_theme_core_cookies_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+
+		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Cookies", 'lang_theme_core'));
+	}
+
+		function get_post_password_amount()
+		{
+			global $wpdb;
+
+			$arr_include = get_post_types(array('public' => true, 'exclude_from_search' => false), 'names');
+
+			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_status = %s AND post_type IN('".implode("','", $arr_include)."') AND post_password != ''", 'public'));
+
+			return $wpdb->num_rows;
+		}
+	
+		function get_cookie_types()
+		{
+			if(!isset($this->arr_cookie_types))
+			{
+				$arr_cookie_types = array(
+					'login' => array(),
+					'public' => array(),
+				);
+
+				$arr_cookie_types['login']['wordpress_sec_'] = array('label' => __("Account details", 'lang_theme_core'), 'used' => false);
+				$arr_cookie_types['login']['wordpress_logged_in_'] = array('label' => __("Indicates whether you are logged in", 'lang_theme_core'), 'used' => false);
+				$arr_cookie_types['login']['wordpress_test_cookie'] = array('label' => __("Test if it is possible to set cookies", 'lang_theme_core'), 'used' => false);
+				$arr_cookie_types['login']['wordpress_'] = array('label' => __("Authentication details", 'lang_theme_core'), 'used' => false);
+				$arr_cookie_types['login']['wp-settings-time-'] = array('label' => __("Time when user settings was last saved", 'lang_theme_core'), 'used' => false);
+				$arr_cookie_types['login']['wp-settings-'] = array('label' => __("Customization for admin interface", 'lang_theme_core'), 'used' => false);
+
+				if($this->get_post_password_amount() > 0)
+				{
+					$arr_cookie_types['public']['wp-postpass_'] = array('label' => __("Maintain session if a post is password protected", 'lang_theme_core'), 'used' => false);
+				}
+
+				if(get_option('default_comment_status') == 'open')
+				{
+					$arr_cookie_types['public']['comment_author_'] = array('label' => __("Remember comment author details", 'lang_theme_core'), 'used' => false);
+				}
+
+				if(get_option('setting_cookie_info') > 0)
+				{
+					$arr_cookie_types['public']['cookie_accepted'] = array('label' => __("Remember if visitor accepts cookies on the site", 'lang_theme_core'), 'used' => false);
+				}
+
+				if(apply_filters('get_widget_search', 'theme-news-widget') > 0)
+				{
+					$arr_cookie_types['public']['hide_news_'] = array('label' => __("Remember if a visitor has hidden the header news post", 'lang_theme_core'), 'used' => false);
+				}
+
+				// PHPMyAdmin
+				//wp_pma_
+				//pma_DB_NAME
+				//CustomSignonSession
+
+				$arr_cookie_types = apply_filters('filter_cookie_types', $arr_cookie_types);
+
+				$this->arr_cookie_types = $arr_cookie_types;
+			}
+		}
+
+		function get_cookie_list($data = array())
+		{
+			$out = "";
+
+			if(isset($_COOKIE) && count($_COOKIE) > 0)
+			{
+				$this->get_cookie_types();
+
+				$out .= "<ul>";
+
+					foreach($_COOKIE as $cookie_key => $cookie_value)
+					{
+						$out .= "<li>";
+
+							$cookie_icon = $cookie_explanation = "";
+
+							foreach($this->arr_cookie_types as $type => $arr_cookie_types)
+							{
+								foreach($arr_cookie_types as $key => $arr_value)
+								{
+									if(substr($cookie_key, 0, strlen($key)) == $key)
+									{
+										switch($type)
+										{
+											default:
+											case 'public':
+												$cookie_icon = "fas fa-users green";
+												$type_title = __("Public", 'lang_theme_core');
+											break;
+
+											case 'login':
+												$cookie_icon = "fas fa-lock green";
+												$type_title = __("Login", 'lang_theme_core');
+											break;
+										}
+
+										$cookie_explanation = "<span title='".$type_title."'>".$arr_value['label']."</span>";
+
+										$this->arr_cookie_types[$type][$key]['used'] = true;
+
+										break;
+									}
+								}
+							}
+
+							if($cookie_explanation != '')
+							{
+								$out .= "<i class='".$cookie_icon."' title='".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => false)).": ".shorten_text(array('string' => $cookie_value, 'limit' => 20, 'add_title' => false))."'></i> ".$cookie_explanation;
+							}
+
+							else
+							{
+								$out .= "<i class='fa fa-question-circle blue'></i> <strong>".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => true))."</strong>: "
+								.shorten_text(array('string' => $cookie_value, 'limit' => 10, 'add_title' => true));
+							}
+
+						$out .= "</li>";
+					}
+
+					foreach($this->arr_cookie_types as $type => $arr_cookie_types)
+					{
+						foreach($arr_cookie_types as $key => $arr_value)
+						{
+							if($arr_value['used'] == false)
+							{
+								switch($type)
+								{
+									default:
+									case 'public':
+										$cookie_icon = "fas fa-users red";
+										$type_title = __("Public", 'lang_theme_core');
+									break;
+
+									case 'login':
+										$cookie_icon = "fas fa-lock red";
+										$type_title = __("Login", 'lang_theme_core');
+									break;
+								}
+
+								$cookie_explanation = "<span title='".$type_title."'>".$arr_value['label']."</span>";
+
+								$out .= "<li>
+									<i class='".$cookie_icon."' title='".sprintf(__("%s was not saved in your browser but can be saved by the site", 'lang_theme_core'), $key)."'></i> ".$cookie_explanation
+								."</li>";
+							}
+						}
+					}
+
+				$out .= "</ul>";
+			}
+
+			// Like this would ever happen...
+			else
+			{
+				$out .= "<p>".__("There are no cookies", 'lang_theme_core')."</p>";
+			}
+
+			if($data['return'] == 'html')
+			{
+				return $out;
+			}
+		}
+
+		function setting_cookie_exists_callback()
+		{
+			echo $this->get_cookie_list(array('return' => 'html'));
+		}
+
+		function setting_cookie_info_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key);
+
+			$arr_data = array();
+			get_post_children(array('add_choose_here' => true, 'where' => "(post_excerpt != '' || post_content != '')"), $arr_data);
+
+			$description = "";
+
+			// Not needed right now but just in case we switch this function and setting_cookie_exists_callback() around...
+			$this->get_cookie_types();
+
+			if(count($this->arr_cookie_types['public']) > 0)
+			{
+				if(!($option > 0))
+				{
+					$description .= "<i class='fa fa-exclamation-triangle yellow display_warning'></i> ";
+				}
+
+				$description .= __("There are cookies on the public site that are saved for visitors.", 'lang_theme_core')." ";
+			}
+
+			else if(count($this->arr_cookie_types['login']) > 0)
+			{
+				$description .= __("There are only cookies on this site that are saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
+			}
+
+			$description .= __("The content from this page will be displayed on the page until the visitor clicks to accept the use of cookies.", 'lang_theme_core');
+
+			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => $description));
 		}
 
 	function admin_init()
@@ -1124,53 +1294,50 @@ class mf_theme_core
 
 		$this->footer_output = '';
 
-		/*if(!isset($_COOKIE['cookie_accepted'])) // Hidden via script_cookies.js instead
-		{*/
-			$setting_cookie_info = get_option('setting_cookie_info');
+		$setting_cookie_info = get_option('setting_cookie_info');
 
-			if($setting_cookie_info > 0)
+		if($setting_cookie_info > 0)
+		{
+			mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
+			mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
+
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = %s AND post_status = %s", $setting_cookie_info, 'page', 'publish'));
+
+			foreach($result as $r)
 			{
-				mf_enqueue_style('style_theme_core_cookies', $plugin_include_url."style_cookies.css", $plugin_version);
-				mf_enqueue_script('script_theme_core_cookies', $plugin_include_url."script_cookies.js", array('plugin_url' => $plugin_include_url), $plugin_version);
+				$post_id = $r->ID;
+				$post_title = $r->post_title;
+				$post_excerpt = apply_filters('the_content', $r->post_excerpt);
+				$post_content = apply_filters('the_content', $r->post_content);
 
-				$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = %s AND post_status = %s", $setting_cookie_info, 'page', 'publish'));
+				$this->footer_output .= "<div id='accept_cookies'>
+					<div>";
 
-				foreach($result as $r)
-				{
-					$post_id = $r->ID;
-					$post_title = $r->post_title;
-					$post_excerpt = apply_filters('the_content', $r->post_excerpt);
-					$post_content = apply_filters('the_content', $r->post_content);
+						//$this->footer_output .= "<i class='fa fa-gavel red fa-2x'></i>";
 
-					$this->footer_output .= "<div id='accept_cookies'>
-						<div>";
+						$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
 
-							//$this->footer_output .= "<i class='fa fa-gavel red fa-2x'></i>";
+						if($post_excerpt != '')
+						{
+							$this->footer_output .= $post_excerpt;
 
-							$buttons = "<a href='#accept_cookie' class='button color_button'><i class='fa fa-check green'></i>".__("Accept", 'lang_theme_core')."</a>";
-
-							if($post_excerpt != '')
+							if($post_content != '' && $post_content != $post_excerpt)
 							{
-								$this->footer_output .= $post_excerpt;
-
-								if($post_content != '' && $post_content != $post_excerpt)
-								{
-									$buttons .= " <a href='".get_permalink($post_id)."' class='button color_button_border' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
-								}
+								$buttons .= " <a href='".get_permalink($post_id)."' class='button color_button_border' rel='external'>".__("Read More", 'lang_theme_core')."</a>";
 							}
+						}
 
-							else
-							{
-								$this->footer_output .= $post_content;
-							}
+						else
+						{
+							$this->footer_output .= $post_content;
+						}
 
-							$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
+						$this->footer_output .= "<div class='form_button'>".$buttons."</div>";
 
-						$this->footer_output .= "</div>
-					</div>";
-				}
+					$this->footer_output .= "</div>
+				</div>";
 			}
-		//}
+		}
 
 		/*if(get_option('setting_splash_screen') == 'yes')
 		{
@@ -5044,7 +5211,7 @@ class widget_theme_core_news extends WP_Widget
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js", $plugin_version);
 			}
 
-			if($display_hide_news == false) // || !isset($_COOKIE['hide_news_'.$news_id]) // Hidden via script_hide_news.js instead
+			if($display_hide_news == false)
 			{
 				echo $before_widget;
 
@@ -5382,18 +5549,22 @@ class widget_theme_core_info extends WP_Widget
 
 			else
 			{
-				if(!session_id())
+				/*if(!session_id())
 				{
 					@session_start();
-				}
+				}*/
 
-				$arr_ses_info_time_limit = check_var('ses_info_time_limit', 'array', true, '0');
+				$cookie_name = 'cookie_theme_core_info_time_limit';
+
+				//$arr_ses_info_time_limit = check_var('ses_info_time_limit', 'array', true, '0');
+				$arr_ses_info_time_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : array());
 
 				if(!isset($arr_ses_info_time_limit[$widget_md5]) || $arr_ses_info_time_limit[$widget_md5] < DEFAULT_DATE)
 				{
 					$arr_ses_info_time_limit[$widget_md5] = date("Y-m-d");
 
-					$_SESSION['ses_info_time_limit'] = $arr_ses_info_time_limit;
+					//$_SESSION['ses_info_time_limit'] = $arr_ses_info_time_limit;
+					setcookie($cookie_name, $arr_ses_info_time_limit, strtotime("+1 month"), COOKIEPATH);
 				}
 
 				else if($arr_ses_info_time_limit[$widget_md5] < date("Y-m-d", strtotime("-".$instance['info_time_limit']." day")))
@@ -5401,7 +5572,7 @@ class widget_theme_core_info extends WP_Widget
 					return false;
 				}
 
-				session_write_close();
+				//session_write_close();
 			}
 		}
 
@@ -5410,7 +5581,7 @@ class widget_theme_core_info extends WP_Widget
 			if(is_user_logged_in())
 			{
 				$arr_meta_info_visit_limit = get_user_meta(get_current_user_id(), 'meta_info_visit_limit', false);
-				$arr_meta_info_visit_limit = is_array($arr_meta_info_visit_limit) ? $arr_meta_info_visit_limit[0] : array();
+				$arr_meta_info_visit_limit = (is_array($arr_meta_info_visit_limit) ? $arr_meta_info_visit_limit[0] : array());
 
 				if(!isset($arr_meta_info_visit_limit[$widget_md5]))
 				{
@@ -5435,12 +5606,15 @@ class widget_theme_core_info extends WP_Widget
 
 			else
 			{
-				if(!session_id())
+				/*if(!session_id())
 				{
 					@session_start();
-				}
+				}*/
 
-				$arr_ses_info_visit_limit = check_var('ses_info_visit_limit', 'array', true, '0');
+				$cookie_name = 'cookie_theme_core_info_visit_limit';
+
+				//$arr_ses_info_visit_limit = check_var('ses_info_visit_limit', 'array', true, '0');
+				$arr_ses_info_visit_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : array());
 
 				if(!isset($arr_ses_info_visit_limit[$widget_md5]))
 				{
@@ -5459,10 +5633,11 @@ class widget_theme_core_info extends WP_Widget
 
 				else
 				{
-					$_SESSION['ses_info_visit_limit'] = $arr_ses_info_visit_limit;
+					//$_SESSION['ses_info_visit_limit'] = $arr_ses_info_visit_limit;
+					setcookie($cookie_name, $arr_ses_info_visit_limit, strtotime("+1 month"), COOKIEPATH);
 				}
 
-				session_write_close();
+				//session_write_close();
 			}
 		}
 
