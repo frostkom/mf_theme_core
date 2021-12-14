@@ -948,9 +948,11 @@ class mf_theme_core
 
 			return $wpdb->num_rows;
 		}
-	
+
 		function get_cookie_types()
 		{
+			global $wpdb;
+
 			if(!isset($this->arr_cookie_types))
 			{
 				$arr_cookie_types = array(
@@ -982,7 +984,12 @@ class mf_theme_core
 
 				if(apply_filters('get_widget_search', 'theme-news-widget') > 0)
 				{
-					$arr_cookie_types['public']['hide_news_'] = array('label' => __("Remember if a visitor has hidden the header news post", 'lang_theme_core'), 'used' => false);
+					$wpdb->get_results($wpdb->prepare("SELECT option_id FROM ".$wpdb->options." WHERE option_name = %s AND option_value LIKE %s", 'widget_theme-news-widget', "\"news_hide_button\";s:3:\"yes\""));
+
+					if($wpdb->num_rows > 0)
+					{
+						$arr_cookie_types['public']['hide_news_'] = array('label' => __("Remember if a visitor has hidden the header news post", 'lang_theme_core'), 'used' => false);
+					}
 				}
 
 				// PHPMyAdmin
@@ -1132,7 +1139,7 @@ class mf_theme_core
 				$description .= __("There are only cookies on this site that are saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
 			}
 
-			$description .= __("The content from this page will be displayed on the page until the visitor clicks to accept the use of cookies.", 'lang_theme_core');
+			$description .= __("The content from this page will be displayed on the site until the visitor clicks to accept the use of cookies.", 'lang_theme_core');
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => $description));
 		}
