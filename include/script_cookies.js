@@ -2,7 +2,12 @@ jQuery(function($)
 {
 	if(document.cookie.indexOf("cookie_accepted=") !== -1)
 	{
-		$('#accept_cookies').addClass('hide');
+		$("#accepted_cookies").fadeIn();
+	}
+
+	else
+	{
+		$("#accept_cookies").fadeIn();
 	}
 
 	$(document).on('click', "#accept_cookies .button:first-of-type", function()
@@ -12,6 +17,15 @@ jQuery(function($)
 
 		document.cookie = "cookie_accepted=true; expires=" + d.toUTCString();
 
-		$(this).parents("#accept_cookies").fadeOut();
+		$("#accept_cookies").fadeOut();
+		$("#accepted_cookies").fadeIn();
+	});
+
+	$(document).on('click', "#accepted_cookies > span", function()
+	{
+		document.cookie = "cookie_accepted=true; max-age=0";
+
+		$("#accepted_cookies").fadeOut();
+		$("#accept_cookies").fadeIn();
 	});
 });
