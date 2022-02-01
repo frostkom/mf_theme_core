@@ -47,10 +47,10 @@ jQuery(function($)
 					dom_heading_obj.parents("li").removeClass('hide');
 				}
 
-				else
+				/*else
 				{
 					console.log("There was no parent to " , dom_heading_obj);
-				}
+				}*/
 
 				var search = dom_search_obj.val().toLowerCase();
 
