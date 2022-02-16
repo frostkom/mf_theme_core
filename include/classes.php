@@ -1807,9 +1807,11 @@ class mf_theme_core
 		$options_params[] = array('category' => " - ".__("Logo", 'lang_theme_core'), 'id' => 'mf_theme_logo');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => '.4em 0'
 			$options_params[] = array('type' => 'image', 'id' => 'header_logo', 'title' => __("Image", 'lang_theme_core'));
+				$options_params[] = array('type' => 'image', 'id' => 'header_logo_hover', 'title' => __("Image", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'header_logo');
 			$options_params[] = array('type' => 'float', 'id' => 'logo_float', 'title' => __("Alignment", 'lang_theme_core'), 'default' => 'left');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_width', 'title' => __("Width", 'lang_theme_core'), 'default' => '14em');
 			$options_params[] = array('type' => 'image', 'id' => 'header_mobile_logo', 'title' => __("Image", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'show_if' => 'mobile_breakpoint');
+				$options_params[] = array('type' => 'image', 'id' => 'header_mobile_logo_hover', 'title' => __("Image", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core')." - ".__("Hover", 'lang_theme_core').")", 'show_if' => 'header_mobile_logo');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_width_mobile', 'title' => __("Width", 'lang_theme_core')." (".__("Mobile", 'lang_theme_core').")", 'default' => '20em');
 			$options_params[] = array('type' => 'font', 'id' => 'logo_font', 'title' => __("Font", 'lang_theme_core'), 'hide_if' => 'header_logo');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "3rem");
@@ -1844,7 +1846,7 @@ class mf_theme_core
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'color', 'id' => 'nav_underline_color_hover', 'title' => " - ".__("Underline Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'nav_underline_color_hover', 'title' => " - ".__("Underline Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")");
 				$options_params[] = array('type' => 'color', 'id' => 'nav_bg_current', 'title' => __("Background", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
 				$options_params[] = array('type' => 'color', 'id' => 'nav_color_current', 'title' => __("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")", 'show_if' => 'nav_color');
 			}
@@ -2593,7 +2595,27 @@ class mf_theme_core
 						header > div
 						{"
 							.$this->render_css(array('property' => 'padding', 'value' => 'header_padding'))
-						."}
+						."}";
+
+						/*#site_logo.has_logo_hover .desktop_logo
+						{
+							display: block;
+						}*/
+
+							$out .= "#site_logo.has_logo_hover:hover .desktop_logo
+							{
+								display: none;
+							}
+
+						#site_logo.has_logo_hover .desktop_logo_hover
+						{
+							display: none;
+						}
+
+							#site_logo.has_logo_hover:hover .desktop_logo_hover
+							{
+								display: block;
+							}
 
 					.searchform
 					{"
@@ -3111,11 +3133,14 @@ class mf_theme_core
 		$this->get_params();
 
 		$header_logo = (isset($this->options['header_logo']) ? $this->options['header_logo'] : '');
+		$header_logo_hover = (isset($this->options['header_logo_hover']) ? $this->options['header_logo_hover'] : '');
 		$header_mobile_logo = (isset($this->options['header_mobile_logo']) ? $this->options['header_mobile_logo'] : '');
+		$header_mobile_logo_hover = (isset($this->options['header_mobile_logo_hover']) ? $this->options['header_mobile_logo_hover'] : '');
 
 		$has_logo = ($data['image'] != '' || $header_logo != '' || $header_mobile_logo != '');
+		$has_logo_hover = ($header_logo_hover != '' || $header_mobile_logo_hover != '');
 
-		$out = "<a href='".trim($data['url'], '/')."/' id='site_logo'>";
+		$out = "<a href='".trim($data['url'], '/')."/' id='site_logo'".($has_logo_hover ? " class='has_logo_hover'" : "").">";
 
 			if($has_logo && $data['title'] == '')
 			{
@@ -3133,12 +3158,22 @@ class mf_theme_core
 					{
 						if($header_logo != '')
 						{
-							$out .= "<img src='".$header_logo."'".($header_mobile_logo != '' ? " class='hide_if_mobile'" : "")." alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_logo."' class='desktop_logo".($header_mobile_logo != '' ? " hide_if_mobile" : "")."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+
+							if($header_logo_hover != '')
+							{
+								$out .= "<img src='".$header_logo_hover."' class='desktop_logo_hover".($header_mobile_logo != '' ? " hide_if_mobile" : "")."' alt='".sprintf(__("Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+							}
 						}
 
 						if($header_mobile_logo != '')
 						{
-							$out .= "<img src='".$header_mobile_logo."'".($header_logo != '' ? " class='show_if_mobile'" : "")." alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+							$out .= "<img src='".$header_mobile_logo."' class='mobile_logo".($header_logo != '' ? " show_if_mobile" : "")."' alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+
+							if($header_mobile_logo_hover != '')
+							{
+								$out .= "<img src='".$header_mobile_logo_hover."' class='mobile_logo_hover".($header_logo != '' ? " show_if_mobile" : "")."' alt='".sprintf(__("Mobile Logo for %s", 'lang_theme_core'), $site_title.($site_description != '' ? " | ".$site_description : ''))."'>";
+							}
 						}
 					}
 				}
