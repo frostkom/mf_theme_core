@@ -1407,7 +1407,7 @@ class mf_theme_core
 				$this->footer_output .= "<div id='site_locked'>
 					<a href='".admin_url()."'><i class='fa fa-lock'></i></a>";
 
-					if(isset($post->ID))
+					if(isset($post->ID) && current_user_can('edit_pages'))
 					{
 						$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench'></i></a>";
 					}
