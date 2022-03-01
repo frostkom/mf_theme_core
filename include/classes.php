@@ -1000,14 +1000,14 @@ class mf_theme_core
 
 					if($wpdb->num_rows > 0)
 					{
-						$arr_cookie_types['public']['cookie_theme_core_info_time_limit'] = array('label' => __("Remember if visitor has seen the info", 'lang_theme_core')." (".__("Time Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+						$arr_cookie_types['public']['cookie_theme_core_info_time_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Time Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 					}
 
 					$wpdb->get_results($wpdb->prepare("SELECT option_id FROM ".$wpdb->options." WHERE option_name = %s AND option_value NOT LIKE %s", 'widget_theme-info-widget', "\"info_visit_limit\";s:3:\"0\""));
 
 					if($wpdb->num_rows > 0)
 					{
-						$arr_cookie_types['public']['cookie_theme_core_info_visit_limit'] = array('label' => __("Remember if visitor has seen the info", 'lang_theme_core')." (".__("Visit Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+						$arr_cookie_types['public']['cookie_theme_core_info_visit_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Visit Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 					}
 				}
 
@@ -4721,11 +4721,15 @@ class mf_theme_core
 					}
 
 					echo get_blog_option($id, 'stylesheet')
-					.$restore_notice
-					."<div class='row-actions'>"
-						."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", 'lang_theme_core')."</a>"
-						.$restore_url
-					."</div>";
+					.$restore_notice;
+
+					if(is_plugin_active("mf_site_manager/index.php"))
+					{
+						echo "<div class='row-actions'>"
+							."<a href='".get_admin_url($id, "admin.php?page=mf_site_manager/theme/index.php")."'>".__("Change", 'lang_theme_core')."</a>"
+							.$restore_url
+						."</div>";
+					}
 				break;
 
 				case 'email':
