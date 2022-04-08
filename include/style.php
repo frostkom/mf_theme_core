@@ -93,16 +93,6 @@ echo "@media all
 			font-weight: bold;
 		}
 
-		/*article .meta > a:first-of-type:before
-		{
-			content: '(';
-		}
-
-		article .meta > a:last-of-type:after
-		{
-			content: ')';
-		}*/
-
 	.embed_content
 	{
 		position: relative;

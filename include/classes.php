@@ -1457,12 +1457,39 @@ class mf_theme_core
 	function get_search_form($html)
 	{
 		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
-			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => get_search_query(), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
+			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'")) //get_search_query()
 			."<div class='form_button'>"
 				.show_button(array('text' => __("Search", 'lang_theme_core')))
 			."</div>
 		</form>";
 	}
+
+	/*function pre_get_posts($query)
+	{
+		if($query->is_main_query() && $query->is_search)
+		{
+			$strSearch = check_var('s');
+
+			$dteSearchDate = date("Y-m-d", strtotime($strSearch));
+
+			if($dteSearchDate > DEFAULT_DATE)
+			{
+				list($intYear, $intMonth, $intDay) = explode("-", $dteSearchDate);
+
+				$query->set('date_query', array(
+					array(
+						'column' => 'post_date_gmt',
+						'year' => $intYear,
+						'month' => $intMonth,
+						'day' => $intDay,
+						'inclusive' => true,
+					)
+				));
+			}
+		}
+
+		return $query;
+	}*/
 
 	function the_password_form()
 	{
