@@ -25,6 +25,7 @@ switch($type)
 			$obj_theme_core = new mf_theme_core();
 
 			$theme_dir_name = $obj_theme_core->get_theme_dir_name();
+			$child_dir_name = $obj_theme_core->get_theme_dir_name(array('type' => 'child'));
 
 			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
@@ -47,7 +48,9 @@ switch($type)
 
 			$json_output['success'] = ($style_changed >= DEFAULT_DATE);
 			$json_output['response'] = array(
-				'theme_version' => $arr_theme_data->get('Version'), //Deprecated
+				//'theme_name' => $theme_dir_name, // Parent Theme
+				'theme_name' => $child_dir_name,
+				//'theme_version' => $arr_theme_data->get('Version'), //Deprecated
 				'style_changed' => $style_changed,
 				'style_url' => $style_url,
 			);

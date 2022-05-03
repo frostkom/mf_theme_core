@@ -59,9 +59,23 @@ class mf_theme_core
 		return $out;
 	}
 
-	function get_theme_dir_name()
+	function get_theme_dir_name($data = array())
 	{
-		return str_replace(get_theme_root()."/", "", get_template_directory());
+		if(!isset($data['type'])){	$data['type'] = 'parent';}
+
+		switch($data['type'])
+		{
+			case 'child':
+				$theme_path = get_stylesheet_directory();
+			break;
+
+			default:
+			case 'parent':
+				$theme_path = get_template_directory();
+			break;
+		}
+
+		return str_replace(get_theme_root()."/", "", $theme_path);
 	}
 
 	function get_theme_slug()
@@ -4259,16 +4273,25 @@ class mf_theme_core
 				switch($headers['http_code'])
 				{
 					case 200:
-						$json = json_decode($content, true);
+						$arr_json = json_decode($content, true);
 
 						$log_message_3 = sprintf("The feed from %s returned an error (%s)", $url, $content);
 
-						if(isset($json['success']) && $json['success'] == true)
+						if(isset($arr_json['success']) && $arr_json['success'] == true)
 						{
-							$style_changed = $json['response']['style_changed'];
-							$style_url = $json['response']['style_url'];
+							$theme_name = $arr_json['response']['theme_name'];
+							$style_changed = $arr_json['response']['style_changed'];
+							$style_url = $arr_json['response']['style_url'];
 
-							update_option('option_theme_source_style_url', ($style_changed > get_option('option_theme_saved') ? $style_url : ""), 'no');
+							if($style_changed > get_option('option_theme_saved') && $theme_name == $this->get_theme_dir_name(array('type' => 'child')))
+							{
+								update_option('option_theme_source_style_url', $style_url, 'no');
+							}
+
+							else
+							{
+								delete_option('option_theme_source_style_url');
+							}
 
 							do_log($log_message_3, 'trash');
 						}
@@ -4448,9 +4471,9 @@ class mf_theme_core
 
 			if($strFileContent != '')
 			{
-				$json = json_decode($strFileContent, true);
+				$arr_json = json_decode($strFileContent, true);
 
-				if(is_array($json))
+				if(is_array($arr_json))
 				{
 					$setting_theme_ignore_style_on_restore = get_option('setting_theme_ignore_style_on_restore');
 
@@ -4459,7 +4482,7 @@ class mf_theme_core
 						$setting_theme_ignore_style_on_restore = array_map('trim', explode(",", $setting_theme_ignore_style_on_restore));
 					}
 
-					foreach($json as $key => $value)
+					foreach($arr_json as $key => $value)
 					{
 						if(!in_array($key, $setting_theme_ignore_style_on_restore))
 						{
@@ -4477,7 +4500,7 @@ class mf_theme_core
 
 				else
 				{
-					$error_text = __("There is something wrong with the source to restore", 'lang_theme_core')." (".htmlspecialchars($strFileContent)." -> ".var_export($json, true).")";
+					$error_text = __("There is something wrong with the source to restore", 'lang_theme_core')." (".htmlspecialchars($strFileContent)." -> ".var_export($arr_json, true).")";
 				}
 			}
 		}
