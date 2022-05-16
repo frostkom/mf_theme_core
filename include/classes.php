@@ -200,6 +200,9 @@ class mf_theme_core
 					list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
 					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+
+					// Check if this works before use
+					//@rmdir($upload_path); // If it is empty, it is deleted
 				}
 				#######################
 			}
@@ -2130,6 +2133,8 @@ class mf_theme_core
 			{
 				$options_params[] = array('type' => 'text', 'id' => 'section_padding', 'title' => __("Padding", 'lang_theme_core'));
 				$options_params[] = array('type' => 'text', 'id' => 'section_margin_between', 'title' => __("Margin between Content", 'lang_theme_core'), 'default' => "1em");
+				$options_params[] = array('type' => 'text', 'id' => 'paragraph_drop_cap_size', 'title' => __("Drop Cap Size", 'lang_theme_core'));
+				$options_params[] = array('type' => 'text', 'id' => 'paragraph_indentation', 'title' => __("Paragraph Indentation", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'article_url_color', 'title' => __("Link Color", 'lang_theme_core'));
 			}
 
