@@ -4893,7 +4893,7 @@ class mf_theme_core
 			{
 				$intMetaID = $r->meta_id;
 
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = %d", $intMetaID));
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = '%d'", $intMetaID));
 			}
 		}
 
@@ -4906,7 +4906,7 @@ class mf_theme_core
 			{
 				$intMetaID = $r->umeta_id;
 
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = %d", $intMetaID));
+				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = '%d'", $intMetaID));
 			}
 		}
 
