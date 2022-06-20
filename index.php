@@ -2,7 +2,7 @@
 /*
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
-Description: 
+Description:
 Version: 8.5.16
 Licence: GPLv2 or later
 Author: Martin Fors

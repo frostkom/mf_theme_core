@@ -490,7 +490,7 @@ class mf_theme_core
 
 			/*if(is_plugin_active("css-hero-ce/css-hero-main.php"))
 			{
-				$arr_settings['setting_theme_css_hero'] = __("CSS Hero Support", 'lang_theme_core');
+				$arr_settings['setting_theme_css_hero'] = sprintf(__("%s Support", 'lang_theme_core'), "CSS Hero");
 			}
 
 			else
@@ -745,7 +745,7 @@ class mf_theme_core
 		{
 			global $wpdb;
 
-			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE comment_status = %s LIMIT 0, 1", $status)); //post_type = 'post' AND 
+			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE comment_status = %s LIMIT 0, 1", $status));
 
 			return $wpdb->num_rows;
 		}
@@ -781,7 +781,7 @@ class mf_theme_core
 			{
 				$option = str_replace('_all', '', $option);
 
-				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE comment_status != %s", $option, $option)); //post_type = 'post' AND 
+				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE comment_status != %s", $option, $option));
 
 				update_option($setting_key, $option, 'no');
 			}
@@ -3130,7 +3130,7 @@ class mf_theme_core
 		if(is_author() && get_option('setting_theme_core_display_author_pages') == 'no')
 		{
 			wp_redirect(get_option('home'), 301);
-			exit; 
+			exit;
 		}
 	}
 
@@ -3581,7 +3581,7 @@ class mf_theme_core
 		{
 			$obj_base = new mf_base();
 
-			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('exclude_from_search' => false))); //'public' => true, 
+			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('exclude_from_search' => false)));
 		}
 
 		else
@@ -4208,7 +4208,7 @@ class mf_theme_core
 	{
 		global $wpdb;
 
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, meta_key, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE (meta_key = %s OR meta_key = %s) AND meta_value > %s", $this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date', DEFAULT_DATE)); //post_status = 'publish' AND 
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, meta_key, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE (meta_key = %s OR meta_key = %s) AND meta_value > %s", $this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date', DEFAULT_DATE));
 
 		if($wpdb->num_rows > 0)
 		{
