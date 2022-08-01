@@ -353,14 +353,14 @@ echo "@media all
 							display: block;
 							height: 100%;
 							object-fit: cover;
-							transition: all .8s ease;
+							transition: all 1s ease;
 							width: 100%;
 						}
 
 							.widget.theme_news li:hover .image img
 							{
-								-webkit-transform: scale(1.1);
-								transform: scale(1.1);
+								-webkit-transform: scale(1.02);
+								transform: scale(1.02);
 							}
 
 					.widget.theme_news li .video iframe
