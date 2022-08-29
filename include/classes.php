@@ -1103,8 +1103,14 @@ class mf_theme_core
 
 							else
 							{
-								$out .= "<i class='fa fa-question-circle blue'></i> <strong>".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => true))."</strong>: "
-								.shorten_text(array('string' => $cookie_value, 'limit' => 10, 'add_title' => true));
+								$out .= "<i class='fa fa-question-circle blue'></i> <strong>".shorten_text(array('string' => $cookie_key, 'limit' => 30, 'add_title' => true))."</strong>: ";
+
+								if(is_array($cookie_value))
+								{
+									$cookie_value = var_export($cookie_value, true);
+								}
+
+								$out .= shorten_text(array('string' => $cookie_value, 'limit' => 10, 'add_title' => true));
 							}
 
 						$out .= "</li>";
