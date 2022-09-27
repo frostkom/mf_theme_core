@@ -1725,9 +1725,9 @@ class mf_theme_core
 			if(!isset($param['category']) && !isset($param['category_end']))
 			{
 				$id = $param['id'];
-				$default = isset($param['default']) ? $param['default'] : false;
-				$force_default = isset($param['force_default']) ? $param['force_default'] : false;
-				$value_old = isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false;
+				$default = (isset($param['default']) ? $param['default'] : false);
+				$force_default = (isset($param['force_default']) ? $param['force_default'] : false);
+				$value_old = (isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false);
 
 				if(isset($arr_theme_mods[$id]))
 				{
@@ -2684,7 +2684,7 @@ class mf_theme_core
 							z-index: 1;
 						}
 
-							.searchform .form_textfield input
+							.mf_form.searchform .form_textfield input
 							{
 								background: none;"
 								.$this->render_css(array('property' => 'color', 'value' => 'search_color'))
@@ -4422,7 +4422,7 @@ class mf_theme_core
 
 		$strFileUrl = check_var('strFileUrl');
 		$strFileName = check_var('strFileName');
-		$strFileContent = isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : "";
+		$strFileContent = (isset($_REQUEST['strFileContent']) ? $_REQUEST['strFileContent'] : '');
 
 		list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
