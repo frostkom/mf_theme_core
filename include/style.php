@@ -185,8 +185,6 @@ echo "@media all
 				min-width: 50%;
 			}";
 
-	//do_log("Test 2 (".is_plugin_active("mf_widget_logic_select/index.php")." || ".apply_filters('get_widget_search', 'theme-widget-area-widget').")");
-
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-widget-area-widget') > 0)
 	{
 		echo ".widget.theme_widget_area .widget_columns
@@ -272,7 +270,6 @@ echo "@media all
 		echo "#mf-pre-header .widget.theme_news
 		{
 			text-align: center;
-			/*max-width: 100%;*/
 		}
 
 			#mf-pre-header .widget.theme_news h3

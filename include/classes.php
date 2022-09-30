@@ -94,17 +94,17 @@ class mf_theme_core
 
 		$last_category = '';
 
-		foreach($options_params as $param_key => $param)
+		foreach($options_params as $param_key => $arr_param)
 		{
-			if(isset($param['category']))
+			if(isset($arr_param['category']))
 			{
-				$arr_data['opt_start_'.$param['id']] = $param['category'];
+				$arr_data['opt_start_'.$arr_param['id']] = $arr_param['category'];
 
-				$last_category = $param['id'];
+				$last_category = $arr_param['id'];
 				$has_children = false;
 			}
 
-			else if(isset($param['category_end']))
+			else if(isset($arr_param['category_end']))
 			{
 				if($has_children == true)
 				{
@@ -121,8 +121,8 @@ class mf_theme_core
 
 			else
 			{
-				$id = $param['id'];
-				$title = $param['title'];
+				$id = $arr_param['id'];
+				$title = $arr_param['title'];
 
 				if(isset($arr_theme_mods[$id]) && $arr_theme_mods[$id] != '')
 				{
@@ -567,6 +567,11 @@ class mf_theme_core
 			$arr_settings = array();
 			$arr_settings['setting_cookie_exists'] = __("Cookies on This Site", 'lang_theme_core');
 			$arr_settings['setting_cookie_info'] = __("Information Page", 'lang_theme_core');
+
+			if(get_option('setting_cookie_info') > 0)
+			{
+				$arr_settings['setting_cookie_deactivate_until_allowed'] = __("Deactivate Until Allowed", 'lang_theme_core');
+			}
 
 			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 		}
@@ -1028,15 +1033,34 @@ class mf_theme_core
 					}
 				}
 
-				// PHPMyAdmin
-				// Does not save any personal data
-				//wp_pma_
-				//pma_DB_NAME
-				//CustomSignonSession
+				// Check if external fonts are used on the site
+				##############################
+				$this->get_theme_fonts();
+				$this->get_params();
 
-				$arr_cookie_types = apply_filters('filter_cookie_types', $arr_cookie_types);
+				$arr_external_font_ids = array();
 
-				$this->arr_cookie_types = $arr_cookie_types;
+				foreach($this->options_fonts as $font_key => $arr_fonts)
+				{
+					if($arr_fonts['url'] != '')
+					{
+						$arr_external_font_ids[$font_key] = $arr_fonts['title'];
+					}
+				}
+
+				foreach($this->options_params as $arr_param)
+				{
+					if(isset($arr_param['type']) && $arr_param['type'] == 'font')
+					{
+						if(isset($arr_external_font_ids[$this->options[$arr_param['id']]]))
+						{
+							$arr_cookie_types['public']['font_'.$this->options[$arr_param['id']]] = array('label' => sprintf(__("Load the font %s", 'lang_theme_core'), $arr_external_font_ids[$this->options[$arr_param['id']]]), 'used' => false, 'lifetime' => "1 year", 'personal_data' => true);
+						}
+					}
+				}
+				##############################
+
+				$this->arr_cookie_types = apply_filters('filter_cookie_types', $arr_cookie_types);
 			}
 		}
 
@@ -1122,11 +1146,25 @@ class mf_theme_core
 						{
 							if($arr_value['used'] == false)
 							{
+								$is_font = (substr($key, 0, 5) == 'font_');
+
+								$cookie_title = sprintf(__("%s was not saved in your browser but can be saved by the site", 'lang_theme_core'), $key);
+
 								switch($type)
 								{
 									default:
 									case 'public':
-										$cookie_icon = "fas fa-users red";
+										if($is_font)
+										{
+											$cookie_icon = "fas fa-users green";
+											$cookie_title = __("The font is loaded somewhere on the site", 'lang_theme_core');
+										}
+
+										else
+										{
+											$cookie_icon = "fas fa-users red";
+										}
+
 										$type_title = __("Public", 'lang_theme_core');
 									break;
 
@@ -1139,7 +1177,7 @@ class mf_theme_core
 								$cookie_explanation = "<span title='".$type_title."'>".$arr_value['label']."</span>";
 
 								$out .= "<li>
-									<i class='".$cookie_icon."' title='".sprintf(__("%s was not saved in your browser but can be saved by the site", 'lang_theme_core'), $key)."'></i> ".$cookie_explanation
+									<i class='".$cookie_icon."' title='".$cookie_title."'></i> ".$cookie_explanation
 								."</li>";
 							}
 						}
@@ -1185,17 +1223,25 @@ class mf_theme_core
 					$description .= "<i class='fa fa-exclamation-triangle yellow display_warning'></i> ";
 				}
 
-				$description .= __("There are cookies on the public site that are saved for visitors.", 'lang_theme_core')." ";
+				$description .= __("There is sensitive information on the public site that is saved for visitors.", 'lang_theme_core')." ";
 			}
 
 			else if(count($this->arr_cookie_types['login']) > 0)
 			{
-				$description .= __("There are only cookies on this site that are saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
+				$description .= __("There is only sensitive information on this site that is saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
 			}
 
 			$description .= __("The content from this page will be displayed on the site until the visitor clicks to accept the use of cookies.", 'lang_theme_core');
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => $description));
+		}
+
+		function setting_cookie_deactivate_until_allowed_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option($setting_key, 'no');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will try to prevent sensitive information to be saved in the visitor's browser until the visitor have accepted your information from the page above", 'lang_theme_core')));
 		}
 
 	function admin_init()
@@ -1720,13 +1766,13 @@ class mf_theme_core
 
 		$arr_theme_mods = get_theme_mods();
 
-		foreach($options_params as $param_key => $param)
+		foreach($options_params as $param_key => $arr_param)
 		{
-			if(!isset($param['category']) && !isset($param['category_end']))
+			if(!isset($arr_param['category']) && !isset($arr_param['category_end']))
 			{
-				$id = $param['id'];
-				$default = (isset($param['default']) ? $param['default'] : false);
-				$force_default = (isset($param['force_default']) ? $param['force_default'] : false);
+				$id = $arr_param['id'];
+				$default = (isset($arr_param['default']) ? $arr_param['default'] : false);
+				$force_default = (isset($arr_param['force_default']) ? $arr_param['force_default'] : false);
 				$value_old = (isset($arr_theme_mods[$id]) ? $arr_theme_mods[$id] : false);
 
 				if(isset($arr_theme_mods[$id]))
@@ -2442,11 +2488,11 @@ class mf_theme_core
 
 		$out = "";
 
-		foreach($this->options_params as $param)
+		foreach($this->options_params as $arr_param)
 		{
-			if(isset($param['type']) && $param['type'] == 'font')
+			if(isset($arr_param['type']) && $arr_param['type'] == 'font')
 			{
-				$font = $this->options[$param['id']];
+				$font = $this->options[$arr_param['id']];
 
 				if($font != '' && isset($this->options_fonts[$font]['file']) && $this->options_fonts[$font]['file'] != '')
 				{
@@ -2984,23 +3030,31 @@ class mf_theme_core
 
 	function enqueue_theme_fonts()
 	{
-		$this->get_theme_fonts();
-
-		$arr_fonts2insert = array();
-
-		$this->get_params();
-
-		foreach($this->options_params as $param)
+		if($this->get_allow_cookies())
 		{
-			if(isset($param['type']) && $param['type'] == 'font' && isset($this->options[$param['id']]))
-			{
-				$font = $this->options[$param['id']];
+			$this->get_theme_fonts();
+			$this->get_params();
 
-				if(isset($this->options_fonts[$font]['url']) && $this->options_fonts[$font]['url'] != '')
+			foreach($this->options_params as $arr_param)
+			{
+				if(isset($arr_param['type']) && $arr_param['type'] == 'font' && isset($this->options[$arr_param['id']]))
 				{
-					mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
+					$font = $this->options[$arr_param['id']];
+
+					if(isset($this->options_fonts[$font]['url']) && $this->options_fonts[$font]['url'] != '')
+					{
+						mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
+					}
 				}
 			}
+		}
+
+		else
+		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+			$plugin_version = get_plugin_version(__FILE__);
+
+			mf_enqueue_script('script_theme_core_enqueue_theme_fonts', $plugin_include_url."script_enqueue_theme_fonts.php", $plugin_version);
 		}
 	}
 
@@ -3837,6 +3891,29 @@ class mf_theme_core
 		}
 
 		return $data;
+	}
+
+	/*function is_cookie_accepted()
+	{
+		return (isset($_COOKIE) && count($_COOKIE) > 0 && isset($_COOKIE['cookie_accepted']));
+	}*/
+
+	function get_allow_cookies()
+	{
+		/*if($this->is_cookie_accepted())
+		{
+			return true;
+		}
+
+		else */if(get_option('setting_cookie_deactivate_until_allowed') != 'yes')
+		{
+			return true;
+		}
+
+		else
+		{
+			return false;
+		}
 	}
 
 	function mf_unregister_widget($id)
@@ -4685,6 +4762,68 @@ class mf_theme_core
 		}
 	}
 
+	function filter_sites_table_settings($arr_settings)
+	{
+		$arr_settings['settings_theme_core'] = array(
+			'setting_no_public_pages' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fas fa-lock",
+				'name' => __("Always redirect visitors to the login page", 'lang_theme_core'),
+			),
+			'setting_theme_core_login' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fas fa-user-lock",
+				'name' => __("Require login for public site", 'lang_theme_core'),
+			),
+			'setting_theme_enable_wp_api' => array(
+				'type' => 'bool',
+				'global' => true,
+				'icon' => "fas fa-network-wired",
+				'name' => __("Enable XML-RPC", 'lang_theme_core'),
+			),
+			/*'default_comment_status' => array(
+				'type' => 'string',
+				'global' => false,
+				'icon' => "fas fa-comments",
+				'name' => __("Allow Comments", 'lang_theme_core'),
+			),*/
+			'setting_404_page' => array(
+				'type' => 'posts',
+				'global' => false,
+				'icon' => "fas fa-exclamation-circle",
+				'name' => __("404 Page", 'lang_theme_core'),
+			),
+			'setting_maintenance_page' => array(
+				'type' => 'posts',
+				'global' => false,
+				'icon' => "fas fa-hard-hat",
+				'name' => __("Maintenance Page", 'lang_theme_core'),
+			),
+			'setting_activate_maintenance' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fas fa-tools",
+				'name' => __("Activate Maintenance Mode", 'lang_theme_core'),
+			),
+			'setting_cookie_info' => array(
+				'type' => 'posts',
+				'global' => false,
+				'icon' => "fas fa-cookie",
+				'name' => __("Information Page", 'lang_theme_core'),
+			),
+			'setting_cookie_deactivate_until_allowed' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fas fa-cookie-bite",
+				'name' => __("Deactivate Until Allowed", 'lang_theme_core'),
+			),
+		);
+
+		return $arr_settings;
+	}
+
 	function sites_column_header($cols)
 	{
 		unset($cols['registered']);
@@ -5511,7 +5650,7 @@ class widget_theme_core_news extends WP_Widget
 
 					echo "</div>";
 
-					if($display_hide_news)
+					if($display_hide_news) // && $this->get_allow_cookies() // Should not have to be here since it does not save any personal/sensitive data
 					{
 						$plugin_include_url = plugin_dir_url(__FILE__);
 						$plugin_version = get_plugin_version(__FILE__);
