@@ -1042,7 +1042,7 @@ class mf_theme_core
 
 				foreach($this->options_fonts as $font_key => $arr_fonts)
 				{
-					if($arr_fonts['url'] != '')
+					if(isset($arr_fonts['url']) && $arr_fonts['url'] != '')
 					{
 						$arr_external_font_ids[$font_key] = $arr_fonts['title'];
 					}
