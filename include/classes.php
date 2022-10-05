@@ -4783,32 +4783,11 @@ class mf_theme_core
 				'icon' => "fas fa-network-wired",
 				'name' => __("Enable XML-RPC", 'lang_theme_core'),
 			),
-			/*'default_comment_status' => array(
-				'type' => 'string',
-				'global' => false,
-				'icon' => "fas fa-comments",
-				'name' => __("Allow Comments", 'lang_theme_core'),
-			),*/
-			'setting_404_page' => array(
-				'type' => 'posts',
-				'global' => false,
-				'icon' => "fas fa-exclamation-circle",
-				'name' => __("404 Page", 'lang_theme_core'),
-			),
-			'setting_maintenance_page' => array(
-				'type' => 'posts',
-				'global' => false,
-				'icon' => "fas fa-hard-hat",
-				'name' => __("Maintenance Page", 'lang_theme_core'),
-			),
-			'setting_activate_maintenance' => array(
-				'type' => 'bool',
-				'global' => false,
-				'icon' => "fas fa-tools",
-				'name' => __("Activate Maintenance Mode", 'lang_theme_core'),
-			),
+		);
+
+		$arr_settings['settings_theme_core_cookies'] = array(
 			'setting_cookie_info' => array(
-				'type' => 'posts',
+				'type' => 'post',
 				'global' => false,
 				'icon' => "fas fa-cookie",
 				'name' => __("Information Page", 'lang_theme_core'),
@@ -4818,6 +4797,33 @@ class mf_theme_core
 				'global' => false,
 				'icon' => "fas fa-cookie-bite",
 				'name' => __("Deactivate Until Allowed", 'lang_theme_core'),
+			),
+		);
+
+		$arr_settings['settings_theme_core_public'] = array(
+			/*'default_comment_status' => array(
+				'type' => 'string',
+				'global' => false,
+				'icon' => "fas fa-comments",
+				'name' => __("Allow Comments", 'lang_theme_core'),
+			),*/
+			'setting_404_page' => array(
+				'type' => 'post',
+				'global' => false,
+				'icon' => "fas fa-exclamation-circle",
+				'name' => __("404 Page", 'lang_theme_core'),
+			),
+			'setting_maintenance_page' => array(
+				'type' => 'post',
+				'global' => false,
+				'icon' => "fas fa-hard-hat",
+				'name' => __("Maintenance Page", 'lang_theme_core'),
+			),
+			'setting_activate_maintenance' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fas fa-tools",
+				'name' => __("Activate Maintenance Mode", 'lang_theme_core'),
 			),
 		);
 
