@@ -565,7 +565,7 @@ class mf_theme_core
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 			$arr_settings = array();
-			$arr_settings['setting_cookie_exists'] = __("Cookies on This Site", 'lang_theme_core');
+			$arr_settings['setting_cookie_exists'] = __("Sensitive Data on This Site", 'lang_theme_core');
 			$arr_settings['setting_cookie_info'] = __("Information Page", 'lang_theme_core');
 
 			if(get_option('setting_cookie_info') > 0)
@@ -957,7 +957,7 @@ class mf_theme_core
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Cookies", 'lang_theme_core'));
+		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Sensitive Data", 'lang_theme_core'));
 	}
 
 		function get_post_password_amount()
@@ -975,35 +975,35 @@ class mf_theme_core
 		{
 			global $wpdb;
 
-			if(!isset($this->arr_cookie_types))
+			if(!isset($this->arr_sensitive_data_types))
 			{
-				$arr_cookie_types = array(
+				$arr_sensitive_data_types = array(
 					'login' => array(),
 					'public' => array(),
 				);
 
-				$arr_cookie_types['login']['wordpress_sec_'] = array('label' => __("Account details", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
-				$arr_cookie_types['login']['wordpress_logged_in_'] = array('label' => __("Indicates whether you are logged in", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
+				$arr_sensitive_data_types['login']['wordpress_sec_'] = array('label' => __("Account details", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
+				$arr_sensitive_data_types['login']['wordpress_logged_in_'] = array('label' => __("Indicates whether you are logged in", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
 
-				$arr_cookie_types['login']['wordpress_test_cookie'] = array('label' => __("Test if it is possible to set cookies", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day", 'personal_data' => false);
-				$arr_cookie_types['login']['wordpress_'] = array('label' => __("Authentication details", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
+				$arr_sensitive_data_types['login']['wordpress_test_cookie'] = array('label' => __("Test if it is possible to set cookies", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day", 'personal_data' => false);
+				$arr_sensitive_data_types['login']['wordpress_'] = array('label' => __("Authentication details", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
 
-				$arr_cookie_types['login']['wp-settings-time-'] = array('label' => __("Time when user settings was last saved", 'lang_theme_core'), 'used' => false, 'lifetime' => "", 'personal_data' => false);
-				$arr_cookie_types['login']['wp-settings-'] = array('label' => __("Customization for admin interface", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day", 'personal_data' => false);
+				$arr_sensitive_data_types['login']['wp-settings-time-'] = array('label' => __("Time when user settings was last saved", 'lang_theme_core'), 'used' => false, 'lifetime' => "", 'personal_data' => false);
+				$arr_sensitive_data_types['login']['wp-settings-'] = array('label' => __("Customization for admin interface", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day", 'personal_data' => false);
 
 				if($this->get_post_password_amount() > 0)
 				{
-					$arr_cookie_types['public']['wp-postpass_'] = array('label' => __("Maintain session if a post is password protected", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
+					$arr_sensitive_data_types['public']['wp-postpass_'] = array('label' => __("Maintain session if a post is password protected", 'lang_theme_core'), 'used' => false, 'lifetime' => "2 day");
 				}
 
 				if(get_option('default_comment_status') == 'open')
 				{
-					$arr_cookie_types['public']['comment_author_'] = array('label' => __("Remember comment author details", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year");
+					$arr_sensitive_data_types['public']['comment_author_'] = array('label' => __("Remember comment author details", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year");
 				}
 
 				if(get_option('setting_cookie_info') > 0)
 				{
-					$arr_cookie_types['public']['cookie_accepted'] = array('label' => __("Remember if visitor accepts cookies on the site", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+					$arr_sensitive_data_types['public']['cookie_accepted'] = array('label' => __("Remember if visitor accepts sensitive data on the site", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 				}
 
 				if(apply_filters('get_widget_search', 'theme-news-widget') > 0)
@@ -1012,7 +1012,7 @@ class mf_theme_core
 
 					if($wpdb->num_rows > 0)
 					{
-						$arr_cookie_types['public']['hide_news_'] = array('label' => __("Remember if a visitor has hidden the header news post", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+						$arr_sensitive_data_types['public']['hide_news_'] = array('label' => __("Remember if a visitor has hidden the header news post", 'lang_theme_core'), 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 					}
 				}
 
@@ -1022,14 +1022,14 @@ class mf_theme_core
 
 					if($wpdb->num_rows > 0)
 					{
-						$arr_cookie_types['public']['cookie_theme_core_info_time_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Time Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+						$arr_sensitive_data_types['public']['cookie_theme_core_info_time_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Time Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 					}
 
 					$wpdb->get_results($wpdb->prepare("SELECT option_id FROM ".$wpdb->options." WHERE option_name = %s AND option_value NOT LIKE %s", 'widget_theme-info-widget', "\"info_visit_limit\";s:3:\"0\""));
 
 					if($wpdb->num_rows > 0)
 					{
-						$arr_cookie_types['public']['cookie_theme_core_info_visit_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Visit Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
+						$arr_sensitive_data_types['public']['cookie_theme_core_info_visit_limit'] = array('label' => __("Remember if the visitor has seen the info", 'lang_theme_core')." (".__("Visit Limit", 'lang_theme_core').")", 'used' => false, 'lifetime' => "1 year", 'personal_data' => false);
 					}
 				}
 
@@ -1054,13 +1054,14 @@ class mf_theme_core
 					{
 						if(isset($arr_external_font_ids[$this->options[$arr_param['id']]]))
 						{
-							$arr_cookie_types['public']['font_'.$this->options[$arr_param['id']]] = array('label' => sprintf(__("Load the font %s", 'lang_theme_core'), $arr_external_font_ids[$this->options[$arr_param['id']]]), 'used' => false, 'lifetime' => "1 year", 'personal_data' => true);
+							//$arr_sensitive_data_types['public']['font_'.$this->options[$arr_param['id']]] = array('label' => sprintf(__("Load the font %s", 'lang_theme_core'), $arr_external_font_ids[$this->options[$arr_param['id']]]), 'used' => false, 'lifetime' => "1 year", 'personal_data' => true);
+							$arr_sensitive_data_types['font'][$this->options[$arr_param['id']]] = array('label' => sprintf(__("Load the font %s", 'lang_theme_core'), "<em>".$arr_external_font_ids[$this->options[$arr_param['id']]]."</em>"), 'used' => false, 'lifetime' => "1 year", 'personal_data' => true);
 						}
 					}
 				}
 				##############################
 
-				$this->arr_cookie_types = apply_filters('filter_cookie_types', $arr_cookie_types);
+				$this->arr_sensitive_data_types = apply_filters('filter_cookie_types', $arr_sensitive_data_types);
 			}
 		}
 
@@ -1080,9 +1081,9 @@ class mf_theme_core
 
 							$cookie_icon = $cookie_explanation = "";
 
-							foreach($this->arr_cookie_types as $type => $arr_cookie_types)
+							foreach($this->arr_sensitive_data_types as $type => $arr_sensitive_data_types)
 							{
-								foreach($arr_cookie_types as $key => $arr_value)
+								foreach($arr_sensitive_data_types as $key => $arr_value)
 								{
 									if(substr($cookie_key, 0, strlen($key)) == $key)
 									{
@@ -1113,7 +1114,7 @@ class mf_theme_core
 
 										$cookie_explanation = "<span title='".$type_title."'>".$arr_value['label']."</span>";
 
-										$this->arr_cookie_types[$type][$key]['used'] = true;
+										$this->arr_sensitive_data_types[$type][$key]['used'] = true;
 
 										break;
 									}
@@ -1140,37 +1141,37 @@ class mf_theme_core
 						$out .= "</li>";
 					}
 
-					foreach($this->arr_cookie_types as $type => $arr_cookie_types)
+					foreach($this->arr_sensitive_data_types as $type => $arr_sensitive_data_types)
 					{
-						foreach($arr_cookie_types as $key => $arr_value)
+						foreach($arr_sensitive_data_types as $key => $arr_value)
 						{
 							if($arr_value['used'] == false)
 							{
-								$is_font = (substr($key, 0, 5) == 'font_');
-
 								$cookie_title = sprintf(__("%s was not saved in your browser but can be saved by the site", 'lang_theme_core'), $key);
 
 								switch($type)
 								{
 									default:
 									case 'public':
-										if($is_font)
-										{
-											$cookie_icon = "fas fa-users green";
-											$cookie_title = __("The font is loaded somewhere on the site", 'lang_theme_core');
-										}
-
-										else
-										{
-											$cookie_icon = "fas fa-users red";
-										}
-
+										$cookie_icon = "fas fa-users red";
 										$type_title = __("Public", 'lang_theme_core');
 									break;
 
 									case 'login':
 										$cookie_icon = "fas fa-lock red";
 										$type_title = __("Login", 'lang_theme_core');
+									break;
+
+									case 'font':
+										$cookie_icon = "fas fa-font green";
+										$cookie_title = __("The font is loaded somewhere on the site", 'lang_theme_core');
+										$type_title = __("Font", 'lang_theme_core');
+									break;
+
+									case 'ip':
+										$cookie_icon = "fas fa-receipt green";
+										$cookie_title = __("The IP address is collected somewhere on the site", 'lang_theme_core');
+										$type_title = __("IP", 'lang_theme_core');
 									break;
 								}
 
@@ -1189,7 +1190,7 @@ class mf_theme_core
 			// Like this would ever happen...
 			else
 			{
-				$out .= "<p>".__("There are no cookies", 'lang_theme_core')."</p>";
+				$out .= "<p>".__("There is no sensitive data saved on this site", 'lang_theme_core')."</p>";
 			}
 
 			if($data['return'] == 'html')
@@ -1216,7 +1217,7 @@ class mf_theme_core
 			// Not needed right now but just in case we switch this function and setting_cookie_exists_callback() around...
 			$this->get_cookie_types();
 
-			if(count($this->arr_cookie_types['public']) > 0)
+			if(count($this->arr_sensitive_data_types['public']) > 0)
 			{
 				if(!($option > 0))
 				{
@@ -1226,12 +1227,12 @@ class mf_theme_core
 				$description .= __("There is sensitive information on the public site that is saved for visitors.", 'lang_theme_core')." ";
 			}
 
-			else if(count($this->arr_cookie_types['login']) > 0)
+			else if(count($this->arr_sensitive_data_types['login']) > 0)
 			{
 				$description .= __("There is only sensitive information on this site that is saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
 			}
 
-			$description .= __("The content from this page will be displayed on the site until the visitor clicks to accept the use of cookies.", 'lang_theme_core');
+			$description .= __("The content from this page will be displayed on the site until the visitor clicks to accept the collection of sensitive data.", 'lang_theme_core');
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option)), 'description' => $description));
 		}
@@ -1260,7 +1261,7 @@ class mf_theme_core
 		{
 			if(get_option('setting_cookie_info') > 0)
 			{
-				$content = __("A cookie is saved when the visitor accepts the use of cookies on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core');
+				$content = __("A cookie is saved when the visitor accepts the collection of sensitive data on the site, to make sure that the message asking for permission does not appear again.", 'lang_theme_core');
 
 				wp_add_privacy_policy_content(__("Theme", 'lang_theme_core'), $content);
 			}
@@ -1444,7 +1445,7 @@ class mf_theme_core
 					$this->footer_output .= "</div>
 				</div>
 				<div id='accepted_cookies'>
-					<span class='fa-stack fa-2x' title='".__("You have accepted that we save cookies in your browser. Do you wish to remove this acceptance?", 'lang_theme_core')."'>
+					<span class='fa-stack fa-2x' title='".__("You have accepted that we collect sensitive data. Do you wish to remove this acceptance?", 'lang_theme_core')."'>
 						<i class='fas fa-cookie-bite fa-stack-1x'></i>
 						<i class='fas fa-ban fa-stack-2x red'></i>
 					</span>
