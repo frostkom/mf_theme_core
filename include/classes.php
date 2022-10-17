@@ -1959,6 +1959,7 @@ class mf_theme_core
 					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_bg_hover', 'title' => " - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'sub_nav_bg');
 				$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color', 'title' => __("Text Color", 'lang_theme_core'), 'default' => "#333");
 					$options_params[] = array('type' => 'color', 'id' => 'sub_nav_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'sub_nav_color');
+				$options_params[] = array('type' => 'text', 'id' => 'sub_nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => ".8em");
 			$options_params[] = array('category_end' => "");
 		}
 
