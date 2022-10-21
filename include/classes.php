@@ -2006,12 +2006,15 @@ class mf_theme_core
 					$options_params[] = array('type' => 'float', 'id' => 'slide_nav_position', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
 				}
 
-				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1.5em 1em 1em");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background", 'lang_theme_core'), 'default' => "#fff");
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg_hover', 'title' => " - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_width', 'title' => __("Width", 'lang_theme_core'), 'default' => "90%");
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "300px");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_color');
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => " - ".__("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")");
+
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1.5em 1em 1em");
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg_hover', 'title' => __("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_color');
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => __("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg', 'title' => __("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
 
@@ -2793,10 +2796,12 @@ class mf_theme_core
 								."overflow: hidden;
 								padding: 3.5em 0 1em;
 								position: absolute;
-								top: 0;
-								width: 90%;
-								max-width: 300px;
-							}
+								top: 0;"
+								/*."width: 90%;
+								max-width: 300px;"*/
+								.$this->render_css(array('property' => 'width', 'value' => 'slide_nav_width'))
+								.$this->render_css(array('property' => 'max-width', 'value' => 'slide_nav_max_width'))
+							."}
 
 								#mf-slide-nav .searchform
 								{
