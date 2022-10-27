@@ -1937,7 +1937,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", 'lang_theme_core'));
 			$options_params[] = array('type' => 'font', 'id' => 'nav_font', 'title' => __("Font", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'nav_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "2em");
-			$options_params[] = array('type' => 'weight', 'id' => 'nav_font_weight', 'title' => __("Font Weight", 'lang_theme_core'));
+			$options_params[] = array('type' => 'weight', 'id' => 'nav_font_weight', 'title' => __("Weight", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'nav_color', 'title' => __("Text Color", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
 			$options_params[] = array('type' => 'text', 'id' => 'nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1em");
@@ -2020,8 +2020,8 @@ class mf_theme_core
 
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_bg_full', 'title' => __("Background", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background Color", 'lang_theme_core'), 'default' => "#fff");
-				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_width', 'title' => __("Width", 'lang_theme_core'), 'default' => "90%");
-				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "300px");
+				//$options_params[] = array('type' => 'text', 'id' => 'slide_nav_width', 'title' => __("Width", 'lang_theme_core'), 'default' => "90%");
+				//$options_params[] = array('type' => 'text', 'id' => 'slide_nav_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "300px");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", 'lang_theme_core'));
 
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_letter_spacing', 'title' => __("Letter Spacing", 'lang_theme_core'), 'default' => ".2em");
@@ -2814,13 +2814,14 @@ class mf_theme_core
 								.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
 								.$this->render_css(array('property' => 'font-family', 'value' => 'nav_font'))
 								."overflow: hidden;
-								padding: 3.5em 0 1em;
+								padding: 6em 0 1em;
 								position: absolute;
 								top: 0;"
 								/*."width: 90%;
 								max-width: 300px;"*/
-								.$this->render_css(array('property' => 'width', 'value' => 'slide_nav_width'))
-								.$this->render_css(array('property' => 'max-width', 'value' => 'slide_nav_max_width'))
+								//.$this->render_css(array('property' => 'width', 'value' => 'slide_nav_width'))
+								//.$this->render_css(array('property' => 'max-width', 'value' => 'slide_nav_max_width'))
+								."width: 100%;"
 							."}
 
 								#mf-slide-nav .searchform
@@ -2851,7 +2852,7 @@ class mf_theme_core
 								#mf-slide-nav .fa-times
 								{
 									font-size: 2em;
-									margin: 3% 4% 0 0;
+									margin: 3% 4%;
 									position: absolute;
 									right: 0;
 									top: 0;
