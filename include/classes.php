@@ -1937,6 +1937,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'text', 'id' => 'nav_padding', 'title' => __("Padding", 'lang_theme_core'));
 			$options_params[] = array('type' => 'font', 'id' => 'nav_font', 'title' => __("Font", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'nav_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "2em");
+			$options_params[] = array('type' => 'weight', 'id' => 'nav_font_weight', 'title' => __("Font Weight", 'lang_theme_core'));
 			$options_params[] = array('type' => 'color', 'id' => 'nav_color', 'title' => __("Text Color", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'nav_color');
 			$options_params[] = array('type' => 'text', 'id' => 'nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1em");
@@ -2006,17 +2007,35 @@ class mf_theme_core
 					$options_params[] = array('type' => 'float', 'id' => 'slide_nav_position', 'title' => __("Alignment", 'lang_theme_core'), 'default' => "right");
 				}
 
-				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background", 'lang_theme_core'), 'default' => "#fff");
+				//$options_params[] = array('type' => 'text', 'id' => 'slide_nav_fade_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Fade", 'lang_theme_core').")", 'default' => "rgba(0, 0, 0, .7)");
+
+				if($theme_dir_name == 'mf_theme')
+				{
+					$options_params[] = array('type' => 'number', 'input_attrs' => array(
+						'min' => .1,
+						'max' => 2,
+						'step' => .1,
+					), 'id' => 'slide_nav_animation_length', 'title' => __("Animation Length", 'lang_theme_core'), 'default' => .5);
+				}
+
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_bg_full', 'title' => __("Background", 'lang_theme_core'));
+				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg', 'title' => __("Background Color", 'lang_theme_core'), 'default' => "#fff");
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_width', 'title' => __("Width", 'lang_theme_core'), 'default' => "90%");
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_max_width', 'title' => __("Max Width", 'lang_theme_core'), 'default' => "300px");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color', 'title' => __("Text Color", 'lang_theme_core'));
 
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_letter_spacing', 'title' => __("Letter Spacing", 'lang_theme_core'), 'default' => ".2em");
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_link_padding', 'title' => __("Link Padding", 'lang_theme_core'), 'default' => "1.5em 1em 1em");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_bg_hover', 'title' => __("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_hover', 'title' => __("Text Color", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_color');
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_hover_indent', 'title' => __("Text Indent", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'default' => ".3em");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_color_current', 'title' => __("Text Color", 'lang_theme_core')." (".__("Current", 'lang_theme_core').")");
 				$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg', 'title' => __("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core'));
-					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Submenu", 'lang_theme_core')." - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
+					$options_params[] = array('type' => 'text', 'id' => 'slide_nav_sub_font_size', 'title' => " - ".__("Font Size", 'lang_theme_core'));
+					$options_params[] = array('type' => 'weight', 'id' => 'slide_nav_sub_font_weight', 'title' => " - ".__("Weight", 'lang_theme_core'));
+					$options_params[] = array('type' => 'color', 'id' => 'slide_nav_sub_bg_hover', 'title' => " - ".__("Background", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'show_if' => 'slide_nav_bg');
+				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_sub_indent', 'title' => " - ".__("Text Indent", 'lang_theme_core'), 'default' => "1.4em");
+					$options_params[] = array('type' => 'text', 'id' => 'slide_nav_sub_hover_indent', 'title' => " - ".__("Text Indent", 'lang_theme_core')." (".__("Hover", 'lang_theme_core').")", 'default' => "2em");
 
 			$options_params[] = array('category_end' => "");
 		}
@@ -2775,9 +2794,9 @@ class mf_theme_core
 					if(is_active_widget_area('widget_slide'))
 					{
 						$out .= "#mf-slide-nav
-						{
-							background: rgba(0, 0, 0, .7);
-							bottom: 0;
+						{"
+							//.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_fade_bg'))
+							."bottom: 0;
 							display: none;
 							left: 0;
 							position: absolute;
@@ -2789,7 +2808,8 @@ class mf_theme_core
 
 							#mf-slide-nav > div
 							{"
-								.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg'))
+								.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_full'))
+								.$this->render_css(array('property' => 'background-color', 'value' => 'slide_nav_bg'))
 								."bottom: 0;"
 								.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
 								.$this->render_css(array('property' => 'font-family', 'value' => 'nav_font'))
@@ -2850,14 +2870,15 @@ class mf_theme_core
 									#mf-slide-nav .theme_nav
 									{"
 										.$this->render_css(array('property' => 'font-size', 'value' => 'nav_size'))
+										.$this->render_css(array('property' => 'font-weight', 'value' => 'nav_font_weight'))
 									."}
 
 										#mf-slide-nav .theme_nav ul a
 										{"
 											.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color'))
-											."display: block;
-											letter-spacing: .2em;
-											overflow: hidden;"
+											."display: block;"
+											.$this->render_css(array('property' => 'letter-spacing', 'value' => 'slide_nav_letter_spacing'))
+											."overflow: hidden;"
 											.$this->render_css(array('property' => 'padding', 'value' => 'slide_nav_link_padding'))
 											."text-overflow: ellipsis;
 											transition: all .4s ease;
@@ -2868,8 +2889,9 @@ class mf_theme_core
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
 												.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color_hover'))
-												."text-indent: .3em;
-											}
+												//."text-indent: .3em;"
+												.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_hover_indent'))
+											."}
 
 											#mf-slide-nav .theme_nav li.current_page_item > a
 											{"
@@ -2902,14 +2924,18 @@ class mf_theme_core
 										#mf-slide-nav .theme_nav li ul a
 										{"
 											.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg'))
-											."text-indent: 1.4em;
-										}
+											.$this->render_css(array('property' => 'font-size', 'value' => 'slide_nav_sub_font_size'))
+											.$this->render_css(array('property' => 'font-weight', 'value' => 'slide_nav_sub_font_weight'))
+											//."text-indent: 1.4em;"
+											.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_sub_indent'))
+										."}
 
 											#mf-slide-nav .theme_nav li ul a:hover
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg_hover'))
-												."text-indent: 2em;
-											}";
+												//."text-indent: 2em;"
+												.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_sub_hover_indent'))
+											."}";
 					}
 
 			$out .= ".aside ul a:hover, .aside ol a:hover
