@@ -2486,6 +2486,12 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Roboto+Slab"
 		);
 
+		$this->options_fonts['ropa_sans'] = array(
+			'title' => "Ropa Sans",
+			'style' => "'Ropa Sans', sans-serif",
+			'url' => "//fonts.googleapis.com/css2?family=Ropa+Sans&display=swap"
+		);
+
 		$this->options_fonts['rouge_script'] = array(
 			'title' => "Rouge Script",
 			'style' => "'Rouge Script', cursive",
