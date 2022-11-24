@@ -10,30 +10,37 @@ if(!defined('ABSPATH'))
 }
 
 echo "if(document.cookie.indexOf('cookie_accepted=') !== -1)
-{";
+{
+	jQuery(function($)
+	{";
 
-	$obj_theme_core = new mf_theme_core();
+		$obj_theme_core = new mf_theme_core();
 
-	$obj_theme_core->get_theme_fonts();
-	$obj_theme_core->get_params();
+		$obj_theme_core->get_theme_fonts();
+		$obj_theme_core->get_params();
 
-	foreach($obj_theme_core->options_params as $arr_param)
-	{
-		if(isset($arr_param['type']) && $arr_param['type'] == 'font' && isset($obj_theme_core->options[$arr_param['id']]))
+		foreach($obj_theme_core->options_params as $arr_param)
 		{
-			$font = $obj_theme_core->options[$arr_param['id']];
-
-			if(isset($obj_theme_core->options_fonts[$font]['url']) && $obj_theme_core->options_fonts[$font]['url'] != '')
+			if(isset($arr_param['type']) && $arr_param['type'] == 'font' && isset($obj_theme_core->options[$arr_param['id']]))
 			{
-				echo "var no = document.createElement('link');
-				no.rel = 'stylesheet';
-				no.id = 'style_font_".$font."-css';
-				no.href = '".$obj_theme_core->options_fonts[$font]['url']."';
-				no.type = 'text/css';
-				no.media = 'all';
-				var s = document.getElementsByTagName('link')[0]; s.parentNode.insertBefore(no, s);";
+				$font = $obj_theme_core->options[$arr_param['id']];
+
+				if(isset($obj_theme_core->options_fonts[$font]['url']) && $obj_theme_core->options_fonts[$font]['url'] != '')
+				{
+					/*echo "var style_tag = document.createElement('link');
+					style_tag.rel = 'stylesheet';
+					style_tag.id = 'style_font_".$font."-css';
+					style_tag.href = '".$obj_theme_core->options_fonts[$font]['url']."';
+					style_tag.type = 'text/css';
+					style_tag.media = 'all';
+					
+					var first_sibling_tag = document.getElementsByTagName('link')[0];
+					first_sibling_tag.parentNode.insertBefore(style_tag, first_sibling_tag);";*/
+
+					echo "$('head').append(\"<link rel='stylesheet' href='".$obj_theme_core->options_fonts[$font]['url']."'>\");";
+				}
 			}
 		}
-	}
 
-echo "}";
+	echo "});
+}";

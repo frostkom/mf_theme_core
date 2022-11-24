@@ -199,7 +199,7 @@ class mf_theme_core
 				{
 					list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (60 * 60 * 24 * 60))); //60 days
+					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (DAY_IN_SECONDS * 60)));
 
 					// Check if this works before use
 					//@rmdir($upload_path); // If it is empty, it is deleted
@@ -2800,9 +2800,8 @@ class mf_theme_core
 					if(is_active_widget_area('widget_slide'))
 					{
 						$out .= "#mf-slide-nav
-						{"
-							//.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_fade_bg'))
-							."bottom: 0;
+						{
+							bottom: 0;
 							display: none;
 							left: 0;
 							position: absolute;
@@ -2827,8 +2826,8 @@ class mf_theme_core
 								max-width: 300px;"*/
 								//.$this->render_css(array('property' => 'width', 'value' => 'slide_nav_width'))
 								//.$this->render_css(array('property' => 'max-width', 'value' => 'slide_nav_max_width'))
-								."width: 100%;"
-							."}
+								."width: 100%;
+							}
 
 								#mf-slide-nav .searchform
 								{
@@ -2896,7 +2895,6 @@ class mf_theme_core
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
 												.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color_hover'))
-												//."text-indent: .3em;"
 												.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_hover_indent'))
 											."}
 
@@ -2933,14 +2931,12 @@ class mf_theme_core
 											.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg'))
 											.$this->render_css(array('property' => 'font-size', 'value' => 'slide_nav_sub_font_size'))
 											.$this->render_css(array('property' => 'font-weight', 'value' => 'slide_nav_sub_font_weight'))
-											//."text-indent: 1.4em;"
 											.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_sub_indent'))
 										."}
 
 											#mf-slide-nav .theme_nav li ul a:hover
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_sub_bg_hover'))
-												//."text-indent: 2em;"
 												.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_sub_hover_indent'))
 											."}";
 					}
@@ -3463,7 +3459,6 @@ class mf_theme_core
 				if($this->clone_single_post())
 				{
 					mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_post_title($post_id)));
-					//mf_redirect(admin_url("post.php?post=".$this->post_id."&action=edit"));
 				}
 
 				else
@@ -3719,9 +3714,6 @@ class mf_theme_core
 		if(IS_ADMIN)
 		{
 			$post_id = check_var('post');
-			/*$post_id = get_rwmb_post_id(array(
-				'meta_key' => 'meta_theme_core_',
-			));*/
 
 			$arr_fields = array();
 
@@ -3875,25 +3867,22 @@ class mf_theme_core
 		$update_with = "";
 
 		/* Use instead of template_redirect -> is_author()? */
-		/*if(1 == 1)
+		/*switch($obj_base->get_server_type())
 		{
-			switch($obj_base->get_server_type())
-			{
-				default:
-				case 'apache':
-					$update_with .= "<IfModule mod_rewrite.c>\r\n"
-					."	RewriteCond %{QUERY_STRING} ^author= [NC]\r\n"
-					."	RewriteRule .* /404/? [L,R=301]\r\n"
-					."	RewriteRule ^author/ /404/? [L,R=301]\r\n"
-					."</IfModule>";
-				break;
+			default:
+			case 'apache':
+				$update_with .= "<IfModule mod_rewrite.c>\r\n"
+				."	RewriteCond %{QUERY_STRING} ^author= [NC]\r\n"
+				."	RewriteRule .* /404/? [L,R=301]\r\n"
+				."	RewriteRule ^author/ /404/? [L,R=301]\r\n"
+				."</IfModule>";
+			break;
 
-				case 'nginx':
-					$update_with .= "location /author= {\r\n"
-					."	deny all;\r\n"
-					."}";
-				break;
-			}
+			case 'nginx':
+				$update_with .= "location /author= {\r\n"
+				."	deny all;\r\n"
+				."}";
+			break;
 		}*/
 
 		if((!is_multisite() || is_main_site()) && get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
@@ -3935,27 +3924,9 @@ class mf_theme_core
 		return $data;
 	}
 
-	/*function is_cookie_accepted()
-	{
-		return (isset($_COOKIE) && count($_COOKIE) > 0 && isset($_COOKIE['cookie_accepted']));
-	}*/
-
 	function get_allow_cookies()
 	{
-		/*if($this->is_cookie_accepted())
-		{
-			return true;
-		}
-
-		else */if(get_option('setting_cookie_deactivate_until_allowed') != 'yes')
-		{
-			return true;
-		}
-
-		else
-		{
-			return false;
-		}
+		return (get_option('setting_cookie_deactivate_until_allowed') != 'yes');
 	}
 
 	function mf_unregister_widget($id)
@@ -4999,7 +4970,6 @@ class mf_theme_core
 					$last_updated_manual_post_types = array_diff($arr_post_types, apply_filters('filter_last_updated_post_types', array(), 'manual'));
 
 					$result = $wpdb->get_results("SELECT ID, post_title, post_modified FROM ".$wpdb->posts." WHERE post_type IN ('".implode("','", $last_updated_manual_post_types)."') AND post_status != 'auto-draft' ORDER BY post_modified DESC LIMIT 0, 1");
-					//$last_updated_comments = $wpdb->get_var("SELECT comment_date FROM ".$wpdb->comments." ORDER BY comment_date LIMIT 0, 1");
 
 					foreach($result as $r)
 					{
@@ -5058,7 +5028,6 @@ class mf_theme_core
 		if(is_dir($folder) && count(@scandir($folder)) == 2)
 		{
 			@rmdir($folder);
-			//do_log("Removed Empty Folder: ".$folder);
 		}
 	}
 
@@ -5583,8 +5552,6 @@ class widget_theme_core_news extends WP_Widget
 					else
 					{
 						$widget_class .= " news_single";
-
-						//do_log("theme_news: ".var_export($this, true));
 					}
 
 					if($instance['news_display_title'] == 'yes')
@@ -5698,7 +5665,7 @@ class widget_theme_core_news extends WP_Widget
 
 					echo "</div>";
 
-					if($display_hide_news) // && $this->get_allow_cookies() // Should not have to be here since it does not save any personal/sensitive data
+					if($display_hide_news)
 					{
 						$plugin_include_url = plugin_dir_url(__FILE__);
 						$plugin_version = get_plugin_version(__FILE__);
@@ -5856,8 +5823,6 @@ class widget_theme_core_info extends WP_Widget
 				{
 					if(isset($arr_meta_time_visit_limit[0]) && is_array($arr_meta_time_visit_limit[0]))
 					{
-						//do_log("check_limit(): Array exists but is not formatted correctly (".var_export($arr_meta_time_visit_limit, true).")");
-
 						$arr_meta_time_visit_limit = $arr_meta_time_visit_limit[0];
 					}
 
@@ -5935,14 +5900,8 @@ class widget_theme_core_info extends WP_Widget
 
 			else
 			{
-				/*if(!session_id())
-				{
-					@session_start();
-				}*/
-
 				$cookie_name = 'cookie_theme_core_info_visit_limit';
 
-				//$arr_ses_info_visit_limit = check_var('ses_info_visit_limit', 'array', true, '0');
 				$arr_ses_info_visit_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : array());
 
 				if(!isset($arr_ses_info_visit_limit[$widget_md5]))
@@ -5962,11 +5921,8 @@ class widget_theme_core_info extends WP_Widget
 
 				else
 				{
-					//$_SESSION['ses_info_visit_limit'] = $arr_ses_info_visit_limit;
 					setcookie($cookie_name, $arr_ses_info_visit_limit, strtotime("+1 month"), COOKIEPATH);
 				}
-
-				//session_write_close();
 			}
 		}
 
@@ -6389,7 +6345,7 @@ class widget_theme_core_promo extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['promo_title'] = sanitize_text_field($new_instance['promo_title']);
-		$instance['promo_include'] = is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : array();
+		$instance['promo_include'] = (is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : array());
 		$instance['promo_page_titles'] = sanitize_text_field($new_instance['promo_page_titles']);
 
 		return $instance;
