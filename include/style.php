@@ -187,8 +187,9 @@ echo "@media all
 
 	if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-widget-area-widget') > 0)
 	{
-		echo ".widget.theme_widget_area .widget_columns
+		echo ".widget.theme_widget_area .widget_columns, header .widget_columns
 		{
+			clear: both;
 			display: -webkit-box;
 			display: -ms-flexbox;
 			display: -webkit-flex;
@@ -199,13 +200,12 @@ echo "@media all
 			flex-wrap: wrap;
 		}
 
-			.is_mobile .widget.theme_widget_area .widget_columns
+			.is_mobile .widget.theme_widget_area .widget_columns, .is_mobile header .widget_columns
 			{
-				/*display: block;*/
 				flex-direction: column;
 			}
 
-				.is_mobile .widget.theme_widget_area .widget_columns .widget + .widget
+				.is_mobile .widget.theme_widget_area .widget_columns .widget + .widget, .is_mobile header .widget_columns .widget + .widget
 				{
 					margin-top: 1em;
 				}";
@@ -214,7 +214,7 @@ echo "@media all
 			{
 				$width = (100 / $i);
 
-				echo ".widget.theme_widget_area .columns_".$i." .widget
+				echo ".widget.theme_widget_area .widget_columns.columns_".$i." .widget, header .widget_columns.columns_".$i." .widget
 				{
 					-webkit-box-flex: 1 0 ".$width."%;
 					-webkit-flex: 1 0 ".$width."%;
@@ -225,7 +225,7 @@ echo "@media all
 
 				if($i >= 4)
 				{
-					echo ".is_tablet .widget.theme_widget_area .columns_".$i." .widget
+					echo ".is_tablet .widget.theme_widget_area .widget_columns.columns_".$i." .widget, .is_tablet header .widget_columns.columns_".$i." .widget
 					{
 						-webkit-box-flex: 1 0 50%;
 						-webkit-flex: 1 0 50%;

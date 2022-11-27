@@ -1345,7 +1345,7 @@ class mf_theme_core
 
 		echo "<meta charset='".get_bloginfo('charset')."'>"
 		."<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
-		//."<meta name='author' content='frostkom.se'>"
+		//."<meta name='author' content='martinfors.se'>"
 		."<title>".$this->get_wp_title()."</title>";
 
 		if(is_user_logged_in() == false)
@@ -2372,6 +2372,12 @@ class mf_theme_core
 			);
 		}
 
+		$this->options_fonts['acme'] = array(
+			'title' => "Acme",
+			'style' => "'Acme', sans-serif",
+			'url' => "//fonts.googleapis.com/css2?family=Acme"
+		);
+
 		$this->options_fonts[2] = array(
 			'title' => "Arial",
 			'style' => "Arial, sans-serif",
@@ -2382,6 +2388,12 @@ class mf_theme_core
 			'title' => "Courgette",
 			'style' => "'Courgette', cursive",
 			'url' => "//fonts.googleapis.com/css?family=Courgette"
+		);
+
+		$this->options_fonts['dancing_script'] = array(
+			'title' => "Dancing Script",
+			'style' => "'Dancing Script', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Dancing+Script:wght@600"
 		);
 
 		$this->options_fonts[3] = array(
@@ -2408,16 +2420,34 @@ class mf_theme_core
 			'url' => ""
 		);
 
+		$this->options_fonts['indie_flower'] = array(
+			'title' => "Indie Flower",
+			'style' => "'Indie Flower', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Indie+Flower"
+		);
+
 		$this->options_fonts['inter'] = array(
 			'title' => "Inter",
 			'style' => "'Inter', sans-serif",
 			'url' => "//fonts.googleapis.com/css2?family=Inter:wght@100..900"
 		);
 
+		$this->options_fonts['kalam'] = array(
+			'title' => "Kalam",
+			'style' => "'Kalam', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Kalam:wght@700"
+		);
+
 		$this->options_fonts['lato'] = array(
 			'title' => "Lato",
 			'style' => "'Lato', sans-serif",
 			'url' => "//fonts.googleapis.com/css?family=Lato"
+		);
+
+		$this->options_fonts['lobster'] = array(
+			'title' => "Lobster",
+			'style' => "'Lobster', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Lobster"
 		);
 
 		$this->options_fonts['montserrat'] = array(
@@ -2430,6 +2460,12 @@ class mf_theme_core
 			'title' => "Muli",
 			'style' => "'Muli', sans-serif",
 			'url' => "//fonts.googleapis.com/css?family=Muli:300,400"
+		);
+
+		$this->options_fonts['nerko_one'] = array(
+			'title' => "Nerko One",
+			'style' => "'Nerko One', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Nerko+One"
 		);
 
 		$this->options_fonts[4] = array(
@@ -2448,6 +2484,18 @@ class mf_theme_core
 			'title' => "Oxygen",
 			'style' => "'Oxygen', sans-serif",
 			'url' => "//fonts.googleapis.com/css?family=Oxygen"
+		);
+
+		$this->options_fonts['pacifico'] = array(
+			'title' => "Pacifico",
+			'style' => "'', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Pacifico"
+		);
+
+		$this->options_fonts['patrick_hand'] = array(
+			'title' => "Patrick Hand",
+			'style' => "'Patrick Hand', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Patrick+Hand"
 		);
 
 		$this->options_fonts['playfair_display'] = array(
@@ -2498,6 +2546,18 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Rouge+Script"
 		);
 
+		$this->options_fonts['rubik_distressed'] = array(
+			'title' => "Rubik Distressed",
+			'style' => "'Rubik Distressed', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Rubik+Distressed"
+		);
+
+		$this->options_fonts['satisfy'] = array(
+			'title' => "Satisfy",
+			'style' => "'Satisfy', cursive",
+			'url' => "//fonts.googleapis.com/css2?family=Satisfy"
+		);
+
 		$this->options_fonts['sorts_mill_goudy'] = array(
 			'title' => "Sorts Mill Goudy",
 			'style' => "'sorts-mill-goudy',serif",
@@ -2508,6 +2568,12 @@ class mf_theme_core
 			'title' => "Source Sans Pro",
 			'style' => "'Source Sans Pro', sans-serif",
 			'url' => "//fonts.googleapis.com/css?family=Source+Sans+Pro"
+		);
+
+		$this->options_fonts['titillium_web'] = array(
+			'title' => "Titillium Web",
+			'style' => "'Titillium Web', sans-serif",
+			'url' => "//fonts.googleapis.com/css2?family=Titillium+Web"
 		);
 	}
 
