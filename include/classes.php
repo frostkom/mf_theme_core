@@ -3398,14 +3398,14 @@ class mf_theme_core
 			{
 				if($data['display'] != 'tagline')
 				{
-					$logo_title = $data['title'] != '' ? $data['title'] : get_bloginfo('name');
+					$logo_title = ($data['title'] != '' ? $data['title'] : get_bloginfo('name'));
 
-					$out .= "<div>".$logo_title."</div>";
+					$out .= "<div>".apply_filters('filter_logo_title', $logo_title)."</div>";
 				}
 
 				if($data['display'] != 'title')
 				{
-					$logo_description = $data['description'] != '' ? $data['description'] : get_bloginfo('description');
+					$logo_description = ($data['description'] != '' ? $data['description'] : get_bloginfo('description'));
 
 					if($logo_description != '')
 					{
