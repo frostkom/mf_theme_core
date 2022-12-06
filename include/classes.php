@@ -170,6 +170,25 @@ class mf_theme_core
 		); //'formatdiv', 'tagsdiv',
 	}
 
+	function set_noindex_on_page($option)
+	{
+		if(is_array($option))
+		{
+			if(count($option) > 0)
+			{
+				foreach($option as $option_value)
+				{
+					update_post_meta($option_value, $this->meta_prefix.'page_index', 'noindex');
+				}
+			}
+		}
+
+		else if($option > 0)
+		{
+			update_post_meta($option, $this->meta_prefix.'page_index', 'noindex');
+		}
+	}
+
 	function cron_base()
 	{
 		$obj_cron = new mf_cron();
@@ -610,6 +629,8 @@ class mf_theme_core
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
+
+			$this->set_noindex_on_page($option);
 		}
 
 		function setting_theme_core_hidden_meta_boxes_callback()
@@ -682,7 +703,17 @@ class mf_theme_core
 				$option = array_map('trim', explode(",", $option));
 			}
 
-			echo show_select(array('data' => $this->get_params_for_select(), 'name' => $setting_key."[]", 'value' => $option));
+			$arr_params_for_select = $this->get_params_for_select();
+
+			if(count($arr_params_for_select) > 0)
+			{
+				echo show_select(array('data' => $arr_params_for_select, 'name' => $setting_key."[]", 'value' => $option));
+			}
+
+			else
+			{
+				echo "<em>".__("There are no styles to restore", 'lang_theme_core')."</em>";
+			}
 		}
 
 		/*function setting_theme_css_hero_callback()
@@ -830,6 +861,8 @@ class mf_theme_core
 			$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
+
+			$this->set_noindex_on_page($option);
 		}
 
 		function setting_maintenance_page_callback()
@@ -943,6 +976,8 @@ class mf_theme_core
 
 				echo get_notification();
 			}
+
+			$this->set_noindex_on_page($option);
 		}
 
 		function setting_activate_maintenance_callback()
