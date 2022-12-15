@@ -537,7 +537,7 @@ class mf_theme_core
 
 			$arr_settings = array();
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
-			$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
+			//$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
 			if(does_post_exists(array('post_type' => 'post')))
@@ -746,14 +746,13 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
-		function setting_theme_core_display_lock_callback()
+		/*function setting_theme_core_display_lock_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option($setting_key, ($this->is_theme_active() ? array('administrator', 'editor', 'author', 'contributor') : array()));
-			//$option = get_option($setting_key, array('switch_themes', 'moderate_comments', 'upload_files', 'edit_posts'));
 
 			echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
-		}
+		}*/
 
 		function setting_theme_core_title_format_callback()
 		{
@@ -1503,22 +1502,22 @@ class mf_theme_core
 
 		if($user_id > 0)
 		{
-			$setting_theme_core_display_lock = get_option('setting_theme_core_display_lock');
+			//$setting_theme_core_display_lock = get_option('setting_theme_core_display_lock');
 
-			if(is_array($setting_theme_core_display_lock) && in_array(get_current_user_role($user_id), $setting_theme_core_display_lock))
-			{
+			/*if(is_array($setting_theme_core_display_lock) && in_array(get_current_user_role($user_id), $setting_theme_core_display_lock))
+			{*/
 				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
 				$this->footer_output .= "<div id='site_locked'>
-					<a href='".admin_url()."'><i class='fa fa-lock'></i></a>";
+					<a href='".admin_url()."'><i class='fa fa-lock' title='".__("Go to Admin", 'lang_theme_core')."'></i></a>";
 
-					if(isset($post->ID) && current_user_can('edit_pages'))
+					if(isset($post->ID) && IS_EDITOR)
 					{
-						$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench'></i></a>";
+						$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench' title='".__("Edit Page", 'lang_theme_core')."'></i></a>";
 					}
 
 				$this->footer_output .= "</div>";
-			}
+			//}
 		}
 
 		if(get_option('setting_theme_core_login') == 'yes')
@@ -5304,7 +5303,7 @@ class widget_theme_core_area extends WP_Widget
 
 		if(is_active_sidebar('widget_area_'.$instance['widget_area_id']))
 		{
-			echo $before_widget
+			echo apply_filters('filter_before_widget', $before_widget)
 				."<div id='widget_area_".str_replace("-", "_", $instance['widget_area_id'])."' class='widget_columns columns_".$instance['widget_area_columns']."'>";
 
 					dynamic_sidebar('widget_area_'.$instance['widget_area_id']);
@@ -5386,7 +5385,7 @@ class widget_theme_core_logo extends WP_Widget
 			$obj_theme_core = new mf_theme_core();
 		}
 
-		echo $before_widget
+		echo apply_filters('filter_before_widget', $before_widget)
 			.$this->obj_theme_core->get_logo($arr_data)
 		.$after_widget;
 	}
@@ -5621,7 +5620,7 @@ class widget_theme_core_news extends WP_Widget
 
 			if($display_hide_news == false)
 			{
-				echo $before_widget;
+				echo apply_filters('filter_before_widget', $before_widget);
 
 					if($instance['news_title'] != '')
 					{
@@ -6041,7 +6040,7 @@ class widget_theme_core_info extends WP_Widget
 
 		if($this->check_limit($instance))
 		{
-			echo $before_widget
+			echo apply_filters('filter_before_widget', $before_widget)
 				."<div class='section'>
 					<div>";
 
@@ -6241,7 +6240,7 @@ class widget_theme_core_related extends WP_Widget
 
 		if(count($this->arr_news) > 0)
 		{
-			echo $before_widget;
+			echo apply_filters('filter_before_widget', $before_widget);
 
 				if($instance['news_title'] != '')
 				{
@@ -6394,7 +6393,7 @@ class widget_theme_core_promo extends WP_Widget
 
 			if($rows > 0)
 			{
-				echo $before_widget;
+				echo apply_filters('filter_before_widget', $before_widget);
 
 					if($instance['promo_title'] != '')
 					{
@@ -6500,7 +6499,7 @@ class widget_theme_core_page_index extends WP_Widget
 
 			if(count($arr_tags) > 1)
 			{
-				echo $before_widget;
+				echo apply_filters('filter_before_widget', $before_widget);
 
 					if($instance['widget_title'] != '')
 					{
