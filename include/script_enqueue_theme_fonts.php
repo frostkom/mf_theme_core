@@ -33,7 +33,7 @@ echo "if(document.cookie.indexOf('cookie_accepted=') !== -1)
 					style_tag.href = '".$obj_theme_core->options_fonts[$font]['url']."';
 					style_tag.type = 'text/css';
 					style_tag.media = 'all';
-					
+
 					var first_sibling_tag = document.getElementsByTagName('link')[0];
 					first_sibling_tag.parentNode.insertBefore(style_tag, first_sibling_tag);";*/
 

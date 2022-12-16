@@ -3583,7 +3583,7 @@ class mf_theme_core
 	{
 		unset($cols['comments']);
 
-		if($this->is_site_public() && check_var('post_status') != 'trash')
+		if(check_var('post_status') != 'trash') //$this->is_site_public() && 
 		{
 			$cols['seo'] = __("SEO", 'lang_theme_core');
 		}
@@ -3817,7 +3817,7 @@ class mf_theme_core
 
 			$arr_fields = array();
 
-			if($this->is_site_public() && $this->check_if_correct_post_type($post_id))
+			if($this->check_if_correct_post_type($post_id)) //$this->is_site_public() && 
 			{
 				$arr_fields[] = array(
 					'name' => __("Index", 'lang_theme_core'),
