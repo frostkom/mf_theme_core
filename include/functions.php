@@ -5,34 +5,6 @@ function get_image_fallback()
 	return "<img src='".get_site_url()."/wp-content/plugins/mf_theme_core/images/blank.svg' class='image_fallback'>";
 }
 
-/*function add_css_selectors($array = array())
-{
-	if(is_plugin_active("css-hero-ce/css-hero-main.php"))
-	{
-		$setting_theme_css_hero = get_option('setting_theme_css_hero');
-		$arr_setting_theme_css_hero = explode("\n", $setting_theme_css_hero);
-
-		$added = false;
-
-		foreach($array as $selector)
-		{
-			if(!in_array($selector, $arr_setting_theme_css_hero))
-			{
-				$arr_setting_theme_css_hero[] = $selector;
-
-				$added = true;
-			}
-		}
-
-		if(true == $added)
-		{
-			$setting_theme_css_hero = implode("\n", $arr_setting_theme_css_hero);
-
-			update_option('setting_theme_css_hero', $setting_theme_css_hero);
-		}
-	}
-}*/
-
 function get_menu_type_for_select()
 {
 	global $obj_theme_core;

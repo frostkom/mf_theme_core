@@ -506,16 +506,6 @@ class mf_theme_core
 			{
 				delete_option('setting_theme_ignore_style_on_restore');
 			}
-
-			/*if(is_plugin_active("css-hero-ce/css-hero-main.php"))
-			{
-				$arr_settings['setting_theme_css_hero'] = sprintf(__("%s Support", 'lang_theme_core'), "CSS Hero");
-			}
-
-			else
-			{
-				delete_option('setting_theme_css_hero');
-			}*/
 		}
 
 		if(IS_SUPER_ADMIN)
@@ -537,7 +527,6 @@ class mf_theme_core
 
 			$arr_settings = array();
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
-			//$arr_settings['setting_theme_core_display_lock'] = __("Display Lock", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
 			if(does_post_exists(array('post_type' => 'post')))
@@ -716,21 +705,6 @@ class mf_theme_core
 			}
 		}
 
-		/*function setting_theme_css_hero_callback()
-		{
-			$css_hero_key = 'wpcss_quick_config_settings_'.$this->get_theme_slug();
-
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option_or_default($setting_key, get_option($css_hero_key));
-
-			if($option != '')
-			{
-				echo show_textarea(array('name' => $setting_key, 'value' => $option, 'placeholder' => "#site_logo, #main", 'description' => sprintf("...", "<a href='".get_site_url()."?csshero_action=edit_page'>", "</a>")));
-			}
-
-			update_option($css_hero_key, $option);
-		}*/
-
 	function settings_theme_core_public_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
@@ -745,14 +719,6 @@ class mf_theme_core
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
-
-		/*function setting_theme_core_display_lock_callback()
-		{
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option($setting_key, ($this->is_theme_active() ? array('administrator', 'editor', 'author', 'contributor') : array()));
-
-			echo show_select(array('data' => get_roles_for_select(array('add_choose_here' => false, 'use_capability' => false)), 'name' => $setting_key."[]", 'value' => $option));
-		}*/
 
 		function setting_theme_core_title_format_callback()
 		{
@@ -1502,22 +1468,17 @@ class mf_theme_core
 
 		if($user_id > 0)
 		{
-			//$setting_theme_core_display_lock = get_option('setting_theme_core_display_lock');
+			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
-			/*if(is_array($setting_theme_core_display_lock) && in_array(get_current_user_role($user_id), $setting_theme_core_display_lock))
-			{*/
-				mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
+			$this->footer_output .= "<div id='site_locked'>
+				<a href='".admin_url()."'><i class='fa fa-lock' title='".__("Go to Admin", 'lang_theme_core')."'></i></a>";
 
-				$this->footer_output .= "<div id='site_locked'>
-					<a href='".admin_url()."'><i class='fa fa-lock' title='".__("Go to Admin", 'lang_theme_core')."'></i></a>";
+				if(isset($post->ID) && IS_EDITOR)
+				{
+					$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench' title='".__("Edit Page", 'lang_theme_core')."'></i></a>";
+				}
 
-					if(isset($post->ID) && IS_EDITOR)
-					{
-						$this->footer_output .= "<a href='".admin_url("post.php?post=".$post->ID."&action=edit")."'><i class='fa fa-wrench' title='".__("Edit Page", 'lang_theme_core')."'></i></a>";
-					}
-
-				$this->footer_output .= "</div>";
-			//}
+			$this->footer_output .= "</div>";
 		}
 
 		if(get_option('setting_theme_core_login') == 'yes')
@@ -1904,10 +1865,8 @@ class mf_theme_core
 					$options_params[] = array('type' => 'checkbox', 'id' => 'pre_header_full_width', 'title' => __("Full Width", 'lang_theme_core'), 'default' => 1);
 					$options_params[] = array('type' => 'text', 'id' => 'pre_header_bg', 'title' => __("Background", 'lang_theme_core'));
 						$options_params[] = array('type' => 'color', 'id' => 'pre_header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'));
-						//$options_params[] = array('type' => 'image', 'id' => 'pre_header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 					$options_params[] = array('type' => 'text', 'id' => 'pre_header_widget_font_size', 'title' => __("Font Size", 'lang_theme_core'));
 					$options_params[] = array('type' => 'text', 'id' => 'pre_header_padding', 'title' => __("Padding", 'lang_theme_core'));
-						//$options_params[] = array('type' => 'text', 'id' => 'pre_header_widget_padding', 'title' => " - ".__("Widget Padding", 'lang_theme_core'));
 					$options_params[] = array('type' => 'color', 'id' => 'pre_header_color', 'title' => __("Text Color", 'lang_theme_core'));
 					$options_params[] = array('type' => 'overflow', 'id' => 'pre_header_overflow', 'title' => __("Overflow", 'lang_theme_core'));
 				$options_params[] = array('category_end' => "");
@@ -2825,14 +2784,9 @@ class mf_theme_core
 						header > div
 						{"
 							.$this->render_css(array('property' => 'padding', 'value' => 'header_padding'))
-						."}";
+						."}
 
-						/*#site_logo.has_logo_hover .desktop_logo
-						{
-							display: block;
-						}*/
-
-							$out .= "#site_logo.has_logo_hover:hover .desktop_logo
+							#site_logo.has_logo_hover:hover .desktop_logo
 							{
 								display: none;
 							}
@@ -5475,11 +5429,15 @@ class widget_theme_core_search extends WP_Widget
 			mf_enqueue_script('script_theme_core_search', $plugin_include_url."script_search.js", $plugin_version);
 		}
 
-		echo $this->obj_theme_core->get_search_theme_core(array(
-			'placeholder' => $instance['search_placeholder'],
-			'hide_on_mobile' => (isset($instance['search_hide_on_mobile']) ? $instance['search_hide_on_mobile'] : ''),
-			'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : ''),
-		));
+		echo apply_filters('filter_before_widget', $before_widget);
+
+			echo $this->obj_theme_core->get_search_theme_core(array(
+				'placeholder' => $instance['search_placeholder'],
+				'hide_on_mobile' => (isset($instance['search_hide_on_mobile']) ? $instance['search_hide_on_mobile'] : ''),
+				'animate' => (isset($instance['search_animate']) ? $instance['search_animate'] : ''),
+			));
+
+		echo $after_widget;
 	}
 
 	function update($new_instance, $old_instance)
