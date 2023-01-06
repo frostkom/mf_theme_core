@@ -2004,11 +2004,28 @@ class mf_theme_core
 
 				if($theme_dir_name == 'mf_theme')
 				{
-					$options_params[] = array('type' => 'number', 'input_attrs' => array(
-						'min' => .1,
-						'max' => 2,
-						'step' => .1,
-					), 'id' => 'slide_nav_animation_length', 'title' => __("Animation Length", 'lang_theme_core'), 'default' => .5);
+					$options_params[] = array(
+						'type' => 'number',
+						'input_attrs' => array(
+							'min' => .1,
+							'max' => 2,
+							'step' => .1,
+						),
+						'id' => 'slide_nav_animation_length',
+						'title' => __("Animation Length", 'lang_theme_core'),
+						'default' => .5,
+					);
+
+					$options_params[] = array(
+						'type' => 'number',
+						'input_attrs' => array(
+							'min' => 0,
+							'max' => 100,
+						),
+						'id' => 'slide_nav_content_offset',
+						'title' => __("Content Offset", 'lang_theme_core'),
+						'default' => 20,
+					);
 				}
 
 				$options_params[] = array('type' => 'text', 'id' => 'slide_nav_bg_full', 'title' => __("Background", 'lang_theme_core'));
@@ -2911,7 +2928,7 @@ class mf_theme_core
 								#mf-slide-nav .fa-times
 								{
 									font-size: 2em;
-									margin: 3% 4%;
+									padding: 3% 4%;
 									position: absolute;
 									right: 0;
 									top: 0;
