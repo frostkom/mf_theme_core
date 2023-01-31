@@ -2969,7 +2969,7 @@ class mf_theme_core
 												.$this->render_css(array('property' => 'text-indent', 'value' => 'slide_nav_hover_indent'))
 											."}
 
-											#mf-slide-nav .theme_nav li.current_page_item > a
+											#wrapper #mf-slide-nav .theme_nav li.current_page_item > a
 											{"
 												.$this->render_css(array('property' => 'background', 'value' => 'slide_nav_bg_hover'))
 												.$this->render_css(array('property' => 'color', 'value' => 'slide_nav_color_current'))
