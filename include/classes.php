@@ -1845,16 +1845,20 @@ class mf_theme_core
 		$options_params[] = array('category_end' => "");
 
 		$options_params[] = array('category' => " - ".__("Forms", 'lang_theme_core'), 'id' => 'mf_theme_generic_forms');
+			$options_params[] = array('type' => 'color', 'id' => 'form_container_background_color', 'title' => __("Background Color", 'lang_theme_core')." (".__("Container", 'lang_theme_core').")");
+			$options_params[] = array('type' => 'text', 'id' => 'form_container_border', 'title' => __("Border", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'form_container_border_radius', 'title' => __("Border Radius", 'lang_theme_core'));
+			$options_params[] = array('type' => 'text', 'id' => 'form_container_padding', 'title' => __("Padding", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'form_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Fields", 'lang_theme_core').")", 'default' => ".3em");
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
-			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")");
+			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core'));
 
 			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_webshop/index.php") ? "1.3em" : ''));
 
-			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Button Color", 'lang_theme_core'), 'default' => "#000000");
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Button Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => "#c78e91");
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => get_option('setting_color_button_negative', "#e47676"));
-			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Button Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#e47676");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Color", 'lang_theme_core'), 'default' => "#000000");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => "#c78e91");
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => get_option('setting_color_button_negative', "#e47676"));
+			$options_params[] = array('type' => 'color', 'id' => 'button_color_negative', 'title' => __("Color", 'lang_theme_core')." (".__("Negative", 'lang_theme_core').")", 'default' => "#e47676");
 		$options_params[] = array('category_end' => "");
 
 		if($theme_dir_name == 'mf_theme')
@@ -2654,104 +2658,112 @@ class mf_theme_core
 				position: relative;
 			}
 
-		.form_textfield input, .form_password input, .mf_form textarea, .mf_form select, #comments #comment
+		.mf_form
 		{"
-			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
+			.$this->render_css(array('property' => 'background-color', 'value' => 'form_container_background_color'))
+			.$this->render_css(array('property' => 'border', 'value' => 'form_container_border'))
+			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_container_border_radius'))
+			.$this->render_css(array('property' => 'padding', 'value' => 'form_container_padding'))
 		."}
 
-		.form_button button, .form_button .button, #comments #submit
-		{"
-			.$this->render_css(array('property' => 'border-radius', 'value' => 'form_button_border_radius'))
-			.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
-			.$this->render_css(array('property' => 'padding', 'value' => 'form_button_padding'))
-		."}
-
-		#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
-		{"
-			.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')));
-
-			if(isset($this->options['button_color']) && $this->options['button_color'] != '')
-			{
-				if(!isset($obj_base))
-				{
-					$obj_base = new mf_base();
-				}
-
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
-			}
-
-			else if(isset($this->options['nav_color_hover']) && $this->options['nav_color_hover'] != '')
-			{
-				if(!isset($obj_base))
-				{
-					$obj_base = new mf_base();
-				}
-
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
-			}
-
-		$out .= "}
-
-		.form_button .color_button_border
-		{"
-			.$this->render_css(array('property' => 'border-color', 'value' => array('button_color', 'nav_color_hover')))
-			."border-style: solid;
-			border-width: .1em;"
-			.$this->render_css(array('property' => 'color', 'value' => array('button_color', 'nav_color_hover')))
-		."}
-
-			.form_button .color_button_border:hover
+			.form_textfield input, .form_password input, .mf_form textarea, .mf_form select, #comments #comment
 			{"
-				.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
-				."color: #fff;
-			}
-
-			.color_text
-			{"
-				.$this->render_css(array('property' => 'color', 'value' => 'button_color'))
+				.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
 			."}
 
-		#wrapper .button-secondary, .color_button_2
-		{"
-			.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"));
-
-			if(isset($this->options['button_color_secondary']) && $this->options['button_color_secondary'] != '')
-			{
-				if(!isset($obj_base))
-				{
-					$obj_base = new mf_base();
-				}
-
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary'])." !important";
-			}
-
-		$out .= "}
-
-			.color_text_2
+			.form_button button, .form_button .button, #comments #submit
 			{"
-				.$this->render_css(array('property' => 'color', 'value' => 'button_color_secondary'))
+				.$this->render_css(array('property' => 'border-radius', 'value' => 'form_button_border_radius'))
+				.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
+				.$this->render_css(array('property' => 'padding', 'value' => 'form_button_padding'))
 			."}
 
-		.color_button_negative
-		{"
-			.$this->render_css(array('property' => 'background', 'value' => 'button_color_negative', 'suffix' => " !important"));
+			#wrapper .mf_form button, #wrapper .button, .color_button, #wrapper .mf_form .button-primary, #comments #submit
+			{"
+				.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')));
 
-			if(isset($this->options['button_color_negative']) && $this->options['button_color_negative'] != '')
-			{
-				if(!isset($obj_base))
+				if(isset($this->options['button_color']) && $this->options['button_color'] != '')
 				{
-					$obj_base = new mf_base();
+					if(!isset($obj_base))
+					{
+						$obj_base = new mf_base();
+					}
+
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
 				}
 
-				$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_negative'])." !important";
-			}
+				else if(isset($this->options['nav_color_hover']) && $this->options['nav_color_hover'] != '')
+				{
+					if(!isset($obj_base))
+					{
+						$obj_base = new mf_base();
+					}
 
-		$out .= "}
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
+				}
 
-			#wrapper .mf_form button:hover, #wrapper .button:hover, .color_button:hover, #wrapper .mf_form .button-primary:hover, #comments #submit:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
-			{
-				box-shadow: inset 0 0 10em rgba(0, 0, 0, .2);
-			}
+			$out .= "}
+
+			.form_button .color_button_border
+			{"
+				.$this->render_css(array('property' => 'border-color', 'value' => array('button_color', 'nav_color_hover')))
+				."border-style: solid;
+				border-width: .1em;"
+				.$this->render_css(array('property' => 'color', 'value' => array('button_color', 'nav_color_hover')))
+			."}
+
+				.form_button .color_button_border:hover
+				{"
+					.$this->render_css(array('property' => 'background', 'value' => array('button_color', 'nav_color_hover')))
+					."color: #fff;
+				}
+
+				.color_text
+				{"
+					.$this->render_css(array('property' => 'color', 'value' => 'button_color'))
+				."}
+
+			#wrapper .button-secondary, .color_button_2
+			{"
+				.$this->render_css(array('property' => 'background', 'value' => 'button_color_secondary', 'suffix' => " !important"));
+
+				if(isset($this->options['button_color_secondary']) && $this->options['button_color_secondary'] != '')
+				{
+					if(!isset($obj_base))
+					{
+						$obj_base = new mf_base();
+					}
+
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_secondary'])." !important";
+				}
+
+			$out .= "}
+
+				.color_text_2
+				{"
+					.$this->render_css(array('property' => 'color', 'value' => 'button_color_secondary'))
+				."}
+
+			.color_button_negative
+			{"
+				.$this->render_css(array('property' => 'background', 'value' => 'button_color_negative', 'suffix' => " !important"));
+
+				if(isset($this->options['button_color_negative']) && $this->options['button_color_negative'] != '')
+				{
+					if(!isset($obj_base))
+					{
+						$obj_base = new mf_base();
+					}
+
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color_negative'])." !important";
+				}
+
+			$out .= "}
+
+				#wrapper .mf_form button:hover, #wrapper .button:hover, .color_button:hover, #wrapper .mf_form .button-primary:hover, #comments #submit:hover, #wrapper .button-secondary:hover, .color_button_2:hover, .color_button_negative:hover
+				{
+					box-shadow: inset 0 0 10em rgba(0, 0, 0, .2);
+				}
 
 		html
 		{
@@ -5260,6 +5272,7 @@ class widget_theme_core_area extends WP_Widget
 		$this->arr_default = array(
 			'widget_area_id' => '',
 			'widget_area_name' => '',
+			'widget_area_class' => "",
 			'widget_area_columns' => 1,
 			'widget_area_padding' => '',
 		);
@@ -5275,7 +5288,7 @@ class widget_theme_core_area extends WP_Widget
 		if(is_active_sidebar('widget_area_'.$instance['widget_area_id']))
 		{
 			echo apply_filters('filter_before_widget', $before_widget)
-				."<div id='widget_area_".str_replace("-", "_", $instance['widget_area_id'])."' class='widget_columns columns_".$instance['widget_area_columns']."'>";
+				."<div id='widget_area_".str_replace("-", "_", $instance['widget_area_id'])."' class='widget_columns columns_".$instance['widget_area_columns'].($instance['widget_area_class'] != '' ? " ".$instance['widget_area_class'] : "")."'>";
 
 					dynamic_sidebar('widget_area_'.$instance['widget_area_id']);
 
@@ -5291,6 +5304,7 @@ class widget_theme_core_area extends WP_Widget
 
 		$instance['widget_area_id'] = strtolower(sanitize_text_field($new_instance['widget_area_id']));
 		$instance['widget_area_name'] = sanitize_text_field($new_instance['widget_area_name']);
+		$instance['widget_area_class'] = sanitize_text_field($new_instance['widget_area_class']);
 		$instance['widget_area_columns'] = sanitize_text_field($new_instance['widget_area_columns']);
 		$instance['widget_area_padding'] = sanitize_text_field($new_instance['widget_area_padding']);
 
@@ -5304,6 +5318,7 @@ class widget_theme_core_area extends WP_Widget
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('widget_area_id'), 'text' => __("ID (Has to be unique)", 'lang_theme_core'), 'value' => $instance['widget_area_id'], 'required' => true, 'xtra' => ($instance['widget_area_id'] != '' ? "readonly" : "")))
 			.show_textfield(array('name' => $this->get_field_name('widget_area_name'), 'text' => __("Name", 'lang_theme_core'), 'value' => $instance['widget_area_name'], 'required' => true))
+			.show_textfield(array('name' => $this->get_field_name('widget_area_class'), 'text' => __("Classes", 'lang_theme_core'), 'value' => $instance['widget_area_class'], 'placeholder' => "bold italic aligncenter alignleft alignright flex_flow"))
 			.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('widget_area_columns'), 'text' => __("Columns", 'lang_theme_core'), 'value' => $instance['widget_area_columns'], 'xtra' => "min='1' max='6'"));
 
 			if($instance['widget_area_columns'] > 1)
