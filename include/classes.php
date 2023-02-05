@@ -1849,6 +1849,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'text', 'id' => 'form_container_border', 'title' => __("Border", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'form_container_border_radius', 'title' => __("Border Radius", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'form_container_padding', 'title' => __("Padding", 'lang_theme_core'));
+			$options_params[] = array('type' => 'checkbox', 'id' => 'form_join_fields', 'title' => __("Join Fields", 'lang_theme_core'), 'default' => 1);
 			$options_params[] = array('type' => 'text', 'id' => 'form_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Fields", 'lang_theme_core').")", 'default' => ".3em");
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core'));
@@ -2666,12 +2667,33 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'padding', 'value' => 'form_container_padding'))
 		."}
 
-			.form_textfield input, .form_password input, .mf_form textarea, .mf_form select, #comments #comment
+			.mf_form_field, #comments #comment
 			{"
 				.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
-			."}
+			."}";
 
-			.form_button button, .form_button .button, #comments #submit
+			if(isset($this->options['form_join_fields']) && $this->options['form_join_fields'] == 2)
+			{
+				$out .= ".is_desktop .flex_flow > div:not(:last-of-type), .is_tablet .flex_flow > div:not(:last-of-type)
+				{
+					margin-right: 0;
+				}
+				
+				.is_desktop .flex_flow > div:not(:last-of-type) > .mf_form_field, .is_tablet .flex_flow > div:not(:last-of-type) > .mf_form_field
+				{
+					border-right: 0;
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+				
+				.is_desktop .flex_flow > div:not(:first-of-type) > .mf_form_field, .is_tablet .flex_flow > div:not(:first-of-type) > .mf_form_field
+				{
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+				}";
+			}
+
+			$out .= ".form_button button, .form_button .button, #comments #submit
 			{"
 				.$this->render_css(array('property' => 'border-radius', 'value' => 'form_button_border_radius'))
 				.$this->render_css(array('property' => 'font-size', 'value' => 'button_size'))
@@ -4232,12 +4254,15 @@ class mf_theme_core
 						case 'text':
 						case 'textarea':
 						case 'url':
-							$wp_customize->add_control($this->param['id'], array(
-								'label' => $this->param['title'],
-								'section' => $this->id_temp,
-								'type' => $this->param['type'],
-								'input_attrs' => $this->param['input_attrs'],
-							));
+							$wp_customize->add_control(
+								$this->param['id'],
+								array(
+									'label' => $this->param['title'],
+									'section' => $this->id_temp,
+									'type' => $this->param['type'],
+									'input_attrs' => $this->param['input_attrs'],
+								)
+							);
 						break;
 
 						case 'float':
