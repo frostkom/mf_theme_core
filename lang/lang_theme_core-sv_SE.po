@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-05 07:49+0100\n"
+"POT-Creation-Date: 2023-02-06 09:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -20,24 +20,24 @@ msgstr ""
 #: ../include/classes.php:4111
 #: ../include/classes.php:4196
 #: ../include/classes.php:4230
-#: ../include/classes.php:4267
-#: ../include/classes.php:4299
-#: ../include/classes.php:4313
-#: ../include/classes.php:4325
-#: ../include/classes.php:4335
-#: ../include/classes.php:4345
+#: ../include/classes.php:4270
+#: ../include/classes.php:4302
+#: ../include/classes.php:4316
+#: ../include/classes.php:4328
+#: ../include/classes.php:4338
+#: ../include/classes.php:4348
 #: ../include/functions.php:13
 msgid "Choose Here"
 msgstr "Välj här"
 
 #: ../include/classes.php:158
-#: ../include/classes.php:738
+#: ../include/classes.php:747
 msgid "Author"
 msgstr "Författare"
 
 #: ../include/classes.php:159
-#: ../include/classes.php:5845
-#: ../include/classes.php:6315
+#: ../include/classes.php:5848
+#: ../include/classes.php:6318
 msgid "Categories"
 msgstr "Kategorier"
 
@@ -98,19 +98,19 @@ msgid "No Index"
 msgstr "Ingen indexering"
 
 #: ../include/classes.php:377
-#: ../include/classes.php:712
-#: ../include/classes.php:1095
-#: ../include/classes.php:1157
+#: ../include/classes.php:713
+#: ../include/classes.php:1104
+#: ../include/classes.php:1166
 msgid "Public"
 msgstr "Publik"
 
 #: ../include/classes.php:461
-#: ../include/classes.php:4890
+#: ../include/classes.php:4893
 msgid "Always redirect visitors to the login page"
 msgstr "Skicka alltid besökare till inloggningssidan"
 
 #: ../include/classes.php:465
-#: ../include/classes.php:4896
+#: ../include/classes.php:4899
 msgid "Require login for public site"
 msgstr "Kräv inloggning innan besök på webbsidan"
 
@@ -131,7 +131,7 @@ msgid "Ignore Style on Restore"
 msgstr "Ignorera vid återställning"
 
 #: ../include/classes.php:513
-#: ../include/classes.php:4902
+#: ../include/classes.php:4905
 msgid "Enable XML-RPC"
 msgstr "Aktivera XML-RPC"
 
@@ -140,246 +140,250 @@ msgid "Optimize"
 msgstr "Optimera"
 
 #: ../include/classes.php:529
+msgid "Enable Edit Mode"
+msgstr "Aktivera redigeringsläge"
+
+#: ../include/classes.php:530
 msgid "Display Author Pages"
 msgstr "Visa författarsidor"
 
-#: ../include/classes.php:530
+#: ../include/classes.php:531
 msgid "Title Format"
 msgstr "Rubrikformat"
 
-#: ../include/classes.php:534
+#: ../include/classes.php:535
 msgid "Display Post Meta"
 msgstr "Visa information om inlägg"
 
-#: ../include/classes.php:535
+#: ../include/classes.php:536
 msgid "Allow Comments"
 msgstr "Tillåt kommentarer"
 
-#: ../include/classes.php:543
+#: ../include/classes.php:544
 msgid "Display scroll-to-top-link"
 msgstr "Visa länk för att skrolla längst upp på sidan"
 
-#: ../include/classes.php:547
+#: ../include/classes.php:548
 msgid "Scroll-to-top Text"
 msgstr "Skrolla-till-toppen-text"
 
-#: ../include/classes.php:552
+#: ../include/classes.php:553
 msgid "Redirect Single Result in Search"
 msgstr "Skicka vidare om ett sökresultat finns"
 
-#: ../include/classes.php:553
-#: ../include/classes.php:4932
+#: ../include/classes.php:554
+#: ../include/classes.php:4935
 msgid "404 Page"
 msgstr "404-sida"
 
-#: ../include/classes.php:556
-#: ../include/classes.php:4938
+#: ../include/classes.php:557
+#: ../include/classes.php:4941
 msgid "Maintenance Page"
 msgstr "Underhållssida"
 
-#: ../include/classes.php:560
-#: ../include/classes.php:4944
+#: ../include/classes.php:561
+#: ../include/classes.php:4947
 msgid "Activate Maintenance Mode"
 msgstr "Aktivera underhållssida"
 
-#: ../include/classes.php:576
+#: ../include/classes.php:577
 msgid "Sensitive Data on This Site"
 msgstr "Personlig information på denna webbplats"
 
-#: ../include/classes.php:577
-#: ../include/classes.php:4911
+#: ../include/classes.php:578
+#: ../include/classes.php:4914
 msgid "Information Page"
 msgstr "Informationssida"
 
-#: ../include/classes.php:581
-#: ../include/classes.php:4917
+#: ../include/classes.php:582
+#: ../include/classes.php:4920
 msgid "Deactivate Until Allowed"
 msgstr "Deaktivera tills tillåtet"
 
-#: ../include/classes.php:593
-#: ../include/classes.php:712
-#: ../include/classes.php:960
-#: ../include/classes.php:1266
-#: ../include/classes.php:4957
+#: ../include/classes.php:594
+#: ../include/classes.php:713
+#: ../include/classes.php:969
+#: ../include/classes.php:1275
+#: ../include/classes.php:4960
 msgid "Theme"
 msgstr "Tema"
 
-#: ../include/classes.php:650
+#: ../include/classes.php:651
 #, php-format
 msgid "This will send an e-mail to all editors (%s) when an author saves a draft"
 msgstr "Detta kommer att skicka ett e-post till alla redaktörer (%s) när en författare sparar ett utkast"
 
-#: ../include/classes.php:670
+#: ../include/classes.php:671
 #, php-format
 msgid "The optimization was last run %s and will be run again %s"
 msgstr "Optimeringen kördes senast %s och kommer att köras igen %s"
 
-#: ../include/classes.php:675
+#: ../include/classes.php:676
 #, php-format
 msgid "The optimization has not been run yet but will be %s"
 msgstr "Optimeringen har inte körts ännu men kommer att göra det %s"
 
-#: ../include/classes.php:679
+#: ../include/classes.php:680
 msgid "Optimize Now"
 msgstr "Optimera nu"
 
-#: ../include/classes.php:704
+#: ../include/classes.php:705
 msgid "There are no styles to restore"
 msgstr "Det fanns inga värden att återställa"
 
-#: ../include/classes.php:737
+#: ../include/classes.php:746
 msgid "Time"
 msgstr "Tid"
 
-#: ../include/classes.php:739
+#: ../include/classes.php:748
 msgid "Category"
 msgstr "Kategori"
 
-#: ../include/classes.php:757
-#: ../include/classes.php:761
+#: ../include/classes.php:766
+#: ../include/classes.php:770
 #: ../include/classes.php:3926
 #: ../include/classes.php:4221
 msgid "Yes"
 msgstr "Ja"
 
-#: ../include/classes.php:761
-#: ../include/classes.php:768
+#: ../include/classes.php:770
+#: ../include/classes.php:777
 msgid "And Change Setting on All Posts"
 msgstr "Och ändra inställning på alla inlägg"
 
-#: ../include/classes.php:764
-#: ../include/classes.php:768
+#: ../include/classes.php:773
+#: ../include/classes.php:777
 #: ../include/classes.php:3925
 #: ../include/classes.php:4222
 msgid "No"
 msgstr "Nej"
 
-#: ../include/classes.php:826
+#: ../include/classes.php:835
 msgid "Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know."
 msgstr "Hoppsan! Den sida som du sökte verkar inte finnas. Om du anser att den borde finnas, var vänlig säg till oss."
 
-#: ../include/classes.php:828
+#: ../include/classes.php:837
 msgid "This page will be displayed instead of the default 404 page"
 msgstr "Denna sida kommer att visas istället för standard 404-sida"
 
-#: ../include/classes.php:844
+#: ../include/classes.php:853
 msgid "Temporary Maintenance"
 msgstr "Tillfälligt underhåll"
 
-#: ../include/classes.php:845
+#: ../include/classes.php:854
 msgid "This site is undergoing maintenance. This usually takes less than a minute so you have been unfortunate to come to the site at this moment. If you reload the page in just a while it will surely be back as usual."
 msgstr "Sidan är för tillfället i underhållsläge. Det brukar ta mindre än en minut så du har haft otur som besökte webbsidan precis vid detta tillfälle. Om du testar att ladda om sidan om en liten stund så ska den säkerligen vara klar med detta."
 
-#: ../include/classes.php:847
+#: ../include/classes.php:856
 msgid "This page will be displayed when the website is updating"
 msgstr "Denna sida kommer att visas istället för standard underhållssidan"
 
-#: ../include/classes.php:927
+#: ../include/classes.php:936
 #, php-format
 msgid "I could not write to %s. The file is writeable but the write was unsuccessful"
 msgstr "Jag kunde inte skriva till %s. Filen är skrivbar men något gick ändå fel"
 
-#: ../include/classes.php:933
+#: ../include/classes.php:942
 #, php-format
 msgid "The content that I was about to write to %s was empty and the template came from %s"
 msgstr "Innehållet som jag skulle skriva till %s var tomt och mallen kom från %s"
 
-#: ../include/classes.php:939
+#: ../include/classes.php:948
 #, php-format
 msgid "I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly"
 msgstr "Jag kunde inte skriva till %s. Var vänlig, se till så att denna är skrivbar om du vill att denna funktionalitet ska fungera som tänkt"
 
-#: ../include/classes.php:953
+#: ../include/classes.php:962
 msgid "This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again"
 msgstr "Detta kommer att visa underhållsmeddelandet för alla utom du som är superadmin, tills dess att du inaktiverar detta läge igen"
 
-#: ../include/classes.php:960
+#: ../include/classes.php:969
 msgid "Sensitive Data"
 msgstr "Personlig info"
 
-#: ../include/classes.php:985
+#: ../include/classes.php:994
 msgid "Account details"
 msgstr "Kontodetaljer"
 
-#: ../include/classes.php:986
+#: ../include/classes.php:995
 msgid "Indicates whether you are logged in"
 msgstr "Indikerar om du är inloggad"
 
-#: ../include/classes.php:988
+#: ../include/classes.php:997
 msgid "Test if it is possible to set cookies"
 msgstr "Testa om det ens är möjligt att spara kakor i webbläsaren"
 
-#: ../include/classes.php:989
+#: ../include/classes.php:998
 msgid "Authentication details"
 msgstr "Information om inloggning"
 
-#: ../include/classes.php:991
+#: ../include/classes.php:1000
 msgid "Time when user settings was last saved"
 msgstr "Tid när användarinställningar senast sparades"
 
-#: ../include/classes.php:992
+#: ../include/classes.php:1001
 msgid "Customization for admin interface"
 msgstr "Inställningar för gränssnitt som inloggad användare"
 
-#: ../include/classes.php:996
+#: ../include/classes.php:1005
 msgid "Maintain session if a post is password protected"
 msgstr "Kom ihåg att man har loggat in på en lösenordsskyddad sida"
 
-#: ../include/classes.php:1001
+#: ../include/classes.php:1010
 msgid "Remember comment author details"
 msgstr "Kom ihåg detaljer om författare till kommentarer"
 
-#: ../include/classes.php:1006
+#: ../include/classes.php:1015
 msgid "Remember if visitor accepts sensitive data on the site"
 msgstr "Kom ihåg om en besökare har accepterat insamling av personlig information på webbplatsen"
 
-#: ../include/classes.php:1015
+#: ../include/classes.php:1024
 msgid "Remember if a visitor has hidden the header news post"
 msgstr "Kom ihåg om en besökare har dolt nyhet i sidhuvudet"
 
-#: ../include/classes.php:1025
-#: ../include/classes.php:1032
+#: ../include/classes.php:1034
+#: ../include/classes.php:1041
 msgid "Remember if the visitor has seen the info"
 msgstr "Kom ihåg om besökaren har sett informationen"
 
-#: ../include/classes.php:1025
-#: ../include/classes.php:5859
-#: ../include/classes.php:6141
+#: ../include/classes.php:1034
+#: ../include/classes.php:5862
+#: ../include/classes.php:6144
 msgid "Time Limit"
 msgstr "Tidsbegränsning"
 
-#: ../include/classes.php:1032
-#: ../include/classes.php:6146
+#: ../include/classes.php:1041
+#: ../include/classes.php:6149
 msgid "Visit Limit"
 msgstr "Besöksgräns"
 
-#: ../include/classes.php:1058
+#: ../include/classes.php:1067
 #, php-format
 msgid "Load the font %s"
 msgstr "Ladda typsnittet %s"
 
-#: ../include/classes.php:1100
-#: ../include/classes.php:1162
+#: ../include/classes.php:1109
+#: ../include/classes.php:1171
 msgid "Login"
 msgstr "Inloggning"
 
-#: ../include/classes.php:1112
+#: ../include/classes.php:1121
 msgid "without personal data"
 msgstr "utan personlig information"
 
-#: ../include/classes.php:1150
+#: ../include/classes.php:1159
 #, php-format
 msgid "%s was not saved in your browser but can be saved by the site"
 msgstr "%s var inte sparad in din webbläsare men kan sparas av webbplatsen"
 
-#: ../include/classes.php:1167
+#: ../include/classes.php:1176
 msgid "The font is loaded somewhere on the site"
 msgstr "Typsnittet laddas in någonstans på webbplatsen"
 
-#: ../include/classes.php:1168
-#: ../include/classes.php:1825
-#: ../include/classes.php:1911
-#: ../include/classes.php:1936
+#: ../include/classes.php:1177
+#: ../include/classes.php:1824
+#: ../include/classes.php:1910
+#: ../include/classes.php:1935
 #: ../include/classes.php:2133
 #: ../include/classes.php:2143
 #: ../include/classes.php:2165
@@ -387,139 +391,139 @@ msgstr "Typsnittet laddas in någonstans på webbplatsen"
 msgid "Font"
 msgstr "Typsnitt"
 
-#: ../include/classes.php:1173
+#: ../include/classes.php:1182
 msgid "The IP address is collected somewhere on the site"
 msgstr "IP-adressen sparas någonstans på webbplatsen"
 
-#: ../include/classes.php:1174
+#: ../include/classes.php:1183
 msgid "IP"
 msgstr ""
 
-#: ../include/classes.php:1193
+#: ../include/classes.php:1202
 msgid "There is no sensitive data saved on this site"
 msgstr "Det sparas ingen personlig information på denna webbplats"
 
-#: ../include/classes.php:1227
+#: ../include/classes.php:1236
 msgid "There is sensitive information on the public site that is saved for visitors."
 msgstr "Det finns känslig information på den publika webbplatsen som sparas för besökare."
 
-#: ../include/classes.php:1232
+#: ../include/classes.php:1241
 msgid "There is only sensitive information on this site that is saved when logging in so it is not necessary to add a page for this."
 msgstr "Det finns endast känslig information på denna webbplats som sparas när man loggar in, så det är inte nödvändigt att lägga till en sida för detta."
 
-#: ../include/classes.php:1235
+#: ../include/classes.php:1244
 msgid "The content from this page will be displayed on the site until the visitor clicks to accept the collection of sensitive data."
 msgstr "Innehållet från denna sida kommer att visas på webbplatsen tills dess att besökaren klickar för att acceptera insamlandet av personlig information."
 
-#: ../include/classes.php:1245
+#: ../include/classes.php:1254
 msgid "This will try to prevent sensitive information to be saved in the visitor's browser until the visitor have accepted your information from the page above"
 msgstr "Detta kommer att försöka motverka att känslig information sparas i besökarens webbläsare tills dess att besökaren har godkänt din information från sidan ovan"
 
-#: ../include/classes.php:1264
+#: ../include/classes.php:1273
 msgid "A cookie is saved when the visitor accepts the collection of sensitive data on the site, to make sure that the message asking for permission does not appear again."
 msgstr "En kaka sparas när besökaren godkänner insamling av personlig information på webbplatsen, för att säkerställa att meddelandet med frågan om godkännande inte dyker upp igen."
 
-#: ../include/classes.php:1310
+#: ../include/classes.php:1319
 #, php-format
 msgid "Page %s"
 msgstr "Sida %s"
 
-#: ../include/classes.php:1426
+#: ../include/classes.php:1435
 msgid "Accept"
 msgstr "Acceptera"
 
-#: ../include/classes.php:1434
-#: ../include/classes.php:5731
-#: ../include/classes.php:5754
-#: ../include/classes.php:5772
-#: ../include/classes.php:5892
+#: ../include/classes.php:1443
+#: ../include/classes.php:5734
+#: ../include/classes.php:5757
+#: ../include/classes.php:5775
+#: ../include/classes.php:5895
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:1448
+#: ../include/classes.php:1457
 msgid "You have accepted that we collect sensitive data. Do you wish to remove this acceptance?"
 msgstr "Du har accepterat att vi får samla in personlig information. Vill du återkalla detta?"
 
-#: ../include/classes.php:1474
+#: ../include/classes.php:1481
 msgid "Go to Admin"
 msgstr "Gå till admin"
 
-#: ../include/classes.php:1478
+#: ../include/classes.php:1485
 msgid "Edit Page"
 msgstr "Redigera sida"
 
-#: ../include/classes.php:1525
+#: ../include/classes.php:1524
 msgid "Search here"
 msgstr "Sök här"
 
-#: ../include/classes.php:1527
-#: ../include/classes.php:1897
-#: ../include/classes.php:5470
+#: ../include/classes.php:1526
+#: ../include/classes.php:1896
+#: ../include/classes.php:5473
 msgid "Search"
 msgstr "Sök"
 
-#: ../include/classes.php:1566
+#: ../include/classes.php:1565
 msgid "To view this protected post, enter the password below"
 msgstr "För att se denna lösenordsskyddade sida, fyll i lösenordet nedan"
 
-#: ../include/classes.php:1567
+#: ../include/classes.php:1566
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/classes.php:1569
+#: ../include/classes.php:1568
 msgid "Submit"
 msgstr "Skicka"
 
-#: ../include/classes.php:1628
+#: ../include/classes.php:1627
 #, php-format
 msgid "by %s"
 msgstr "av %s"
 
-#: ../include/classes.php:1820
+#: ../include/classes.php:1819
 msgid "Generic"
 msgstr "Allmänt"
 
-#: ../include/classes.php:1821
-#: ../include/classes.php:1871
-#: ../include/classes.php:1884
-#: ../include/classes.php:1931
-#: ../include/classes.php:1946
+#: ../include/classes.php:1820
+#: ../include/classes.php:1870
+#: ../include/classes.php:1883
+#: ../include/classes.php:1930
+#: ../include/classes.php:1945
+#: ../include/classes.php:1956
 #: ../include/classes.php:1957
-#: ../include/classes.php:1958
-#: ../include/classes.php:1970
-#: ../include/classes.php:1987
-#: ../include/classes.php:1994
-#: ../include/classes.php:2036
-#: ../include/classes.php:2044
-#: ../include/classes.php:2048
-#: ../include/classes.php:2051
-#: ../include/classes.php:2064
-#: ../include/classes.php:2078
-#: ../include/classes.php:2097
-#: ../include/classes.php:2118
+#: ../include/classes.php:1969
+#: ../include/classes.php:1986
+#: ../include/classes.php:1993
+#: ../include/classes.php:2035
+#: ../include/classes.php:2043
+#: ../include/classes.php:2047
+#: ../include/classes.php:2050
+#: ../include/classes.php:2063
+#: ../include/classes.php:2077
+#: ../include/classes.php:2096
+#: ../include/classes.php:2117
 #: ../include/classes.php:2131
 #: ../include/classes.php:2203
 #: ../include/classes.php:2256
 #: ../include/classes.php:2271
 #: ../include/classes.php:2284
-#: ../include/classes.php:5105
+#: ../include/classes.php:5108
 msgid "Background"
 msgstr "Bakgrund"
 
-#: ../include/classes.php:1822
+#: ../include/classes.php:1821
+#: ../include/classes.php:1858
 #: ../include/classes.php:1859
 #: ../include/classes.php:1860
 #: ../include/classes.php:1861
-#: ../include/classes.php:1862
-#: ../include/classes.php:1872
-#: ../include/classes.php:1885
-#: ../include/classes.php:1898
-#: ../include/classes.php:1914
-#: ../include/classes.php:1932
-#: ../include/classes.php:2065
-#: ../include/classes.php:2079
-#: ../include/classes.php:2098
-#: ../include/classes.php:2119
+#: ../include/classes.php:1871
+#: ../include/classes.php:1884
+#: ../include/classes.php:1897
+#: ../include/classes.php:1913
+#: ../include/classes.php:1931
+#: ../include/classes.php:2064
+#: ../include/classes.php:2078
+#: ../include/classes.php:2097
+#: ../include/classes.php:2118
 #: ../include/classes.php:2136
 #: ../include/classes.php:2156
 #: ../include/classes.php:2164
@@ -528,35 +532,35 @@ msgstr "Bakgrund"
 msgid "Color"
 msgstr "Färg"
 
-#: ../include/classes.php:1823
-#: ../include/classes.php:1886
+#: ../include/classes.php:1822
+#: ../include/classes.php:1885
+#: ../include/classes.php:1903
 #: ../include/classes.php:1904
-#: ../include/classes.php:1905
+#: ../include/classes.php:1907
 #: ../include/classes.php:1908
-#: ../include/classes.php:1909
-#: ../include/classes.php:1933
-#: ../include/classes.php:2066
-#: ../include/classes.php:2080
-#: ../include/classes.php:2099
-#: ../include/classes.php:2120
+#: ../include/classes.php:1932
+#: ../include/classes.php:2065
+#: ../include/classes.php:2079
+#: ../include/classes.php:2098
+#: ../include/classes.php:2119
 #: ../include/classes.php:2273
 #: ../include/classes.php:2286
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/classes.php:1824
-#: ../include/classes.php:1851
-#: ../include/classes.php:1855
-#: ../include/classes.php:1874
-#: ../include/classes.php:1893
-#: ../include/classes.php:1903
+#: ../include/classes.php:1823
+#: ../include/classes.php:1850
+#: ../include/classes.php:1854
+#: ../include/classes.php:1873
+#: ../include/classes.php:1892
+#: ../include/classes.php:1902
+#: ../include/classes.php:1922
 #: ../include/classes.php:1923
-#: ../include/classes.php:1924
-#: ../include/classes.php:1935
-#: ../include/classes.php:1980
-#: ../include/classes.php:2067
-#: ../include/classes.php:2082
-#: ../include/classes.php:2101
+#: ../include/classes.php:1934
+#: ../include/classes.php:1979
+#: ../include/classes.php:2066
+#: ../include/classes.php:2081
+#: ../include/classes.php:2100
 #: ../include/classes.php:2123
 #: ../include/classes.php:2138
 #: ../include/classes.php:2227
@@ -568,57 +572,57 @@ msgstr "Bild"
 msgid "Padding"
 msgstr "Tomrum"
 
-#: ../include/classes.php:1827
-#: ../include/classes.php:1875
+#: ../include/classes.php:1826
+#: ../include/classes.php:1874
+#: ../include/classes.php:1938
 #: ../include/classes.php:1939
-#: ../include/classes.php:1940
-#: ../include/classes.php:1947
+#: ../include/classes.php:1946
+#: ../include/classes.php:1958
 #: ../include/classes.php:1959
-#: ../include/classes.php:1960
+#: ../include/classes.php:1991
 #: ../include/classes.php:1992
-#: ../include/classes.php:1993
-#: ../include/classes.php:1995
-#: ../include/classes.php:2040
-#: ../include/classes.php:2045
-#: ../include/classes.php:2047
-#: ../include/classes.php:2084
-#: ../include/classes.php:2102
+#: ../include/classes.php:1994
+#: ../include/classes.php:2039
+#: ../include/classes.php:2044
+#: ../include/classes.php:2046
+#: ../include/classes.php:2083
+#: ../include/classes.php:2101
 #: ../include/classes.php:2292
 #: ../include/classes.php:2296
 msgid "Text Color"
 msgstr "Textfärg"
 
-#: ../include/classes.php:1828
+#: ../include/classes.php:1827
 #: ../include/classes.php:2231
 msgid "Link Color"
 msgstr "Länkfärg"
 
-#: ../include/classes.php:1829
+#: ../include/classes.php:1828
 msgid "Link Underline"
 msgstr "Linje under länk"
 
-#: ../include/classes.php:1831
-#: ../include/classes.php:1833
+#: ../include/classes.php:1830
+#: ../include/classes.php:1832
 msgid "Breakpoint"
 msgstr "Brytpunkt"
 
-#: ../include/classes.php:1831
+#: ../include/classes.php:1830
 msgid "Tablet"
 msgstr "Platta"
 
-#: ../include/classes.php:1832
-#: ../include/classes.php:1834
-#: ../include/classes.php:1843
-#: ../include/classes.php:1857
-#: ../include/classes.php:1873
-#: ../include/classes.php:1899
+#: ../include/classes.php:1831
+#: ../include/classes.php:1833
+#: ../include/classes.php:1842
+#: ../include/classes.php:1856
+#: ../include/classes.php:1872
+#: ../include/classes.php:1898
+#: ../include/classes.php:1911
 #: ../include/classes.php:1912
-#: ../include/classes.php:1913
-#: ../include/classes.php:1937
-#: ../include/classes.php:1979
-#: ../include/classes.php:1990
-#: ../include/classes.php:2049
-#: ../include/classes.php:2081
+#: ../include/classes.php:1936
+#: ../include/classes.php:1978
+#: ../include/classes.php:1989
+#: ../include/classes.php:2048
+#: ../include/classes.php:2080
 #: ../include/classes.php:2134
 #: ../include/classes.php:2147
 #: ../include/classes.php:2152
@@ -633,179 +637,180 @@ msgstr "Platta"
 msgid "Font Size"
 msgstr "Textstorlek"
 
+#: ../include/classes.php:1832
 #: ../include/classes.php:1833
-#: ../include/classes.php:1834
-#: ../include/classes.php:1840
+#: ../include/classes.php:1839
+#: ../include/classes.php:1907
 #: ../include/classes.php:1908
 #: ../include/classes.php:1909
-#: ../include/classes.php:1910
-#: ../include/classes.php:1921
-#: ../include/classes.php:1924
-#: ../include/classes.php:1926
+#: ../include/classes.php:1920
+#: ../include/classes.php:1923
+#: ../include/classes.php:1925
 #: ../include/classes.php:2194
 #: ../include/classes.php:2331
 msgid "Mobile"
 msgstr "Mobil"
 
-#: ../include/classes.php:1836
+#: ../include/classes.php:1835
 msgid "Scroll Bar"
 msgstr "Skrollbar"
 
-#: ../include/classes.php:1840
+#: ../include/classes.php:1839
 msgid "Aside Image Width"
 msgstr "Bredd på bilder i sidokolumn"
 
-#: ../include/classes.php:1843
+#: ../include/classes.php:1842
 msgid "Print"
 msgstr "Skriv ut"
 
-#: ../include/classes.php:1847
+#: ../include/classes.php:1846
 msgid "Forms"
 msgstr "Formulär"
 
-#: ../include/classes.php:1848
-#: ../include/classes.php:2037
+#: ../include/classes.php:1847
+#: ../include/classes.php:2036
 msgid "Background Color"
 msgstr "Bakgrundsfärg"
 
-#: ../include/classes.php:1848
+#: ../include/classes.php:1847
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/classes.php:1849
+#: ../include/classes.php:1848
 msgid "Border"
 msgstr "Kant"
 
-#: ../include/classes.php:1850
+#: ../include/classes.php:1849
+#: ../include/classes.php:1852
 #: ../include/classes.php:1853
-#: ../include/classes.php:1854
 msgid "Border Radius"
 msgstr "Radie på ram"
 
-#: ../include/classes.php:1852
+#: ../include/classes.php:1851
 msgid "Join Fields"
 msgstr "Slå ihop fält"
 
-#: ../include/classes.php:1853
+#: ../include/classes.php:1852
 msgid "Fields"
 msgstr "Fält"
 
-#: ../include/classes.php:1854
+#: ../include/classes.php:1853
 msgid "Buttons"
 msgstr "Knappar"
 
-#: ../include/classes.php:1860
-#: ../include/classes.php:1986
+#: ../include/classes.php:1859
+#: ../include/classes.php:1985
 #: ../include/functions.php:42
 msgid "Secondary"
 msgstr "Sekundär"
 
+#: ../include/classes.php:1860
 #: ../include/classes.php:1861
-#: ../include/classes.php:1862
 msgid "Negative"
 msgstr "Negativ"
 
-#: ../include/classes.php:1869
+#: ../include/classes.php:1868
 msgid "Before Header"
 msgstr "Före sidhuvud"
 
-#: ../include/classes.php:1870
-#: ../include/classes.php:1882
-#: ../include/classes.php:1929
-#: ../include/classes.php:2063
-#: ../include/classes.php:2077
-#: ../include/classes.php:2096
+#: ../include/classes.php:1869
+#: ../include/classes.php:1881
+#: ../include/classes.php:1928
+#: ../include/classes.php:2062
+#: ../include/classes.php:2076
+#: ../include/classes.php:2095
 #: ../include/classes.php:2270
 #: ../include/classes.php:2282
 msgid "Full Width"
 msgstr "Fullbredd"
 
-#: ../include/classes.php:1876
-#: ../include/classes.php:1894
-#: ../include/classes.php:2085
+#: ../include/classes.php:1875
+#: ../include/classes.php:1893
+#: ../include/classes.php:2084
+#: ../include/classes.php:2122
 msgid "Overflow"
 msgstr ""
 
-#: ../include/classes.php:1881
+#: ../include/classes.php:1880
 msgid "Header"
 msgstr "Sidhuvud"
 
-#: ../include/classes.php:1883
-#: ../include/classes.php:1976
+#: ../include/classes.php:1882
+#: ../include/classes.php:1975
 #: ../include/classes.php:2283
 msgid "Position"
 msgstr ""
 
-#: ../include/classes.php:1890
+#: ../include/classes.php:1889
 msgid "Override background with page background"
 msgstr "Ersätt bakgrund med sidbakgrund"
 
-#: ../include/classes.php:1902
-#: ../include/classes.php:5374
-#: ../include/classes.php:5421
-#: ../include/classes.php:5434
+#: ../include/classes.php:1901
+#: ../include/classes.php:5377
+#: ../include/classes.php:5424
+#: ../include/classes.php:5437
 msgid "Logo"
 msgstr "Logga"
 
-#: ../include/classes.php:1905
-#: ../include/classes.php:1909
-#: ../include/classes.php:1940
-#: ../include/classes.php:1945
-#: ../include/classes.php:1958
-#: ../include/classes.php:1960
-#: ../include/classes.php:1993
+#: ../include/classes.php:1904
+#: ../include/classes.php:1908
+#: ../include/classes.php:1939
+#: ../include/classes.php:1944
+#: ../include/classes.php:1957
+#: ../include/classes.php:1959
+#: ../include/classes.php:1992
+#: ../include/classes.php:2043
 #: ../include/classes.php:2044
 #: ../include/classes.php:2045
-#: ../include/classes.php:2046
-#: ../include/classes.php:2051
-#: ../include/classes.php:2053
+#: ../include/classes.php:2050
+#: ../include/classes.php:2052
 #: ../include/classes.php:2296
 msgid "Hover"
 msgstr "Mus över"
 
-#: ../include/classes.php:1906
+#: ../include/classes.php:1905
+#: ../include/classes.php:1924
 #: ../include/classes.php:1925
-#: ../include/classes.php:1926
-#: ../include/classes.php:1930
-#: ../include/classes.php:1975
-#: ../include/classes.php:1991
-#: ../include/classes.php:2005
+#: ../include/classes.php:1929
+#: ../include/classes.php:1974
+#: ../include/classes.php:1990
+#: ../include/classes.php:2004
 #: ../include/classes.php:2301
 msgid "Alignment"
 msgstr "Justering"
 
-#: ../include/classes.php:1907
-#: ../include/classes.php:1910
+#: ../include/classes.php:1906
+#: ../include/classes.php:1909
 #: ../include/classes.php:2249
 #: ../include/classes.php:2250
 msgid "Width"
 msgstr "Bredd"
 
-#: ../include/classes.php:1913
-#: ../include/classes.php:5422
-#: ../include/classes.php:5445
+#: ../include/classes.php:1912
+#: ../include/classes.php:5425
+#: ../include/classes.php:5448
 msgid "Tagline"
 msgstr "Slogan"
 
-#: ../include/classes.php:1917
+#: ../include/classes.php:1916
 msgid "Navigation"
 msgstr ""
 
-#: ../include/classes.php:1921
+#: ../include/classes.php:1920
 msgid "Compressed"
 msgstr "Komprimerad"
 
-#: ../include/classes.php:1922
+#: ../include/classes.php:1921
 msgid "Click to expand"
 msgstr "Klicka för att expandera"
 
-#: ../include/classes.php:1934
-#: ../include/classes.php:1989
+#: ../include/classes.php:1933
+#: ../include/classes.php:1988
 msgid "Clear"
 msgstr "Rensa"
 
-#: ../include/classes.php:1938
-#: ../include/classes.php:2050
+#: ../include/classes.php:1937
+#: ../include/classes.php:2049
 #: ../include/classes.php:2135
 #: ../include/classes.php:2155
 #: ../include/classes.php:2174
@@ -814,105 +819,105 @@ msgstr "Rensa"
 msgid "Weight"
 msgstr "Vikt"
 
-#: ../include/classes.php:1941
-#: ../include/classes.php:1961
-#: ../include/classes.php:1988
-#: ../include/classes.php:2043
+#: ../include/classes.php:1940
+#: ../include/classes.php:1960
+#: ../include/classes.php:1987
+#: ../include/classes.php:2042
 #: ../include/classes.php:2322
 msgid "Link Padding"
 msgstr "Tomrum runt länkar"
 
-#: ../include/classes.php:1945
+#: ../include/classes.php:1944
 msgid "Underline Color"
 msgstr "Färg på understrykning"
 
+#: ../include/classes.php:1945
 #: ../include/classes.php:1946
-#: ../include/classes.php:1947
+#: ../include/classes.php:1993
 #: ../include/classes.php:1994
-#: ../include/classes.php:1995
-#: ../include/classes.php:2047
+#: ../include/classes.php:2046
 msgid "Current"
 msgstr "Nuvarande"
 
-#: ../include/classes.php:1954
-#: ../include/classes.php:2048
+#: ../include/classes.php:1953
+#: ../include/classes.php:2047
 msgid "Submenu"
 msgstr "Undermeny"
 
-#: ../include/classes.php:1955
+#: ../include/classes.php:1954
 msgid "Direction"
 msgstr "Riktning"
 
-#: ../include/classes.php:1956
+#: ../include/classes.php:1955
 msgid "Show Up Arrow"
 msgstr "Visa pil uppåt"
 
-#: ../include/classes.php:1965
+#: ../include/classes.php:1964
 msgid "Mobile Menu"
 msgstr "Mobilmeny"
 
-#: ../include/classes.php:1969
+#: ../include/classes.php:1968
 msgid "Display when menu runs out of space"
 msgstr "Visa när meny får slut på plats"
 
-#: ../include/classes.php:1970
+#: ../include/classes.php:1969
 msgid "Menu"
 msgstr "Meny"
 
-#: ../include/classes.php:2001
+#: ../include/classes.php:2000
 msgid "Slide Menu"
 msgstr "Sidomeny"
 
-#: ../include/classes.php:2020
+#: ../include/classes.php:2019
 msgid "Animation Length"
 msgstr "Längd på animation"
 
-#: ../include/classes.php:2031
+#: ../include/classes.php:2030
 msgid "Content Offset"
 msgstr "Justering av innehåll"
 
-#: ../include/classes.php:2042
+#: ../include/classes.php:2041
 msgid "Letter Spacing"
 msgstr "Teckenavstånd"
 
-#: ../include/classes.php:2046
+#: ../include/classes.php:2045
+#: ../include/classes.php:2051
 #: ../include/classes.php:2052
-#: ../include/classes.php:2053
 msgid "Text Indent"
 msgstr "Indentering av text"
 
-#: ../include/classes.php:2062
-#: ../include/classes.php:2095
+#: ../include/classes.php:2061
+#: ../include/classes.php:2094
 msgid "Pre Content"
 msgstr "Före innehåll"
 
-#: ../include/classes.php:2076
+#: ../include/classes.php:2075
 msgid "After Header"
 msgstr "Efter sidhuvud"
 
-#: ../include/classes.php:2083
+#: ../include/classes.php:2082
 #: ../include/classes.php:2276
 #: ../include/classes.php:2313
 msgid "Widget Padding"
 msgstr "Tomrum runt widget"
 
-#: ../include/classes.php:2107
+#: ../include/classes.php:2106
 #: ../include/classes.php:2260
 #: ../include/classes.php:2261
 #: ../include/classes.php:2262
-#: ../include/classes.php:6120
+#: ../include/classes.php:6123
 msgid "Content"
 msgstr "Innehåll"
 
-#: ../include/classes.php:2111
+#: ../include/classes.php:2110
 msgid "Match Height with Window Size"
 msgstr "Justera höjd utifrån fönsterstorlek"
 
-#: ../include/classes.php:2112
+#: ../include/classes.php:2111
 msgid "Main Column Alignment"
 msgstr "Justering på huvudkolumn"
 
-#: ../include/classes.php:2113
+#: ../include/classes.php:2112
 msgid "Main Column Width"
 msgstr "Bredd på huvudkolumn"
 
@@ -982,14 +987,14 @@ msgstr "Klistrad position"
 #: ../include/classes.php:2249
 #: ../include/classes.php:4197
 #: ../include/classes.php:4231
-#: ../include/classes.php:4269
+#: ../include/classes.php:4272
 msgid "Left"
 msgstr "Vänster"
 
 #: ../include/classes.php:2250
 #: ../include/classes.php:4199
 #: ../include/classes.php:4232
-#: ../include/classes.php:4271
+#: ../include/classes.php:4274
 msgid "Right"
 msgstr "Höger"
 
@@ -1181,7 +1186,7 @@ msgid "Redirect"
 msgstr "Vidarebefordra"
 
 #: ../include/classes.php:4198
-#: ../include/classes.php:4270
+#: ../include/classes.php:4273
 msgid "Center"
 msgstr "Centrera"
 
@@ -1190,8 +1195,8 @@ msgid "Both"
 msgstr "Båda"
 
 #: ../include/classes.php:4234
-#: ../include/classes.php:4268
-#: ../include/classes.php:4326
+#: ../include/classes.php:4271
+#: ../include/classes.php:4329
 msgid "None"
 msgstr "Ingen"
 
@@ -1203,396 +1208,396 @@ msgstr "Horisontell"
 msgid "Vertical"
 msgstr "Vertikal"
 
-#: ../include/classes.php:4272
-#: ../include/classes.php:4304
-#: ../include/classes.php:4357
+#: ../include/classes.php:4275
+#: ../include/classes.php:4307
+#: ../include/classes.php:4360
 msgid "Initial"
 msgstr "Original"
 
-#: ../include/classes.php:4273
-#: ../include/classes.php:4305
-#: ../include/classes.php:4358
+#: ../include/classes.php:4276
+#: ../include/classes.php:4308
+#: ../include/classes.php:4361
 msgid "Inherit"
 msgstr "Ärv"
 
-#: ../include/classes.php:4300
+#: ../include/classes.php:4303
 msgid "Visible"
 msgstr "Visa"
 
-#: ../include/classes.php:4301
+#: ../include/classes.php:4304
 msgid "Hidden"
 msgstr "Dölj"
 
-#: ../include/classes.php:4302
+#: ../include/classes.php:4305
 msgid "Scroll"
 msgstr "Skroll"
 
-#: ../include/classes.php:4303
+#: ../include/classes.php:4306
 msgid "Auto"
 msgstr ""
 
-#: ../include/classes.php:4314
+#: ../include/classes.php:4317
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../include/classes.php:4315
+#: ../include/classes.php:4318
 msgid "Fixed"
 msgstr "Fixerad"
 
-#: ../include/classes.php:4316
+#: ../include/classes.php:4319
 msgid "Relative"
 msgstr "Relativ"
 
-#: ../include/classes.php:4317
+#: ../include/classes.php:4320
 msgid "Sticky"
 msgstr "Klistrad"
 
-#: ../include/classes.php:4327
+#: ../include/classes.php:4330
 msgid "Underline"
 msgstr "Linje"
 
-#: ../include/classes.php:4336
+#: ../include/classes.php:4339
 msgid "Uppercase"
 msgstr "Versaler"
 
-#: ../include/classes.php:4337
+#: ../include/classes.php:4340
 msgid "Lowercase"
 msgstr "Gemener"
 
-#: ../include/classes.php:4346
+#: ../include/classes.php:4349
 msgid "Lighter than parent element"
 msgstr "Tunnare än förälder"
 
-#: ../include/classes.php:4350
+#: ../include/classes.php:4353
 #: ../include/functions.php:20
 msgid "Regular"
 msgstr "Vanliga"
 
-#: ../include/classes.php:4353
+#: ../include/classes.php:4356
 msgid "Bold"
 msgstr "Fet"
 
-#: ../include/classes.php:4356
+#: ../include/classes.php:4359
 msgid "Bolder than parent element"
 msgstr "Fetare än förälder"
 
-#: ../include/classes.php:4560
-#: ../include/classes.php:5013
+#: ../include/classes.php:4563
+#: ../include/classes.php:5016
 msgid "Theme Updates"
 msgstr "Temauppdateringar"
 
-#: ../include/classes.php:4637
+#: ../include/classes.php:4640
 msgid "The theme settings were backed up"
 msgstr "Temainställningarna sparades"
 
-#: ../include/classes.php:4642
+#: ../include/classes.php:4645
 msgid "It was not possible to backup the theme settings"
 msgstr "Det gick inte att ta backup på temainställningarna"
 
-#: ../include/classes.php:4648
+#: ../include/classes.php:4651
 msgid "There were no theme settings to save"
 msgstr "Det fanns inga temainställningar att spara"
 
-#: ../include/classes.php:4663
+#: ../include/classes.php:4666
 msgid "The file does not exist anymore. It might be out of date."
 msgstr "Filen finns inte längre. Den kan ha tagits bort."
 
-#: ../include/classes.php:4699
+#: ../include/classes.php:4702
 msgid "I restored the theme backup for you"
 msgstr "Jag återställde temabackupen åt dig"
 
-#: ../include/classes.php:4709
+#: ../include/classes.php:4712
 msgid "There is something wrong with the source to restore"
 msgstr "Det verkar vara något fel på källan som försöker återställas"
 
-#: ../include/classes.php:4718
+#: ../include/classes.php:4721
 msgid "The file was deleted successfully"
 msgstr "Filen raderades"
 
-#: ../include/classes.php:4733
+#: ../include/classes.php:4736
 #, php-format
 msgid "The theme at %s has got a newer version of saved style which can be %srestored here%s"
 msgstr "Temat på %s har en nyare version på sparad design som kan %såterställas här%s"
 
-#: ../include/classes.php:4739
-#: ../include/classes.php:4840
+#: ../include/classes.php:4742
+#: ../include/classes.php:4843
 msgid "Theme Backup"
 msgstr "Temabackup"
 
-#: ../include/classes.php:4760
+#: ../include/classes.php:4763
 msgid "Existing"
 msgstr "Existerande"
 
-#: ../include/classes.php:4761
+#: ../include/classes.php:4764
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/classes.php:4775
+#: ../include/classes.php:4778
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ../include/classes.php:4776
-#: ../include/classes.php:4800
+#: ../include/classes.php:4779
+#: ../include/classes.php:4803
 msgid "Restore"
 msgstr "Återställ"
 
-#: ../include/classes.php:4780
+#: ../include/classes.php:4783
 msgid "Delete"
 msgstr "Radera"
 
-#: ../include/classes.php:4795
+#: ../include/classes.php:4798
 msgid "External Backup"
 msgstr "Extern backup"
 
-#: ../include/classes.php:4811
+#: ../include/classes.php:4814
 msgid "New Backup"
 msgstr "Ny backup"
 
-#: ../include/classes.php:4814
+#: ../include/classes.php:4817
 msgid "Save"
 msgstr "Spara"
 
-#: ../include/classes.php:4875
+#: ../include/classes.php:4878
 #, php-format
 msgid "New '%s'"
 msgstr "Ny '%s'"
 
-#: ../include/classes.php:4956
+#: ../include/classes.php:4959
 msgid "Status"
 msgstr ""
 
-#: ../include/classes.php:4958
+#: ../include/classes.php:4961
 msgid "E-mail"
 msgstr "E-post"
 
-#: ../include/classes.php:4959
+#: ../include/classes.php:4962
 msgid "Updated"
 msgstr "Uppdaterad"
 
-#: ../include/classes.php:5004
-#: ../include/classes.php:5034
+#: ../include/classes.php:5007
+#: ../include/classes.php:5037
 msgid "This is the template theme design"
 msgstr "Detta är mallen för temadesign"
 
-#: ../include/classes.php:5016
+#: ../include/classes.php:5019
 msgid "Update"
 msgstr "Uppdatera"
 
-#: ../include/classes.php:5023
+#: ../include/classes.php:5026
 msgid "The theme design is up to date"
 msgstr "Temadesignen är uppdaterad"
 
-#: ../include/classes.php:5053
+#: ../include/classes.php:5056
 msgid "Change"
 msgstr "Byt"
 
-#: ../include/classes.php:5082
-#: ../include/classes.php:5100
+#: ../include/classes.php:5085
+#: ../include/classes.php:5103
 msgid "unknown"
 msgstr "okänd"
 
-#: ../include/classes.php:5235
+#: ../include/classes.php:5238
 msgid "I have optimized the site for you"
 msgstr "Jag har optimerat webbplatsen åt dig"
 
-#: ../include/classes.php:5291
+#: ../include/classes.php:5294
 msgid "Add Widget Area"
 msgstr "Lägg till widgetområde"
 
-#: ../include/classes.php:5302
+#: ../include/classes.php:5305
 msgid "Widget Area"
 msgstr "Widgetområde"
 
-#: ../include/classes.php:5341
+#: ../include/classes.php:5344
 msgid "ID (Has to be unique)"
 msgstr "ID (Måste vara unikt)"
 
-#: ../include/classes.php:5342
+#: ../include/classes.php:5345
 msgid "Name"
 msgstr "Namn"
 
-#: ../include/classes.php:5343
+#: ../include/classes.php:5346
 msgid "Classes"
 msgstr "Klasser"
 
-#: ../include/classes.php:5344
-#: ../include/classes.php:5851
-#: ../include/classes.php:6321
+#: ../include/classes.php:5347
+#: ../include/classes.php:5854
+#: ../include/classes.php:6324
 msgid "Columns"
 msgstr "Kolumner"
 
-#: ../include/classes.php:5348
+#: ../include/classes.php:5351
 msgid "Column Space"
 msgstr "Tomrum mellan kolumner"
 
-#: ../include/classes.php:5363
+#: ../include/classes.php:5366
 msgid "Display Logo"
 msgstr "Visa logga"
 
-#: ../include/classes.php:5420
+#: ../include/classes.php:5423
 msgid "Logo and Tagline"
 msgstr "Logga och slogan"
 
-#: ../include/classes.php:5426
+#: ../include/classes.php:5429
 msgid "If these are left empty, the chosen logo for the site will be displayed. If there is no chosen logo the site name will be displayed instead."
 msgstr "Om dessa fält lämnas tomma så visas vald logga. Om det inte finns någon vald logga i temat visas istället sidans namn."
 
-#: ../include/classes.php:5427
+#: ../include/classes.php:5430
 #: ../include/sitemap-xsl.php:73
 msgid "URL"
 msgstr ""
 
-#: ../include/classes.php:5428
+#: ../include/classes.php:5431
 msgid "What to Display"
 msgstr "Vad som ska visas"
 
-#: ../include/classes.php:5460
+#: ../include/classes.php:5463
 msgid "Display Search Form"
 msgstr "Visa sökformulär"
 
-#: ../include/classes.php:5515
+#: ../include/classes.php:5518
 msgid "Placeholder"
 msgstr "Valfri text"
 
-#: ../include/classes.php:5517
+#: ../include/classes.php:5520
 msgid "Hide on Mobile"
 msgstr "Dölj på mobil"
 
-#: ../include/classes.php:5518
+#: ../include/classes.php:5521
 msgid "Animate"
 msgstr "Animera"
 
-#: ../include/classes.php:5519
+#: ../include/classes.php:5522
 msgid "Listen to Keystroke"
 msgstr "Lyssna efter tangenttryck"
 
-#: ../include/classes.php:5533
+#: ../include/classes.php:5536
 msgid "Display News/Posts"
 msgstr "Visa nyheter/inlägg"
 
-#: ../include/classes.php:5552
+#: ../include/classes.php:5555
 msgid "News"
 msgstr "Nyheter"
 
-#: ../include/classes.php:5821
+#: ../include/classes.php:5824
 msgid "Default"
 msgstr "Standard"
 
-#: ../include/classes.php:5822
+#: ../include/classes.php:5825
 msgid "Post It"
 msgstr "Post-It"
 
-#: ../include/classes.php:5823
+#: ../include/classes.php:5826
 msgid "Simple"
 msgstr "Enkel"
 
-#: ../include/classes.php:5824
+#: ../include/classes.php:5827
 msgid "Compact"
 msgstr "Kompakt"
 
-#: ../include/classes.php:5843
-#: ../include/classes.php:6119
-#: ../include/classes.php:6313
-#: ../include/classes.php:6474
-#: ../include/classes.php:6549
+#: ../include/classes.php:5846
+#: ../include/classes.php:6122
+#: ../include/classes.php:6316
+#: ../include/classes.php:6477
+#: ../include/classes.php:6552
 #: ../include/sitemap-xsl.php:72
 msgid "Title"
 msgstr "Rubrik"
 
-#: ../include/classes.php:5844
+#: ../include/classes.php:5847
 msgid "Design"
 msgstr "Utseende"
 
-#: ../include/classes.php:5847
-#: ../include/classes.php:6317
+#: ../include/classes.php:5850
+#: ../include/classes.php:6320
 msgid "Amount"
 msgstr "Antal"
 
-#: ../include/classes.php:5859
+#: ../include/classes.php:5862
 msgid "h"
 msgstr "tim"
 
-#: ../include/classes.php:5860
+#: ../include/classes.php:5863
 msgid "Button to Hide"
 msgstr "Knapp för att dölja"
 
-#: ../include/classes.php:5867
+#: ../include/classes.php:5870
 msgid "Display Arrows"
 msgstr "Visa pilar"
 
-#: ../include/classes.php:5871
+#: ../include/classes.php:5874
 msgid "Autoscroll"
 msgstr "Automatisk skroll"
 
-#: ../include/classes.php:5880
+#: ../include/classes.php:5883
 msgid "Display Title"
 msgstr "Visa rubrik"
 
-#: ../include/classes.php:5881
+#: ../include/classes.php:5884
 msgid "Display Excerpt"
 msgstr "Visa utdrag"
 
-#: ../include/classes.php:5887
+#: ../include/classes.php:5890
 msgid "Expand Content on Current Page"
 msgstr "Utöka innehåll på nuvarande sida"
 
-#: ../include/classes.php:5907
+#: ../include/classes.php:5910
 msgid "Display Info Module"
 msgstr "Visa infomodul"
 
-#: ../include/classes.php:5921
+#: ../include/classes.php:5924
 msgid "Info Module"
 msgstr "Infomodul"
 
-#: ../include/classes.php:6121
+#: ../include/classes.php:6124
 msgid "Button Text"
 msgstr "Knapptext"
 
-#: ../include/classes.php:6130
+#: ../include/classes.php:6133
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:6135
+#: ../include/classes.php:6138
 msgid "Link"
 msgstr "Länk"
 
-#: ../include/classes.php:6141
+#: ../include/classes.php:6144
 msgid "days"
 msgstr "dagar"
 
-#: ../include/classes.php:6146
+#: ../include/classes.php:6149
 msgid "times"
 msgstr "gånger"
 
-#: ../include/classes.php:6161
+#: ../include/classes.php:6164
 msgid "Display Related Posts"
 msgstr "Visa relaterade inlägg"
 
-#: ../include/classes.php:6172
+#: ../include/classes.php:6175
 msgid "Related Posts"
 msgstr "Relaterade inlägg"
 
-#: ../include/classes.php:6337
+#: ../include/classes.php:6340
 msgid "Promote Pages"
 msgstr "Promota sidor"
 
-#: ../include/classes.php:6346
+#: ../include/classes.php:6349
 msgid "Promotion"
 msgstr "Promota"
 
-#: ../include/classes.php:6475
+#: ../include/classes.php:6478
 msgid "Pages"
 msgstr "Sidor"
 
-#: ../include/classes.php:6476
+#: ../include/classes.php:6479
 msgid "Display Titles"
 msgstr "Visa rubriker"
 
-#: ../include/classes.php:6489
+#: ../include/classes.php:6492
 msgid "Display Table of Contents"
 msgstr "Visa innehållsförteckning"
 
-#: ../include/classes.php:6496
+#: ../include/classes.php:6499
 msgid "Table of Contents"
 msgstr "Innehållsförteckning"
 

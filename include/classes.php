@@ -526,6 +526,7 @@ class mf_theme_core
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 			$arr_settings = array();
+			$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
@@ -711,6 +712,14 @@ class mf_theme_core
 
 		echo settings_header($setting_key, __("Theme", 'lang_theme_core')." - ".__("Public", 'lang_theme_core'));
 	}
+
+		function setting_theme_core_enable_edit_mode_callback()
+		{
+			$setting_key = get_setting_key(__FUNCTION__);
+			$option = get_option_or_default($setting_key, 'yes');
+
+			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+		}
 
 		function setting_theme_core_display_author_pages_callback()
 		{
@@ -1464,9 +1473,7 @@ class mf_theme_core
 			</div>";
 		}*/
 
-		$user_id = get_current_user_id();
-
-		if($user_id > 0)
+		if(get_current_user_id() > 0 && get_option('setting_theme_core_enable_edit_mode') == 'yes')
 		{
 			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
@@ -1479,14 +1486,6 @@ class mf_theme_core
 				}
 
 			$this->footer_output .= "</div>";
-		}
-
-		if(get_option('setting_theme_core_login') == 'yes')
-		{
-			if(!($user_id > 0) && apply_filters('is_public_page', true))
-			{
-				do_log("A visitor accessed the public page without being logged in!");
-			}
 		}
 	}
 
@@ -2120,6 +2119,7 @@ class mf_theme_core
 					$options_params[] = array('type' => 'image', 'id' => 'content_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 			}
 
+			$options_params[] = array('type' => 'overflow', 'id' => 'content_overflow', 'title' => __("Overflow", 'lang_theme_core'), 'default' => "hidden");
 			$options_params[] = array('type' => 'text', 'id' => 'content_padding', 'title' => __("Padding", 'lang_theme_core')); //, 'default' => "30px 0 20px"
 
 		$options_params[] = array('category_end' => "");
@@ -2678,14 +2678,14 @@ class mf_theme_core
 				{
 					margin-right: 0;
 				}
-				
+
 				.is_desktop .flex_flow > div:not(:last-of-type) > .mf_form_field, .is_tablet .flex_flow > div:not(:last-of-type) > .mf_form_field
 				{
 					border-right: 0;
 					border-top-right-radius: 0;
 					border-bottom-right-radius: 0;
 				}
-				
+
 				.is_desktop .flex_flow > div:not(:first-of-type) > .mf_form_field, .is_tablet .flex_flow > div:not(:first-of-type) > .mf_form_field
 				{
 					border-top-left-radius: 0;

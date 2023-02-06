@@ -412,7 +412,7 @@ echo "@media all
 							right: 0;
 							transition: all .5s ease;
 						}
-						
+
 							.widget.theme_news .original.display_page_titles li:hover .image:after
 							{
 								height: 100%;
@@ -425,7 +425,7 @@ echo "@media all
 						padding: 0 0 1.4em;
 						transition: all .5s ease;
 					}
-					
+
 						#wrapper .widget.theme_news .original.display_page_titles li:hover h4
 						{
 							margin-bottom: 2.5em;
