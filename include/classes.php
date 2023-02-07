@@ -2605,15 +2605,15 @@ class mf_theme_core
 		{
 			if(isset($arr_param['type']) && $arr_param['type'] == 'font')
 			{
-				$font = $this->options[$arr_param['id']];
+				$font_key = $this->options[$arr_param['id']];
 
-				if($font != '' && isset($this->options_fonts[$font]['file']) && $this->options_fonts[$font]['file'] != '')
+				if($font_key != '' && isset($this->options_fonts[$font_key]['file']) && $this->options_fonts[$font_key]['file'] != '')
 				{
-					$font_file = $this->options_fonts[$font]['file'];
+					$font_file = $this->options_fonts[$font_key]['file'];
 
 					$font_src = "";
 
-					foreach($this->options_fonts[$font]['extensions'] as $font_extension)
+					foreach($this->options_fonts[$font_key]['extensions'] as $font_extension)
 					{
 						$font_src .= ($font_src != '' ? "," : "");
 
@@ -2623,7 +2623,7 @@ class mf_theme_core
 							case 'otf':		$font_src .= "url('".$font_file.".otf') format('opentype')";					break;
 							case 'woff':	$font_src .= "url('".$font_file.".woff') format('woff')";						break;
 							case 'ttf':		$font_src .= "url('".$font_file.".ttf') format('truetype')";					break;
-							case 'svg':		$font_src .= "url('".$font_file.".svg#".$font."') format('svg')";				break;
+							case 'svg':		$font_src .= "url('".$font_file.".svg#".$font_key."') format('svg')";			break;
 						}
 					}
 
@@ -2631,7 +2631,7 @@ class mf_theme_core
 					{
 						$out .= "@font-face
 						{
-							font-family: '".$this->options_fonts[$font]['title']."';
+							font-family: '".$this->options_fonts[$font_key]['title']."';
 							src: ".$font_src.";
 							font-weight: normal;
 							font-style: normal;
@@ -3182,11 +3182,11 @@ class mf_theme_core
 			{
 				if(isset($arr_param['type']) && $arr_param['type'] == 'font' && isset($this->options[$arr_param['id']]))
 				{
-					$font = $this->options[$arr_param['id']];
+					$font_key = $this->options[$arr_param['id']];
 
-					if(isset($this->options_fonts[$font]['url']) && $this->options_fonts[$font]['url'] != '')
+					if(isset($this->options_fonts[$font_key]['url']) && $this->options_fonts[$font_key]['url'] != '')
 					{
-						mf_enqueue_style('style_font_'.$font, $this->options_fonts[$font]['url']);
+						mf_enqueue_style('style_font_'.$font_key, $this->options_fonts[$font_key]['url']);
 					}
 				}
 			}
@@ -4127,7 +4127,8 @@ class mf_theme_core
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
-		mf_enqueue_style('style_theme_core_customizer', $plugin_include_url."style_customizer.css", $plugin_version);
+		mf_enqueue_style('style_theme_core_customizer', $plugin_include_url."style_customizer.php", $plugin_version);
+		mf_enqueue_script('script_theme_core_enqueue_theme_fonts', $plugin_include_url."script_enqueue_theme_fonts.php", $plugin_version);
 		mf_enqueue_script('script_theme_core_customizer', $plugin_include_url."script_customizer.js", $plugin_version);
 
 		$this->get_params();
