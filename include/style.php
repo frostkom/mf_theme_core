@@ -132,7 +132,42 @@ echo "@media all
 		}
 
 	/* Widgets */
-	.widget .section .text_columns
+	/* Has to be here to hide when cached */
+	.widget.widget_has_edit li .edit_item
+	{
+		display: none !important;
+	}";
+
+	if(IS_EDITOR)
+	{
+		echo ".widget.widget_has_edit li
+		{
+			position: relative;
+		}
+
+			.widget.widget_has_edit li:hover .edit_item
+			{
+				background: #000;
+				border-radius: .3rem;
+				color: #fff;
+				display: block !important;
+				font-size: 2rem;
+				height: auto !important;
+				opacity: .2;
+				padding: .4rem .8rem;
+				position: absolute;
+				left: 2rem;
+				top: .5rem;
+				z-index: 1000;
+			}
+
+				.widget.widget_has_edit li .edit_item:hover
+				{
+					opacity: .7;
+				}";
+	}
+
+	echo ".widget .section .text_columns
 	{
 		display: -webkit-box;
 		display: -ms-flexbox;

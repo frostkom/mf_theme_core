@@ -1473,7 +1473,7 @@ class mf_theme_core
 			</div>";
 		}*/
 
-		if(get_current_user_id() > 0 && get_option('setting_theme_core_enable_edit_mode') == 'yes')
+		if(get_current_user_id() > 0 && get_option('setting_theme_core_enable_edit_mode', 'yes') == 'yes')
 		{
 			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css", $plugin_version);
 
@@ -5686,31 +5686,37 @@ class widget_theme_core_news extends WP_Widget
 
 							echo "<ul class='text_columns columns_".$instance['news_columns']."' data-columns='".$instance['news_columns']."'>";
 
-								foreach($this->arr_news as $page)
+								foreach($this->arr_news as $news_id => $arr_news_item)
 								{
 									if($instance['news_type'] == 'postit')
 									{
-										$page['excerpt'] = shorten_text(array('string' => $page['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
+										$arr_news_item['excerpt'] = shorten_text(array('string' => $arr_news_item['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
 									}
 
-									echo "<li>
-										<a href='".$page['url']."'>";
+									echo "<li>";
+
+										if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode', 'yes') == 'yes')
+										{
+											echo "<a href='".admin_url("post.php?post=".$news_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_theme_core')."'></i></a>";
+										}
+
+										echo "<a href='".$arr_news_item['url']."'>";
 
 											switch($instance['news_type'])
 											{
 												case 'original':
 												case 'simple':
-													echo "<div class='image'>".$page['image']."</div>";
+													echo "<div class='image'>".$arr_news_item['image']."</div>";
 												break;
 
 												case 'compact':
-													echo "<span>".format_date($page['date'])."</span>";
+													echo "<span>".format_date($arr_news_item['date'])."</span>";
 												break;
 											}
 
 											if($instance['news_display_title'] == 'yes')
 											{
-												echo "<h4>".$page['title']."</h4>";
+												echo "<h4>".$arr_news_item['title']."</h4>";
 											}
 
 											switch($instance['news_type'])
@@ -5719,7 +5725,7 @@ class widget_theme_core_news extends WP_Widget
 												case 'simple':
 													if($instance['news_display_excerpt'] == 'yes')
 													{
-														echo apply_filters('the_content', $page['excerpt']);
+														echo apply_filters('the_content', $arr_news_item['excerpt']);
 													}
 												break;
 											}
@@ -5738,23 +5744,23 @@ class widget_theme_core_news extends WP_Widget
 
 						else
 						{
-							foreach($this->arr_news as $page_id => $page)
+							foreach($this->arr_news as $news_id => $arr_news_item)
 							{
 								if($instance['news_expand_content'] == 'yes')
 								{
-									$post_content = mf_get_post_content($page_id);
+									$post_content = mf_get_post_content($news_id);
 
 									echo "<div class='news_expand_content'>";
 
-										if($page['image'] != '')
+										if($arr_news_item['image'] != '')
 										{
-											echo "<div class='image'>".$page['image']."</div>";
+											echo "<div class='image'>".$arr_news_item['image']."</div>";
 										}
 
 										echo ($instance['news_title'] == '' ? $before_title : "<h4>")
-											.$page['title']
+											.$arr_news_item['title']
 										.($instance['news_title'] == '' ? $after_title : "</h4>")
-										."<div class='excerpt'>".apply_filters('the_content', stripslashes($page['excerpt']))."</div>"
+										."<div class='excerpt'>".apply_filters('the_content', stripslashes($arr_news_item['excerpt']))."</div>"
 										."<p class='read_more'><a href='#'>".__("Read More", 'lang_theme_core')."</a></p>"
 										."<div class='content hide'>".apply_filters('the_content', $post_content)."</div>
 									</div>";
@@ -5762,17 +5768,17 @@ class widget_theme_core_news extends WP_Widget
 
 								else
 								{
-									echo "<a href='".$page['url']."'>";
+									echo "<a href='".$arr_news_item['url']."'>";
 
-										if($page['image'] != '')
+										if($arr_news_item['image'] != '')
 										{
-											echo "<div class='image'>".$page['image']."</div>";
+											echo "<div class='image'>".$arr_news_item['image']."</div>";
 										}
 
 										echo ($instance['news_title'] == '' ? $before_title : "<h4>")
-											.$page['title']
+											.$arr_news_item['title']
 										.($instance['news_title'] == '' ? $after_title : "</h4>")
-										.apply_filters('the_content', $page['excerpt'])
+										.apply_filters('the_content', $arr_news_item['excerpt'])
 										."<p class='read_more'>".__("Read More", 'lang_theme_core')."</p>"
 									."</a>";
 								}
@@ -6272,12 +6278,12 @@ class widget_theme_core_related extends WP_Widget
 
 						$i = 0;
 
-						foreach($this->arr_news as $page)
+						foreach($this->arr_news as $arr_news_item)
 						{
 							echo "<li>
-								<a href='".$page['url']."'>
-									<div class='image'>".$page['image']."</div>
-									<h4>".$page['title']."</h4>
+								<a href='".$arr_news_item['url']."'>
+									<div class='image'>".$arr_news_item['image']."</div>
+									<h4>".$arr_news_item['title']."</h4>
 								</a>
 							</li>";
 
