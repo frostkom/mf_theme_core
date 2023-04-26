@@ -241,12 +241,12 @@ class mf_theme_core
 
 			else
 			{
-				$option_ms = get_option('setting_maintenance_page');
+				$setting_maintenance_page = get_option('setting_maintenance_page');
 
-				if($option_ms > 0)
+				if($setting_maintenance_page > 0)
 				{
-					$post_title = get_the_title($option_ms);
-					$post_content = mf_get_post_content($option_ms);
+					$post_title = get_the_title($setting_maintenance_page);
+					$post_content = mf_get_post_content($setting_maintenance_page);
 
 					$out = "";
 
@@ -880,15 +880,15 @@ class mf_theme_core
 
 							$loop_template_temp = $loop_template;
 
-							$option_ms = get_option('setting_maintenance_page');
+							$setting_maintenance_page = get_option('setting_maintenance_page');
 
-							if($option_ms > 0)
+							if($setting_maintenance_page > 0)
 							{
 								$site_url = get_site_url();
 								$site_url_clean = remove_protocol(array('url' => $site_url));
-								$post_url_clean = remove_protocol(array('url' => get_permalink($option_ms), 'clean' => true));
-								$post_title = get_the_title($option_ms);
-								$post_content = mf_get_post_content($option_ms);
+								$post_url_clean = remove_protocol(array('url' => get_permalink($setting_maintenance_page), 'clean' => true));
+								$post_title = get_the_title($setting_maintenance_page);
+								$post_content = mf_get_post_content($setting_maintenance_page);
 
 								if($post_url_clean != '' && $post_content != '')
 								{
