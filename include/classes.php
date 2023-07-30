@@ -2519,6 +2519,12 @@ class mf_theme_core
 			'url' => "//fonts.googleapis.com/css?family=Playfair+Display"
 		);
 
+		$this->options_fonts['poppins'] = array(
+			'title' => "Poppins",
+			'style' => "'Poppins', serif",
+			'url' => "//fonts.googleapis.com/css2?family=Poppins"
+		);
+
 		$this->options_fonts['rancho'] = array(
 			'title' => "Rancho",
 			'style' => "'Rancho', cursive",
