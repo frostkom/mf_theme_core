@@ -184,7 +184,7 @@ echo "@media all
 			display: block;
 		}
 
-		.widget .section .columns_2 li
+		.widget .section .columns_2 > li
 		{
 			-webkit-box-flex: 1 0 50%;
 			-webkit-flex: 1 0 50%;
@@ -193,7 +193,7 @@ echo "@media all
 			min-width: 50%;
 		}
 
-		.widget .section .columns_3 li
+		.widget .section .columns_3 > li
 		{
 			-webkit-box-flex: 1 0 33%;
 			-webkit-flex: 1 0 33%;
@@ -202,7 +202,7 @@ echo "@media all
 			min-width: 33%;
 		}
 
-		.widget .section .columns_4 li
+		.widget .section .columns_4 > li
 		{
 			-webkit-box-flex: 1 0 25%;
 			-webkit-flex: 1 0 25%;
@@ -211,7 +211,7 @@ echo "@media all
 			min-width: 25%;
 		}
 
-			.is_tablet .widget .section .columns_4 li
+			.is_tablet .widget .section .columns_4 > li
 			{
 				-webkit-box-flex: 1 0 50%;
 				-webkit-flex: 1 0 50%;
@@ -237,6 +237,9 @@ echo "@media all
 
 			.is_mobile .widget.theme_widget_area .widget_columns, .is_mobile header .widget_columns
 			{
+				-moz-box-direction: column;
+				-webkit-box-direction: column;
+				-ms-flexbox-direction: column;
 				flex-direction: column;
 			}
 
