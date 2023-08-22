@@ -1910,6 +1910,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'font', 'id' => 'logo_font', 'title' => __("Font", 'lang_theme_core'), 'hide_if' => 'header_logo');
 			$options_params[] = array('type' => 'text', 'id' => 'logo_font_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "3rem");
 				$options_params[] = array('type' => 'text', 'id' => 'slogan_font_size', 'title' => __("Font Size", 'lang_theme_core')." (".__("Tagline", 'lang_theme_core').")", 'default' => ".4em");
+				$options_params[] = array('type' => 'text', 'id' => 'slogan_margin', 'title' => __("Margin", 'lang_theme_core')." (".__("Tagline", 'lang_theme_core').")", 'default' => "0 0 1em");
 			$options_params[] = array('type' => 'color', 'id' => 'logo_color', 'title' => __("Color", 'lang_theme_core'));
 		$options_params[] = array('category_end' => "");
 
