@@ -388,7 +388,7 @@ echo "@media all
 							display: block;
 							height: 100%;
 							object-fit: cover;
-							transition: all .75s ease;
+							transition: all 1s ease;
 							width: 100%;
 						}
 
