@@ -2,13 +2,28 @@
 
 class mf_theme_core
 {
+	var $meta_prefix = 'mf_theme_core_';
+	var $options_params = array();
+	var $options = array();
+	var $options_fonts = array();
+	var $title_format = "[page_title][site_title][site_description][page_number]";
+	var $arr_sensitive_data_types = array();
+	var $arr_public_posts = array();
+	var $arr_post_types = array();
+	var $is_theme_active = '';
+	var $custom_widget_area = array();
+	var $site_url = "";
+	var $footer_output = '';
+	var $id_temp = '';
+	var $param = array();
+
 	function __construct()
 	{
-		$this->meta_prefix = 'mf_theme_core_';
+		//$this->meta_prefix = 'mf_theme_core_';
 
-		$this->options_params = $this->options = $this->options_fonts = array();
+		//$this->options_params = $this->options = $this->options_fonts = array();
 
-		$this->title_format = "[page_title][site_title][site_description][page_number]";
+		//$this->title_format = "[page_title][site_title][site_description][page_number]";
 	}
 
 	function is_site_public()
@@ -984,7 +999,7 @@ class mf_theme_core
 		{
 			global $wpdb;
 
-			if(!isset($this->arr_sensitive_data_types))
+			if(!isset($this->arr_sensitive_data_types) || count($this->arr_sensitive_data_types) == 0)
 			{
 				$arr_sensitive_data_types = array(
 					'login' => array(),
@@ -1226,7 +1241,7 @@ class mf_theme_core
 			// Not needed right now but just in case we switch this function and setting_cookie_exists_callback() around...
 			$this->get_cookie_types();
 
-			if(count($this->arr_sensitive_data_types['public']) > 0)
+			if(isset($this->arr_sensitive_data_types['public']) && is_array($this->arr_sensitive_data_types['public']) && count($this->arr_sensitive_data_types['public']) > 0)
 			{
 				if(!($option > 0))
 				{
@@ -1236,7 +1251,7 @@ class mf_theme_core
 				$description .= __("There is sensitive information on the public site that is saved for visitors.", 'lang_theme_core')." ";
 			}
 
-			else if(count($this->arr_sensitive_data_types['login']) > 0)
+			else if(isset($this->arr_sensitive_data_types['login']) && count($this->arr_sensitive_data_types['login']) > 0)
 			{
 				$description .= __("There is only sensitive information on this site that is saved when logging in so it is not necessary to add a page for this.", 'lang_theme_core')." ";
 			}
@@ -1686,7 +1701,7 @@ class mf_theme_core
 
 	function is_theme_active()
 	{
-		if(!isset($this->is_theme_active))
+		if($this->is_theme_active === '')
 		{
 			$theme_dir_name = $this->get_theme_dir_name();
 
@@ -4141,8 +4156,8 @@ class mf_theme_core
 		$this->get_params();
 		$this->get_theme_fonts();
 
-		$this->id_temp = "";
-		$this->param = array();
+		//$this->id_temp = "";
+		//$this->param = array();
 
 		$wp_customize->remove_section('themes');
 		$wp_customize->remove_section('title_tagline');
@@ -5293,22 +5308,34 @@ class mf_theme_core
 
 class widget_theme_core_area extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'widget_area_id' => '',
+		'widget_area_name' => '',
+		'widget_area_class' => "",
+		'widget_area_columns' => 1,
+		'widget_area_padding' => '',
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_widget_area',
-			'description' => __("Add Widget Area", 'lang_theme_core')
+			'description' => __("Add Widget Area", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'widget_area_id' => '',
 			'widget_area_name' => '',
 			'widget_area_class' => "",
 			'widget_area_columns' => 1,
 			'widget_area_padding' => '',
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Widget Area", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -5365,22 +5392,34 @@ class widget_theme_core_area extends WP_Widget
 
 class widget_theme_core_logo extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'logo_url' => '',
+		'logo_display' => 'all',
+		'logo_title' => '',
+		'logo_image' => '',
+		'logo_description' => '',
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_logo',
-			'description' => __("Display Logo", 'lang_theme_core')
+			'description' => __("Display Logo", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'logo_url' => '',
 			'logo_display' => 'all',
 			'logo_title' => '',
 			'logo_image' => '',
 			'logo_description' => '',
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Logo", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -5462,21 +5501,32 @@ class widget_theme_core_logo extends WP_Widget
 
 class widget_theme_core_search extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'search_placeholder' => "",
+		'search_hide_on_mobile' => 'no',
+		'search_animate' => 'yes',
+		'search_listen_to_keystroke' => 'no',
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_search',
-			'description' => __("Display Search Form", 'lang_theme_core')
+			'description' => __("Display Search Form", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'search_placeholder' => "",
 			'search_hide_on_mobile' => 'no',
 			'search_animate' => 'yes',
 			'search_listen_to_keystroke' => 'no',
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -5535,16 +5585,36 @@ class widget_theme_core_search extends WP_Widget
 
 class widget_theme_core_news extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'news_title' => "",
+		'news_type' => 'original',
+		'news_categories' => array(),
+		'news_amount' => 1,
+		'news_hide_button' => 'no',
+		'news_columns' => 0,
+		'news_time_limit' => 0,
+		'news_expand_content' => 'no',
+		'news_display_arrows' => 'no',
+		'news_autoscroll_time' => 5,
+		'news_display_title' => 'yes',
+		'news_display_excerpt' => 'yes',
+		'news_page' => 0,
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display News/Posts", 'lang_theme_core')
+			'description' => __("Display News/Posts", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'news_title' => "",
 			'news_type' => 'original',
 			'news_categories' => array(),
@@ -5558,7 +5628,7 @@ class widget_theme_core_news extends WP_Widget
 			'news_display_title' => 'yes',
 			'news_display_excerpt' => 'yes',
 			'news_page' => 0,
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -5915,16 +5985,31 @@ class widget_theme_core_news extends WP_Widget
 
 class widget_theme_core_info extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'info_image' => '',
+		'info_title' => '',
+		'info_content' => '',
+		'info_button_text' => '',
+		'info_page' => 0,
+		'info_link' => '',
+		'info_time_limit' => 0,
+		'info_visit_limit' => 0,
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_info',
-			'description' => __("Display Info Module", 'lang_theme_core')
+			'description' => __("Display Info Module", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'info_image' => '',
 			'info_title' => '',
 			'info_content' => '',
@@ -5933,7 +6018,7 @@ class widget_theme_core_info extends WP_Widget
 			'info_link' => '',
 			'info_time_limit' => 0,
 			'info_visit_limit' => 0,
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -6169,22 +6254,34 @@ class widget_theme_core_info extends WP_Widget
 
 class widget_theme_core_related extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'news_title' => '',
+		'news_post_type' => 'post',
+		'news_categories' => array(),
+		'news_amount' => 1,
+		'news_columns' => 1,
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_news',
-			'description' => __("Display Related Posts", 'lang_theme_core')
+			'description' => __("Display Related Posts", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'news_title' => '',
 			'news_post_type' => 'post',
 			'news_categories' => array(),
 			'news_amount' => 1,
 			'news_columns' => 1,
-		);
+		);*/
 
 		parent::__construct('theme-related-news-widget', __("Related Posts", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -6345,20 +6442,30 @@ class widget_theme_core_related extends WP_Widget
 
 class widget_theme_core_promo extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'promo_title' => "",
+		'promo_include' => array(),
+		'promo_page_titles' => 'yes',
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_promo theme_news',
-			'description' => __("Promote Pages", 'lang_theme_core')
+			'description' => __("Promote Pages", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'promo_title' => "",
 			'promo_include' => array(),
 			'promo_page_titles' => 'yes',
-		);
+		);*/
 
 		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $this->widget_ops);
 	}
@@ -6497,18 +6604,26 @@ class widget_theme_core_promo extends WP_Widget
 
 class widget_theme_core_page_index extends WP_Widget
 {
+	var $obj_theme_core = "";
+
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'widget_title' => "",
+	);
+
 	function __construct()
 	{
 		$this->obj_theme_core = new mf_theme_core();
 
 		$this->widget_ops = array(
 			'classname' => 'theme_page_index',
-			'description' => __("Display Table of Contents", 'lang_theme_core')
+			'description' => __("Display Table of Contents", 'lang_theme_core'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'widget_title' => "",
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", 'lang_theme_core'), $this->widget_ops);
 	}
