@@ -2,6 +2,7 @@ jQuery(function($)
 {
 	function run_ajax(obj)
 	{
+		obj.button.addClass('is_disabled');
 		obj.selector.html("<i class='fa fa-spinner fa-spin fa-2x'></i>");
 
 		$.ajax(
@@ -16,7 +17,7 @@ jQuery(function($)
 			{
 				obj.selector.empty();
 
-				obj.button.addClass('is_disabled'); /*.attr('disabled', true)*/
+				obj.button.removeClass('is_disabled');
 
 				if(data.success)
 				{
@@ -33,7 +34,7 @@ jQuery(function($)
 		return false;
 	}
 
-	$(document).on('click', "button[name='btnOptimizeTheme']", function(e)
+	$(document).on('click', "button[name='btnOptimizeTheme']:not(.is_disabled)", function(e)
 	{
 		run_ajax(
 		{

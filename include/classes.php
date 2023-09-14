@@ -691,7 +691,7 @@ class mf_theme_core
 				$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
 			}
 
-			echo "<div>"
+			echo "<div class='form_button'>"
 				.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
 				."<p class='italic'>".$description."</p>"
 			."</div>
@@ -1278,7 +1278,7 @@ class mf_theme_core
 			$plugin_include_url = plugin_dir_url(__FILE__);
 			$plugin_version = get_plugin_version(__FILE__);
 
-			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('plugin_url' => $plugin_include_url, 'ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
+			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('ajax_url' => admin_url('admin-ajax.php')), $plugin_version); //'plugin_url' => $plugin_include_url, 
 		}
 
 		if(function_exists('wp_add_privacy_policy_content'))
@@ -2220,6 +2220,7 @@ class mf_theme_core
 			}
 
 			$options_params[] = array('type' => 'text', 'id' => 'section_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => "1.6em");
+			$options_params[] = array('type' => 'text', 'id' => 'section_size_mobile', 'title' => " - ".__("Mobile", 'lang_theme_core'), 'default' => "1.6em");
 
 			// Range does not display the value the user has chosen...
 			//$options_params[] = array('type' => 'text', 'id' => 'section_line_height', 'title' => __("Line Height", 'lang_theme_core'), 'default' => "1.5");
