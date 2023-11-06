@@ -1533,6 +1533,19 @@ class mf_theme_core
 		return $args;
 	}
 
+	function wp_nav_menu_objects($items, $args)
+	{
+		foreach($items as $key => $value)
+		{
+			if(!is_user_logged_in() && in_array(get_post_status($value->object_id), array('draft', 'private')))
+			{
+				unset($items[$key]);
+			}
+		}
+
+		return $items;
+	}
+
 	function get_search_form($html)
 	{
 		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
