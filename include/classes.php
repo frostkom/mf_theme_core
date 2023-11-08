@@ -2865,8 +2865,14 @@ class mf_theme_core
 						.$this->render_css(array('property' => 'background-color', 'value' => 'header_bg_color'))
 						.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'header_bg_image', 'suffix' => '); background-size: cover'))
 						.$this->render_css(array('property' => 'overflow', 'value' => 'header_overflow'))
-						.$this->render_css(array('property' => 'position', 'value' => 'header_fixed'))
-					."}
+						.$this->render_css(array('property' => 'position', 'value' => 'header_fixed'));
+
+						if(isset($this->options['header_fixed']) && $this->options['header_fixed'] == 'sticky')
+						{
+							$out .= "box-shadow: 0 .1em 3em rgba(0, 0, 0, .1);";
+						}
+
+					$out .= "}
 
 						header > div
 						{"
