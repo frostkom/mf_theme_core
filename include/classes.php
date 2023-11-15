@@ -206,6 +206,8 @@ class mf_theme_core
 
 	function cron_base()
 	{
+		global $wpdb;
+
 		$obj_cron = new mf_cron();
 		$obj_cron->start(__CLASS__);
 
@@ -239,6 +241,13 @@ class mf_theme_core
 					//@rmdir($upload_path); // If it is empty, it is deleted
 				}
 				#######################
+			}
+			
+			$option = 'closed';
+
+			if(get_option('default_comment_status') == $option)
+			{
+				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s, ping_status = %s WHERE (comment_status != %s OR ping_status != %s)", $option, $option, $option, $option));
 			}
 		}
 
@@ -545,16 +554,16 @@ class mf_theme_core
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 
-			if(does_post_exists(array('post_type' => 'post')))
-			{
+			/*if(does_post_exists(array('post_type' => 'post'))) // If a post exists but is not published they can still be pinged and have comments which will lead to e-mails that a new ping or comment exists
+			{*/
 				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
 				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
-			}
+			/*}
 
 			else
 			{
 				delete_option('setting_display_post_meta');
-			}
+			}*/
 
 			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
@@ -739,7 +748,7 @@ class mf_theme_core
 		function setting_theme_core_display_author_pages_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option_or_default($setting_key, 'yes');
+			$option = get_option_or_default($setting_key, 'no');
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
@@ -806,7 +815,7 @@ class mf_theme_core
 			{
 				$option = str_replace('_all', '', $option);
 
-				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s WHERE comment_status != %s", $option, $option));
+				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s, ping_status = %s WHERE (comment_status != %s OR ping_status != %s)", $option, $option, $option, $option));
 
 				update_option($setting_key, $option, 'no');
 			}
@@ -3542,6 +3551,7 @@ class mf_theme_core
 			'post_password' => $post->post_password,
 			'post_excerpt' => $post->post_excerpt,
 			'comment_status' => $post->comment_status,
+			'ping_status' => $post->ping_status,
 			'post_title' => $post->post_title,
 			'post_content' => $post->post_content,
 			'post_author' => $post->post_author,
@@ -4520,14 +4530,16 @@ class mf_theme_core
 					'catch_head' => true,
 				));
 
-				$log_message_2 = sprintf("The response from %s had an error", $url);
+				$url_clean = remove_protocol(array('url' => $url, 'clean' => true, 'trim' => true));
+
+				$log_message_2 = sprintf("The response from %s had an error", $url_clean);
 
 				switch($headers['http_code'])
 				{
 					case 200:
 						$arr_json = json_decode($content, true);
 
-						$log_message_3 = sprintf("The feed from %s returned an error (%s)", $url, $content);
+						$log_message_3 = sprintf("The feed from %s returned an error (%s)", $url_clean, $content);
 
 						if(isset($arr_json['success']) && $arr_json['success'] == true)
 						{
@@ -4933,19 +4945,19 @@ class mf_theme_core
 				'type' => 'bool',
 				'global' => false,
 				'icon' => "fas fa-lock",
-				'name' => __("Always redirect visitors to the login page", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Always redirect visitors to the login page", 'lang_theme_core'),
 			),
 			'setting_theme_core_login' => array(
 				'type' => 'bool',
 				'global' => false,
 				'icon' => "fas fa-user-lock",
-				'name' => __("Require login for public site", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Require login for public site", 'lang_theme_core'),
 			),
 			'setting_theme_enable_wp_api' => array(
 				'type' => 'bool',
 				'global' => true,
 				'icon' => "fas fa-network-wired",
-				'name' => __("Enable XML-RPC", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Enable XML-RPC", 'lang_theme_core'),
 			),
 		);
 
@@ -4954,40 +4966,40 @@ class mf_theme_core
 				'type' => 'post',
 				'global' => false,
 				'icon' => "fas fa-cookie",
-				'name' => __("Information Page", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Information Page", 'lang_theme_core'),
 			),
 			'setting_cookie_deactivate_until_allowed' => array(
 				'type' => 'bool',
 				'global' => false,
 				'icon' => "fas fa-cookie-bite",
-				'name' => __("Deactivate Until Allowed", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Deactivate Until Allowed", 'lang_theme_core'),
 			),
 		);
 
 		$arr_settings['settings_theme_core_public'] = array(
-			/*'default_comment_status' => array(
-				'type' => 'string',
+			'default_comment_status' => array(
+				'type' => 'open',
 				'global' => false,
 				'icon' => "fas fa-comments",
-				'name' => __("Allow Comments", 'lang_theme_core'),
-			),*/
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Allow Comments", 'lang_theme_core'),
+			),
 			'setting_404_page' => array(
 				'type' => 'post',
 				'global' => false,
 				'icon' => "fas fa-exclamation-circle",
-				'name' => __("404 Page", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("404 Page", 'lang_theme_core'),
 			),
 			'setting_maintenance_page' => array(
 				'type' => 'post',
 				'global' => false,
 				'icon' => "fas fa-hard-hat",
-				'name' => __("Maintenance Page", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Maintenance Page", 'lang_theme_core'),
 			),
 			'setting_activate_maintenance' => array(
 				'type' => 'bool',
 				'global' => false,
 				'icon' => "fas fa-tools",
-				'name' => __("Activate Maintenance Mode", 'lang_theme_core'),
+				'name' => __("Theme", 'lang_theme_core')." - ".__("Activate Maintenance Mode", 'lang_theme_core'),
 			),
 		);
 
