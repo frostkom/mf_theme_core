@@ -16,6 +16,8 @@ class mf_theme_core
 	var $footer_output = '';
 	var $id_temp = '';
 	var $param = array();
+	var $post_id_old;
+	var $post_id_new;
 
 	function __construct()
 	{
