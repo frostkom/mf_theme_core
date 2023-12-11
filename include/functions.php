@@ -90,7 +90,7 @@ function get_404_page()
 		}
 	}
 
-	return "<article".(IS_ADMIN ? " class='get_404_page'" : "").">
+	return "<article".(IS_ADMINISTRATOR ? " class='get_404_page'" : "").">
 		<h1>".$post_title."</h1>
 		<section>".$post_content."</section>
 	</article>";

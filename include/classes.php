@@ -411,7 +411,7 @@ class mf_theme_core
 	{
 		global $wp_admin_bar;
 
-		if(IS_ADMIN)
+		if(IS_ADMINISTRATOR)
 		{
 			$this->site_url = $icon = "";
 
@@ -3260,7 +3260,7 @@ class mf_theme_core
 		{
 			$arr_roles_check = array(
 				'is_super_admin' => IS_SUPER_ADMIN,
-				'is_admin' => IS_ADMIN,
+				'is_admin' => IS_ADMINISTRATOR,
 				'is_editor' => IS_EDITOR,
 				'is_author' => IS_AUTHOR,
 			);
@@ -3870,7 +3870,7 @@ class mf_theme_core
 
 	function rwmb_meta_boxes($meta_boxes)
 	{
-		if(IS_ADMIN)
+		if(IS_ADMINISTRATOR)
 		{
 			$post_id = check_var('post');
 
