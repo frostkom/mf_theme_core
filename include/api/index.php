@@ -56,6 +56,26 @@ switch($type)
 			);
 		}
 	break;
+
+	case 'get_site_template':
+		ob_start();
+
+		get_header();
+
+		$json_output['get_header'] = str_replace('"', "'", ob_get_clean());
+		
+		ob_start();
+
+		get_footer();
+
+		$json_output['get_footer'] = str_replace('"', "'", ob_get_clean());
+
+		$json_output['success'] = true;
+	break;
+
+	case 'get_footer':
+		
+	break;
 }
 
 echo json_encode($json_output);
