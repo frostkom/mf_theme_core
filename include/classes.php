@@ -18,6 +18,8 @@ class mf_theme_core
 	var $param = array();
 	var $post_id_old;
 	var $post_id_new;
+	var $file_dir_from;
+	var $file_dir_to;
 
 	function __construct(){}
 
