@@ -19,16 +19,12 @@ if("[site_url]" == substr(CURRENT_URL, 0, strlen("[site_url]")))
 
 	else
 	{
-?>
-		[get_header]
-			<article class='post_type_page'>
-				<section>
-					<h1>[post_title]</h1>
-					[post_content]
-				</section>
-			</article>
-		[get_footer]
-<?php
+		<article class='post_type_page'>
+			<section>
+				<h1>[post_title]</h1>
+				[post_content]
+			</section>
+		</article>
 	}
 
 	exit;

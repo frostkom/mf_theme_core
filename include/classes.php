@@ -239,7 +239,7 @@ class mf_theme_core
 				}
 				#######################
 			}
-			
+		
 			$option = 'closed';
 
 			if(get_option('default_comment_status') == $option)
@@ -253,40 +253,6 @@ class mf_theme_core
 
 	function init()
 	{
-		if(get_option('setting_maintenance_page') > 0 && get_option('setting_activate_maintenance') == 'yes')
-		{
-			if(IS_SUPER_ADMIN || $this->is_login_page())
-			{
-				// Do nothing
-			}
-
-			else
-			{
-				$setting_maintenance_page = get_option('setting_maintenance_page');
-
-				if($setting_maintenance_page > 0)
-				{
-					// This will create an endless loop
-					//mf_redirect(get_permalink($setting_maintenance_page));
-					
-					$post_title = get_the_title($setting_maintenance_page);
-					$post_content = mf_get_post_content($setting_maintenance_page);
-
-					get_header();
-
-						echo "<article class='post_type_page'>
-							<section>
-								<h1>".$post_title."</h1>"
-								.$post_content
-							."</section>
-						</article>";
-
-					get_footer();
-					exit;
-				}
-			}
-		}
-
 		/*if(!is_admin())
 		{
 			if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
@@ -925,7 +891,7 @@ class mf_theme_core
 
 							if($post_url_clean != '' && $post_content != '')
 							{
-								$get_header = $get_footer = "";
+								/*$get_header = $get_footer = "";
 
 								list($content, $headers) = get_url_content(array(
 									'url' => $site_url."/wp-content/plugins/mf_theme_core/include/api/?type=get_site_template",
@@ -943,16 +909,16 @@ class mf_theme_core
 									default:
 										do_log("I could not connect to get_site_template");
 									break;
-								}
+								}*/
 
-								$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
+								//$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
 								$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
 								$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
 								$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
 								$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-								$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
+								//$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
 
-								$recommend_maintenance .= $loop_template_temp; //"\n".
+								$recommend_maintenance .= "\n".$loop_template_temp;
 							}
 
 							restore_current_blog();
@@ -971,7 +937,7 @@ class mf_theme_core
 
 						if($post_url_clean != '' && $post_content != '')
 						{
-							list($content, $headers) = get_url_content(array(
+							/*list($content, $headers) = get_url_content(array(
 								'url' => $site_url."/wp-content/plugins/mf_theme_core/include/api/?type=get_site_template",
 								'catch_head' => true,
 							));
@@ -987,14 +953,14 @@ class mf_theme_core
 								default:
 									do_log("I could not connect to get_site_template");
 								break;
-							}
+							}*/
 
-							$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
+							//$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
 							$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
 							$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-							$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
+							//$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
 
 							$recommend_maintenance .= "\n".$loop_template_temp;
 						}
@@ -1406,6 +1372,34 @@ class mf_theme_core
 	function get_header()
 	{
 		$this->require_user_login();
+		
+		$setting_maintenance_page = get_option('setting_maintenance_page');
+
+		if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
+		{
+			if(IS_SUPER_ADMIN) // || $this->is_login_page()
+			{
+				// Do nothing
+			}
+
+			else if($setting_maintenance_page > 0)
+			{
+				$post_title = get_the_title($setting_maintenance_page);
+				$post_content = mf_get_post_content($setting_maintenance_page);
+
+				//get_header();
+
+					echo "<article class='post_type_page'>
+						<section>
+							<h1>".$post_title."</h1>"
+							.$post_content
+						."</section>
+					</article>";
+
+				//get_footer();
+				exit;
+			}
+		}
 	}
 
 	function wp_head()
