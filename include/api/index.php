@@ -63,7 +63,7 @@ switch($type)
 		get_header();
 
 		$json_output['get_header'] = str_replace('"', "'", ob_get_clean());
-	
+
 		ob_start();
 
 		get_footer();

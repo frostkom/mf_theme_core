@@ -8,6 +8,7 @@ class mf_theme_core
 	var $options_fonts = array();
 	var $title_format = "[page_title][site_title][site_description][page_number]";
 	var $arr_sensitive_data_types = array();
+	var $displayed_password_form = false;
 	var $arr_public_posts = array();
 	var $arr_post_types = array();
 	var $is_theme_active = '';
@@ -239,7 +240,7 @@ class mf_theme_core
 				}
 				#######################
 			}
-		
+
 			$option = 'closed';
 
 			if(get_option('default_comment_status') == $option)
@@ -1028,7 +1029,7 @@ class mf_theme_core
 		{
 			global $wpdb;
 
-			if(!isset($this->arr_sensitive_data_types) || count($this->arr_sensitive_data_types) == 0)
+			if(count($this->arr_sensitive_data_types) == 0)
 			{
 				$arr_sensitive_data_types = array(
 					'login' => array(),
@@ -1372,7 +1373,7 @@ class mf_theme_core
 	function get_header()
 	{
 		$this->require_user_login();
-		
+
 		$setting_maintenance_page = get_option('setting_maintenance_page');
 
 		if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
@@ -1642,7 +1643,7 @@ class mf_theme_core
 
 	function the_password_form()
 	{
-		if(!isset($this->displayed_password_form) || $this->displayed_password_form == false)
+		if($this->displayed_password_form == false)
 		{
 			$this->displayed_password_form = true;
 
@@ -1819,7 +1820,7 @@ class mf_theme_core
 
 		$this->arr_public_posts = array();
 
-		if(!isset($this->arr_post_types) || count($this->arr_post_types) == 0)
+		if(count($this->arr_post_types) == 0)
 		{
 			$this->get_public_post_types(array('allow_password_protected' => $data['allow_password_protected']));
 		}
