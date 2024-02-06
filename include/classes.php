@@ -256,7 +256,38 @@ class mf_theme_core
 
 		else
 		{
-			if(get_option('setting_no_public_pages') == 'yes')
+			$setting_maintenance_page = get_option('setting_maintenance_page');
+
+			if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
+			{
+				$setting_maintenance_page_html = get_option('setting_maintenance_page_html');
+
+				if($setting_maintenance_page_html != '')
+				{
+					echo $setting_maintenance_page_html;
+				}
+
+				else
+				{
+					$post_title = get_the_title($setting_maintenance_page);
+					$post_content = mf_get_post_content($setting_maintenance_page);
+
+					//get_header();
+
+						echo "<article class='post_type_page'>
+							<section>
+								<h1>".$post_title."</h1>"
+								.$post_content
+							."</section>
+						</article>";
+
+					//get_footer();
+				}
+
+				exit;
+			}
+
+			else if(get_option('setting_no_public_pages') == 'yes')
 			{
 				mf_redirect(get_site_url()."/wp-admin/");
 			}
@@ -269,26 +300,6 @@ class mf_theme_core
 
 					mf_redirect($login_url."?redirect_to=".$_SERVER['REQUEST_URI']);
 				//}
-			}
-
-			$setting_maintenance_page = get_option('setting_maintenance_page');
-
-			if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
-			{
-				$post_title = get_the_title($setting_maintenance_page);
-				$post_content = mf_get_post_content($setting_maintenance_page);
-
-				//get_header();
-
-					echo "<article class='post_type_page'>
-						<section>
-							<h1>".$post_title."</h1>"
-							.$post_content
-						."</section>
-					</article>";
-
-				//get_footer();
-				exit;
 			}
 		}
 
@@ -887,9 +898,11 @@ class mf_theme_core
 
 			if($option > 0 && $option != $option_temp)
 			{
+				// 
+				###########################################
 				$maintenance_file = ABSPATH."wp-content/maintenance.php";
 
-				if(!file_exists($maintenance_file) || is_writeable($maintenance_file))
+				if(touch($maintenance_file)) //!file_exists($maintenance_file) || is_writeable($maintenance_file)
 				{
 					list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
 					$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
@@ -908,6 +921,8 @@ class mf_theme_core
 							switch_to_blog($blog_id);
 
 							$loop_template_temp = $loop_template;
+
+							$setting_maintenance_page_html = get_option('setting_maintenance_page_html');
 
 							$site_url = get_site_url();
 							$site_url_clean = remove_protocol(array('url' => $site_url));
@@ -930,34 +945,23 @@ class mf_theme_core
 
 							if($post_url_clean != '' && $post_content != '')
 							{
-								/*$get_header = $get_footer = "";
-
-								list($content, $headers) = get_url_content(array(
-									'url' => $site_url."/wp-content/plugins/mf_theme_core/include/api/?type=get_site_template",
-									'catch_head' => true,
-								));
-
-								switch($headers['http_code'])
-								{
-									case 200:
-										$json_content = json_decode($content, true);
-										$get_header = $json_content['get_header'];
-										$get_footer = $json_content['get_footer'];
-									break;
-
-									default:
-										do_log("I could not connect to get_site_template");
-									break;
-								}*/
-
-								//$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
 								$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
 								$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
-								$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
-								$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-								//$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
 
-								$recommend_maintenance .= "\n".$loop_template_temp;
+								if($setting_maintenance_page_html != '')
+								{
+									$loop_template_temp = preg_replace("/(\<article.*\>.*\<\/article\>)/is", str_replace('"', "'", $setting_maintenance_page_html), $loop_template_temp);
+
+									$recommend_maintenance .= "\n".$loop_template_temp;
+								}
+
+								else
+								{
+									$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
+									$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
+
+									$recommend_maintenance .= "\n".$loop_template_temp;
+								}
 							}
 
 							restore_current_blog();
@@ -976,30 +980,10 @@ class mf_theme_core
 
 						if($post_url_clean != '' && $post_content != '')
 						{
-							/*list($content, $headers) = get_url_content(array(
-								'url' => $site_url."/wp-content/plugins/mf_theme_core/include/api/?type=get_site_template",
-								'catch_head' => true,
-							));
-
-							switch($headers['http_code'])
-							{
-								case 200:
-									$json_content = json_decode($content, true);
-									$get_header = $json_content['get_header'];
-									$get_footer = $json_content['get_footer'];
-								break;
-
-								default:
-									do_log("I could not connect to get_site_template");
-								break;
-							}*/
-
-							//$loop_template_temp = str_replace("[get_header]", $get_header, $loop_template_temp);
 							$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
 							$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
 							$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-							//$loop_template_temp = str_replace("[get_footer]", $get_footer, $loop_template_temp);
 
 							$recommend_maintenance .= "\n".$loop_template_temp;
 						}
@@ -1011,7 +995,7 @@ class mf_theme_core
 
 						if($success == true)
 						{
-							update_option($setting_key.'_temp', $option, 'no');
+							$done_text = sprintf(__("%s was saved", 'lang_theme_core'), $maintenance_file);
 						}
 
 						else
@@ -1032,6 +1016,35 @@ class mf_theme_core
 				}
 
 				echo get_notification();
+
+				update_option($setting_key.'_temp', $option, 'no');
+				###########################################
+
+				// Save HTML for this page
+				###########################################
+				if(get_option('setting_activate_maintenance') == 'no' && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes')
+				{
+					delete_option('setting_maintenance_page_html');
+
+					$setting_maintenance_page = get_option('setting_maintenance_page');
+
+					if($setting_maintenance_page > 0)
+					{
+						list($content, $headers) = get_url_content(array(
+							'url' => get_permalink($setting_maintenance_page),
+							'catch_head' => true,
+						));
+
+						switch($headers['http_code'])
+						{
+							case 200:
+							case 201:
+								update_option('setting_maintenance_page_html', $content, 'no');
+							break;
+						}
+					}
+				}
+				###########################################
 			}
 
 			$this->set_noindex_on_page($option);
