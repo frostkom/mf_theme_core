@@ -292,14 +292,9 @@ class mf_theme_core
 				mf_redirect(get_site_url()."/wp-admin/");
 			}
 
-			else if(get_option('setting_theme_core_login') == 'yes') // && is_user_logged_in() == false
+			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true)) // && is_user_logged_in() == false
 			{
-				/*if(apply_filters('is_public_page', true))
-				{*/
-					$login_url = wp_login_url();
-
-					mf_redirect($login_url."?redirect_to=".$_SERVER['REQUEST_URI']);
-				//}
+				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
 			}
 		}
 
