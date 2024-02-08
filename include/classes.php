@@ -33,7 +33,7 @@ class mf_theme_core
 	{
 		$out = false;
 
-		if(is_user_logged_in() == false)
+		if(!is_user_logged_in())
 		{
 			if($out == false)
 			{
@@ -247,58 +247,9 @@ class mf_theme_core
 		$obj_cron->end();
 	}
 
-	function init()
+	/*function init()
 	{
-		if(IS_ADMINISTRATOR || is_admin() || strpos($_SERVER['REQUEST_URI'], "/include/api/") || in_array($GLOBALS['pagenow'], array('wp-login.php'))) //, 'wp-register.php'
-		{
-			// Do nothing
-		}
-
-		else
-		{
-			$setting_maintenance_page = get_option('setting_maintenance_page');
-
-			if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
-			{
-				$setting_maintenance_page_html = get_option('setting_maintenance_page_html');
-
-				if($setting_maintenance_page_html != '')
-				{
-					echo $setting_maintenance_page_html;
-				}
-
-				else
-				{
-					$post_title = get_the_title($setting_maintenance_page);
-					$post_content = mf_get_post_content($setting_maintenance_page);
-
-					//get_header();
-
-						echo "<article class='post_type_page'>
-							<section>
-								<h1>".$post_title."</h1>"
-								.$post_content
-							."</section>
-						</article>";
-
-					//get_footer();
-				}
-
-				exit;
-			}
-
-			else if(get_option('setting_no_public_pages') == 'yes')
-			{
-				mf_redirect(get_site_url()."/wp-admin/");
-			}
-
-			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true))
-			{
-				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
-			}
-		}
-
-		/*if(!is_admin())
+		if(!is_admin())
 		{
 			if(isset($_REQUEST['action']) && ('posts_logout' == $_REQUEST['action']))
 			{
@@ -308,8 +259,8 @@ class mf_theme_core
 				wp_redirect(wp_get_referer());
 				die();
 			}
-		}*/
-	}
+		}
+	}*/
 
 	function get_flag_image($id = 0)
 	{
@@ -1419,6 +1370,56 @@ class mf_theme_core
 	{
 		global $wpdb, $post;
 
+		/*if(IS_ADMINISTRATOR || is_admin() || strpos($_SERVER['REQUEST_URI'], "/include/api/") || in_array($GLOBALS['pagenow'], array('wp-login.php'))) //, 'wp-register.php'
+		{
+			// Do nothing
+		}
+
+		else*/
+		if(!is_user_logged_in())
+		{
+			$setting_maintenance_page = get_option('setting_maintenance_page');
+
+			if($setting_maintenance_page > 0 && get_option('setting_activate_maintenance') == 'yes')
+			{
+				$setting_maintenance_page_html = get_option('setting_maintenance_page_html');
+
+				if($setting_maintenance_page_html != '')
+				{
+					echo $setting_maintenance_page_html;
+				}
+
+				else
+				{
+					$post_title = get_the_title($setting_maintenance_page);
+					$post_content = mf_get_post_content($setting_maintenance_page);
+
+					//get_header();
+
+						echo "<article class='post_type_page'>
+							<section>
+								<h1>".$post_title."</h1>"
+								.$post_content
+							."</section>
+						</article>";
+
+					//get_footer();
+				}
+
+				exit;
+			}
+
+			else if(get_option('setting_no_public_pages') == 'yes')
+			{
+				mf_redirect(get_site_url()."/wp-admin/");
+			}
+
+			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true))
+			{
+				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
+			}
+		}
+
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
@@ -1439,10 +1440,9 @@ class mf_theme_core
 
 		echo "<meta charset='".get_bloginfo('charset')."'>"
 		."<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
-		//."<meta name='author' content='martinfors.se'>"
 		."<title>".$this->get_wp_title()."</title>";
 
-		if(is_user_logged_in() == false)
+		if(!is_user_logged_in())
 		{
 			wp_deregister_style('dashicons');
 		}

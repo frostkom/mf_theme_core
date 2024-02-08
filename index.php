@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.8.7
+Version: 8.8.8
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -26,7 +26,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 	add_action('cron_base', 'activate_theme_core', mt_rand(1, 10));
 	add_action('cron_base', array($obj_theme_core, 'cron_base'), mt_rand(1, 10));
 
-	add_action('init', array($obj_theme_core, 'init'));
+	//add_action('init', array($obj_theme_core, 'init'));
 
 	if(is_admin())
 	{
@@ -80,10 +80,11 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('wp_sitemaps_add_provider', array($obj_theme_core, 'wp_sitemaps_add_provider'), 10, 2);
 		add_filter('wp_sitemaps_posts_query_args', array($obj_theme_core, 'wp_sitemaps_posts_query_args'), 10, 2);
 		add_filter('wp_sitemaps_taxonomies', array($obj_theme_core, 'wp_sitemaps_taxonomies'));
+		
+		add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
 
 		if($obj_theme_core->is_theme_active())
 		{
-			add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
 			add_filter('body_class', array($obj_theme_core, 'body_class'));
 		}
 

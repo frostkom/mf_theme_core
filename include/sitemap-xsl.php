@@ -7,12 +7,12 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
+header("Content-type: text/xsl; charset=".get_option('blog_charset'));
+
 $obj_theme_core = new mf_theme_core();
 
 $site_title = get_bloginfo('name');
 $site_description = get_bloginfo('description');
-
-header("Content-type: text/xsl; charset=".get_option('blog_charset'));
 
 echo "<?xml version='1.0' encoding='UTF-8'?>
 <xsl:stylesheet version='1.0' xmlns:html='http://www.w3.org/TR/REC-html40' xmlns:sitemap='http://www.sitemaps.org/schemas/sitemap/0.9' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>
