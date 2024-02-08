@@ -249,7 +249,7 @@ class mf_theme_core
 
 	function init()
 	{
-		if(IS_ADMINISTRATOR || is_admin() || in_array($GLOBALS['pagenow'], array('wp-login.php'))) //, 'wp-register.php'
+		if(IS_ADMINISTRATOR || is_admin() || strpos($_SERVER['REQUEST_URI'], "/include/api/") || in_array($GLOBALS['pagenow'], array('wp-login.php'))) //, 'wp-register.php'
 		{
 			// Do nothing
 		}
@@ -292,7 +292,7 @@ class mf_theme_core
 				mf_redirect(get_site_url()."/wp-admin/");
 			}
 
-			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true)) // && is_user_logged_in() == false
+			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true))
 			{
 				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
 			}
@@ -562,21 +562,16 @@ class mf_theme_core
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 			$arr_settings = array();
-			$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
+
+			if($this->is_theme_active())
+			{
+				$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
+			}
+
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
-
-			/*if(does_post_exists(array('post_type' => 'post'))) // If a post exists but is not published they can still be pinged and have comments which will lead to e-mails that a new ping or comment exists
-			{*/
-				$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
-				$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
-			/*}
-
-			else
-			{
-				delete_option('setting_display_post_meta');
-			}*/
-
+			$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+			$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
 			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
 			if(get_option('setting_scroll_to_top') == 'yes')
@@ -893,11 +888,41 @@ class mf_theme_core
 
 			if($option > 0 && $option != $option_temp)
 			{
-				// 
+				// Save HTML for this page
+				###########################################
+				if(get_option('setting_activate_maintenance') == 'no' && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes')
+				{
+					delete_option('setting_maintenance_page_html');
+
+					$setting_maintenance_page = get_option('setting_maintenance_page');
+
+					if($setting_maintenance_page > 0)
+					{
+						list($content, $headers) = get_url_content(array(
+							'url' => get_permalink($setting_maintenance_page),
+							'catch_head' => true,
+						));
+
+						switch($headers['http_code'])
+						{
+							case 200:
+							case 201:
+								update_option('setting_maintenance_page_html', $content, 'no');
+
+								$done_text = __("I saved the maintenance page as HTML", 'lang_theme_core');
+
+								echo get_notification();
+							break;
+						}
+					}
+				}
+				###########################################
+
+				// Save maintenance file
 				###########################################
 				$maintenance_file = ABSPATH."wp-content/maintenance.php";
 
-				if(touch($maintenance_file)) //!file_exists($maintenance_file) || is_writeable($maintenance_file)
+				if(touch($maintenance_file))
 				{
 					list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
 					$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
@@ -990,7 +1015,7 @@ class mf_theme_core
 
 						if($success == true)
 						{
-							$done_text = sprintf(__("%s was saved", 'lang_theme_core'), $maintenance_file);
+							$done_text = sprintf(__("%s was saved", 'lang_theme_core'), "<span title='".$maintenance_file."'>".basename($maintenance_file)."</span>");
 						}
 
 						else
@@ -1011,35 +1036,9 @@ class mf_theme_core
 				}
 
 				echo get_notification();
+				###########################################
 
 				update_option($setting_key.'_temp', $option, 'no');
-				###########################################
-
-				// Save HTML for this page
-				###########################################
-				if(get_option('setting_activate_maintenance') == 'no' && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes')
-				{
-					delete_option('setting_maintenance_page_html');
-
-					$setting_maintenance_page = get_option('setting_maintenance_page');
-
-					if($setting_maintenance_page > 0)
-					{
-						list($content, $headers) = get_url_content(array(
-							'url' => get_permalink($setting_maintenance_page),
-							'catch_head' => true,
-						));
-
-						switch($headers['http_code'])
-						{
-							case 200:
-							case 201:
-								update_option('setting_maintenance_page_html', $content, 'no');
-							break;
-						}
-					}
-				}
-				###########################################
 			}
 
 			$this->set_noindex_on_page($option);
