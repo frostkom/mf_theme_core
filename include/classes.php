@@ -230,8 +230,10 @@ class mf_theme_core
 
 					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (DAY_IN_SECONDS * 60)));
 
-					// Check if this works before use
-					//@rmdir($upload_path); // If it is empty, it is deleted
+					if(is_dir($upload_path) && is_array(scandir($upload_path)) && count(scandir($upload_path)) == 2)
+					{
+						rmdir($upload_path);
+					}
 				}
 				#######################
 			}
@@ -522,7 +524,6 @@ class mf_theme_core
 			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 			$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
-			$arr_settings['default_comment_status'] = __("Allow Comments", 'lang_theme_core');
 			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
 
 			if(get_option('setting_scroll_to_top') == 'yes')
@@ -740,45 +741,6 @@ class mf_theme_core
 			$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE comment_status = %s LIMIT 0, 1", $status));
 
 			return $wpdb->num_rows;
-		}
-
-		function get_comment_status_for_select($option)
-		{
-			$arr_data = array();
-			$arr_data['open'] = __("Yes", 'lang_theme_core');
-
-			if($this->get_comment_status_amount('closed') > 0)
-			{
-				$arr_data['open_all'] = __("Yes", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
-			}
-
-			$arr_data['closed'] = __("No", 'lang_theme_core');
-
-			if($this->get_comment_status_amount('open') > 0)
-			{
-				$arr_data['closed_all'] = __("No", 'lang_theme_core')." (".__("And Change Setting on All Posts", 'lang_theme_core').")";
-			}
-
-			return $arr_data;
-		}
-
-		function default_comment_status_callback()
-		{
-			global $wpdb;
-
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option($setting_key);
-
-			if(in_array($option, array('open_all', 'closed_all')))
-			{
-				$option = str_replace('_all', '', $option);
-
-				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s, ping_status = %s WHERE (comment_status != %s OR ping_status != %s)", $option, $option, $option, $option));
-
-				update_option($setting_key, $option, 'no');
-			}
-
-			echo show_select(array('data' => $this->get_comment_status_for_select($option), 'name' => $setting_key, 'value' => $option));
 		}
 
 		function setting_scroll_to_top_callback()
@@ -5233,9 +5195,9 @@ class mf_theme_core
 	{
 		$folder = $data['path']."/".$data['child'];
 
-		if(is_dir($folder) && count(@scandir($folder)) == 2)
+		if(is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
 		{
-			@rmdir($folder);
+			rmdir($folder);
 		}
 	}
 
