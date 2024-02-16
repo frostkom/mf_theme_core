@@ -197,6 +197,17 @@ class mf_theme_core
 		}
 	}
 
+	// Can be replaced delete_empty_folder_callback in MF Base
+	function delete_empty_folder_callback($data)
+	{
+		$folder = $data['path']."/".$data['child'];
+
+		if(is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
+		{
+			rmdir($folder);
+		}
+	}
+
 	function cron_base()
 	{
 		global $wpdb;
@@ -228,12 +239,10 @@ class mf_theme_core
 				{
 					list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (DAY_IN_SECONDS * 60)));
+					do_log(__FUNCTION__.": I am about to remove all files in ".$upload_path, 'notification');
 
-					if(is_dir($upload_path) && is_array(scandir($upload_path)) && count(scandir($upload_path)) == 2)
-					{
-						rmdir($upload_path);
-					}
+					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (DAY_IN_SECONDS * 60)));
+					get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder_callback')));
 				}
 				#######################
 			}
@@ -4443,7 +4452,7 @@ class mf_theme_core
 		{
 			if(get_option('option_uploads_fixed') < date("Y-m-d", strtotime("-1 month")))
 			{
-				if(file_exists($this->file_dir_from) && is_file($this->file_dir_from))
+				if(file_exists($this->file_dir_from)) // && is_file($this->file_dir_from)
 				{
 					// Some files are still in use in the old hierarchy
 					//unlink($this->file_dir_from);
@@ -4455,7 +4464,7 @@ class mf_theme_core
 		{
 			if(file_exists($this->file_dir_from))
 			{
-				@mkdir(dirname($this->file_dir_to), 0755, true);
+				mkdir(dirname($this->file_dir_to), 0755, true);
 
 				if(!copy($this->file_dir_from, $this->file_dir_to))
 				{
@@ -4778,9 +4787,23 @@ class mf_theme_core
 
 		else if(isset($_GET['btnThemeDelete']) && wp_verify_nonce($_GET['_wpnonce_theme_delete'], 'theme_delete_'.$strFileName))
 		{
-			unlink($upload_path.$strFileName);
+			if(file_exists($upload_path.$strFileName))
+			{
+				if(unlink($upload_path.$strFileName))
+				{
+					$done_text = __("The file was deleted successfully", 'lang_theme_core');
+				}
 
-			$done_text = __("The file was deleted successfully", 'lang_theme_core');
+				else
+				{
+					$error_text = __("The file could not be deleted", 'lang_theme_core')." (".$upload_path.$strFileName.")";
+				}
+			}
+
+			else
+			{
+				$error_text = __("The file could not be deleted because it was not found", 'lang_theme_core')." (".$upload_path.$strFileName.")";
+			}
 		}
 
 		else
@@ -5191,16 +5214,6 @@ class mf_theme_core
 		}
 	}
 
-	function delete_empty_folder($data)
-	{
-		$folder = $data['path']."/".$data['child'];
-
-		if(is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
-		{
-			rmdir($folder);
-		}
-	}
-
 	function do_optimize()
 	{
 		global $wpdb;
@@ -5293,7 +5306,7 @@ class mf_theme_core
 
 		// Remove empty folders in uploads
 		list($upload_path, $upload_url) = get_uploads_folder();
-		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder')));
+		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder_callback')));
 
 		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
 
