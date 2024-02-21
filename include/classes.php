@@ -202,7 +202,7 @@ class mf_theme_core
 	{
 		$folder = $data['path']."/".$data['child'];
 
-		if(is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
+		if(file_exists($folder) && is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
 		{
 			rmdir($folder);
 		}
@@ -1275,7 +1275,7 @@ class mf_theme_core
 			$plugin_include_url = plugin_dir_url(__FILE__);
 			$plugin_version = get_plugin_version(__FILE__);
 
-			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('ajax_url' => admin_url('admin-ajax.php')), $plugin_version); //'plugin_url' => $plugin_include_url, 
+			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('ajax_url' => admin_url('admin-ajax.php')), $plugin_version);
 		}
 
 		if(function_exists('wp_add_privacy_policy_content'))
@@ -4548,7 +4548,7 @@ class mf_theme_core
 
 				$url_clean = remove_protocol(array('url' => $url, 'clean' => true, 'trim' => true));
 
-				$log_message_2 = sprintf("The response from %s had an error", $url_clean);
+				$log_message_2 = sprintf("The style response from %s had an error", $url_clean);
 
 				switch($headers['http_code'])
 				{
@@ -4933,10 +4933,10 @@ class mf_theme_core
 		{
 			remove_menu_page("edit-comments.php");
 
-			if(get_option('default_comment_status') == 'closed')
+			/*if(get_option('default_comment_status') == 'closed')
 			{
 				remove_submenu_page("options-general.php", "options-discussion.php");
-			}
+			}*/
 		}
 
 		if($this->is_theme_active())
