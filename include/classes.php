@@ -2,7 +2,8 @@
 
 class mf_theme_core
 {
-	var $meta_prefix = 'mf_theme_core_';
+	var $post_type = 'mf_theme_core';
+	var $meta_prefix;
 	var $options_params = array();
 	var $options = array();
 	var $options_fonts = array();
@@ -22,7 +23,10 @@ class mf_theme_core
 	var $file_dir_from;
 	var $file_dir_to;
 
-	function __construct(){}
+	function __construct()
+	{
+		$this->meta_prefix = $this->post_type.'_';
+	}
 
 	function is_site_public()
 	{
@@ -219,7 +223,7 @@ class mf_theme_core
 		{
 			$this->publish_posts();
 
-			/* Optimize */
+			// Optimize
 			#########################
 			if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
 			{
@@ -239,20 +243,29 @@ class mf_theme_core
 				{
 					list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
 
-					do_log(__FUNCTION__.": I am about to remove all files in ".$upload_path, 'notification');
-
 					get_file_info(array('path' => $upload_path, 'callback' => 'delete_files', 'time_limit' => (DAY_IN_SECONDS * 60)));
 					get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder_callback')));
 				}
 				#######################
 			}
 
+			// Change comment status on posts
+			#########################
 			$option = 'closed';
 
 			if(get_option('default_comment_status') == $option)
 			{
 				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s, ping_status = %s WHERE (comment_status != %s OR ping_status != %s)", $option, $option, $option, $option));
 			}
+			#########################
+
+			// Delete old uploads
+			#######################
+			list($upload_path, $upload_url) = get_uploads_folder($this->post_type);
+
+			get_file_info(array('path' => $upload_path, 'callback' => 'delete_files_callback', 'time_limit' => MONTH_IN_SECONDS));
+			get_file_info(array('path' => $upload_path, 'folder_callback' => 'delete_empty_folder_callback'));
+			#######################
 		}
 
 		$obj_cron->end();
@@ -847,7 +860,7 @@ class mf_theme_core
 				if(touch($maintenance_file))
 				{
 					list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
-					$maintenance_template = str_replace("mf_theme_core/include", "mf_theme_core/templates/", dirname(__FILE__))."maintenance.php";
+					$maintenance_template = str_replace($this->post_type."/include", $this->post_type."/templates/", dirname(__FILE__))."maintenance.php";
 
 					$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
 					$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
