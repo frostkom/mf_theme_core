@@ -57,10 +57,10 @@
 		}
 }
 
-@media print
+/*@media print
 {
 	#accept_cookies, #accepted_cookies
 	{
 		display: none;
 	}
-}
+}*/
