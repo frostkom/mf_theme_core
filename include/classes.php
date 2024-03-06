@@ -4628,9 +4628,16 @@ class mf_theme_core
 	{
 		global $wpdb;
 
-		$wpdb->get_results($wpdb->prepare("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') AND comment_type = %s LIMIT 0, 1", 'comment'));
+		$out = false;
 
-		return ($wpdb->num_rows > 0);
+		if(does_table_exist($wpdb->comments))
+		{
+			$wpdb->get_results($wpdb->prepare("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') AND comment_type = %s LIMIT 0, 1", 'comment'));
+
+			$out = ($wpdb->num_rows > 0);
+		}
+
+		return $out;
 	}
 
 	function get_theme_updates_message()
