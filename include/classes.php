@@ -342,12 +342,20 @@ class mf_theme_core
 
 	function get_site_status_data($data = array())
 	{
+		$arr_out = array(
+			'url' => "",
+			'color' => "",
+			'icon' => "",
+			'text' => "",
+		);
+
 		switch($this->get_site_status())
 		{
 			case 'maintenance_mode':
-				$color = "color_red";
-				$icon = "fas fa-hard-hat";
-				$text = __("Maintenance Mode Activated", 'lang_theme_core');
+				$arr_out['url'] = admin_url("options-general.php?page=settings_mf_base#settings_theme_core_public");
+				$arr_out['color'] = "color_red";
+				$arr_out['icon'] = "fas fa-hard-hat";
+				$arr_out['text'] = __("Maintenance Mode Activated", 'lang_theme_core');
 			break;
 
 			case 'not_public':
@@ -358,38 +366,35 @@ class mf_theme_core
 					$wp_admin_bar->remove_menu('site-name');
 				}
 
-				$color = "color_red";
-				$icon = "fas fa-eye-slash";
-				$text = __("No Public Pages", 'lang_theme_core');
+				$arr_out['color'] = "color_red";
+				$arr_out['icon'] = "fas fa-eye-slash";
+				$arr_out['text'] = __("No Public Pages", 'lang_theme_core');
 			break;
 
 			case 'requires_login':
-				$this->site_url = get_home_url();
-
-				$color = "color_red";
-				$icon = "fas fa-user-lock";
-				$text = __("Requires Login", 'lang_theme_core');
+				$arr_out['url'] = get_home_url();
+				$arr_out['color'] = "color_red";
+				$arr_out['icon'] = "fas fa-user-lock";
+				$arr_out['text'] = __("Requires Login", 'lang_theme_core');
 			break;
 
 			case 'no_index':
-				$this->site_url = get_home_url();
-
-				$color = "color_yellow";
-				$icon = "fas fa-robot";
-				$text = __("No Index", 'lang_theme_core');
+				$arr_out['url'] = get_home_url();
+				$arr_out['color'] = "color_yellow";
+				$arr_out['icon'] = "fas fa-robot";
+				$arr_out['text'] = __("No Index", 'lang_theme_core');
 			break;
 
 			default:
 			case 'public':
-				$this->site_url = get_home_url();
-
-				$color = "color_green";
-				$icon = "fas fa-eye";
-				$text = __("Public", 'lang_theme_core');
+				$arr_out['url'] = get_home_url();
+				$arr_out['color'] = "color_green";
+				$arr_out['icon'] = "fas fa-eye";
+				$arr_out['text'] = __("Public", 'lang_theme_core');
 			break;
 		}
 
-		return array($color, $icon, $text);
+		return $arr_out;
 	}
 
 	function wp_before_admin_bar_render()
@@ -398,22 +403,20 @@ class mf_theme_core
 
 		if(IS_ADMINISTRATOR)
 		{
-			$this->site_url = $icon = "";
-
-			list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'admin_bar'));
+			$arr_site_status = $this->get_site_status_data(array('type' => 'admin_bar'));
 
 			$flag_image = $this->get_flag_image();
 
 			$title = "";
 
-			if($this->site_url != '')
+			if($arr_site_status['url'] != '')
 			{
-				$title .= "<a href='".$this->site_url."' class='".$color."'>";
+				$title .= "<a href='".$arr_site_status['url']."' class='".$arr_site_status['color']."'>";
 			}
 
 			else
 			{
-				$title .= "<span".(isset($color) && $color != '' ? " class='".$color."'" : "").">";
+				$title .= "<span class='".$arr_site_status['color']."'>";
 			}
 
 				if($flag_image != '')
@@ -424,14 +427,14 @@ class mf_theme_core
 				}
 
 					// "#wpadminbar *" overrides style for FA icons
-					/*if($icon != '')
+					/*if($arr_site_status['icon'] != '')
 					{
-						$title .= "<i class='".$icon."' title='".$text."'></i>";
+						$title .= "<i class='".$arr_site_status['icon']."' title='".$arr_site_status['text']."'></i>";
 					}
 
 					else
 					{*/
-						$title .= $text;
+						$title .= $arr_site_status['text'];
 					//}
 
 				if($flag_image != '')
@@ -440,7 +443,7 @@ class mf_theme_core
 					</div>";
 				}
 
-			if($this->site_url != '')
+			if($arr_site_status['url'] != '')
 			{
 				$title .= "</a>";
 			}
@@ -5092,9 +5095,9 @@ class mf_theme_core
 						echo "<img src='".$flag_image."' class='alignleft'>&nbsp;";
 					}
 
-					list($color, $icon, $text) = $this->get_site_status_data(array('type' => 'sites_column'));
+					$arr_site_status = $this->get_site_status_data(array('type' => 'sites_column'));
 
-					echo "<i class='".$icon." fa-2x ".$color."' title='".$text."'></i>";
+					echo "<i class='".$arr_site_status['icon']." fa-2x ".$arr_site_status['color']."' title='".$arr_site_status['text']."'></i>";
 				break;
 
 				case 'theme':
