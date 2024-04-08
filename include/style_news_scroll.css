@@ -40,8 +40,8 @@
 
 		.widget.theme_news .news_scroll ul li
 		{
-			-webkit-filter: blur(0);
-			filter: blur(0);
+			-webkit-filter: none;
+			filter: none;
 			opacity: 1;
 			transform: translate(0, 0);
 			transition: all 1s ease;
