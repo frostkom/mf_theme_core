@@ -116,7 +116,7 @@ echo "@media all
 		}
 
 	/* Full Width */
-	body:not(.is_mobile) nav.full_width:not(.is_hamburger), .full_width > div > .widget
+	body:not(.is_mobile) nav.full_width:not(.is_hamburger), .full_width > div > .widget, .widget.full_width
 	{
 		left: 50%;
 		margin-left: -50vw;
