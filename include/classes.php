@@ -9,7 +9,6 @@ class mf_theme_core
 	var $options_fonts = array();
 	var $title_format = "[page_title][site_title][site_description][page_number]";
 	var $arr_sensitive_data_types = array();
-	var $displayed_password_form = false;
 	var $arr_public_posts = array();
 	var $arr_post_types = array();
 	var $is_theme_active = '';
@@ -1639,62 +1638,6 @@ class mf_theme_core
 
 		return $query;
 	}*/
-
-	function the_password_form()
-	{
-		if($this->displayed_password_form == false)
-		{
-			$this->displayed_password_form = true;
-
-			return "<form action='".site_url('wp-login.php?action=postpass', 'login_post')."' method='post' class='mf_form'>
-				<p>".__("To view this protected post, enter the password below", 'lang_theme_core')."</p>"
-				.show_password_field(array('name' => 'post_password', 'placeholder' => __("Password"), 'maxlength' => 20))
-				."<div class='form_button'>"
-					.show_button(array('text' => __("Submit", 'lang_theme_core')))
-				."</div>
-			</form>";
-		}
-
-		else
-		{
-			return "";
-		}
-	}
-
-	function the_content($html)
-	{
-		global $post;
-
-		if(post_password_required()) // $this->is_post_password_protected($post->ID)
-		{
-			if(!isset($post->post_password))
-			{
-				do_log("post_password did not exist even though it was a protected page");
-			}
-
-			$html = $this->the_password_form();
-		}
-
-		/*global $done_text, $error_text;
-
-		if(isset($post->post_password) && $post->post_password != '')
-		{
-			$cookie_name = 'wp-postpass_'.COOKIEHASH;
-
-			if(isset($_COOKIE[$cookie_name]) && wp_check_password($post->post_password, $_COOKIE[$cookie_name]))
-			{
-				$html .= "<form action='".wp_nonce_url(add_query_arg(array('action' => 'posts_logout'), site_url('wp-login.php', 'login')), 'posts_logout')."' method='post' class='mf_form'>
-					<div class='form_button'>"
-						.show_button(array('text' => "Logout"))
-					."</div>
-				</form>";
-
-				//$html .= var_export($_COOKIE, true).", ".$_COOKIE[$cookie_name];
-			}
-		}*/
-
-		return $html;
-	}
 
 	function the_content_meta($html, $post)
 	{
