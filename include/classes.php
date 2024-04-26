@@ -205,9 +205,14 @@ class mf_theme_core
 	{
 		$folder = $data['path']."/".$data['child'];
 
-		if(file_exists($folder) && is_dir($folder) && is_array(scandir($folder)) && count(scandir($folder)) == 2)
+		if(file_exists($folder) && is_dir($folder))
 		{
-			rmdir($folder);
+			$folder_scan = scandir($folder);
+
+			if(is_array($folder_scan) && count($folder_scan) == 2)
+			{
+				rmdir($folder);
+			}
 		}
 	}
 

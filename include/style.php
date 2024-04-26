@@ -75,7 +75,7 @@ echo "@media all
 	}
 
 	/* Content */
-	article .meta > *
+	article > .meta > *
 	{
 		color: #808080;
 		display: inline-block;
@@ -83,12 +83,12 @@ echo "@media all
 		margin-bottom: 1em;
 	}
 
-		article .meta > * + *
+		article > .meta > * + *
 		{
 			margin-left: .5em;
 		}
 
-		article .meta > span
+		article > .meta > span
 		{
 			font-weight: bold;
 		}
