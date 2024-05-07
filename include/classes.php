@@ -528,7 +528,6 @@ class mf_theme_core
 
 		if(IS_SUPER_ADMIN)
 		{
-			$arr_settings['setting_theme_enable_wp_api'] = __("Enable XML-RPC", 'lang_theme_core');
 			$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 		}
 
@@ -661,15 +660,6 @@ class mf_theme_core
 			}
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
-		}
-
-		function setting_theme_enable_wp_api_callback()
-		{
-			$setting_key = get_setting_key(__FUNCTION__);
-			settings_save_site_wide($setting_key);
-			$option = get_site_option($setting_key, 'no');
-
-			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 		}
 
 		function setting_theme_optimize_callback()
@@ -4022,32 +4012,6 @@ class mf_theme_core
 			break;
 		}*/
 
-		if((!is_multisite() || is_main_site()) && get_site_option('setting_theme_enable_wp_api', get_option('setting_theme_enable_wp_api')) != 'yes')
-		{
-			if(!isset($obj_base))
-			{
-				$obj_base = new mf_base();
-			}
-
-			switch($obj_base->get_server_type())
-			{
-				default:
-				case 'apache':
-					$update_with .= "<IfModule mod_rewrite.c>\r\n"
-					."	RewriteEngine On\r\n"
-					."	RewriteCond %{REQUEST_URI} ^/?(xmlrpc\.php)$\r\n"
-					."	RewriteRule .* /404/ [L,NC]\r\n"
-					."</IfModule>";
-				break;
-
-				case 'nginx':
-					$update_with .= "location /xmlrpc.php {\r\n"
-					."	deny all;\r\n"
-					."}";
-				break;
-			}
-		}
-
 		if($update_with != '')
 		{
 			$data['html'] .= $obj_base->update_config(array(
@@ -4953,12 +4917,6 @@ class mf_theme_core
 				'global' => false,
 				'icon' => "fas fa-user-lock",
 				'name' => __("Theme", 'lang_theme_core')." - ".__("Require login for public site", 'lang_theme_core'),
-			),
-			'setting_theme_enable_wp_api' => array(
-				'type' => 'bool',
-				'global' => true,
-				'icon' => "fas fa-network-wired",
-				'name' => __("Theme", 'lang_theme_core')." - ".__("Enable XML-RPC", 'lang_theme_core'),
 			),
 		);
 
