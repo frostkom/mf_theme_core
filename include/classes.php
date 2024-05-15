@@ -1419,9 +1419,12 @@ class mf_theme_core
 			mf_enqueue_script('script_theme_page_index', $plugin_include_url."script_page_index.js", $plugin_version);
 		}
 
-		echo "<meta charset='".get_bloginfo('charset')."'>"
-		."<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
-		."<title>".$this->get_wp_title()."</title>";
+		if($this->is_theme_active())
+		{
+			echo "<meta charset='".get_bloginfo('charset')."'>"
+			."<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
+			."<title>".$this->get_wp_title()."</title>";
+		}
 
 		if(!is_user_logged_in())
 		{
