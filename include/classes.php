@@ -3818,99 +3818,42 @@ class mf_theme_core
 		return $hidden;
 	}
 
-	function check_if_correct_post_type($post_id)
-	{
-		if($post_id > 0)
-		{
-			$obj_base = new mf_base();
-
-			return in_array(get_post_type($post_id), $obj_base->get_post_types_for_metabox(array('exclude_from_search' => false)));
-		}
-
-		else
-		{
-			return true;
-		}
-	}
-
-	function check_if_published($post_id)
-	{
-		$is_published = $is_not_published = true;
-
-		if($post_id > 0)
-		{
-			$post_status = get_post_status($post_id);
-
-			if($post_status == 'publish')
-			{
-				$is_not_published = false;
-			}
-
-			else
-			{
-				$is_published = false;
-			}
-		}
-
-		return array($is_published, $is_not_published);
-	}
-
 	function rwmb_meta_boxes($meta_boxes)
 	{
 		if(IS_ADMINISTRATOR)
 		{
-			$post_id = check_var('post');
+			$obj_base = new mf_base();
 
-			$arr_fields = array();
-
-			if($this->check_if_correct_post_type($post_id)) //$this->is_site_public() && 
-			{
-				$arr_fields[] = array(
-					'name' => __("Index", 'lang_theme_core'),
-					'id' => $this->meta_prefix.'page_index',
-					'type' => 'select',
-					'options' => array(
-						'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-						'noindex' => __("Do not Index", 'lang_theme_core'),
-						'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
-						'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
+			$meta_boxes[] = array(
+				'id' => $this->meta_prefix.'publish',
+				'title' => __("Publish Settings", 'lang_theme_core'),
+				'post_types' => $obj_base->get_post_types_for_metabox(),
+				'context' => 'side',
+				'priority' => 'low',
+				'fields' => array(
+					array(
+						'name' => __("Index", 'lang_theme_core'),
+						'id' => $this->meta_prefix.'page_index',
+						'type' => 'select',
+						'options' => array(
+							'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
+							'noindex' => __("Do not Index", 'lang_theme_core'),
+							'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
+							'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
+						),
 					),
-				);
-			}
-
-			list($is_published, $is_not_published) = $this->check_if_published($post_id);
-
-			if($is_not_published)
-			{
-				$arr_fields[] = array(
-					'name' => __("Publish", 'lang_theme_core'),
-					'id' => $this->meta_prefix.'publish_date',
-					'type' => 'datetime',
-				);
-			}
-
-			if($is_published)
-			{
-				$arr_fields[] = array(
-					'name' => __("Unpublish", 'lang_theme_core'),
-					'id' => $this->meta_prefix.'unpublish_date',
-					'type' => 'datetime',
-				);
-			}
-
-			if(count($arr_fields) > 0)
-			{
-				$obj_base = new mf_base();
-
-				$meta_boxes[] = array(
-					'id' => $this->meta_prefix.'publish',
-					'title' => __("Publish Settings", 'lang_theme_core'),
-					'post_types' => $obj_base->get_post_types_for_metabox(),
-					'context' => 'side',
-					'priority' => 'low',
-					'fields' => $arr_fields,
-				);
-			}
+					array(
+						'name' => __("Publish", 'lang_theme_core'),
+						'id' => $this->meta_prefix.'publish_date',
+						'type' => 'datetime',
+					),
+					array(
+						'name' => __("Unpublish", 'lang_theme_core'),
+						'id' => $this->meta_prefix.'unpublish_date',
+						'type' => 'datetime',
+					),
+				),
+			);
 		}
 
 		return $meta_boxes;
