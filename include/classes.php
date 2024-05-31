@@ -19,8 +19,6 @@ class mf_theme_core
 	var $param = array();
 	var $post_id_old;
 	var $post_id_new;
-	var $file_dir_from;
-	var $file_dir_to;
 
 	function __construct()
 	{
@@ -4316,36 +4314,6 @@ class mf_theme_core
 	{
 		update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
 		update_option('option_theme_version', get_option('option_theme_version', 0) + 1, 'no');
-	}
-	#################################
-
-	#################################
-	function copy_file()
-	{
-		if(file_exists($this->file_dir_to))
-		{
-			if(get_option('option_uploads_fixed') < date("Y-m-d", strtotime("-1 month")))
-			{
-				if(file_exists($this->file_dir_from)) // && is_file($this->file_dir_from)
-				{
-					// Some files are still in use in the old hierarchy
-					//unlink($this->file_dir_from);
-				}
-			}
-		}
-
-		else
-		{
-			if(file_exists($this->file_dir_from))
-			{
-				mkdir(dirname($this->file_dir_to), 0755, true);
-
-				if(!copy($this->file_dir_from, $this->file_dir_to))
-				{
-					do_log("File was NOT copied: ".$this->file_dir_from." -> ".$this->file_dir_to);
-				}
-			}
-		}
 	}
 	#################################
 
