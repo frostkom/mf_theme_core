@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.1
+Version: 8.9.2
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -69,7 +69,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('count_shortcode_button', array($obj_theme_core, 'count_shortcode_button'));
 		add_filter('get_shortcode_output', array($obj_theme_core, 'get_shortcode_output'));
 
-		remove_action('admin_print_styles', 'print_emoji_styles');
+		remove_action('admin_print_styles', 'wp_enqueue_emoji_styles'); //print_emoji_styles
 		remove_action('admin_print_scripts', 'print_emoji_detection_script');
 	}
 
@@ -110,7 +110,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		remove_action('wp_head', 'feed_links', 2);
 		remove_action('wp_head', 'feed_links_extra', 3);
 
-		remove_action('wp_print_styles', 'print_emoji_styles');
+		remove_action('wp_print_styles', 'wp_enqueue_emoji_styles'); //print_emoji_styles
 		remove_action('wp_head', 'print_emoji_detection_script', 7);
 		add_filter('emoji_svg_url', '__return_false');
 
