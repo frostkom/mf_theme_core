@@ -547,7 +547,7 @@ class mf_theme_core
 				$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
 			}
 
-			$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
+			//$arr_settings['setting_theme_core_display_author_pages'] = __("Display Author Pages", 'lang_theme_core');
 			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
 			$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
 			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
@@ -3366,7 +3366,7 @@ class mf_theme_core
 		}
 	}
 
-	function template_redirect()
+	/*function template_redirect()
 	{
 		if(is_author() && get_option('setting_theme_core_display_author_pages') == 'no')
 		{
@@ -3383,7 +3383,7 @@ class mf_theme_core
 		}
 
 		return $provider;
-	}
+	}*/
 
 	function wp_sitemaps_posts_query_args($args, $post_type)
 	{
@@ -3821,6 +3821,24 @@ class mf_theme_core
 		if(IS_ADMINISTRATOR)
 		{
 			$obj_base = new mf_base();
+
+			if(wp_is_block_theme())
+			{
+				$meta_boxes[] = array(
+					'id' => $this->meta_prefix.'settings',
+					'title' => __("Settings", 'lang_theme_core'),
+					'post_types' => $obj_base->get_post_types_for_metabox(),
+					'context' => 'side',
+					'priority' => 'low',
+					'fields' => array(
+						array(
+							'name' => __("Description", 'lang_theme_core'),
+							'id' => 'post_excerpt',
+							'type' => 'textarea',
+						),
+					),
+				);
+			}
 
 			$meta_boxes[] = array(
 				'id' => $this->meta_prefix.'publish',
