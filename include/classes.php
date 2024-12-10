@@ -3635,7 +3635,7 @@ class mf_theme_core
 		return $cols;
 	}
 
-	function column_cell($col, $id)
+	function column_cell($col, $post_id)
 	{
 		global $wpdb, $post;
 
@@ -3657,7 +3657,7 @@ class mf_theme_core
 
 				if($seo_type == '')
 				{
-					$page_index = get_post_meta($id, $this->meta_prefix.'page_index', true);
+					$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
 
 					if(in_array($page_index, array('noindex', 'none')))
 					{
@@ -3665,7 +3665,7 @@ class mf_theme_core
 					}
 				}
 
-				if($seo_type == '' && $this->is_post_password_protected($id))
+				if($seo_type == '' && $this->is_post_password_protected($post_id))
 				{
 					$seo_type = 'password_protected';
 				}
@@ -3674,7 +3674,7 @@ class mf_theme_core
 				{
 					if($post->post_excerpt != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, 'publish', $post->post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_excerpt, 'publish', $post->post_type, $post_id));
 
 						if($post_id_duplicate > 0)
 						{
@@ -3697,7 +3697,7 @@ class mf_theme_core
 				{
 					if($post->post_title != '')
 					{
-						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, 'publish', $post->post_type, $id));
+						$post_id_duplicate = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_title = %s AND post_status = %s AND post_type = %s AND ID != '%d' LIMIT 0, 1", $post->post_title, 'publish', $post->post_type, $post_id));
 
 						if($post_id_duplicate > 0)
 						{
