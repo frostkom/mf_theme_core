@@ -1431,11 +1431,14 @@ class mf_theme_core
 
 		$this->add_page_index();
 
-		$meta_description = get_the_excerpt();
-
-		if($meta_description != '')
+		if($this->is_theme_active())
 		{
-			echo "<meta name='description' content='".esc_attr($meta_description)."'>";
+			$meta_description = get_the_excerpt();
+
+			if($meta_description != '')
+			{
+				echo "<meta name='description' content='".esc_attr($meta_description)."'>";
+			}
 		}
 
 		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>
