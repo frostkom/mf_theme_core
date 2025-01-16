@@ -18,17 +18,11 @@
 
 		#accept_cookies div
 		{
-			display: -webkit-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
 			display: flex;
 		}
 
 			#accept_cookies p
 			{
-				-webkit-box-flex: 1 0 auto;
-				-webkit-flex: 1 0 auto;
-				-ms-flex: 1 0 auto;
 				flex: 1 0 auto;
 			}
 

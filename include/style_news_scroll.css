@@ -40,7 +40,6 @@
 
 		.widget.theme_news .news_scroll ul li
 		{
-			-webkit-filter: none;
 			filter: none;
 			opacity: 1;
 			transform: translate(0, 0);
@@ -49,7 +48,6 @@
 
 			.widget.theme_news .news_scroll ul li.inactive
 			{
-				-webkit-filter: blur(.2em);
 				filter: blur(.2em);
 				opacity: .2;
 				pointer-events: none;

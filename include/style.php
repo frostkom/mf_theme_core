@@ -169,13 +169,7 @@ echo "@media all
 
 	echo ".widget .section .text_columns
 	{
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
 		display: flex;
-		-webkit-box-flex-wrap: wrap;
-		-webkit-flex-wrap: wrap;
-		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
 	}
 
@@ -186,36 +180,24 @@ echo "@media all
 
 		.widget .section .columns_2 > li
 		{
-			-webkit-box-flex: 1 0 50%;
-			-webkit-flex: 1 0 50%;
-			-ms-flex: 1 0 50%;
 			flex: 1 0 50%;
 			min-width: 50%;
 		}
 
 		.widget .section .columns_3 > li
 		{
-			-webkit-box-flex: 1 0 33%;
-			-webkit-flex: 1 0 33%;
-			-ms-flex: 1 0 33%;
 			flex: 1 0 33%;
 			min-width: 33%;
 		}
 
 		.widget .section .columns_4 > li
 		{
-			-webkit-box-flex: 1 0 25%;
-			-webkit-flex: 1 0 25%;
-			-ms-flex: 1 0 25%;
 			flex: 1 0 25%;
 			min-width: 25%;
 		}
 
 			.is_tablet .widget .section .columns_4 > li
 			{
-				-webkit-box-flex: 1 0 50%;
-				-webkit-flex: 1 0 50%;
-				-ms-flex: 1 0 50%;
 				flex: 1 0 50%;
 				min-width: 50%;
 			}";
@@ -225,21 +207,12 @@ echo "@media all
 		echo ".widget.theme_widget_area .widget_columns, header .widget_columns
 		{
 			clear: both;
-			display: -webkit-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
 			display: flex;
-			-webkit-box-flex-wrap: wrap;
-			-webkit-flex-wrap: wrap;
-			-ms-flex-wrap: wrap;
 			flex-wrap: wrap;
 		}
 
 			.is_mobile .widget.theme_widget_area .widget_columns, .is_mobile header .widget_columns
 			{
-				-moz-box-direction: column;
-				-webkit-box-direction: column;
-				-ms-flexbox-direction: column;
 				flex-direction: column;
 			}
 
@@ -254,9 +227,6 @@ echo "@media all
 
 				echo ".widget.theme_widget_area .widget_columns.columns_".$i." .widget, header .widget_columns.columns_".$i." .widget
 				{
-					-webkit-box-flex: 1 0 ".$width."%;
-					-webkit-flex: 1 0 ".$width."%;
-					-ms-flex: 1 0 ".$width."%;
 					flex: 1 0 ".$width."%;
 					min-width: ".$width."%;
 				}";
@@ -265,9 +235,6 @@ echo "@media all
 				{
 					echo ".is_tablet .widget.theme_widget_area .widget_columns.columns_".$i." .widget, .is_tablet header .widget_columns.columns_".$i." .widget
 					{
-						-webkit-box-flex: 1 0 50%;
-						-webkit-flex: 1 0 50%;
-						-ms-flex: 1 0 50%;
 						flex: 1 0 50%;
 						min-width: 50%;
 					}";
@@ -351,15 +318,7 @@ echo "@media all
 				margin: 0 -.5em -.8em;
 
 				/* Fix for iOS */
-				-webkit-box-pack: center;
-				-moz-box-pack: center;
-				-ms-flex-pack: center;
-				-webkit-justify-content: flex-start;
 				justify-content: flex-start;
-				-webkit-box-align: center;
-				-moz-box-align: center;
-				-ms-flex-align: center;
-				-webkit-align-items: center;
 				align-items: stretch;
 			}
 
@@ -394,7 +353,6 @@ echo "@media all
 
 							.widget.theme_news li:hover .image img
 							{
-								-webkit-transform: scale(1.1);
 								transform: scale(1.1);
 							}
 
@@ -486,7 +444,6 @@ echo "@media all
 					padding: 1.5em 1em;
 					-webkit-tap-highlight-color: transparent;
 					text-align: center;
-					-webkit-transform: rotate(1deg);
 					transform: rotate(1deg);
 					max-width: 20em;
 				}
@@ -498,31 +455,26 @@ echo "@media all
 
 					.widget.theme_news .postit li:nth-child(2n+1) > a
 					{
-						-webkit-transform: rotate(-3deg);
 						transform: rotate(-3deg);
 					}
 
 					.widget.theme_news .postit li:nth-child(3n+2) > a
 					{
-						-webkit-transform: rotate(2deg);
 						transform: rotate(2deg);
 					}
 
 					.widget.theme_news .postit li:nth-child(5n+3) > a
 					{
-						-webkit-transform: rotate(3deg);
 						transform: rotate(3deg);
 					}
 
 					.widget.theme_news .postit li:nth-child(7n+5) > a
 					{
-						-webkit-transform: rotate(-1deg);
 						transform: rotate(-1deg);
 					}
 
 					.widget.theme_news .postit li:nth-child(11n+7) > a
 					{
-						-webkit-transform: rotate(-2deg);
 						transform: rotate(-2deg);
 					}
 
@@ -536,7 +488,6 @@ echo "@media all
 						height: 2em;
 						left: 50%;
 						position: absolute;
-						-webkit-transform: translateX(-50%);
 						transform: translateX(-50%);
 						top: -1.2em;
 						width: 8em;
@@ -603,7 +554,6 @@ echo "@media all
 				margin: 1em;
 				padding: 1.5em 1em;
 				-webkit-tap-highlight-color: transparent;
-				-webkit-transform: rotate(1deg);
 				transform: rotate(1deg);
 				max-width: 20em;
 			}
@@ -674,7 +624,6 @@ echo "@media all
 				position: absolute;
 				right: 1.5em;
 				top: 50%;
-				-webkit-transform: translateY(-50%);
 				transform: translateY(-50%);
 			}
 
