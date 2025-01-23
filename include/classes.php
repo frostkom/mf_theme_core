@@ -3852,22 +3852,6 @@ class mf_theme_core
 		return $caps;
 	}
 
-	function has_comments()
-	{
-		global $wpdb;
-
-		$out = false;
-
-		if(does_table_exist($wpdb->comments))
-		{
-			$wpdb->get_results($wpdb->prepare("SELECT comment_ID FROM ".$wpdb->comments." WHERE comment_approved NOT IN('spam', 'trash') AND comment_type = %s LIMIT 0, 1", 'comment'));
-
-			$out = ($wpdb->num_rows > 0);
-		}
-
-		return $out;
-	}
-
 	function get_theme_updates_message()
 	{
 		global $menu;
@@ -4175,20 +4159,7 @@ class mf_theme_core
 		{
 			$menu_title = __("Theme Backup", 'lang_theme_core');
 			add_theme_page($menu_title, $menu_title.$this->get_theme_updates_message(), 'edit_theme_options', 'theme_options', array($this, 'get_options_page'));
-		}
 
-		if($this->has_comments() == false)
-		{
-			remove_menu_page("edit-comments.php");
-
-			/*if(get_option('default_comment_status') == 'closed')
-			{
-				remove_submenu_page("options-general.php", "options-discussion.php");
-			}*/
-		}
-
-		if($this->is_theme_active())
-		{
 			$setting_theme_core_templates = get_option('setting_theme_core_templates');
 
 			if(is_array($setting_theme_core_templates) && count($setting_theme_core_templates) > 0)
