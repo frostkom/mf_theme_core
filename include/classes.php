@@ -4926,14 +4926,8 @@ class widget_theme_core_news extends WP_Widget
 										$arr_news_item['excerpt'] = shorten_text(array('string' => $arr_news_item['excerpt'], 'limit' => (300 - $instance['news_columns'] * 60)));
 									}
 
-									echo "<li>";
-
-										if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode', 'yes') == 'yes')
-										{
-											echo "<a href='".admin_url("post.php?post=".$news_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_theme_core')."'></i></a>";
-										}
-
-										echo "<a href='".$arr_news_item['url']."'>";
+									echo "<li>
+										<a href='".$arr_news_item['url']."'>";
 
 											switch($instance['news_type'])
 											{
