@@ -2984,7 +2984,7 @@ class mf_theme_core
 
 				if($this->clone_single_post())
 				{
-					mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_post_title($post_id)));
+					mf_redirect(admin_url("edit.php?post_type=".get_post_type($post_id)."&s=".get_the_title($post_id)));
 				}
 
 				else
@@ -3127,7 +3127,7 @@ class mf_theme_core
 						echo "<i class='fa fa-times fa-lg red'></i>
 						<div class='row-actions'>
 							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								.sprintf(__("The page %s have the exact same title. Please, try to not have duplicates because that will hurt your SEO.", 'lang_theme_core'), get_the_title($post_id_duplicate))
 							."</a>
 						</div>";
 					break;
@@ -3140,7 +3140,7 @@ class mf_theme_core
 						echo "<i class='fa fa-times fa-lg red'></i>
 						<div class='row-actions'>
 							<a href='".admin_url("post.php?post=".$post_id_duplicate."&action=edit")."'>"
-								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_post_title($post_id_duplicate))
+								.sprintf(__("The page %s have the exact same excerpt", 'lang_theme_core'), get_the_title($post_id_duplicate))
 							."</a>
 						</div>";
 					break;
@@ -4166,7 +4166,7 @@ class mf_theme_core
 			{
 				foreach($setting_theme_core_templates as $post_id)
 				{
-					$post_title = get_post_title($post_id);
+					$post_title = get_the_title($post_id);
 					$post_content = mf_get_post_content($post_id);
 
 					if($post_title != '' || $post_content != '')
