@@ -74,6 +74,11 @@ echo "@media all
 		margin: .5em 0 .5em 1em;
 	}
 
+	.is_desktop .hide_on_desktop, .is_tablet .hide_on_tablet, .is_mobile .hide_on_mobile
+	{
+		display: none !important;
+	}
+
 	/* Content */
 	article > .meta > *
 	{

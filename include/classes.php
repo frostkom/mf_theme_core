@@ -25,11 +25,6 @@ class mf_theme_core
 		$this->meta_prefix = $this->post_type.'_';
 	}
 
-	function is_site_public()
-	{
-		return (get_option('blog_public') == 1 && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes');
-	}
-
 	function is_post_password_protected($post_id = 0)
 	{
 		$out = false;
@@ -225,14 +220,6 @@ class mf_theme_core
 		{
 			$this->publish_posts();
 
-			// Optimize
-			#########################
-			if(get_option('option_database_optimized') < date("Y-m-d H:i:s", strtotime("-7 day")))
-			{
-				$this->do_optimize();
-			}
-			#########################
-
 			if($this->is_theme_active())
 			{
 				$this->check_style_source();
@@ -283,16 +270,6 @@ class mf_theme_core
 
 		$arr_settings = array();
 
-		if(get_option('blog_public') == 0 || get_option('setting_no_public_pages') == 'yes' || get_option('setting_theme_core_login') == 'yes')
-		{
-			$arr_settings['setting_no_public_pages'] = __("Always redirect visitors to the login page", 'lang_theme_core');
-
-			if(get_option('setting_no_public_pages') != 'yes')
-			{
-				$arr_settings['setting_theme_core_login'] = __("Require login for public site", 'lang_theme_core');
-			}
-		}
-
 		if($this->is_theme_active())
 		{
 			$arr_settings['setting_theme_core_templates'] = __("Templates", 'lang_theme_core');
@@ -333,11 +310,6 @@ class mf_theme_core
 			{
 				delete_option('setting_theme_ignore_style_on_restore');
 			}
-		}
-
-		if(IS_SUPER_ADMIN)
-		{
-			$arr_settings['setting_theme_optimize'] = __("Optimize", 'lang_theme_core');
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -392,22 +364,6 @@ class mf_theme_core
 		echo settings_header($setting_key, __("Theme", 'lang_theme_core'));
 	}
 
-		function setting_no_public_pages_callback()
-		{
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option_or_default($setting_key, 'no');
-
-			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-		}
-
-		function setting_theme_core_login_callback()
-		{
-			$setting_key = get_setting_key(__FUNCTION__);
-			$option = get_option_or_default($setting_key, 'no');
-
-			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
-		}
-
 		function setting_theme_core_templates_callback()
 		{
 			$setting_key = get_setting_key(__FUNCTION__);
@@ -447,29 +403,6 @@ class mf_theme_core
 			}
 
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'suffix' => sprintf(__("This will send an e-mail to all editors (%s) when an author saves a draft", 'lang_theme_core'), $editors)));
-		}
-
-		function setting_theme_optimize_callback()
-		{
-			$option_database_optimized = get_option('option_database_optimized');
-
-			if($option_database_optimized > DEFAULT_DATE)
-			{
-				$populate_next = format_date(date("Y-m-d H:i:s", strtotime($option_database_optimized." +7 day")));
-
-				$description = sprintf(__("The optimization was last run %s and will be run again %s", 'lang_theme_core'), format_date($option_database_optimized), $populate_next);
-			}
-
-			else
-			{
-				$description = sprintf(__("The optimization has not been run yet but will be %s", 'lang_theme_core'), get_next_cron());
-			}
-
-			echo "<div class='form_button'>"
-				.show_button(array('type' => 'button', 'name' => 'btnOptimizeTheme', 'text' => __("Optimize Now", 'lang_theme_core'), 'class' => 'button-secondary'))
-				."<p class='italic'>".$description."</p>"
-			."</div>
-			<div id='optimize_debug'></div>";
 		}
 
 		function setting_theme_ignore_style_on_restore_callback()
@@ -825,14 +758,8 @@ class mf_theme_core
 
 	function wp_head()
 	{
-		global $wpdb, $post;
+		global $post; //$wpdb, 
 
-		/*if(IS_ADMINISTRATOR || is_admin() || strpos($_SERVER['REQUEST_URI'], "/include/api/") || in_array($GLOBALS['pagenow'], array('wp-login.php'))) //, 'wp-register.php'
-		{
-			// Do nothing
-		}
-
-		else*/
 		if(!is_user_logged_in())
 		{
 			$setting_maintenance_page = get_option('setting_maintenance_page');
@@ -864,16 +791,6 @@ class mf_theme_core
 				}
 
 				exit;
-			}
-
-			else if(get_option('setting_no_public_pages') == 'yes')
-			{
-				mf_redirect(get_site_url()."/wp-admin/");
-			}
-
-			else if(get_option('setting_theme_core_login') == 'yes' && apply_filters('is_public_page', true))
-			{
-				mf_redirect(wp_login_url()."?redirect_to=".$_SERVER['REQUEST_URI']);
 			}
 		}
 
@@ -3007,9 +2924,14 @@ class mf_theme_core
 
 	function column_header($cols)
 	{
-		unset($cols['comments']);
+		global $obj_base;
 
-		if(check_var('post_status') != 'trash') //$this->is_site_public() && 
+		if($obj_base->has_comments() == false)
+		{
+			unset($cols['comments']);
+		}
+
+		if(check_var('post_status') != 'trash')
 		{
 			$cols['seo'] = __("SEO", 'lang_theme_core');
 		}
@@ -4189,21 +4111,6 @@ class mf_theme_core
 
 	function filter_sites_table_settings($arr_settings)
 	{
-		$arr_settings['settings_theme_core'] = array(
-			'setting_no_public_pages' => array(
-				'type' => 'bool',
-				'global' => false,
-				'icon' => "fas fa-lock",
-				'name' => __("Theme", 'lang_theme_core')." - ".__("Always redirect visitors to the login page", 'lang_theme_core'),
-			),
-			'setting_theme_core_login' => array(
-				'type' => 'bool',
-				'global' => false,
-				'icon' => "fas fa-user-lock",
-				'name' => __("Theme", 'lang_theme_core')." - ".__("Require login for public site", 'lang_theme_core'),
-			),
-		);
-
 		$arr_settings['settings_theme_core_public'] = array(
 			'default_comment_status' => array(
 				'type' => 'open',
@@ -4318,131 +4225,6 @@ class mf_theme_core
 
 			restore_current_blog();
 		}
-	}
-
-	function do_optimize()
-	{
-		global $wpdb;
-
-		//Remove old revisions and auto-drafts
-		$wpdb->query("DELETE FROM ".$wpdb->posts." WHERE post_type IN ('revision', 'auto-draft') AND post_modified < DATE_SUB(NOW(), INTERVAL 12 MONTH)");
-
-		//Remove orphan postmeta
-		$wpdb->get_results("SELECT post_id FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL LIMIT 0, 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			$wpdb->query("DELETE ".$wpdb->postmeta." FROM ".$wpdb->postmeta." LEFT JOIN ".$wpdb->posts." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE ".$wpdb->posts.".ID IS NULL");
-		}
-
-		//Remove duplicate postmeta
-		$result = $wpdb->get_results("SELECT meta_id, COUNT(meta_id) AS count FROM ".$wpdb->postmeta." GROUP BY post_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			foreach($result as $r)
-			{
-				$intMetaID = $r->meta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_id = '%d'", $intMetaID));
-			}
-		}
-
-		//Remove duplicate usermeta
-		$result = $wpdb->get_results("SELECT umeta_id, COUNT(umeta_id) AS count FROM ".$wpdb->usermeta." GROUP BY user_id, meta_key, meta_value HAVING count > 1");
-
-		if($wpdb->num_rows > 0)
-		{
-			foreach($result as $r)
-			{
-				$intMetaID = $r->umeta_id;
-
-				$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->usermeta." WHERE umeta_id = '%d'", $intMetaID));
-			}
-		}
-
-		// Pingbacks / Trackbacks
-		/*$arr_comment_types = array('pingback', 'trackback');
-
-		foreach($arr_comment_types as $comment_type)
-		{
-			$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_type = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", $comment_type));
-
-			if($wpdb->num_rows > 0)
-			{
-				do_log("Remove ".$comment_type.": ".$wpdb->last_query);
-
-				//$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->comments." WHERE comment_type = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", $comment_type));
-			}
-		}*/
-
-		//Spam comments
-		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->comments." WHERE comment_approved = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", 'spam'));
-
-		if($wpdb->num_rows > 0)
-		{
-			$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->comments." WHERE comment_approved = %s AND comment_date < DATE_SUB(NOW(), INTERVAL 12 MONTH)", 'spam'));
-		}
-
-		//Duplicate comments
-		$wpdb->get_results($wpdb->prepare("SELECT *, COUNT(meta_id) AS count FROM ".$wpdb->commentmeta." GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1));
-
-		if($wpdb->num_rows > 0)
-		{
-			do_log("Remove duplicate comments: ".$wpdb->last_query);
-		}
-
-		//oEmbed caches
-		$wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->postmeta." WHERE meta_key LIKE %s", "%_oembed_%"));
-
-		if($wpdb->num_rows > 0)
-		{
-			$wpdb->get_results($wpdb->prepare("DELETE FROM ".$wpdb->postmeta." WHERE meta_key LIKE %s", "%_oembed_%"));
-		}
-
-		/* Optimize Tables */
-		$result = $wpdb->get_results("SHOW TABLE STATUS");
-
-		foreach($result as $r)
-		{
-			$strTableName = $r->Name;
-
-			$wpdb->query("OPTIMIZE TABLE ".$strTableName);
-		}
-
-		// Remove empty folders in uploads
-		list($upload_path, $upload_url) = get_uploads_folder();
-		get_file_info(array('path' => $upload_path, 'folder_callback' => array($this, 'delete_empty_folder_callback')));
-
-		update_option('option_database_optimized', date("Y-m-d H:i:s"), 'no');
-
-		return __("I have optimized the site for you", 'lang_theme_core');
-	}
-
-	function optimize_theme()
-	{
-		global $done_text, $error_text;
-
-		$result = array();
-
-		$done_text = $this->do_optimize();
-
-		$out = get_notification();
-
-		if($out != '')
-		{
-			$result['success'] = true;
-			$result['message'] = $out;
-		}
-
-		else
-		{
-			$result['error'] = $out;
-		}
-
-		header('Content-Type: application/json');
-		echo json_encode($result);
-		die();
 	}
 	#################################
 
