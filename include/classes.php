@@ -2924,9 +2924,7 @@ class mf_theme_core
 
 	function column_header($cols)
 	{
-		global $obj_base;
-
-		if($obj_base->has_comments() == false)
+		if(apply_filters('has_comments', true) == false)
 		{
 			unset($cols['comments']);
 		}
