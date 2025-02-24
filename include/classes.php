@@ -551,7 +551,7 @@ class mf_theme_core
 						{
 							case 200:
 							case 201:
-								update_option('setting_maintenance_page_html', $content, 'no');
+								update_option('setting_maintenance_page_html', $content, false);
 
 								$done_text = __("I saved the maintenance page as HTML", 'lang_theme_core');
 
@@ -682,7 +682,7 @@ class mf_theme_core
 				echo get_notification();
 				###########################################
 
-				update_option($setting_key.'_temp', $option, 'no');
+				update_option($setting_key.'_temp', $option, false);
 			}
 
 			$this->set_noindex_on_page($option);
@@ -3631,8 +3631,8 @@ class mf_theme_core
 
 	function customize_save()
 	{
-		update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
-		update_option('option_theme_version', get_option('option_theme_version', 0) + 1, 'no');
+		update_option('option_theme_saved', date("Y-m-d H:i:s"), false);
+		update_option('option_theme_version', (get_option('option_theme_version', 0) + 1), false);
 	}
 	#################################
 
@@ -3726,7 +3726,7 @@ class mf_theme_core
 
 							if($style_changed > get_option('option_theme_saved') && $theme_name == $this->get_theme_dir_name(array('type' => 'child')))
 							{
-								update_option('option_theme_source_style_url', $style_url, 'no');
+								update_option('option_theme_source_style_url', $style_url, false);
 							}
 
 							else
@@ -3924,7 +3924,7 @@ class mf_theme_core
 
 					$done_text = __("I restored the theme backup for you", 'lang_theme_core');
 
-					update_option('option_theme_saved', date("Y-m-d H:i:s"), 'no');
+					update_option('option_theme_saved', date("Y-m-d H:i:s"), false);
 					delete_option('option_theme_source_style_url');
 
 					$strFileContent = "";
