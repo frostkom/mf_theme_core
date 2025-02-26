@@ -174,25 +174,6 @@ class mf_theme_core
 		); //'formatdiv', 'tagsdiv',
 	}
 
-	function set_noindex_on_page($option)
-	{
-		if(is_array($option))
-		{
-			if(count($option) > 0)
-			{
-				foreach($option as $option_value)
-				{
-					update_post_meta($option_value, $this->meta_prefix.'page_index', 'noindex');
-				}
-			}
-		}
-
-		else if($option > 0)
-		{
-			update_post_meta($option, $this->meta_prefix.'page_index', 'noindex');
-		}
-	}
-
 	// Can be replaced delete_empty_folder_callback in MF Base
 	function delete_empty_folder_callback($data)
 	{
@@ -218,8 +199,6 @@ class mf_theme_core
 
 		if($obj_cron->is_running == false)
 		{
-			$this->publish_posts();
-
 			if($this->is_theme_active())
 			{
 				$this->check_style_source();
@@ -374,7 +353,14 @@ class mf_theme_core
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
 
-			$this->set_noindex_on_page($option);
+			global $obj_base;
+
+			if(!isset($obj_base))
+			{
+				$obj_base = new mf_base();
+			}
+
+			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_theme_core_hidden_meta_boxes_callback()
@@ -511,7 +497,14 @@ class mf_theme_core
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
 
-			$this->set_noindex_on_page($option);
+			global $obj_base;
+
+			if(!isset($obj_base))
+			{
+				$obj_base = new mf_base();
+			}
+
+			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_maintenance_page_callback()
@@ -685,7 +678,14 @@ class mf_theme_core
 				update_option($setting_key.'_temp', $option, false);
 			}
 
-			$this->set_noindex_on_page($option);
+			global $obj_base;
+
+			if(!isset($obj_base))
+			{
+				$obj_base = new mf_base();
+			}
+
+			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_activate_maintenance_callback()
@@ -758,7 +758,7 @@ class mf_theme_core
 
 	function wp_head()
 	{
-		global $post; //$wpdb, 
+		global $post;
 
 		if(!is_user_logged_in())
 		{
@@ -823,7 +823,7 @@ class mf_theme_core
 			wp_deregister_style('dashicons');
 		}
 
-		$this->add_page_index();
+		//$this->add_page_index();
 
 		if($this->is_theme_active())
 		{
@@ -1041,9 +1041,11 @@ class mf_theme_core
 
 	function has_noindex($post_id)
 	{
-		$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
+		global $obj_base;
 
-		return $page_index != '' && in_array($page_index, array('noindex', 'none'));
+		$page_index = get_post_meta($post_id, $obj_base->meta_prefix.'page_index', true);
+
+		return ($page_index != '' && in_array($page_index, array('noindex', 'none')));
 	}
 
 	function get_public_post_types($data = array())
@@ -2659,31 +2661,6 @@ class mf_theme_core
 
 	/* Public */
 	#################################
-	function add_page_index()
-	{
-		global $post;
-
-		if(isset($post) && $post->ID > 0)
-		{
-			$page_index = get_post_meta($post->ID, $this->meta_prefix.'page_index', true);
-
-			if($page_index != '')
-			{
-				switch($page_index)
-				{
-					case 'nofollow':
-					case 'noindex':
-						echo "<meta name='robots' content='".$page_index."'>";
-					break;
-
-					case 'none':
-						echo "<meta name='robots' content='noindex, nofollow'>";
-					break;
-				}
-			}
-		}
-	}
-
 	function wp_sitemaps_posts_query_args($args, $post_type)
 	{
 		if(!isset($args['post__not_in'])){	$args['post__not_in'] = array();}
@@ -2924,11 +2901,6 @@ class mf_theme_core
 
 	function column_header($cols)
 	{
-		if(apply_filters('has_comments', true) == false)
-		{
-			unset($cols['comments']);
-		}
-
 		if(check_var('post_status') != 'trash')
 		{
 			$cols['seo'] = __("SEO", 'lang_theme_core');
@@ -2939,7 +2911,7 @@ class mf_theme_core
 
 	function column_cell($col, $post_id)
 	{
-		global $wpdb, $post;
+		global $wpdb, $post, $obj_base;
 
 		switch($col)
 		{
@@ -2959,7 +2931,7 @@ class mf_theme_core
 
 				if($seo_type == '')
 				{
-					$page_index = get_post_meta($post_id, $this->meta_prefix.'page_index', true);
+					$page_index = get_post_meta($post_id, $obj_base->meta_prefix.'page_index', true);
 
 					if(in_array($page_index, array('noindex', 'none')))
 					{
@@ -3118,75 +3090,8 @@ class mf_theme_core
 		return $hidden;
 	}
 
-	function rwmb_meta_boxes($meta_boxes)
-	{
-		if(IS_ADMINISTRATOR)
-		{
-			$obj_base = new mf_base();
-
-			if(wp_is_block_theme())
-			{
-				$meta_boxes[] = array(
-					'id' => $this->meta_prefix.'settings',
-					'title' => __("Settings", 'lang_theme_core'),
-					'post_types' => $obj_base->get_post_types_for_metabox(),
-					'context' => 'side',
-					'priority' => 'low',
-					'fields' => array(
-						array(
-							'name' => __("Description", 'lang_theme_core'),
-							'id' => 'post_excerpt',
-							'type' => 'textarea',
-						),
-					),
-				);
-			}
-
-			$meta_boxes[] = array(
-				'id' => $this->meta_prefix.'publish',
-				'title' => __("Publish Settings", 'lang_theme_core'),
-				'post_types' => $obj_base->get_post_types_for_metabox(),
-				'context' => 'side',
-				'priority' => 'low',
-				'fields' => array(
-					array(
-						'name' => __("Index", 'lang_theme_core'),
-						'id' => $this->meta_prefix.'page_index',
-						'type' => 'select',
-						'options' => array(
-							'' => "-- ".__("Choose Here", 'lang_theme_core')." --",
-							'noindex' => __("Do not Index", 'lang_theme_core'),
-							'nofollow' => __("Do not Follow Links", 'lang_theme_core'),
-							'none' => __("Do not Index and do not follow links", 'lang_theme_core'),
-						),
-					),
-					array(
-						'name' => __("Publish", 'lang_theme_core'),
-						'id' => $this->meta_prefix.'publish_date',
-						'type' => 'datetime',
-					),
-					array(
-						'name' => __("Unpublish", 'lang_theme_core'),
-						'id' => $this->meta_prefix.'unpublish_date',
-						'type' => 'datetime',
-					),
-				),
-			);
-		}
-
-		return $meta_boxes;
-	}
-
 	function save_post($post_id, $post, $update)
 	{
-		/*if(in_array($post->post_type, array('page', 'post')))
-		{
-			$field_id = $this->meta_prefix.'display_featured_image';
-			$field_value = check_var($field_id);
-
-			update_post_meta($post_id, $field_id, $field_value);
-		}*/
-
 		/* Send e-mail to all editors if it is a draft and the user saving the draft is an author, but not an editor */
 		if(isset($post->post_status) && $post->post_status == 'draft' && IS_AUTHOR && !IS_EDITOR && get_option('setting_send_email_on_draft') == 'yes')
 		{
@@ -3638,56 +3543,6 @@ class mf_theme_core
 
 	// Cron
 	#################################
-	function publish_posts()
-	{
-		global $wpdb;
-
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, meta_key, meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE (meta_key = %s OR meta_key = %s) AND meta_value > %s", $this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date', DEFAULT_DATE));
-
-		if($wpdb->num_rows > 0)
-		{
-			foreach($result as $r)
-			{
-				$post_id = $r->ID;
-				$post_meta_key = $r->meta_key;
-				$post_meta_value = $r->meta_value;
-
-				if($post_meta_value <= date("Y-m-d H:i:s"))
-				{
-					switch($post_meta_key)
-					{
-						case $this->meta_prefix.'publish_date':
-							$post_status = 'publish';
-						break;
-
-						case $this->meta_prefix.'unpublish_date':
-							$post_status = 'draft';
-						break;
-
-						default:
-							$post_status = '';
-
-							do_log("publish_posts error: ".$wpdb->last_query);
-						break;
-					}
-
-					if($post_status != '')
-					{
-						$post_data = array(
-							'ID' => $post_id,
-							'post_status' => $post_status,
-							'meta_input' => array(
-								$post_meta_key => '',
-							),
-						);
-
-						wp_update_post($post_data);
-					}
-				}
-			}
-		}
-	}
-
 	function check_style_source()
 	{
 		delete_option('option_theme_source_style_url');
