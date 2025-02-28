@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.15
+Version: 8.9.16
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -32,7 +32,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		register_uninstall_hook(__FILE__, 'uninstall_theme_core');
 
 		add_action('admin_init', array($obj_theme_core, 'settings_theme_core'));
-		add_action('admin_init', array($obj_theme_core, 'admin_init'), 0);
+		//add_action('admin_init', array($obj_theme_core, 'admin_init'), 0);
 		add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
 
 		add_filter('filter_sites_table_settings', array($obj_theme_core, 'filter_sites_table_settings'));
@@ -71,9 +71,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	else
 	{
-		add_filter('wp_sitemaps_posts_query_args', array($obj_theme_core, 'wp_sitemaps_posts_query_args'), 10, 2);
-		add_filter('wp_sitemaps_taxonomies', array($obj_theme_core, 'wp_sitemaps_taxonomies'));
-
 		add_action('wp_head', array($obj_theme_core, 'wp_head'), 0);
 
 		if($obj_theme_core->is_theme_active())
@@ -147,8 +144,16 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	function activate_theme_core()
 	{
+		global $obj_theme_core;
+
+		if(!isset($obj_theme_core))
+		{
+			$obj_theme_core = new mf_theme_core();
+		}
+
 		mf_uninstall_plugin(array(
 			'options' => array('setting_splash_screen', 'option_uploads_fixed'),
+			'meta' => array($obj_theme_core->meta_prefix.'publish_date', $obj_theme_core->meta_prefix.'unpublish_date'),
 		));
 	}
 

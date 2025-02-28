@@ -9,8 +9,6 @@ class mf_theme_core
 	var $options_fonts = array();
 	var $title_format = "[page_title][site_title][site_description][page_number]";
 	var $arr_sensitive_data_types = array();
-	var $arr_public_posts = array();
-	var $arr_post_types = array();
 	var $is_theme_active = '';
 	var $custom_widget_area = array();
 	var $site_url = "";
@@ -696,7 +694,7 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
 		}
 
-	function admin_init()
+	/*function admin_init()
 	{
 		global $pagenow;
 
@@ -706,7 +704,7 @@ class mf_theme_core
 
 			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('ajax_url' => admin_url('admin-ajax.php')));
 		}
-	}
+	}*/
 
 	function upload_mimes($existing_mimes = array())
 	{
@@ -797,7 +795,7 @@ class mf_theme_core
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
 		mf_enqueue_style('style_theme_core', $plugin_include_url."style.php");
-		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
+		//mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
 
 		if(get_option('setting_scroll_to_top') == 'yes')
 		{
@@ -1046,56 +1044,6 @@ class mf_theme_core
 		$page_index = get_post_meta($post_id, $obj_base->meta_prefix.'page_index', true);
 
 		return ($page_index != '' && in_array($page_index, array('noindex', 'none')));
-	}
-
-	function get_public_post_types($data = array())
-	{
-		if(!isset($data['allow_password_protected'])){	$data['allow_password_protected'] = false;}
-
-		$this->arr_post_types = array();
-
-		foreach(get_post_types(array('public' => true, 'exclude_from_search' => false), 'names') as $post_type)
-		{
-			if($post_type != 'attachment')
-			{
-				$data_temp = array(
-					'post_type' => $post_type,
-				);
-
-				if($data['allow_password_protected'] == false)
-				{
-					$data_temp['where'] = "post_password = ''";
-				}
-
-				get_post_children($data_temp, $this->arr_post_types);
-			}
-		}
-	}
-
-	function get_public_posts($data = array())
-	{
-		if(!isset($data['allow_noindex'])){				$data['allow_noindex'] = false;}
-		if(!isset($data['allow_password_protected'])){	$data['allow_password_protected'] = false;}
-
-		$this->arr_public_posts = array();
-
-		if(count($this->arr_post_types) == 0)
-		{
-			$this->get_public_post_types(array('allow_password_protected' => $data['allow_password_protected']));
-		}
-
-		foreach($this->arr_post_types as $post_id => $post_title)
-		{
-			if($data['allow_noindex'] == false && $this->has_noindex($post_id) || $data['allow_password_protected'] == false && $this->is_post_password_protected($post_id))
-			{
-				// Do nothing
-			}
-
-			else
-			{
-				$this->arr_public_posts[$post_id] = $post_title;
-			}
-		}
 	}
 
 	// Style
@@ -2661,30 +2609,6 @@ class mf_theme_core
 
 	/* Public */
 	#################################
-	function wp_sitemaps_posts_query_args($args, $post_type)
-	{
-		if(!isset($args['post__not_in'])){	$args['post__not_in'] = array();}
-
-		$this->get_public_posts(array('allow_noindex' => true, 'allow_password_protected' => true));
-
-		foreach($this->arr_public_posts as $post_id => $post_title)
-		{
-			if($this->has_noindex($post_id) || $this->is_post_password_protected($post_id))
-			{
-				$args['post__not_in'][] = $post_id;
-			}
-		}
-
-		return $args;
-	}
-
-	function wp_sitemaps_taxonomies($taxonomies)
-	{
-		unset($taxonomies['category']);
-
-        return $taxonomies;
-    }
-
 	function get_logo($data = array())
 	{
 		if(!isset($data['url'])){				$data['url'] = get_site_url();}
