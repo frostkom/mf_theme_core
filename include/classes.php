@@ -803,7 +803,7 @@ class mf_theme_core
 			mf_enqueue_script('script_theme_scroll', $plugin_include_url."script_scroll.js", array('scroll_to_top_text' => get_option('setting_scroll_to_top_text')));
 		}
 
-		if(!is_plugin_active("mf_widget_logic_select/index.php") || apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
+		if((int)apply_filters('get_widget_search', 'theme-page-index-widget') > 0)
 		{
 			mf_enqueue_style('style_theme_page_index', $plugin_include_url."style_page_index.css");
 			mf_enqueue_script('script_theme_page_index', $plugin_include_url."script_page_index.js");
