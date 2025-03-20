@@ -694,18 +694,6 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
 		}
 
-	/*function admin_init()
-	{
-		global $pagenow;
-
-		if($pagenow == 'options-general.php' && check_var('page') == 'settings_mf_base')
-		{
-			$plugin_include_url = plugin_dir_url(__FILE__);
-
-			mf_enqueue_script('script_theme_core', $plugin_include_url."script_wp.js", array('ajax_url' => admin_url('admin-ajax.php')));
-		}
-	}*/
-
 	function upload_mimes($existing_mimes = array())
 	{
 		$existing_mimes['eot'] = 'application/vnd.ms-fontobject';
@@ -795,7 +783,7 @@ class mf_theme_core
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
 		mf_enqueue_style('style_theme_core', $plugin_include_url."style.php");
-		//mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
+		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
 
 		if(get_option('setting_scroll_to_top') == 'yes')
 		{
@@ -1259,7 +1247,7 @@ class mf_theme_core
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
+				//$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
 				$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Menu", 'lang_theme_core').")");
 			}
 
@@ -2823,7 +2811,7 @@ class mf_theme_core
 		return $actions;
 	}
 
-	function column_header($cols)
+	/*function column_header($cols)
 	{
 		if(check_var('post_status') != 'trash')
 		{
@@ -3000,7 +2988,7 @@ class mf_theme_core
 				}
 			break;
 		}
-	}
+	}*/
 
 	function hidden_meta_boxes($hidden, $screen)
 	{

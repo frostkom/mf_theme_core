@@ -9,8 +9,6 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-do_action('run_cache', array('suffix' => 'json'));
-
 $json_output = array();
 
 $type = check_var('type', 'char');
@@ -56,22 +54,6 @@ switch($type)
 			);
 		}
 	break;
-
-	/*case 'get_site_template':
-		ob_start();
-
-		get_header();
-
-		$json_output['get_header'] = str_replace('"', "'", ob_get_clean());
-
-		ob_start();
-
-		get_footer();
-
-		$json_output['get_footer'] = str_replace('"', "'", ob_get_clean());
-
-		$json_output['success'] = true;
-	break;*/
 }
 
 echo json_encode($json_output);

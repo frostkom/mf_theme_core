@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.18
+Version: 8.9.20
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -32,7 +32,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		register_uninstall_hook(__FILE__, 'uninstall_theme_core');
 
 		add_action('admin_init', array($obj_theme_core, 'settings_theme_core'));
-		//add_action('admin_init', array($obj_theme_core, 'admin_init'), 0);
 		add_action('admin_menu', array($obj_theme_core, 'admin_menu'));
 
 		add_filter('filter_sites_table_settings', array($obj_theme_core, 'filter_sites_table_settings'));
@@ -43,16 +42,12 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('post_row_actions', array($obj_theme_core, 'row_actions'), 10, 2);
 		add_filter('page_row_actions', array($obj_theme_core, 'row_actions'), 10, 2);
 
-		add_filter('manage_page_posts_columns', array($obj_theme_core, 'column_header'), 5);
-		add_action('manage_page_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
-		add_filter('manage_post_posts_columns', array($obj_theme_core, 'column_header'), 5);
-		add_action('manage_post_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
+		//add_filter('manage_page_posts_columns', array($obj_theme_core, 'column_header'), 5);
+		//add_action('manage_page_posts_custom_column', array($obj_theme_core, 'column_cell'), 5, 2);
 
 		add_filter('map_meta_cap', array($obj_theme_core, 'map_meta_cap'), 10, 2);
 
 		add_filter('hidden_meta_boxes', array($obj_theme_core, 'hidden_meta_boxes'), 10, 2);
-
-		//add_action('rwmb_meta_boxes', array($obj_theme_core, 'rwmb_meta_boxes'));
 
 		add_action('save_post', array($obj_theme_core, 'save_post'), 10, 3);
 
