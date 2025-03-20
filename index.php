@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.17
+Version: 8.9.18
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -38,12 +38,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('filter_sites_table_settings', array($obj_theme_core, 'filter_sites_table_settings'));
 
 		add_filter('upload_mimes', array($obj_theme_core, 'upload_mimes'));
-
-		if(is_multisite())
-		{
-			add_filter('manage_sites-network_columns', array($obj_theme_core, 'sites_column_header'), 5);
-			add_action('manage_sites_custom_column', array($obj_theme_core, 'sites_column_cell'), 5, 2);
-		}
 
 		add_action('wp_loaded', array($obj_theme_core, 'wp_loaded'));
 		add_filter('post_row_actions', array($obj_theme_core, 'row_actions'), 10, 2);
