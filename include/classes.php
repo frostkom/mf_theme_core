@@ -3910,6 +3910,8 @@ class mf_theme_core
 
 	function shortcode_redirect($atts)
 	{
+		global $post;
+
 		$out = "";
 
 		/*extract(shortcode_atts(array(
@@ -3922,7 +3924,7 @@ class mf_theme_core
 			$out .= "<meta http-equiv='refresh' content='".$sec."; url=".$url."'>";
 		}*/
 
-		do_log(__FUNCTION__.": Add a block instead (".var_export($atts, true).")");
+		do_log(__FUNCTION__.": Add a block instead (#".$post->ID.", ".var_export($atts, true).")");
 
 		return $out;
 	}
