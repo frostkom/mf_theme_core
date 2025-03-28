@@ -3029,7 +3029,7 @@ class mf_theme_core
 	}
 	#################################
 
-	function count_shortcode_button($count)
+	/*function count_shortcode_button($count)
 	{
 		if($count == 0)
 		{
@@ -3037,9 +3037,9 @@ class mf_theme_core
 		}
 
 		return $count;
-	}
+	}*/
 
-	function get_shortcode_output($out)
+	/*function get_shortcode_output($out)
 	{
 		$arr_data = array(
 			'' => __("No", 'lang_theme_core'),
@@ -3050,7 +3050,7 @@ class mf_theme_core
 		.show_select(array('data' => $arr_data, 'xtra' => "rel='redirect url=https://domain.com sec=5'"));
 
 		return $out;
-	}
+	}*/
 
 	function after_setup_theme()
 	{
