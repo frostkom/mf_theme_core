@@ -782,8 +782,8 @@ class mf_theme_core
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
+		mf_enqueue_style('style_base_theme', $plugin_include_url."style_theme.css");
 		mf_enqueue_style('style_theme_core', $plugin_include_url."style.php");
-		//mf_enqueue_style('wp-block-gallery', "/wp-includes/blocks/gallery/style.css"); // This is empty
 		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
 
 		if(get_option('setting_scroll_to_top') == 'yes')
