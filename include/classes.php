@@ -3914,7 +3914,7 @@ class mf_theme_core
 
 		$out = "";
 
-		/*extract(shortcode_atts(array(
+		extract(shortcode_atts(array(
 			'url' => '',
 			'sec' => 3,
 		), $atts));
@@ -3922,9 +3922,7 @@ class mf_theme_core
 		if($url != '')
 		{
 			$out .= "<meta http-equiv='refresh' content='".$sec."; url=".$url."'>";
-		}*/
-
-		do_log(__FUNCTION__.": Add a block instead (#".$post->ID.", ".var_export($atts, true).")");
+		}
 
 		return $out;
 	}
