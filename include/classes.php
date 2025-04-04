@@ -232,6 +232,11 @@ class mf_theme_core
 			get_file_info(array('path' => $upload_path, 'callback' => 'delete_files_callback', 'time_limit' => MONTH_IN_SECONDS));
 			get_file_info(array('path' => $upload_path, 'folder_callback' => 'delete_empty_folder_callback'));
 			#######################
+
+			mf_uninstall_plugin(array(
+				'options' => array('setting_splash_screen', 'option_uploads_fixed'),
+				'meta' => array($this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date'),
+			));
 		}
 
 		$obj_cron->end();

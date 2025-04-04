@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.27
+Version: 8.9.28
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -23,12 +23,10 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	$obj_theme_core = new mf_theme_core();
 
-	add_action('cron_base', 'activate_theme_core', mt_rand(1, 10));
 	add_action('cron_base', array($obj_theme_core, 'cron_base'), mt_rand(1, 10));
 
 	if(is_admin())
 	{
-		register_activation_hook(__FILE__, 'activate_theme_core');
 		register_uninstall_hook(__FILE__, 'uninstall_theme_core');
 
 		add_action('admin_init', array($obj_theme_core, 'settings_theme_core'));
@@ -125,21 +123,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 	}
 
 	add_shortcode('redirect', array($obj_theme_core, 'shortcode_redirect'));
-
-	function activate_theme_core()
-	{
-		global $obj_theme_core;
-
-		if(!isset($obj_theme_core))
-		{
-			$obj_theme_core = new mf_theme_core();
-		}
-
-		mf_uninstall_plugin(array(
-			'options' => array('setting_splash_screen', 'option_uploads_fixed'),
-			'meta' => array($obj_theme_core->meta_prefix.'publish_date', $obj_theme_core->meta_prefix.'unpublish_date'),
-		));
-	}
 
 	function uninstall_theme_core()
 	{
