@@ -8,7 +8,6 @@ class mf_theme_core
 	var $options = array();
 	var $options_fonts = array();
 	var $title_format = "[page_title][site_title][site_description][page_number]";
-	var $arr_sensitive_data_types = array();
 	var $is_theme_active = '';
 	var $custom_widget_area = array();
 	var $site_url = "";
@@ -3969,8 +3968,6 @@ class widget_theme_core_area extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4055,8 +4052,6 @@ class widget_theme_core_logo extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4164,8 +4159,6 @@ class widget_theme_core_search extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4321,8 +4314,6 @@ class widget_theme_core_news extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4771,8 +4762,6 @@ class widget_theme_core_info extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4987,8 +4976,6 @@ class widget_theme_core_related extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -5102,8 +5089,6 @@ class widget_theme_core_promo extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		global $wpdb;
 
 		extract($args);
@@ -5262,8 +5247,6 @@ class widget_theme_core_page_index extends WP_Widget
 
 	function widget($args, $instance)
 	{
-		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
 		global $post;
 
 		extract($args);
