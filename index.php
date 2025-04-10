@@ -3,7 +3,7 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.29
+Version: 8.9.30
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -63,28 +63,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		}
 
 		add_filter('embed_oembed_html', array($obj_theme_core, 'embed_oembed_html'), 99, 4);
-
-		/*remove_action('init', 'rest_api_init');
-		remove_action('rest_api_init', 'rest_api_default_filters', 10);*/
-		remove_action('wp_head', 'rest_output_link_wp_head'); // Disable REST API link tag
-		/*remove_action('parse_request', 'rest_api_loaded');*/
-
-		remove_action('template_redirect', 'rest_output_link_header', 11, 0); // Disable REST API link in HTTP headers
-		remove_action('wp_head', 'wlwmanifest_link');
-		remove_action('wp_head', 'rsd_link');
-		remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-
-		remove_action('rest_api_init', 'wp_oembed_register_route');
-		remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-		remove_action('wp_head', 'wp_oembed_add_discovery_links'); // Disable oEmbed Discovery Links
-		remove_action('wp_head', 'wp_oembed_add_host_js');
-
-		remove_action('wp_head', 'wp_generator'); // Remove WP versions
-
-		remove_action('wp_head', 'feed_links', 2);
-		remove_action('wp_head', 'feed_links_extra', 3);
-
-		add_filter('emoji_svg_url', '__return_false');
 
 		if($obj_theme_core->is_theme_active())
 		{
