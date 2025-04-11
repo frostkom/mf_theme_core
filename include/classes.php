@@ -809,23 +809,6 @@ class mf_theme_core
 			."<title>".$this->get_wp_title()."</title>";
 		}
 
-		if(!is_user_logged_in())
-		{
-			wp_deregister_style('dashicons');
-		}
-
-		//$this->add_page_index();
-
-		if($this->is_theme_active())
-		{
-			$meta_description = get_the_excerpt();
-
-			if($meta_description != '')
-			{
-				echo "<meta name='description' content='".esc_attr($meta_description)."'>";
-			}
-		}
-
 		echo "<link rel='alternate' type='application/rss+xml' title='".get_bloginfo('name')."' href='".get_bloginfo('rss2_url')."'>
 		<meta property='og:site_name' content='".get_bloginfo('name')."'>";
 
