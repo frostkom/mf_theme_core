@@ -25,9 +25,15 @@ switch($type)
 			$theme_dir_name = $obj_theme_core->get_theme_dir_name();
 			$child_dir_name = $obj_theme_core->get_theme_dir_name(array('type' => 'child'));
 
-			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name);
+			$arr_backups = array();
 
-			$arr_backups = $obj_theme_core->get_previous_backups_list($upload_path);
+			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name, true, false);
+
+			if($upload_path != '')
+			{
+				$arr_backups = $obj_theme_core->get_previous_backups_list($upload_path);
+			}
+
 			$count_temp = count($arr_backups);
 
 			if($count_temp > 0)
