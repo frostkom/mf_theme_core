@@ -921,7 +921,7 @@ class mf_theme_core
 	function get_search_form($html)
 	{
 		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
-			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'")) //get_search_query()
+			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
 			."<div class='form_button'>"
 				.show_button(array('text' => __("Search", 'lang_theme_core')))
 			."</div>
@@ -3129,27 +3129,30 @@ class mf_theme_core
 
 	function widgets_init()
 	{
-		register_widget('widget_theme_core_area');
-		register_widget('widget_theme_core_logo');
-		register_widget('widget_theme_core_search');
-		register_widget('widget_theme_core_news');
-		register_widget('widget_theme_core_info');
-		register_widget('widget_theme_core_related');
-		register_widget('widget_theme_core_promo');
-		register_widget('widget_theme_core_page_index');
-		//$this->mf_unregister_widget('WP_Widget_Recent_Posts');
+		if(wp_is_block_theme() == false)
+		{
+			register_widget('widget_theme_core_area');
+			register_widget('widget_theme_core_logo');
+			register_widget('widget_theme_core_search');
+			register_widget('widget_theme_core_news');
+			register_widget('widget_theme_core_info');
+			register_widget('widget_theme_core_related');
+			register_widget('widget_theme_core_promo');
+			register_widget('widget_theme_core_page_index');
+			//$this->mf_unregister_widget('WP_Widget_Recent_Posts');
 
-		$this->mf_unregister_widget('WP_Widget_Archives');
-		$this->mf_unregister_widget('WP_Widget_Calendar');
-		$this->mf_unregister_widget('WP_Widget_Categories');
-		//$this->mf_unregister_widget('WP_Nav_Menu_Widget');
-		$this->mf_unregister_widget('WP_Widget_Links');
-		$this->mf_unregister_widget('WP_Widget_Meta');
-		$this->mf_unregister_widget('WP_Widget_Pages');
-		$this->mf_unregister_widget('WP_Widget_Recent_Comments');
-		$this->mf_unregister_widget('WP_Widget_RSS');
-		$this->mf_unregister_widget('WP_Widget_Search');
-		$this->mf_unregister_widget('WP_Widget_Tag_Cloud');
+			$this->mf_unregister_widget('WP_Widget_Archives');
+			$this->mf_unregister_widget('WP_Widget_Calendar');
+			$this->mf_unregister_widget('WP_Widget_Categories');
+			//$this->mf_unregister_widget('WP_Nav_Menu_Widget');
+			$this->mf_unregister_widget('WP_Widget_Links');
+			$this->mf_unregister_widget('WP_Widget_Meta');
+			$this->mf_unregister_widget('WP_Widget_Pages');
+			$this->mf_unregister_widget('WP_Widget_Recent_Comments');
+			$this->mf_unregister_widget('WP_Widget_RSS');
+			$this->mf_unregister_widget('WP_Widget_Search');
+			$this->mf_unregister_widget('WP_Widget_Tag_Cloud');
+		}
 	}
 
 	//Customizer
