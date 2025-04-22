@@ -4196,10 +4196,8 @@ class widget_theme_core_search extends WP_Widget
 
 class widget_theme_core_news extends WP_Widget
 {
-	var $obj_theme_core = "";
-
-	var $widget_ops = array();
-
+	var $obj_theme_core;
+	var $widget_ops;
 	var $arr_default = array(
 		'news_title' => "",
 		'news_type' => 'original',
@@ -4224,22 +4222,6 @@ class widget_theme_core_news extends WP_Widget
 			'classname' => 'theme_news',
 			'description' => __("Display News/Posts", 'lang_theme_core'),
 		);
-
-		/*$this->arr_default = array(
-			'news_title' => "",
-			'news_type' => 'original',
-			'news_categories' => array(),
-			'news_amount' => 1,
-			'news_hide_button' => 'no',
-			'news_columns' => 0,
-			'news_time_limit' => 0,
-			'news_expand_content' => 'no',
-			'news_display_arrows' => 'no',
-			'news_autoscroll_time' => 5,
-			'news_display_title' => 'yes',
-			'news_display_excerpt' => 'yes',
-			'news_page' => 0,
-		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("News", 'lang_theme_core'), $this->widget_ops);
 	}
