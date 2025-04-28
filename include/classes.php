@@ -3016,29 +3016,6 @@ class mf_theme_core
 	}
 	#################################
 
-	/*function count_shortcode_button($count)
-	{
-		if($count == 0)
-		{
-			$count++;
-		}
-
-		return $count;
-	}*/
-
-	/*function get_shortcode_output($out)
-	{
-		$arr_data = array(
-			'' => __("No", 'lang_theme_core'),
-			'yes' => __("Yes", 'lang_theme_core')
-		);
-
-		$out .= "<h3>".__("Redirect", 'lang_theme_core')."</h3>"
-		.show_select(array('data' => $arr_data, 'xtra' => "rel='redirect url=https://domain.com sec=5'"));
-
-		return $out;
-	}*/
-
 	function after_setup_theme()
 	{
 		add_post_type_support('page', 'excerpt');
