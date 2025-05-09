@@ -922,7 +922,7 @@ class mf_theme_core
 	{
 		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
 			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
-			."<div class='form_button'>"
+			."<div".get_form_button_classes().">"
 				.show_button(array('text' => __("Search", 'lang_theme_core')))
 			."</div>
 		</form>";
@@ -4743,7 +4743,7 @@ class widget_theme_core_info extends WP_Widget
 
 							if($instance['info_button_text'] != '')
 							{
-								echo "<div class='form_button'>"
+								echo "<div".get_form_button_classes().">"
 									.apply_filters('the_content', "<a href='".$button_link."' class='button'>"
 										.$instance['info_button_text']
 									."</a>")
