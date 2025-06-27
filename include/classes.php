@@ -563,7 +563,7 @@ class mf_theme_core
 
 				if(touch($maintenance_file))
 				{
-					list($upload_path, $upload_url) = get_uploads_folder('mf_cache', true);
+					list($upload_path, $upload_url) = get_uploads_folder('mf_cache');
 					$maintenance_template = str_replace($this->post_type."/include", $this->post_type."/templates/", dirname(__FILE__))."maintenance.php";
 
 					$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
