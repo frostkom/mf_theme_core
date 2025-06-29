@@ -1019,7 +1019,7 @@ class mf_theme_core
 
 		$page_index = get_post_meta($post_id, $obj_base->meta_prefix.'page_index', true);
 
-		return ($page_index != '' && in_array($page_index, array('noindex', 'none')));
+		return ($page_index != '' && in_array($page_index, array('noindex', 'none', 'no')));
 	}
 
 	// Style
