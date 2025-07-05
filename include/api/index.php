@@ -9,7 +9,7 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-$json_output = array();
+$json_output = [];
 
 $type = check_var('type', 'char');
 
@@ -25,7 +25,7 @@ switch($type)
 			$theme_dir_name = $obj_theme_core->get_theme_dir_name();
 			$child_dir_name = $obj_theme_core->get_theme_dir_name(array('type' => 'child'));
 
-			$arr_backups = array();
+			$arr_backups = [];
 
 			list($upload_path, $upload_url) = get_uploads_folder($theme_dir_name, true, false);
 

@@ -4,16 +4,16 @@ class mf_theme_core
 {
 	var $post_type = 'mf_theme_core';
 	var $meta_prefix;
-	var $options_params = array();
-	var $options = array();
-	var $options_fonts = array();
+	var $options_params = [];
+	var $options = [];
+	var $options_fonts = [];
 	var $title_format = "[page_title][site_title][site_description][page_number]";
 	var $is_theme_active = '';
-	var $custom_widget_area = array();
+	var $custom_widget_area = [];
 	var $site_url = "";
 	var $footer_output = '';
 	var $id_temp = '';
-	var $param = array();
+	var $param = [];
 	var $post_id_old;
 	var $post_id_new;
 
@@ -60,7 +60,7 @@ class mf_theme_core
 		return $out;
 	}
 
-	function get_theme_dir_name($data = array())
+	function get_theme_dir_name($data = [])
 	{
 		if(!isset($data['type'])){	$data['type'] = 'parent';}
 
@@ -88,7 +88,7 @@ class mf_theme_core
 
 	function get_params_for_select()
 	{
-		$arr_data = array();
+		$arr_data = [];
 
 		$options_params = $this->get_params_theme_core();
 		$arr_theme_mods = get_theme_mods();
@@ -249,7 +249,7 @@ class mf_theme_core
 		############################
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
-		$arr_settings = array();
+		$arr_settings = [];
 
 		if($this->is_theme_active())
 		{
@@ -304,7 +304,7 @@ class mf_theme_core
 
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
-			$arr_settings = array();
+			$arr_settings = [];
 
 			if($this->is_theme_active())
 			{
@@ -350,7 +350,7 @@ class mf_theme_core
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option($setting_key);
 
-			$arr_data = array();
+			$arr_data = [];
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
@@ -491,7 +491,7 @@ class mf_theme_core
 			$setting_key = get_setting_key(__FUNCTION__);
 			$option = get_option($setting_key);
 
-			$arr_data = array();
+			$arr_data = [];
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			$post_title = "404";
@@ -517,7 +517,7 @@ class mf_theme_core
 			$option = get_option($setting_key);
 			$option_temp = get_option($setting_key.'_temp');
 
-			$arr_data = array();
+			$arr_data = [];
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			$post_title_orig = $post_title = __("Temporary Maintenance", 'lang_theme_core');
@@ -698,7 +698,7 @@ class mf_theme_core
 			echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => __("This will display the maintenance message to everyone except you as a superadmin, until you inactivate this mode again", 'lang_theme_core')));
 		}
 
-	function upload_mimes($existing_mimes = array())
+	function upload_mimes($existing_mimes = [])
 	{
 		$existing_mimes['eot'] = 'application/vnd.ms-fontobject';
 		$existing_mimes['ttf'] = 'application/x-font-ttf';
@@ -1026,7 +1026,7 @@ class mf_theme_core
 	#########################
 	function gather_params($options_params)
 	{
-		$options = array();
+		$options = [];
 
 		$arr_theme_mods = get_theme_mods();
 
@@ -1081,7 +1081,7 @@ class mf_theme_core
 
 	function get_params_theme_core()
 	{
-		$options_params = array();
+		$options_params = [];
 
 		$theme_dir_name = $this->get_theme_dir_name();
 
@@ -1622,7 +1622,7 @@ class mf_theme_core
 		global $wpdb;
 
 		$arr_allowed_extensions = array('.eot', 'otf', '.svg', '.ttf', '.woff');
-		$arr_media_fonts = array();
+		$arr_media_fonts = [];
 
 		$result = $wpdb->get_results("SELECT post_title, guid FROM ".$wpdb->posts." WHERE post_type = 'attachment' AND guid REGEXP '".implode("|", $arr_allowed_extensions)."' ORDER BY post_title ASC, post_date ASC");
 
@@ -2534,7 +2534,7 @@ class mf_theme_core
 	#################################
 	function get_custom_widget_areas()
 	{
-		$this->custom_widget_area = array();
+		$this->custom_widget_area = [];
 
 		$arr_custom_widget_area = get_option('widget_theme-widget-area-widget');
 
@@ -2585,7 +2585,7 @@ class mf_theme_core
 
 	/* Public */
 	#################################
-	function get_logo($data = array())
+	function get_logo($data = [])
 	{
 		if(!isset($data['url'])){				$data['url'] = get_site_url();}
 		if(!isset($data['display'])){			$data['display'] = 'all';}
@@ -2672,7 +2672,7 @@ class mf_theme_core
 		return $out;
 	}
 
-	function get_search_theme_core($data = array())
+	function get_search_theme_core($data = [])
 	{
 		if(!isset($data['placeholder']) || $data['placeholder'] == ''){			$data['placeholder'] = __("Search for", 'lang_theme_core');}
 		if(!isset($data['hide_on_mobile'])){									$data['hide_on_mobile'] = 'no';}
@@ -2687,7 +2687,7 @@ class mf_theme_core
 
 	/* Admin */
 	#################################
-	function clone_single_post($data = array())
+	function clone_single_post($data = [])
 	{
 		if(!isset($data['go_deeper'])){				$data['go_deeper'] = true;}
 		if(!isset($data['include_title_copy'])){	$data['include_title_copy'] = true;}
@@ -2789,14 +2789,14 @@ class mf_theme_core
 		}
 	}
 
-	function row_actions($actions, $post)
+	function row_actions($arr_actions, $post)
 	{
 		if(IS_EDITOR && $post->post_status == 'publish')
 		{
-			$actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", 'lang_theme_core')."</a>";
+			$arr_actions['clone'] = "<a href='".admin_url("edit.php?post_type=".$post->post_type."&btnPostClone&post_id=".$post->ID)."'>".__("Clone", 'lang_theme_core')."</a>";
 		}
 
-		return $actions;
+		return $arr_actions;
 	}
 
 	function hidden_meta_boxes($hidden, $screen)
@@ -2955,7 +2955,7 @@ class mf_theme_core
 
 	//Customizer
 	#################################
-	function add_select($data = array())
+	function add_select($data = [])
 	{
 		global $wp_customize;
 
@@ -3000,7 +3000,7 @@ class mf_theme_core
 		$this->get_theme_fonts();
 
 		//$this->id_temp = "";
-		//$this->param = array();
+		//$this->param = [];
 
 		$wp_customize->remove_section('themes');
 		$wp_customize->remove_section('title_tagline');
@@ -3011,7 +3011,7 @@ class mf_theme_core
 
 		foreach($this->options_params as $this->param)
 		{
-			if(!isset($this->param['input_attrs'])){		$this->param['input_attrs'] = array();}
+			if(!isset($this->param['input_attrs'])){		$this->param['input_attrs'] = [];}
 
 			if(isset($this->param['show_if']) && $this->param['show_if'] != '' && $this->options[$this->param['show_if']] == ''){}
 
@@ -3380,7 +3380,7 @@ class mf_theme_core
 			$obj_base = new mf_base();
 		}
 
-		$globals['mf_theme_files'] = array();
+		$globals['mf_theme_files'] = [];
 
 		get_file_info(array('path' => $upload_path, 'callback' => array($this, 'get_previous_backups')));
 
@@ -3720,7 +3720,7 @@ class widget_theme_core_area extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'widget_area_id' => '',
@@ -3804,7 +3804,7 @@ class widget_theme_core_logo extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'logo_url' => '',
@@ -3913,7 +3913,7 @@ class widget_theme_core_search extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'search_placeholder' => "",
@@ -3999,7 +3999,7 @@ class widget_theme_core_news extends WP_Widget
 	var $arr_default = array(
 		'news_title' => "",
 		'news_type' => 'original',
-		'news_categories' => array(),
+		'news_categories' => [],
 		'news_amount' => 1,
 		'news_hide_button' => 'no',
 		'news_columns' => 0,
@@ -4028,7 +4028,7 @@ class widget_theme_core_news extends WP_Widget
 	{
 		global $wpdb;
 
-		$this->arr_news = array();
+		$this->arr_news = [];
 
 		if(!($instance['news_amount'] > 0)){	$instance['news_amount'] = 3;}
 
@@ -4270,7 +4270,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
 		$instance['news_type'] = sanitize_text_field($new_instance['news_type']);
-		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
+		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : [];
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		$instance['news_hide_button'] = sanitize_text_field($new_instance['news_hide_button']);
 		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
@@ -4306,7 +4306,7 @@ class widget_theme_core_news extends WP_Widget
 
 		$rows = count($this->arr_news);
 
-		$arr_data_pages = array();
+		$arr_data_pages = [];
 		get_post_children(array('add_choose_here' => true), $arr_data_pages);
 
 		echo "<div class='mf_form'>"
@@ -4370,7 +4370,7 @@ class widget_theme_core_info extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'info_image' => '',
@@ -4425,13 +4425,13 @@ class widget_theme_core_info extends WP_Widget
 
 					else
 					{
-						$arr_meta_time_visit_limit = array();
+						$arr_meta_time_visit_limit = [];
 					}
 				}
 
 				else
 				{
-					$arr_meta_time_visit_limit = array();
+					$arr_meta_time_visit_limit = [];
 				}
 
 				if(!isset($arr_meta_time_visit_limit[$widget_md5]) || $arr_meta_time_visit_limit[$widget_md5] < DEFAULT_DATE)
@@ -4451,7 +4451,7 @@ class widget_theme_core_info extends WP_Widget
 			{
 				$cookie_name = 'cookie_theme_core_info_time_limit';
 
-				$arr_ses_info_time_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : array());
+				$arr_ses_info_time_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : []);
 
 				if(!isset($arr_ses_info_time_limit[$widget_md5]) || $arr_ses_info_time_limit[$widget_md5] < DEFAULT_DATE)
 				{
@@ -4472,7 +4472,7 @@ class widget_theme_core_info extends WP_Widget
 			if(is_user_logged_in())
 			{
 				$arr_meta_info_visit_limit = get_user_meta(get_current_user_id(), 'meta_info_visit_limit', false);
-				$arr_meta_info_visit_limit = (is_array($arr_meta_info_visit_limit) ? $arr_meta_info_visit_limit[0] : array());
+				$arr_meta_info_visit_limit = (is_array($arr_meta_info_visit_limit) ? $arr_meta_info_visit_limit[0] : []);
 
 				if(!isset($arr_meta_info_visit_limit[$widget_md5]))
 				{
@@ -4499,7 +4499,7 @@ class widget_theme_core_info extends WP_Widget
 			{
 				$cookie_name = 'cookie_theme_core_info_visit_limit';
 
-				$arr_ses_info_visit_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : array());
+				$arr_ses_info_visit_limit = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : []);
 
 				if(!isset($arr_ses_info_visit_limit[$widget_md5]))
 				{
@@ -4609,7 +4609,7 @@ class widget_theme_core_info extends WP_Widget
 			{
 				if($instance['info_link'] == '')
 				{
-					$arr_data = array();
+					$arr_data = [];
 					get_post_children(array('add_choose_here' => true), $arr_data);
 
 					echo show_select(array('data' => $arr_data, 'name' => $this->get_field_name('info_page'), 'text' => __("Page", 'lang_theme_core'), 'value' => $instance['info_page']));
@@ -4639,12 +4639,12 @@ class widget_theme_core_related extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'news_title' => '',
 		'news_post_type' => 'post',
-		'news_categories' => array(),
+		'news_categories' => [],
 		'news_amount' => 1,
 		'news_columns' => 1,
 	);
@@ -4661,7 +4661,7 @@ class widget_theme_core_related extends WP_Widget
 		/*$this->arr_default = array(
 			'news_title' => '',
 			'news_post_type' => 'post',
-			'news_categories' => array(),
+			'news_categories' => [],
 			'news_amount' => 1,
 			'news_columns' => 1,
 		);*/
@@ -4673,7 +4673,7 @@ class widget_theme_core_related extends WP_Widget
 	{
 		global $wpdb, $post;
 
-		$this->arr_news = array();
+		$this->arr_news = [];
 
 		if(isset($post) && isset($post->ID))
 		{
@@ -4681,7 +4681,7 @@ class widget_theme_core_related extends WP_Widget
 
 			$query_join = $query_where = "";
 
-			$arr_related_categories = array();
+			$arr_related_categories = [];
 
 			if(count($instance['news_categories']) > 0)
 			{
@@ -4795,7 +4795,7 @@ class widget_theme_core_related extends WP_Widget
 
 		$instance['news_title'] = sanitize_text_field($new_instance['news_title']);
 		$instance['news_post_type'] = sanitize_text_field($new_instance['news_post_type']);
-		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : array();
+		$instance['news_categories'] = is_array($new_instance['news_categories']) ? $new_instance['news_categories'] : [];
 		$instance['news_amount'] = sanitize_text_field($new_instance['news_amount']);
 		$instance['news_columns'] = sanitize_text_field($new_instance['news_columns']);
 
@@ -4827,11 +4827,11 @@ class widget_theme_core_promo extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'promo_title' => "",
-		'promo_include' => array(),
+		'promo_include' => [],
 		'promo_page_titles' => 'yes',
 	);
 
@@ -4846,7 +4846,7 @@ class widget_theme_core_promo extends WP_Widget
 
 		/*$this->arr_default = array(
 			'promo_title' => "",
-			'promo_include' => array(),
+			'promo_include' => [],
 			'promo_page_titles' => 'yes',
 		);*/
 
@@ -4862,7 +4862,7 @@ class widget_theme_core_promo extends WP_Widget
 
 		if(count($instance['promo_include']) > 0)
 		{
-			$arr_pages = array();
+			$arr_pages = [];
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY menu_order ASC", 'page', 'publish'));
 
@@ -4964,7 +4964,7 @@ class widget_theme_core_promo extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['promo_title'] = sanitize_text_field($new_instance['promo_title']);
-		$instance['promo_include'] = (is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : array());
+		$instance['promo_include'] = (is_array($new_instance['promo_include']) ? $new_instance['promo_include'] : []);
 		$instance['promo_page_titles'] = sanitize_text_field($new_instance['promo_page_titles']);
 
 		return $instance;
@@ -4974,7 +4974,7 @@ class widget_theme_core_promo extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
-		$arr_data = array();
+		$arr_data = [];
 		get_post_children(array('post_type' => 'page', 'order_by' => 'post_title'), $arr_data);
 
 		echo "<div class='mf_form'>"
@@ -4989,7 +4989,7 @@ class widget_theme_core_page_index extends WP_Widget
 {
 	var $obj_theme_core = "";
 
-	var $widget_ops = array();
+	var $widget_ops = [];
 
 	var $arr_default = array(
 		'widget_title' => "",

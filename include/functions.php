@@ -56,7 +56,7 @@ function is_active_widget_area($widget)
 
 	if($is_active == false)
 	{
-		$sidebars_widgets = get_option('sidebars_widgets', array());
+		$sidebars_widgets = get_option('sidebars_widgets', []);
 
 		if(isset($sidebars_widgets[$widget]) && (!is_array($sidebars_widgets[$widget]) || count($sidebars_widgets[$widget]) > 0))
 		{
