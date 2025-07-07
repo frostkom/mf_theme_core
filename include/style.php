@@ -498,7 +498,7 @@ echo "@media all
 					.aside.right .widget.theme_news .section.news_single > a > *, .aside.left .widget.theme_news .section.news_single > a > *
 					{
 						width: 100%;
-					}"; // .is_mobile .widget.theme_news .section.news_single > a > *, // This does not work with single news with .hide_news in #mf-pre-header
+					}";
 	}
 
 	if((int)apply_filters('get_widget_search', 'theme-info-widget') > 0)
