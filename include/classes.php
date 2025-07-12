@@ -11,7 +11,7 @@ class mf_theme_core
 	var $is_theme_active = '';
 	var $custom_widget_area = [];
 	var $site_url = "";
-	var $footer_output = '';
+	var $footer_output;
 	var $id_temp = '';
 	var $param = [];
 	var $post_id_old;
@@ -864,7 +864,7 @@ class mf_theme_core
 		{
 			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css");
 
-			$this->footer_output .= "<div id='site_locked'>
+			$this->footer_output = "<div id='site_locked'>
 				<a href='".admin_url()."'><i class='fa fa-lock' title='".__("Go to Admin", 'lang_theme_core')."'></i></a>";
 
 				if(isset($post->ID) && IS_EDITOR)
@@ -995,7 +995,7 @@ class mf_theme_core
 
 	function wp_footer()
 	{
-		if(isset($this->footer_output) && $this->footer_output != '')
+		if($this->footer_output != '')
 		{
 			echo $this->footer_output;
 		}
