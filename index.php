@@ -3,15 +3,12 @@
 Plugin Name: MF Theme Core
 Plugin URI: https://github.com/frostkom/mf_theme_core
 Description:
-Version: 8.9.42
+Version: 8.9.43
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
 Text Domain: lang_theme_core
 Domain Path: /lang
-
-Depends: MF Base
-GitHub Plugin URI: frostkom/mf_theme_core
 */
 
 if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
