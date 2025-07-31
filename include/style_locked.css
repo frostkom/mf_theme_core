@@ -18,11 +18,6 @@
 			opacity: .7;
 		}
 
-		.is_login_page #site_locked
-		{
-			display: none;
-		}
-
 			#site_locked a
 			{
 				color: #fff;
