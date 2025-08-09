@@ -2899,30 +2899,7 @@ class mf_theme_core
 
 	function mf_unregister_widget($id)
 	{
-		/*$arr_exclude = array("WP_Widget_", "_");
-		$arr_include = array("", "-");
-		$id_check = strtolower(str_replace($arr_exclude, $arr_include, $id));
-
-		$arr_sidebars = wp_get_sidebars_widgets();
-
-		$is_used = false;
-
-		foreach($arr_sidebars as $sidebar)
-		{
-			foreach($sidebar as $widget)
-			{
-				if(substr($widget, 0, (strlen($id_check) + 1)) == $id_check."-")
-				{
-					$is_used = true;
-				}
-			}
-		}
-
-		//if(is_active_widget(false, false, 'WP_Widget_Text', true) == false)
-		if($is_used == false) //!in_array($id_check, $arr_sidebars)
-		{*/
-			unregister_widget($id);
-		//}
+		unregister_widget($id);
 	}
 
 	function widgets_init()
