@@ -4057,6 +4057,8 @@ class widget_theme_core_news extends WP_Widget
 
 	function widget($args, $instance)
 	{
+		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
+
 		extract($args);
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
@@ -4368,17 +4370,6 @@ class widget_theme_core_info extends WP_Widget
 			'classname' => 'theme_info',
 			'description' => __("Display Info Module", 'lang_theme_core'),
 		);
-
-		/*$this->arr_default = array(
-			'info_image' => '',
-			'info_title' => '',
-			'info_content' => '',
-			'info_button_text' => '',
-			'info_page' => 0,
-			'info_link' => '',
-			'info_time_limit' => 0,
-			'info_visit_limit' => 0,
-		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Info Module", 'lang_theme_core'), $this->widget_ops);
 	}
