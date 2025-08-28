@@ -4041,7 +4041,7 @@ class widget_theme_core_news extends WP_Widget
 
 				if($post_thumbnail == '' && $instance['news_amount'] > 1)
 				{
-					$post_thumbnail = get_image_fallback();
+					$post_thumbnail = apply_filters('get_image_fallback', "");
 				}
 
 				$this->arr_news[$post_id] = array(
@@ -4694,7 +4694,7 @@ class widget_theme_core_related extends WP_Widget
 
 					if($post_thumbnail == '' && $instance['news_amount'] > 1)
 					{
-						$post_thumbnail = get_image_fallback();
+						$post_thumbnail = apply_filters('get_image_fallback', "");
 					}
 
 					$this->arr_news[$post_id] = array(
@@ -4862,7 +4862,7 @@ class widget_theme_core_promo extends WP_Widget
 
 						if($post_thumbnail == '')
 						{
-							$post_thumbnail = get_image_fallback();
+							$post_thumbnail = apply_filters('get_image_fallback', "");
 						}
 
 						$post_url = get_permalink($post_id);

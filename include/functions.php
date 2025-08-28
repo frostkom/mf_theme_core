@@ -1,10 +1,5 @@
 <?php
 
-function get_image_fallback()
-{
-	return "<img src='".get_site_url()."/wp-content/plugins/mf_theme_core/images/blank.svg' class='image_fallback'>";
-}
-
 function get_menu_type_for_select()
 {
 	global $obj_theme_core;
