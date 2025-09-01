@@ -53,7 +53,7 @@ class mf_theme_core
 					}
 				}
 
-				$out = apply_filters('filter_is_password_protected', $out, array('post_id' => $post_id, 'check_login' => true));
+				$out = apply_filters('filter_is_password_protected', $out, array('post_id' => $post_id, 'check_login' => true, 'type' => 'bool'));
 			}
 		}
 
@@ -4501,7 +4501,7 @@ class widget_theme_core_info extends WP_Widget
 
 		if($instance['info_page'] > 0){			$button_link = get_permalink($instance['info_page']);}
 		else if($instance['info_link'] != ''){	$button_link = $instance['info_link'];}
-		else{									$button_link = apply_filters('get_theme_core_info_button_link', "#");}
+		else{									$button_link = "#";}
 
 		if($this->check_limit($instance))
 		{
@@ -4521,13 +4521,13 @@ class widget_theme_core_info extends WP_Widget
 								$instance['info_title'] = apply_filters('widget_title', $instance['info_title'], $instance, $this->id_base);
 
 								echo $before_title
-									.apply_filters('get_theme_core_info_title', $instance['info_title'])
+									.$instance['info_title']
 								.$after_title;
 							}
 
 							if($instance['info_content'] != '')
 							{
-								echo apply_filters('the_content', apply_filters('get_theme_core_info_text', $instance['info_content']));
+								echo apply_filters('the_content', $instance['info_content']);
 							}
 
 							if($instance['info_button_text'] != '')
