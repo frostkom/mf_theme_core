@@ -1944,6 +1944,12 @@ class mf_theme_core
 			.$this->render_css(array('property' => 'padding', 'value' => 'form_container_padding'))
 		."}
 
+		#wrapper .mf_form .form_button button, #wrapper .mf_form .form_button .button
+		{
+			border: none;
+			font-size: 1em;
+		}
+
 			.mf_form_field, #comments #comment
 			{"
 				.$this->render_css(array('property' => 'border-radius', 'value' => 'form_border_radius'))
@@ -3316,20 +3322,14 @@ class mf_theme_core
 
 		if($rows > 0)
 		{
-			$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'>
-				<span>".$rows."</span>
-			</span>";
+			$count_message = "&nbsp;<span class='update-plugins' title='".__("Theme Updates", 'lang_theme_core')."'><span>".$rows."</span></span>";
 
-			if(count($menu) > 0)
+			foreach($menu as $key => $item)
 			{
-				foreach($menu as $key => $item)
+				if(isset($item[2]) && $item[2] == 'themes.php')
 				{
-					if($item[2] == 'themes.php')
-					{
-						$menu[$key][0] = strip_tags($item[0]).$count_message;
-
-						break;
-					}
+					$menu[$key][0] = strip_tags($item[0]).$count_message;
+					break;
 				}
 			}
 		}
