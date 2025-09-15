@@ -2795,7 +2795,7 @@ class mf_theme_core
 		}
 	}
 
-	function row_actions($arr_actions, $post)
+	function post_row_actions($arr_actions, $post)
 	{
 		if(IS_EDITOR && $post->post_status == 'publish')
 		{
