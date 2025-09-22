@@ -1235,7 +1235,6 @@ class mf_theme_core
 
 			if($theme_dir_name == 'mf_theme')
 			{
-				//$options_params[] = array('type' => 'checkbox', 'id' => 'hamburger_collapse_if_no_space', 'title' => __("Display when menu runs out of space", 'lang_theme_core'), 'default' => 1);
 				$options_params[] = array('type' => 'text', 'id' => 'hamburger_menu_bg', 'title' => __("Background", 'lang_theme_core')." (".__("Menu", 'lang_theme_core').")");
 			}
 
@@ -2489,7 +2488,7 @@ class mf_theme_core
 		}
 	}
 
-	function get_external_css($theme_version)
+	function get_external_css()
 	{
 		if(isset($this->options['external_css']) && $this->options['external_css'] != '')
 		{
@@ -2529,7 +2528,7 @@ class mf_theme_core
 
 				if($is_allowed)
 				{
-					mf_enqueue_style('style_'.md5($external_css), $external_css, $theme_version);
+					mf_enqueue_style('style_'.md5($external_css), $external_css);
 				}
 			}
 		}
@@ -4024,34 +4023,29 @@ class widget_theme_core_news extends WP_Widget
 
 		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_date FROM ".$wpdb->posts.$query_join." WHERE post_type = %s AND post_status = %s".$query_where." ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], 'post', 'publish'));
 
-		if($wpdb->num_rows > 0)
+		foreach($result as $r)
 		{
-			$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
+			$post_id = $r->ID;
 
-			foreach($result as $r)
+			$post_thumbnail = '';
+
+			if(has_post_thumbnail($post_id))
 			{
-				$post_id = $r->ID;
-
-				$post_thumbnail = '';
-
-				if(has_post_thumbnail($post_id))
-				{
-					$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
-				}
-
-				if($post_thumbnail == '' && $instance['news_amount'] > 1)
-				{
-					$post_thumbnail = apply_filters('get_image_fallback', "");
-				}
-
-				$this->arr_news[$post_id] = array(
-					'title' => $r->post_title,
-					'date' => $r->post_date,
-					'url' => get_permalink($post_id),
-					'image' => $post_thumbnail,
-					'excerpt' => $r->post_excerpt,
-				);
+				$post_thumbnail = get_the_post_thumbnail($post_id, 'large');
 			}
+
+			if($post_thumbnail == '' && $instance['news_amount'] > 1)
+			{
+				$post_thumbnail = apply_filters('get_image_fallback', "");
+			}
+
+			$this->arr_news[$post_id] = array(
+				'title' => $r->post_title,
+				'date' => $r->post_date,
+				'url' => get_permalink($post_id),
+				'image' => $post_thumbnail,
+				'excerpt' => $r->post_excerpt,
+			);
 		}
 	}
 
@@ -4076,7 +4070,7 @@ class widget_theme_core_news extends WP_Widget
 			{
 				$plugin_include_url = plugin_dir_url(__FILE__);
 
-				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css"); //Should be set in wp_head instead
+				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css");
 				mf_enqueue_script('script_theme_news_scroll', $plugin_include_url."script_news_scroll.js");
 			}
 
@@ -4231,7 +4225,7 @@ class widget_theme_core_news extends WP_Widget
 					{
 						$plugin_include_url = plugin_dir_url(__FILE__);
 
-						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css"); //Should be set in wp_head instead
+						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css");
 						mf_enqueue_script('script_theme_hide_news', $plugin_include_url."script_hide_news.js");
 
 						echo "<i class='fa fa-times hide_news' data-news_id='".$news_id."'></i>";
@@ -4677,33 +4671,28 @@ class widget_theme_core_related extends WP_Widget
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt FROM ".$wpdb->posts.$query_join." WHERE post_type = %s AND post_status = %s AND ID != '%d'".$query_where." GROUP BY post_title ORDER BY post_date DESC LIMIT 0, ".$instance['news_amount'], $instance['news_post_type'], 'publish', $post_id));
 
-			if($wpdb->num_rows > 0)
+			foreach($result as $r)
 			{
-				$post_thumbnail_size = 'large'; //$wpdb->num_rows > 2 ? 'medium' :
+				$post_id = $r->ID;
 
-				foreach($result as $r)
+				$post_thumbnail = '';
+
+				if(has_post_thumbnail($post_id))
 				{
-					$post_id = $r->ID;
-
-					$post_thumbnail = '';
-
-					if(has_post_thumbnail($post_id))
-					{
-						$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
-					}
-
-					if($post_thumbnail == '' && $instance['news_amount'] > 1)
-					{
-						$post_thumbnail = apply_filters('get_image_fallback', "");
-					}
-
-					$this->arr_news[$post_id] = array(
-						'title' => $r->post_title,
-						'url' => get_permalink($post_id),
-						'image' => $post_thumbnail,
-						'excerpt' => $r->post_excerpt,
-					);
+					$post_thumbnail = get_the_post_thumbnail($post_id, 'large');
 				}
+
+				if($post_thumbnail == '' && $instance['news_amount'] > 1)
+				{
+					$post_thumbnail = apply_filters('get_image_fallback', "");
+				}
+
+				$this->arr_news[$post_id] = array(
+					'title' => $r->post_title,
+					'url' => get_permalink($post_id),
+					'image' => $post_thumbnail,
+					'excerpt' => $r->post_excerpt,
+				);
 			}
 		}
 	}
@@ -4834,45 +4823,40 @@ class widget_theme_core_promo extends WP_Widget
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID IN('".implode("','", $instance['promo_include'])."') ORDER BY menu_order ASC", 'page', 'publish'));
 
-			if($wpdb->num_rows > 0)
+			foreach($result as $r)
 			{
-				$post_thumbnail_size = 'large';
+				$post_id = $r->ID;
+				$post_title = $r->post_title;
+				$post_content = $r->post_content;
 
-				foreach($result as $r)
+				if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
 				{
-					$post_id = $r->ID;
-					$post_title = $r->post_title;
-					$post_content = $r->post_content;
+					$arr_pages[$post_id] = array(
+						'content' => $post_content,
+					);
+				}
 
-					if(strlen($post_content) < 60 && preg_match("/youtube\.com|youtu\.be/i", $post_content))
+				else
+				{
+					$post_thumbnail = "";
+
+					if(has_post_thumbnail($post_id))
 					{
-						$arr_pages[$post_id] = array(
-							'content' => $post_content,
-						);
+						$post_thumbnail = get_the_post_thumbnail($post_id, 'large');
 					}
 
-					else
+					if($post_thumbnail == '')
 					{
-						$post_thumbnail = "";
-
-						if(has_post_thumbnail($post_id))
-						{
-							$post_thumbnail = get_the_post_thumbnail($post_id, $post_thumbnail_size);
-						}
-
-						if($post_thumbnail == '')
-						{
-							$post_thumbnail = apply_filters('get_image_fallback', "");
-						}
-
-						$post_url = get_permalink($post_id);
-
-						$arr_pages[$post_id] = array(
-							'title' => $post_title,
-							'url' => $post_url,
-							'image' => $post_thumbnail,
-						);
+						$post_thumbnail = apply_filters('get_image_fallback', "");
 					}
+
+					$post_url = get_permalink($post_id);
+
+					$arr_pages[$post_id] = array(
+						'title' => $post_title,
+						'url' => $post_url,
+						'image' => $post_thumbnail,
+					);
 				}
 			}
 
