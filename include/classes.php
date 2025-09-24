@@ -2857,46 +2857,6 @@ class mf_theme_core
 		}
 	}
 
-	function recommend_config($data)
-	{
-		global $obj_base;
-
-		if(!isset($data['file'])){		$data['file'] = '';}
-
-		$update_with = "";
-
-		/* Use instead of template_redirect -> is_author()? */
-		/*switch($obj_base->get_server_type())
-		{
-			default:
-			case 'apache':
-				$update_with .= "<IfModule mod_rewrite.c>\r\n"
-				."	RewriteCond %{QUERY_STRING} ^author= [NC]\r\n"
-				."	RewriteRule .* /404/? [L,R=301]\r\n"
-				."	RewriteRule ^author/ /404/? [L,R=301]\r\n"
-				."</IfModule>";
-			break;
-
-			case 'nginx':
-				$update_with .= "location /author= {\r\n"
-				."	deny all;\r\n"
-				."}";
-			break;
-		}*/
-
-		if($update_with != '')
-		{
-			$data['html'] .= $obj_base->update_config(array(
-				'plugin_name' => "MF Theme Core",
-				'file' => $data['file'],
-				'update_with' => $update_with,
-				'auto_update' => true,
-			));
-		}
-
-		return $data;
-	}
-
 	function get_allow_cookies()
 	{
 		return (get_option('setting_cookie_deactivate_until_allowed') != 'yes');
