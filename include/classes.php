@@ -234,7 +234,7 @@ class mf_theme_core
 
 			mf_uninstall_plugin(array(
 				'options' => array('setting_splash_screen', 'option_uploads_fixed'),
-				'meta' => array($this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date'),
+				'post_meta' => array($this->meta_prefix.'publish_date', $this->meta_prefix.'unpublish_date'),
 			));
 		}
 
