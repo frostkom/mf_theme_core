@@ -3,12 +3,12 @@
 	#site_locked
 	{
 		background: #000;
-		border-radius: .3em;
+		border-radius: .5em;
 		font-size: 2em;
 		opacity: .2;
 		padding: .4em .8em;
 		position: fixed;
-		right: .2em;
+		right: .5em;
 		top: 3em;
 		z-index: 1002;
 	}

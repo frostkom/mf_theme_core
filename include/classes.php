@@ -1993,7 +1993,7 @@ class mf_theme_core
 						$obj_base = new mf_base();
 					}
 
-					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']);
 				}
 
 				else if(isset($this->options['nav_color_hover']) && $this->options['nav_color_hover'] != '')
@@ -2003,7 +2003,7 @@ class mf_theme_core
 						$obj_base = new mf_base();
 					}
 
-					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']); // button_color_secondary //." !important" // Can't be important because it will override .webshop_events .calendar_header button
+					$out .= "color: ".$obj_base->get_text_color_from_background($this->options['button_color']);
 				}
 
 			$out .= "}
