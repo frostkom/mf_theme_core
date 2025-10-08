@@ -3505,11 +3505,11 @@ class mf_theme_core
 													.$arr_backups[$i]['name']
 													."<div class='row-actions'>
 														<a href='".$upload_url.$file_name."'>".__("Download", 'lang_theme_core')."</a>
-														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."' rel='confirm'>".__("Restore", 'lang_theme_core')."</a>";
+														 | <a href='".admin_url("themes.php?page=theme_options&btnThemeRestore&strFileName=".$file_name)."'".make_link_confirm().">".__("Restore", 'lang_theme_core')."</a>";
 
 														if($is_allowed_to_backup)
 														{
-															$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name, '_wpnonce_theme_delete')."' rel='confirm'>".__("Delete", 'lang_theme_core')."</a>";
+															$out .= " | <a href='".wp_nonce_url(admin_url("themes.php?page=theme_options&btnThemeDelete&strFileName=".$file_name), 'theme_delete_'.$file_name, '_wpnonce_theme_delete')."'".make_link_confirm().">".__("Delete", 'lang_theme_core')."</a>";
 														}
 
 													$out .= "</div>
