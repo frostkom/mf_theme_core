@@ -24,7 +24,7 @@ jQuery(function($)
 
 	$(document).on('click', "#scroll_to_top", function()
 	{
-		scroll_to_top();
+		jQuery("html, body").animate({scrollTop: 0}, 800);
 
 		return false;
 	});
