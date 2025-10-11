@@ -591,7 +591,7 @@ class mf_theme_core
 							if($setting_maintenance_page > 0)
 							{
 								$post_title = get_the_title($setting_maintenance_page);
-								$post_content = mf_get_post_content($setting_maintenance_page);
+								$post_content = get_post_field('post_content', $setting_maintenance_page);
 								$post_url_clean = remove_protocol(array('url' => get_permalink($setting_maintenance_page), 'clean' => true));
 							}
 
@@ -635,7 +635,7 @@ class mf_theme_core
 						$site_url_clean = remove_protocol(array('url' => $site_url));
 						$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
 						$post_title = get_the_title($option);
-						$post_content = mf_get_post_content($option);
+						$post_content = get_post_field('post_content', $option);
 
 						if($post_url_clean != '' && $post_content != '')
 						{
@@ -766,7 +766,7 @@ class mf_theme_core
 				else
 				{
 					$post_title = get_the_title($setting_maintenance_page);
-					$post_content = mf_get_post_content($setting_maintenance_page);
+					$post_content = get_post_field('post_content', $setting_maintenance_page);
 
 					//get_header();
 
@@ -3579,7 +3579,7 @@ class mf_theme_core
 				foreach($setting_theme_core_templates as $post_id)
 				{
 					$post_title = get_the_title($post_id);
-					$post_content = mf_get_post_content($post_id);
+					$post_content = get_post_field('post_content', $post_id);
 
 					if($post_title != '' || $post_content != '')
 					{
@@ -4142,7 +4142,7 @@ class widget_theme_core_news extends WP_Widget
 							{
 								if($instance['news_expand_content'] == 'yes')
 								{
-									$post_content = mf_get_post_content($news_id);
+									$post_content = get_post_field('post_content', $news_id);
 
 									echo "<div class='news_expand_content'>";
 
