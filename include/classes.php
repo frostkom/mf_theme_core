@@ -241,6 +241,11 @@ class mf_theme_core
 		$obj_cron->end();
 	}
 
+	function init()
+	{
+		load_plugin_textdomain('lang_theme_core', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+	}
+
 	function settings_theme_core()
 	{
 		$options_area_orig = $options_area = __FUNCTION__;
