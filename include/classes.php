@@ -564,7 +564,7 @@ class mf_theme_core
 
 				// Save maintenance file
 				###########################################
-				$maintenance_file = ABSPATH."wp-content/maintenance.php";
+				/*$maintenance_file = ABSPATH."wp-content/maintenance.php";
 
 				if(touch($maintenance_file))
 				{
@@ -679,7 +679,7 @@ class mf_theme_core
 					$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
 				}
 
-				echo get_notification();
+				echo get_notification();*/
 				###########################################
 
 				update_option($setting_key.'_temp', $option, false);
