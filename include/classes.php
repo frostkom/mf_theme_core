@@ -359,15 +359,6 @@ class mf_theme_core
 			get_post_children(array('add_choose_here' => true), $arr_data);
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
-
-			global $obj_base;
-
-			if(!isset($obj_base))
-			{
-				$obj_base = new mf_base();
-			}
-
-			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_theme_core_hidden_meta_boxes_callback()
@@ -503,15 +494,6 @@ class mf_theme_core
 			$post_content = __("Oops! The page that you were looking for does not seam to exist. If you think that it should exist, please let us know.", 'lang_theme_core');
 
 			echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'suffix' => get_option_page_suffix(array('value' => $option, 'title' => $post_title, 'content' => $post_content)), 'description' => (!($option > 0) ? "<span class='display_warning'><i class='fa fa-exclamation-triangle yellow'></i></span> " : "").__("This page will be displayed instead of the default 404 page", 'lang_theme_core')));
-
-			global $obj_base;
-
-			if(!isset($obj_base))
-			{
-				$obj_base = new mf_base();
-			}
-
-			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_maintenance_page_callback()
@@ -562,137 +544,8 @@ class mf_theme_core
 				}
 				###########################################
 
-				// Save maintenance file
-				###########################################
-				/*$maintenance_file = ABSPATH."wp-content/maintenance.php";
-
-				if(touch($maintenance_file))
-				{
-					list($upload_path, $upload_url) = get_uploads_folder('mf_cache');
-					$maintenance_template = str_replace($this->post_type."/include", $this->post_type."/templates/", dirname(__FILE__))."maintenance.php";
-
-					$recommend_maintenance = get_file_content(array('file' => $maintenance_template));
-					$loop_template = get_match("/\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#(.*)\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#/s", $recommend_maintenance, false);
-
-					if(is_multisite())
-					{
-						$result = get_sites(array('deleted' => 0, 'order' => 'DESC'));
-
-						foreach($result as $r)
-						{
-							$blog_id = $r->blog_id;
-
-							switch_to_blog($blog_id);
-
-							$loop_template_temp = $loop_template;
-
-							$setting_maintenance_page_html = get_option('setting_maintenance_page_html');
-
-							$site_url = get_site_url();
-							$site_url_clean = remove_protocol(array('url' => $site_url));
-
-							$setting_maintenance_page = get_option('setting_maintenance_page');
-
-							if($setting_maintenance_page > 0)
-							{
-								$post_title = get_the_title($setting_maintenance_page);
-								$post_content = get_post_field('post_content', $setting_maintenance_page);
-								$post_url_clean = remove_protocol(array('url' => get_permalink($setting_maintenance_page), 'clean' => true));
-							}
-
-							else
-							{
-								$post_title = $post_title_orig;
-								$post_content = $post_content_orig;
-								$post_url_clean = remove_protocol(array('url' => get_permalink(get_option('page_on_front')), 'clean' => true));
-							}
-
-							if($post_url_clean != '' && $post_content != '')
-							{
-								$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
-								$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
-
-								if($setting_maintenance_page_html != '')
-								{
-									$loop_template_temp = preg_replace("/(\<article.*\>.*\<\/article\>)/is", str_replace('"', "'", $setting_maintenance_page_html), $loop_template_temp);
-
-									$recommend_maintenance .= "\n".$loop_template_temp;
-								}
-
-								else
-								{
-									$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
-									$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-
-									$recommend_maintenance .= "\n".$loop_template_temp;
-								}
-							}
-
-							restore_current_blog();
-						}
-					}
-
-					else
-					{
-						$loop_template_temp = $loop_template;
-
-						$site_url = get_site_url();
-						$site_url_clean = remove_protocol(array('url' => $site_url));
-						$post_url_clean = remove_protocol(array('url' => get_permalink($option), 'clean' => true));
-						$post_title = get_the_title($option);
-						$post_content = get_post_field('post_content', $option);
-
-						if($post_url_clean != '' && $post_content != '')
-						{
-							$loop_template_temp = str_replace("[site_url]", $site_url_clean, $loop_template_temp);
-							$loop_template_temp = str_replace("[post_dir]", $upload_path.$post_url_clean."index.html", $loop_template_temp);
-							$loop_template_temp = str_replace("[post_title]", $post_title, $loop_template_temp);
-							$loop_template_temp = str_replace("[post_content]", trim(apply_filters('the_content', $post_content)), $loop_template_temp);
-
-							$recommend_maintenance .= "\n".$loop_template_temp;
-						}
-					}
-
-					if(strlen($recommend_maintenance) > 0)
-					{
-						$success = set_file_content(array('file' => $maintenance_file, 'mode' => 'w', 'content' => trim($recommend_maintenance)));
-
-						if($success == true)
-						{
-							$done_text = sprintf(__("%s was saved", 'lang_theme_core'), "<span title='".$maintenance_file."'>".basename($maintenance_file)."</span>");
-						}
-
-						else
-						{
-							$error_text = sprintf(__("I could not write to %s. The file is writeable but the write was unsuccessful", 'lang_theme_core'), $maintenance_file);
-						}
-					}
-
-					else
-					{
-						$error_text = sprintf(__("The content that I was about to write to %s was empty and the template came from %s", 'lang_theme_core'), $maintenance_file, $maintenance_template);
-					}
-				}
-
-				else
-				{
-					$error_text = sprintf(__("I could not write to %s. Please, make sure that this is writeable if you want this functionality to work properly", 'lang_theme_core'), $maintenance_file);
-				}
-
-				echo get_notification();*/
-				###########################################
-
 				update_option($setting_key.'_temp', $option, false);
 			}
-
-			global $obj_base;
-
-			if(!isset($obj_base))
-			{
-				$obj_base = new mf_base();
-			}
-
-			$obj_base->set_noindex_on_page($option);
 		}
 
 		function setting_activate_maintenance_callback()
@@ -1016,15 +869,6 @@ class mf_theme_core
 		}
 
 		return $this->is_theme_active;
-	}
-
-	function has_noindex($post_id)
-	{
-		global $obj_base;
-
-		$page_index = get_post_meta($post_id, $obj_base->meta_prefix.'page_index', true);
-
-		return ($page_index != '' && in_array($page_index, array('noindex', 'none', 'no')));
 	}
 
 	// Style

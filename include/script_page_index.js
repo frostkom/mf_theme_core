@@ -11,49 +11,6 @@ jQuery(function($)
 
 		if(dom_headings.length > 1)
 		{
-			/*dom_headings.each(function()
-			{
-				var dom_obj = $(this),
-					dom_title = dom_obj.text();
-
-				if(dom_obj.is("h2"))
-				{
-					var dom_depth = 2;
-				}
-
-				else if(dom_obj.is("h3"))
-				{
-					var dom_depth = 3;
-				}
-
-				if(typeof dom_obj.attr('id') === 'undefined')
-				{
-					dom_obj.attr({'id': 'page_index_' + i});
-				}
-
-				var dom_url = "#" + dom_obj.attr('id');
-
-				if(dom_depth == 3)
-				{
-					output += "<ul>";
-				}
-
-					output += "<li>"
-						+ "<a href='" + dom_url + "'>"
-							+ dom_title
-						+ "</a>"
-					+ "</li>";
-
-				if(dom_depth == 3)
-				{
-					output += "</ul>";
-				}
-
-				i++;
-			});
-
-			dom_widget.find("div > ul").html(output);*/
-
 			var positions = [],
 				build_toc = function()
 				{
