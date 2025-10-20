@@ -53,19 +53,15 @@ foreach($obj_theme_core->options_fonts as $font_key => $arr_fonts)
 	}
 }
 
-echo "@media all
+echo "#customize-info, #accordion-section-themes, #accordion-panel-nav_menus
 {
-	#customize-info, #accordion-section-themes, #accordion-panel-nav_menus
+	display: none !important;
+}";
+
+foreach($obj_theme_core->options_fonts as $font_key => $arr_fonts)
+{
+	echo "option[value='".$font_key."']
 	{
-		display: none !important;
+		font-family: ".$arr_fonts['style'].";
 	}";
-
-	foreach($obj_theme_core->options_fonts as $font_key => $arr_fonts)
-	{
-		echo "option[value='".$font_key."']
-		{
-			font-family: ".$arr_fonts['style'].";
-		}";
-	}
-
-echo "}";
+}

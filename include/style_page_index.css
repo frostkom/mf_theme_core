@@ -1,81 +1,78 @@
-@media all
+.widget.theme_page_index
 {
-	.widget.theme_page_index
+	text-align: right;
+}
+
+	.is_mobile .widget.theme_page_index
 	{
-		text-align: right;
+		display: none;
+		position: fixed;
+		right: 0;
+		top: 0;
 	}
 
-		.is_mobile .widget.theme_page_index
+	.widget.theme_page_index .fa-bars
+	{
+		display: none;
+	}
+
+		.is_mobile .widget.theme_page_index .fa-bars
 		{
-			display: none;
-			position: fixed;
-			right: 0;
-			top: 0;
+			display: block;
+			font-size: 1.5em;
+			margin: .4em;
 		}
 
-		.widget.theme_page_index .fa-bars
+	.widget.theme_page_index ul
+	{
+		list-style: none;
+		text-align: left;
+	}
+
+		.is_mobile .widget.theme_page_index > div > ul
 		{
 			display: none;
 		}
 
-			.is_mobile .widget.theme_page_index .fa-bars
+			.is_mobile .widget.theme_page_index:hover > div > ul
 			{
+				background: inherit;
+				border-radius: .5em;
+				box-shadow: 0 0 1em rgba(0, 0, 0, .3);
 				display: block;
-				font-size: 1.5em;
-				margin: .4em;
+				padding: .5em 1em;
 			}
 
-		.widget.theme_page_index ul
+		.widget.theme_page_index ul li
 		{
-			list-style: none;
-			text-align: left;
+			font-weight: bold;
+			margin-bottom: .5em;
 		}
 
-			.is_mobile .widget.theme_page_index > div > ul
+			.widget.theme_page_index ul li a
 			{
-				display: none;
+				display: inline-block;
+				text-indent: 0;
+				transition: all 1s ease;
 			}
 
-				.is_mobile .widget.theme_page_index:hover > div > ul
+				.widget.theme_page_index ul li a.toc-already-read
 				{
-					background: inherit;
-					border-radius: .5em;
-					box-shadow: 0 0 1em rgba(0, 0, 0, .3);
-					display: block;
-					padding: .5em 1em;
+					color: #ccc;
 				}
 
-			.widget.theme_page_index ul li
+				.widget.theme_page_index ul li a.toc-reading
+				{
+					color: inherit;
+					text-indent: .5em;
+				}
+
+			.widget.theme_page_index ul ul
 			{
-				font-weight: bold;
-				margin-bottom: .5em;
+				font-size: .9em;
 			}
 
-				.widget.theme_page_index ul li a
+				.widget.theme_page_index ul ul li
 				{
-					display: inline-block;
-					text-indent: 0;
-					transition: all 1s ease;
+					font-weight: normal;
 				}
-
-					.widget.theme_page_index ul li a.toc-already-read
-					{
-						color: #ccc;
-					}
-
-					.widget.theme_page_index ul li a.toc-reading
-					{
-						color: inherit;
-						text-indent: .5em;
-					}
-
-				.widget.theme_page_index ul ul
-				{
-					font-size: .9em;
-				}
-
-					.widget.theme_page_index ul ul li
-					{
-						font-weight: normal;
-					}
-}

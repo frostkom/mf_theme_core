@@ -1,45 +1,34 @@
-@media all
+#site_locked
 {
-	#site_locked
+	background: #000;
+	border-radius: .5em;
+	font-size: 2em;
+	opacity: .2;
+	padding: .4em .8em;
+	position: fixed;
+	right: .5em;
+	top: 3em;
+	z-index: 1002;
+}
+
+	#site_locked:hover
 	{
-		background: #000;
-		border-radius: .5em;
-		font-size: 2em;
-		opacity: .2;
-		padding: .4em .8em;
-		position: fixed;
-		right: .5em;
-		top: 3em;
-		z-index: 1002;
+		opacity: .7;
 	}
 
-		#site_locked:hover
+		#site_locked a
 		{
-			opacity: .7;
+			color: #fff;
+			display: block;
 		}
 
-			#site_locked a
+			#site_locked a + a
 			{
-				color: #fff;
-				display: block;
+				display: none;
+				margin-top: 1em;
 			}
 
-				#site_locked a + a
+				#site_locked:hover a + a
 				{
-					display: none;
-					margin-top: 1em;
+					display: block;
 				}
-
-					#site_locked:hover a + a
-					{
-						display: block;
-					}
-}
-
-@media print
-{
-	#site_locked
-	{
-		display: none;
-	}
-}

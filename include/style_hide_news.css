@@ -1,11 +1,8 @@
-@media all
+.widget.theme_news .section.news_single + .hide_news
 {
-	.widget.theme_news .section.news_single + .hide_news
-	{
-		font-size: 1.5em;
-		position: absolute;
-		right: 2em;
-		top: 50%;
-		transform: translateY(-50%);
-	}
+	font-size: 1.5em;
+	position: absolute;
+	right: 2em;
+	top: 50%;
+	transform: translateY(-50%);
 }

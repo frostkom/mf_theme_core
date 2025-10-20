@@ -1,35 +1,24 @@
-@media all
+#scroll_to_top
 {
-	#scroll_to_top
-	{
-		background: #000;
-		border-radius: .5em;
-		bottom: .5em;
-		color: #fff;
-		display: none;
-		font-size: 2em;
-		opacity: .2;
-		padding: .4em .8em;
-		position: fixed;
-		right: .5em;
-		z-index: 1002;
-	}
-
-		#scroll_to_top:hover
-		{
-			opacity: .7;
-		}
-
-		#scroll_to_top span
-		{
-			margin-left: .5em;
-		}
+	background: #000;
+	border-radius: .5em;
+	bottom: .5em;
+	color: #fff;
+	display: none;
+	font-size: 2em;
+	opacity: .2;
+	padding: .4em .8em;
+	position: fixed;
+	right: .5em;
+	z-index: 1002;
 }
 
-@media print
-{
-	#scroll_to_top
+	#scroll_to_top:hover
 	{
-		display: none !important;
+		opacity: .7;
 	}
-}
+
+	#scroll_to_top span
+	{
+		margin-left: .5em;
+	}
