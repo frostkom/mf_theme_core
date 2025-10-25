@@ -778,7 +778,7 @@ class mf_theme_core
 
 	function get_search_form($html)
 	{
-		return "<form method='get' action='".esc_url(home_url('/'))."' class='mf_form'>"
+		return "<form".apply_filters('get_form_attr', " method='get' action='".esc_url(home_url('/'))."'").">"
 			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => __("Search here", 'lang_theme_core'), 'xtra' => " autocomplete='off'"))
 			."<div".get_form_button_classes().">"
 				.show_button(array('text' => __("Search", 'lang_theme_core')))
@@ -2532,7 +2532,19 @@ class mf_theme_core
 		if(!isset($data['hide_on_mobile'])){									$data['hide_on_mobile'] = 'no';}
 		if(!isset($data['animate']) || $data['animate'] == ''){					$data['animate'] = 'yes';}
 
-		return "<form action='".get_site_url()."' method='get' class='searchform mf_form".($data['hide_on_mobile'] == 'yes' ? " hide_on_mobile" : "").($data['animate'] == 'yes' ? " search_animate" : "")."'>"
+		$arr_classes = ["searchform"];
+
+		if($data['hide_on_mobile'] == 'yes')
+		{
+			$arr_classes[] = "hide_on_mobile";
+		}
+		
+		if($data['animate'] == 'yes')
+		{
+			$arr_classes[] = "search_animate";
+		}
+
+		return "<form".apply_filters('get_form_attr', " action='".get_site_url()."' method='get'", $arr_classes).">"
 			.show_textfield(array('type' => 'search', 'name' => 's', 'value' => check_var('s'), 'placeholder' => $data['placeholder'], 'xtra' => " autocomplete='off'"))
 			."<i class='fa fa-search'></i>"
 		."</form>";
@@ -3336,7 +3348,7 @@ class mf_theme_core
 							{
 								$option_theme_saved = get_option('option_theme_saved');
 
-								$out .= "<table class='widefat striped'>";
+								$out .= "<table".apply_filters('get_table_attr', "").">";
 
 									$arr_header[] = __("Existing", 'lang_theme_core');
 									$arr_header[] = __("Date", 'lang_theme_core');
@@ -3375,7 +3387,7 @@ class mf_theme_core
 							$out .= "<div class='postbox'>
 								<h3 class='hndle'><span>".__("External Backup", 'lang_theme_core')."</span></h3>
 								<div class='inside'>
-									<form method='post' action='' class='mf_form'>
+									<form".apply_filters('get_form_attr', "").">
 										<div>"
 											.show_textarea(array('name' => 'strFileContent', 'value' => stripslashes($strFileContent)))
 											.show_button(array('name' => 'btnThemeRestore', 'text' => __("Restore", 'lang_theme_core')))
@@ -3391,7 +3403,7 @@ class mf_theme_core
 								<div class='postbox'>
 									<h3 class='hndle'><span>".__("New Backup", 'lang_theme_core')."</span></h3>
 									<div class='inside'>
-										<form method='post' action='' class='mf_form'>"
+										<form".apply_filters('get_form_attr', "").">"
 											.show_button(array('name' => 'btnThemeBackup', 'text' => __("Save", 'lang_theme_core')))
 											.wp_nonce_field('theme_backup', '_wpnonce_theme_backup', true, false)
 										."</form>
