@@ -2532,16 +2532,16 @@ class mf_theme_core
 		if(!isset($data['hide_on_mobile'])){									$data['hide_on_mobile'] = 'no';}
 		if(!isset($data['animate']) || $data['animate'] == ''){					$data['animate'] = 'yes';}
 
-		$arr_classes = ["searchform"];
+		$arr_classes = ['class' => ["searchform"]];
 
 		if($data['hide_on_mobile'] == 'yes')
 		{
-			$arr_classes[] = "hide_on_mobile";
+			$arr_classes['class'][] = "hide_on_mobile";
 		}
-		
+
 		if($data['animate'] == 'yes')
 		{
-			$arr_classes[] = "search_animate";
+			$arr_classes['class'][] = "search_animate";
 		}
 
 		return "<form".apply_filters('get_form_attr', " action='".get_site_url()."' method='get'", $arr_classes).">"
@@ -3727,13 +3727,6 @@ class widget_theme_core_search extends WP_Widget
 			'classname' => 'theme_search',
 			'description' => __("Display Search Form", 'lang_theme_core'),
 		);
-
-		/*$this->arr_default = array(
-			'search_placeholder' => "",
-			'search_hide_on_mobile' => 'no',
-			'search_animate' => 'yes',
-			'search_listen_to_keystroke' => 'no',
-		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Search", 'lang_theme_core'), $this->widget_ops);
 	}
