@@ -644,6 +644,8 @@ class mf_theme_core
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
+		do_action('load_font_awesome');
+
 		mf_enqueue_style('style_base_theme', $plugin_include_url."style_theme.css");
 		mf_enqueue_style('style_theme_core', $plugin_include_url."style.php");
 		mf_enqueue_script('script_theme_core', $plugin_include_url."script.js");
@@ -2532,6 +2534,8 @@ class mf_theme_core
 		if(!isset($data['hide_on_mobile'])){									$data['hide_on_mobile'] = 'no';}
 		if(!isset($data['animate']) || $data['animate'] == ''){					$data['animate'] = 'yes';}
 
+		do_action('load_font_awesome');
+
 		$arr_classes = ['class' => ["searchform"]];
 
 		if($data['hide_on_mobile'] == 'yes')
@@ -3882,6 +3886,8 @@ class widget_theme_core_news extends WP_Widget
 
 			if($display_news_scroll)
 			{
+				do_action('load_font_awesome');
+
 				$plugin_include_url = plugin_dir_url(__FILE__);
 
 				mf_enqueue_style('style_theme_news_scroll', $plugin_include_url."style_news_scroll.css");
@@ -4037,6 +4043,8 @@ class widget_theme_core_news extends WP_Widget
 
 					if($display_hide_news)
 					{
+						do_action('load_font_awesome');
+
 						$plugin_include_url = plugin_dir_url(__FILE__);
 
 						mf_enqueue_style('style_theme_hide_news', $plugin_include_url."style_hide_news.css");
@@ -4770,9 +4778,7 @@ class widget_theme_core_page_index extends WP_Widget
 			'description' => __("Display Table of Contents", 'lang_theme_core'),
 		);
 
-		/*$this->arr_default = array(
-			'widget_title' => "",
-		);*/
+		do_action('load_font_awesome');
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Table of Contents", 'lang_theme_core'), $this->widget_ops);
 	}

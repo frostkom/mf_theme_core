@@ -49,24 +49,6 @@ img
 	clear: both;
 }
 
-.aligncenter
-{
-	margin: .5em 0;
-	text-align: center;
-}
-
-.alignleft
-{
-	float: left;
-	margin: .5em 1em .5em 0;
-}
-
-.alignright
-{
-	float: right;
-	margin: .5em 0 .5em 1em;
-}
-
 .is_desktop .hide_on_desktop, .is_tablet .hide_on_tablet, .is_mobile .hide_on_mobile
 {
 	display: none !important;
