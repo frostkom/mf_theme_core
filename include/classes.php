@@ -2,7 +2,7 @@
 
 class mf_theme_core
 {
-	var $post_type = 'mf_theme_core';
+	var $post_type = __CLASS__;
 	var $meta_prefix;
 	var $options_params = [];
 	var $options = [];
@@ -3773,7 +3773,7 @@ class widget_theme_core_search extends WP_Widget
 
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('search_placeholder'), 'text' => __("Placeholder", 'lang_theme_core'), 'value' => $instance['search_placeholder']))
-			."<div class='flex_flow'>"
+			."<div".apply_filters('get_flex_flow', "").">"
 				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_hide_on_mobile'), 'text' => __("Hide on Mobile", 'lang_theme_core'), 'value' => $instance['search_hide_on_mobile']))
 				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_animate'), 'text' => __("Animate", 'lang_theme_core'), 'value' => $instance['search_animate']))
 				.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('search_listen_to_keystroke'), 'text' => __("Listen to Keystroke", 'lang_theme_core'), 'value' => $instance['search_listen_to_keystroke']))
@@ -4100,7 +4100,7 @@ class widget_theme_core_news extends WP_Widget
 			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => $this->get_news_type_for_select(), 'name' => $this->get_field_name('news_type'), 'text' => __("Design", 'lang_theme_core'), 'value' => $instance['news_type']))
 			.show_select(array('data' => get_categories_for_select(array('hide_empty' => false)), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
-			."<div class='flex_flow'>"
+			."<div".apply_filters('get_flex_flow', "").">"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='0' max='".($rows > 0 ? $rows : 1)."'"));
 
 				if($instance['news_amount'] > 1 && $rows > 3 && $instance['news_type'] != 'compact')
@@ -4112,7 +4112,7 @@ class widget_theme_core_news extends WP_Widget
 
 			if($instance['news_amount'] == 1)
 			{
-				echo "<div class='flex_flow'>"
+				echo "<div".apply_filters('get_flex_flow', "").">"
 					.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_time_limit'), 'text' => __("Time Limit", 'lang_theme_core'), 'value' => $instance['news_time_limit'], 'xtra' => " min='0' max='240'", 'suffix' => __("h", 'lang_theme_core')))
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_hide_button'), 'text' => __("Button to Hide", 'lang_theme_core'), 'value' => $instance['news_hide_button']))
 				."</div>";
@@ -4120,7 +4120,7 @@ class widget_theme_core_news extends WP_Widget
 
 			if($instance['news_type'] == 'postit')
 			{
-				echo "<div class='flex_flow'>"
+				echo "<div".apply_filters('get_flex_flow', "").">"
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_arrows'), 'text' => __("Display Arrows", 'lang_theme_core'), 'value' => $instance['news_display_arrows']));
 
 					if($instance['news_display_arrows'] == 'yes')
@@ -4133,7 +4133,7 @@ class widget_theme_core_news extends WP_Widget
 
 			if($instance['news_type'] != 'compact')
 			{
-				echo "<div class='flex_flow'>"
+				echo "<div".apply_filters('get_flex_flow', "").">"
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_title'), 'text' => __("Display Title", 'lang_theme_core'), 'value' => $instance['news_display_title']))
 					.show_select(array('data' => get_yes_no_for_select(), 'name' => $this->get_field_name('news_display_excerpt'), 'text' => __("Display Excerpt", 'lang_theme_core'), 'value' => $instance['news_display_excerpt']))
 				."</div>";
@@ -4581,7 +4581,7 @@ class widget_theme_core_related extends WP_Widget
 			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
 			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
-			."<div class='flex_flow'>"
+			."<div".apply_filters('get_flex_flow', "").">"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
 
 				if($instance['news_amount'] > 1)
