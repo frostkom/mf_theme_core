@@ -151,10 +151,7 @@ jQuery(function($)
 			{
 				var dom_href = $(this).attr('href');
 
-				jQuery("html, body").animate(
-				{
-					scrollTop: $(dom_href).offset().top
-				}, 800);
+				jQuery("html, body").animate({scrollTop: ($(dom_href).offset().top - 40)}, 800);
 
 				return false;
 			});
