@@ -3211,7 +3211,8 @@ class mf_theme_core
 			if(count($this->options) > 0)
 			{
 				$file_base = $theme_dir_name."_".str_replace(array(".", "/"), "_", get_site_url_clean(array('trim' => "/")));
-				$file = prepare_file_name($file_base).".json";
+				//$file = prepare_file_name($file_base).".json";
+				$file = sanitize_title_with_dashes(sanitize_title($file_base))."_".date("ymdHis")."_".wp_hash($file_base).".json";
 
 				$success = set_file_content(array('file' => $upload_path.$file, 'mode' => 'a', 'content' => json_encode($this->options)));
 
