@@ -263,39 +263,36 @@ class mf_theme_core
 
 		$arr_settings['setting_theme_core_hidden_meta_boxes'] = __("Hidden Meta Boxes", 'lang_theme_core');
 
-		if(get_option('setting_no_public_pages') != 'yes')
+		$users_editors = get_users(array(
+			'fields' => array('ID'),
+			'role__in' => array('editor'),
+		));
+
+		$users_authors = get_users(array(
+			'fields' => array('ID'),
+			'role__in' => array('author'),
+		));
+
+		if(count($users_editors) > 0 && count($users_authors) > 0)
 		{
-			$users_editors = get_users(array(
-				'fields' => array('ID'),
-				'role__in' => array('editor'),
-			));
+			$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", 'lang_theme_core');
+		}
 
-			$users_authors = get_users(array(
-				'fields' => array('ID'),
-				'role__in' => array('author'),
-			));
+		else
+		{
+			delete_option('setting_send_email_on_draft');
+		}
 
-			if(count($users_editors) > 0 && count($users_authors) > 0)
-			{
-				$arr_settings['setting_send_email_on_draft'] = __("Send Email when Draft is Saved", 'lang_theme_core');
-			}
+		$setting_base_template_site = get_option('setting_base_template_site');
 
-			else
-			{
-				delete_option('setting_send_email_on_draft');
-			}
+		if($setting_base_template_site != '')
+		{
+			$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
+		}
 
-			$setting_base_template_site = get_option('setting_base_template_site');
-
-			if($setting_base_template_site != '')
-			{
-				$arr_settings['setting_theme_ignore_style_on_restore'] = __("Ignore Style on Restore", 'lang_theme_core');
-			}
-
-			else
-			{
-				delete_option('setting_theme_ignore_style_on_restore');
-			}
+		else
+		{
+			delete_option('setting_theme_ignore_style_on_restore');
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -303,43 +300,36 @@ class mf_theme_core
 
 		// Public Site
 		############################
-		if(get_option('setting_no_public_pages') != 'yes')
+		$options_area = $options_area_orig."_public";
+
+		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+
+		$arr_settings = [];
+
+		if($this->is_theme_active())
 		{
-			$options_area = $options_area_orig."_public";
-
-			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
-
-			$arr_settings = [];
-
-			if($this->is_theme_active())
-			{
-				$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
-			}
-
-			$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
-			$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
-			$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
-
-			if(get_option('setting_scroll_to_top') == 'yes')
-			{
-				$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", 'lang_theme_core');
-			}
-
-			if(get_option('setting_no_public_pages') != 'yes')
-			{
-				$arr_settings['setting_theme_core_search_redirect_single_result'] = __("Redirect Single Result in Search", 'lang_theme_core');
-				$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
-			}
-
-			$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
-
-			if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
-			{
-				$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
-			}
-
-			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+			$arr_settings['setting_theme_core_enable_edit_mode'] = __("Enable Edit Mode", 'lang_theme_core');
 		}
+
+		$arr_settings['setting_theme_core_title_format'] = __("Title Format", 'lang_theme_core');
+		$arr_settings['setting_display_post_meta'] = __("Display Post Meta", 'lang_theme_core');
+		$arr_settings['setting_scroll_to_top'] = __("Display scroll-to-top-link", 'lang_theme_core');
+
+		if(get_option('setting_scroll_to_top') == 'yes')
+		{
+			$arr_settings['setting_scroll_to_top_text'] = __("Scroll-to-top Text", 'lang_theme_core');
+		}
+
+		$arr_settings['setting_theme_core_search_redirect_single_result'] = __("Redirect Single Result in Search", 'lang_theme_core');
+		$arr_settings['setting_404_page'] = __("404 Page", 'lang_theme_core');
+		$arr_settings['setting_maintenance_page'] = __("Maintenance Page", 'lang_theme_core');
+
+		if(IS_SUPER_ADMIN && get_option('setting_maintenance_page') > 0)
+		{
+			$arr_settings['setting_activate_maintenance'] = __("Activate Maintenance Mode", 'lang_theme_core');
+		}
+
+		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 		############################
 	}
 
@@ -516,7 +506,7 @@ class mf_theme_core
 			{
 				// Save HTML for this page
 				###########################################
-				if(get_option('setting_activate_maintenance') == 'no' && get_option('setting_no_public_pages') != 'yes' && get_option('setting_theme_core_login') != 'yes')
+				if(get_option('setting_activate_maintenance') == 'no')
 				{
 					delete_option('setting_maintenance_page_html');
 
