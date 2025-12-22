@@ -4,7 +4,7 @@
 	flex-wrap: wrap;
 }
 
-.wrap .error, #mf-content .error, #wpbody-content .update-nag, .wrap div.updated, #mf-content div.updated
+.wrap .error, #mf-content .error, #wpbody-content .notice-warning, .wrap div.updated, #mf-content div.updated
 {
 	background-color: #fff;
 	border-left-width: .4em;
@@ -20,7 +20,7 @@
 		border-color: #dd3d36;
 	}
 
-	#wpbody-content .update-nag
+	#wpbody-content .notice-warning
 	{
 		border-color: #ffba00;
 		margin-bottom: 0;
@@ -31,7 +31,7 @@
 		border-color: #7ad03a;
 	}
 
-		#mf-content .error p, #wpbody-content .update-nag p, #mf-content div.updated p
+		#mf-content .error p, #wpbody-content .notice-warning p, #mf-content div.updated p
 		{
 			margin: .3em 0;
 			padding: .15em;
