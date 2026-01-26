@@ -366,12 +366,12 @@ class mf_theme_core
 
 			$editors = "";
 
-			$users = get_users(array(
+			$arr_users = get_users(array(
 				'fields' => array('display_name'),
 				'role__in' => array('editor'),
 			));
 
-			foreach($users as $user)
+			foreach($arr_users as $user)
 			{
 				$editors .= ($editors != '' ? "" : "").$user->display_name;
 			}
@@ -2682,12 +2682,12 @@ class mf_theme_core
 			$mail_subject = sprintf(__("The draft (%s) has been saved", 'lang_theme_core'), $post_title);
 			$mail_content = sprintf(__("The draft (%s) has been saved and might be ready for publishing", 'lang_theme_core'), "<a href='".$post_url."'>".$post_title."</a>");
 
-			$users = get_users(array(
+			$arr_users = get_users(array(
 				'fields' => array('user_email'),
 				'role__in' => array('editor'),
 			));
 
-			foreach($users as $user)
+			foreach($arr_users as $user)
 			{
 				$mail_to = $user->user_email;
 
