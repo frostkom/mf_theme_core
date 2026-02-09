@@ -832,11 +832,11 @@ class mf_theme_core
 		return $title;
 	}
 
-	function wp_default_scripts(&$scripts)
+	/*function wp_default_scripts(&$scripts)
 	{
 		$scripts->remove('jquery');
 		$scripts->add('jquery', false, array('jquery-core'), '1.12.4');
-	}
+	}*/
 
 	function wp_print_scripts()
 	{

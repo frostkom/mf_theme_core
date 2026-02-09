@@ -81,7 +81,6 @@ jQuery(function($)
 				news_current++;
 
 				change_news();
-
 			}, news_autoscroll_time * 1000);
 		}
 
