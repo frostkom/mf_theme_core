@@ -963,7 +963,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_border_radius', 'title' => __("Border Radius", 'lang_theme_core')." (".__("Buttons", 'lang_theme_core').")", 'default' => ".3em");
 			$options_params[] = array('type' => 'text', 'id' => 'form_button_padding', 'title' => __("Padding", 'lang_theme_core'));
 
-			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_webshop/index.php") ? "1.3em" : ''));
+			$options_params[] = array('type' => 'text', 'id' => 'button_size', 'title' => __("Font Size", 'lang_theme_core'), 'default' => (function_exists('is_plugin_active') && is_plugin_active("mf_rentals/index.php") ? "1.3em" : ''));
 
 			$options_params[] = array('type' => 'color', 'id' => 'button_color', 'title' => __("Color", 'lang_theme_core'), 'default' => "#000000");
 			$options_params[] = array('type' => 'color', 'id' => 'button_color_secondary', 'title' => __("Color", 'lang_theme_core')." (".__("Secondary", 'lang_theme_core').")", 'default' => "#c78e91");
