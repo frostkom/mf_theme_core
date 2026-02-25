@@ -4614,12 +4614,6 @@ class widget_theme_core_promo extends WP_Widget
 			'description' => __("Promote Pages", 'lang_theme_core'),
 		);
 
-		/*$this->arr_default = array(
-			'promo_title' => "",
-			'promo_include' => [],
-			'promo_page_titles' => 'yes',
-		);*/
-
 		parent::__construct('theme-promo-widget', __("Promotion", 'lang_theme_core'), $this->widget_ops);
 	}
 
