@@ -3034,7 +3034,7 @@ class mf_theme_core
 
 	function customize_save()
 	{
-		update_option('option_theme_saved', date("Y-m-d H:i:s"), false);
+		update_option('option_theme_saved', current_time('mysql'), false);
 		update_option('option_theme_version', (get_option('option_theme_version', 0) + 1), false);
 	}
 	#################################
@@ -3272,7 +3272,7 @@ class mf_theme_core
 
 					$done_text = __("I restored the theme backup for you", 'lang_theme_core');
 
-					update_option('option_theme_saved', date("Y-m-d H:i:s"), false);
+					update_option('option_theme_saved', current_time('mysql'), false);
 					delete_option('option_theme_source_style_url');
 
 					$strFileContent = "";
