@@ -714,7 +714,7 @@ class mf_theme_core
 		{
 			mf_enqueue_style('style_theme_core_locked', $plugin_include_url."style_locked.css");
 
-			$this->footer_output = "<div id='site_locked'>
+			$this->footer_output .= "<div id='site_locked'>
 				<a href='".admin_url()."'><i class='fa fa-lock' title='".__("Go to Admin", 'lang_theme_core')."'></i></a>";
 
 				if(isset($post->ID) && IS_EDITOR)
