@@ -4572,13 +4572,175 @@ class widget_theme_core_related extends WP_Widget
 		return $instance;
 	}
 
+	function get_post_types_for_select($data = [])
+	{
+		global $obj_base;
+
+		if(!isset($data['include'])){		$data['include'] = array('ids', 'types', 'special');}
+		if(!isset($data['post_status'])){	$data['post_status'] = 'publish';}
+		if(!isset($data['add_is'])){		$data['add_is'] = true;}
+
+		$opt_groups = is_array($data['include']) && count($data['include']) > 1;
+
+		$arr_data = [];
+
+		if(in_array('ids', $data['include']))
+		{
+			$arr_pages = [];
+			get_post_children(array('post_status' => $data['post_status']), $arr_pages);
+
+			if(count($arr_pages) > 0)
+			{
+				$page_for_posts = get_option('page_for_posts');
+
+				if($opt_groups == true)
+				{
+					$arr_data['opt_start_pages'] = __("Pages", 'lang_base');
+				}
+
+					foreach($arr_pages as $post_id => $post_title)
+					{
+						$key_prefix = "";
+
+						if($post_id == $page_for_posts)
+						{
+							$key_prefix = "disabled_";
+						}
+
+						if($data['add_is'] == true)
+						{
+							$arr_data[$key_prefix.'is_page('.$post_id.')'] = $post_title;
+						}
+
+						else
+						{
+							$arr_data[$key_prefix.$post_id] = $post_title;
+						}
+					}
+
+				if($opt_groups == true)
+				{
+					$arr_data['opt_end_pages'] = "";
+				}
+			}
+		}
+
+		if($opt_groups == true)
+		{
+			$arr_data['opt_start_post_types'] = __("Post Types", 'lang_base');
+		}
+
+			if(in_array('types', $data['include']))
+			{
+				foreach(get_post_types(array('exclude_from_search' => false), 'objects') as $arr_post_type) //'public' => true, 'publicly_queryable' => true,
+				{
+					if(!in_array($arr_post_type->name, array('attachment')))
+					{
+						if($data['add_is'] == true)
+						{
+							$arr_data['is_singular("'.$arr_post_type->name.'")'] = $arr_post_type->label;
+
+							$arr_tax = get_object_taxonomies($arr_post_type->name, 'objects');
+
+							foreach($arr_tax as $taxonomy)
+							{
+								if($taxonomy->public == 1)
+								{
+									$arr_data['is_tax("'.$taxonomy->name.'")'] = " - ".$taxonomy->label;
+								}
+							}
+						}
+
+						else
+						{
+							$arr_data[$arr_post_type->name] = $arr_post_type->label;
+						}
+					}
+				}
+			}
+
+		if($opt_groups == true)
+		{
+			$arr_data['opt_end_post_types'] = "";
+		}
+
+		if(in_array('special', $data['include']))
+		{
+			$arr_data['is_404()'] = "404";
+			//$arr_data['is_archive()'] = "Archive";
+
+			$arr_categories = get_categories(array('hierarchical' => 1, 'hide_empty' => 1));
+
+			if(count($arr_categories) > 0)
+			{
+				$arr_data['is_category()'] = __("Category", 'lang_base');
+
+				if(count($arr_categories) > 1)
+				{
+					if($opt_groups == true)
+					{
+						$arr_data['opt_start_categories'] = __("Categories", 'lang_base');
+					}
+
+						foreach($arr_categories as $category)
+						{
+							$arr_data['is_category('.$category->cat_ID.')'] = ($category->parent > 0 ? "&nbsp;&nbsp;&nbsp;" : "").$category->name;
+						}
+
+					if($opt_groups == true)
+					{
+						$arr_data['opt_end_categories'] = "";
+					}
+				}
+			}
+
+			$show_on_front = get_option('show_on_front');
+			$page_on_front = get_option('page_on_front');
+			$page_for_posts = get_option('page_for_posts');
+
+			$front_page_title = __("Front Page", 'lang_base');
+			$home_title = __("Home", 'lang_base');
+
+			switch($show_on_front)
+			{
+				case 'post':
+					if($page_for_posts > 0)
+					{
+						$front_page_title = $home_title = get_the_title($page_for_posts);
+					}
+				break;
+
+				case 'page':
+					if($page_on_front > 0)
+					{
+						$front_page_title = get_the_title($page_on_front);
+					}
+
+					if($page_for_posts > 0)
+					{
+						$home_title = get_the_title($page_for_posts);
+					}
+				break;
+			}
+
+			$arr_data['is_front_page()'] = $front_page_title;
+			$arr_data['is_home()'] = $home_title;
+			//$arr_data['is_page()'] = "Page";
+			$arr_data['is_search()'] = __("Search", 'lang_base');
+			//$arr_data['is_single()'] = "Single";
+			//$arr_data['is_sticky()'] = "Sticky";
+		}
+
+		return $arr_data;
+	}
+
 	function form($instance)
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('news_title'), 'text' => __("Title", 'lang_theme_core'), 'value' => $instance['news_title'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_select(array('data' => get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
+			.show_select(array('data' => $this->get_post_types_for_select(array('include' => array('types'), 'add_is' => false)), 'name' => $this->get_field_name('news_post_type'), 'value' => $instance['news_post_type']))
 			.show_select(array('data' => get_categories_for_select(), 'name' => $this->get_field_name('news_categories')."[]", 'text' => __("Categories", 'lang_theme_core'), 'value' => $instance['news_categories']))
 			."<div".apply_filters('get_flex_flow', "").">"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('news_amount'), 'text' => __("Amount", 'lang_theme_core'), 'value' => $instance['news_amount'], 'xtra' => " min='1'"));
