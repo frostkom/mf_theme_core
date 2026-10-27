@@ -214,16 +214,6 @@ class mf_theme_core
 				#######################
 			}
 
-			// Change comment status on posts
-			#########################
-			$option = 'closed';
-
-			if(get_option('default_comment_status') == $option)
-			{
-				$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET comment_status = %s, ping_status = %s WHERE (comment_status != %s OR ping_status != %s)", $option, $option, $option, $option));
-			}
-			#########################
-
 			// Delete old uploads
 			#######################
 			list($upload_path, $upload_url) = get_uploads_folder($this->post_type);
