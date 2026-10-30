@@ -9,7 +9,7 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-echo "if(document.cookie.indexOf('cookie_accepted=') !== -1)
+echo "if(document.cookie.split('; ').indexOf('cookie_accepted=true') !== -1)
 {
 	jQuery(function($)
 	{";
@@ -27,16 +27,6 @@ echo "if(document.cookie.indexOf('cookie_accepted=') !== -1)
 
 				if(isset($obj_theme_core->options_fonts[$font]['url']) && $obj_theme_core->options_fonts[$font]['url'] != '')
 				{
-					/*echo "var style_tag = document.createElement('link');
-					style_tag.rel = 'stylesheet';
-					style_tag.id = 'style_font_".$font."-css';
-					style_tag.href = '".$obj_theme_core->options_fonts[$font]['url']."';
-					style_tag.type = 'text/css';
-					style_tag.media = 'all';
-
-					var first_sibling_tag = document.getElementsByTagName('link')[0];
-					first_sibling_tag.parentNode.insertBefore(style_tag, first_sibling_tag);";*/
-
 					echo "$('head').append(\"<link rel='stylesheet' href='".$obj_theme_core->options_fonts[$font]['url']."'>\");";
 				}
 			}
