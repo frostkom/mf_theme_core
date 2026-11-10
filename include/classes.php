@@ -919,7 +919,7 @@ class mf_theme_core
 		$options_params[] = array('category' => __("Generic", 'lang_theme_core'), 'id' => 'mf_theme_body');
 			$options_params[] = array('type' => 'text', 'id' => 'body_bg', 'title' => __("Background", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'body_bg_color', 'title' => " - ".__("Color", 'lang_theme_core'), 'default' => '#ffffff');
-				$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				//$options_params[] = array('type' => 'image', 'id' => 'body_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 			$options_params[] = array('type' => 'text', 'id' => 'main_padding', 'title' => __("Padding", 'lang_theme_core'), 'default' => "1em 2em");
 			$options_params[] = array('type' => 'font', 'id' => 'body_font', 'title' => __("Font", 'lang_theme_core'));
 
@@ -982,7 +982,7 @@ class mf_theme_core
 			$options_params[] = array('type' => 'position', 'id' => 'header_fixed', 'title' => __("Position", 'lang_theme_core'), 'default' => 'relative');
 			$options_params[] = array('type' => 'text', 'id' => 'header_bg', 'title' => __("Background", 'lang_theme_core'));
 				$options_params[] = array('type' => 'color', 'id' => 'header_bg_color', 'title' => " - ".__("Color", 'lang_theme_core')); //, 'ignore_default_if' => 'body_bg', 'default' => '#eeeeee'
-				$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
+				//$options_params[] = array('type' => 'image', 'id' => 'header_bg_image', 'title' => " - ".__("Image", 'lang_theme_core'));
 
 			if($theme_dir_name == 'mf_parallax')
 			{
@@ -1926,7 +1926,8 @@ class mf_theme_core
 				{"
 					.$this->render_css(array('property' => 'background', 'value' => 'body_bg'))
 					.$this->render_css(array('property' => 'background-color', 'value' => 'body_bg_color'))
-					.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'));
+					//.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'body_bg_image', 'suffix' => '); background-size: cover'))
+					;
 					//."min-height: 100vh;" /* This will override footer background below footer */
 
 					if(!isset($this->options['header_fixed']) || $this->options['header_fixed'] != 'sticky')
@@ -1940,7 +1941,7 @@ class mf_theme_core
 					{"
 						.$this->render_css(array('property' => 'background', 'value' => 'header_bg'))
 						.$this->render_css(array('property' => 'background-color', 'value' => 'header_bg_color'))
-						.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'header_bg_image', 'suffix' => '); background-size: cover'))
+						//.$this->render_css(array('property' => 'background-image', 'prefix' => 'url(', 'value' => 'header_bg_image', 'suffix' => '); background-size: cover'))
 						.$this->render_css(array('property' => 'overflow', 'value' => 'header_overflow'))
 						.$this->render_css(array('property' => 'position', 'value' => 'header_fixed'));
 
